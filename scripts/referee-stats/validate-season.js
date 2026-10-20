@@ -1,7 +1,7 @@
 const fs=require("fs"),path=require("path"),zlib=require("zlib");
 const root=path.resolve(__dirname,"../.."),args=process.argv.slice(2),seasonIndex=args.indexOf("--season"),season=seasonIndex>=0?args[seasonIndex+1]:null;
 if(!/^20\d{2}-\d{2}$/.test(season||""))throw new Error("Specificare --season YYYY-YY");
-const read=file=>JSON.parse(fs.readFileSync(path.join(root,file),"utf8")),write=(file,value)=>{const target=path.join(root,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,JSON.stringify(value,null,2)+"\n")};
+const read=file=>JSON.parse(fs.readFileSync(path.join(root,file),"utf8")),write=(file,value)=>{if(!process.argv.includes("--write-report"))return;const target=path.join(root,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,JSON.stringify(value,null,2)+"\n")};
 const seasonRoot=`data/normalized/referee-matches/${season}`,generatedRoot=`data/generated/referee-stats/${season}`,regular={"serie-a":read(`${seasonRoot}/serie-a.json`).matches,"serie-b":read(`${seasonRoot}/serie-b.json`).matches},aggregates=read(`${generatedRoot}/aggregates.json`),importReport=read(`${generatedRoot}/import-report.json`);
 const postseasonFiles=fs.readdirSync(path.join(root,seasonRoot)).filter(name=>name.startsWith("serie-b-")&&name.endsWith(".json")&&!name.includes("unknown")),postseason=postseasonFiles.flatMap(name=>read(`${seasonRoot}/${name}`).matches),checks=[];
 function check(name,ok,details){checks.push({name,ok,details});if(!ok)process.exitCode=1}
@@ -17,7 +17,7 @@ check("Import: join calendario completa",importReport.calendarJoin?.matched===76
 check("Aggregati: stagione coerente",aggregates.referees.every(row=>row.season===season)&&aggregates.refereeTeams.every(row=>row.season===season),{referees:aggregates.referees.length,refereeTeams:aggregates.refereeTeams.length});
 const verifiedEspnFixtures=[];
 for(const [competition,matches] of Object.entries(regular))for(const match of matches.slice(0,5)){
-  const rawFile=path.join(root,`data/raw/referee-stats/espn/${season}/${competition}/${match.providerFixtureId}.json.gz`),snapshot=JSON.parse(zlib.gunzipSync(fs.readFileSync(rawFile))),event=snapshot.bundle.event,summary=snapshot.bundle.summary,official=summary.gameInfo?.officials?.[0]?.fullName||null;
+  const rawFile=path.join(root,`data/raw/referee-stats/espn/${season}/${competition}/${match.providerFixtureId}.json.gz`),snapshot=JSON.parse(zlib.gunzipSync(fs.readFileSync(require("./raw-path")(rawFile)))),event=snapshot.bundle.event,summary=snapshot.bundle.summary,official=summary.gameInfo?.officials?.[0]?.fullName||null;
   verifiedEspnFixtures.push({competition,fixtureId:match.providerFixtureId,url:match.source.url,teamsMatch:event.competitions?.[0]?.competitors?.some(row=>row.homeAway==="home"&&row.team?.displayName===match.homeTeam.providerName)&&event.competitions?.[0]?.competitors?.some(row=>row.homeAway==="away"&&row.team?.displayName===match.awayTeam.providerName),refereeMatch:official===match.referee.providerName,statsTeams:summary.boxscore?.teams?.length||0,retrievedAt:match.source.retrievedAt});
 }
 check("10 fixture ESPN confrontate con i raw",verifiedEspnFixtures.length===10&&verifiedEspnFixtures.every(row=>row.teamsMatch&&row.refereeMatch&&row.statsTeams===2),verifiedEspnFixtures);

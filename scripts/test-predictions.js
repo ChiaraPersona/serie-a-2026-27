@@ -223,9 +223,13 @@ for (const prediction of dataset.predictions) {
   assert.strictEqual(prediction.likelyBooked.length, 5, `${prediction.matchId}: servono cinque probabili ammoniti`);
   assert.strictEqual(prediction.likelyBooked.filter(candidate => candidate.possibleFirstBooked).length, 1, `${prediction.matchId}: serve un solo possibile primo ammonito`);
   assert.strictEqual(new Set(prediction.likelyBooked.map(candidate => candidate.teamId)).size, 2, `${prediction.matchId}: la gerarchia ammoniti deve rappresentare entrambe le squadre`);
-  const officialStarters = officialStartersByMatch.get(prediction.matchId);
-  if (officialStarters) assert(prediction.likelyBooked.every(candidate => officialStarters.has(cleanName(candidate.name))), `${prediction.matchId}: probabile ammonito fuori dall'XI ufficiale`);
-  if (officialStarters && prediction.shooters) assert([...prediction.shooters.totalShots, ...prediction.shooters.shotsOnTarget].every(candidate => officialStarters.has(cleanName(candidate.lineupName))), `${prediction.matchId}: tiratore fuori dall'XI ufficiale`);
+  const starterIds = new Set(officialLineups.fixtures.find(f=>f.matchId===prediction.matchId)?.teams.flatMap(t=>t.players.map(p=>p.playerId))||[]);
+  const isStarter = candidate => candidate.playerId ? starterIds.has(candidate.playerId) : officialStartersByMatch.get(prediction.matchId)?.has(cleanName(candidate.lineupName||candidate.name));
+  const concluded = JSON.parse(fs.readFileSync(path.join(root,"data/normalized/matches.json"),"utf8")).find(m=>m.id===prediction.matchId)?.status === "finished";
+  // Historical forecasts retain their original lineup; operational selections are filtered separately.
+  const officialStarters = concluded ? null : officialStartersByMatch.get(prediction.matchId);
+  if (officialStarters) assert(prediction.likelyBooked.every(candidate => isStarter(candidate)), `${prediction.matchId}: probabile ammonito fuori dall'XI ufficiale`);
+  if (officialStarters && prediction.shooters) assert([...prediction.shooters.totalShots, ...prediction.shooters.shotsOnTarget].every(candidate => isStarter(candidate)), `${prediction.matchId}: tiratore fuori dall'XI ufficiale`);
   if (prediction.playerMarketModelVersion === 2) {
     assert.strictEqual(prediction.shooters.allPlayers.length, 20, `${prediction.matchId}: V2 deve proiettare i dieci giocatori di movimento per squadra`);
     assert(prediction.shooters.outsiders.length <= 5, `${prediction.matchId}: ranking outsider oltre il limite espositivo`);

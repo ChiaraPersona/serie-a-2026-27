@@ -1,0 +1,236 @@
+{
+  "passed": 46,
+  "failed": 0,
+  "results": [
+    {
+      "command": "node scripts/test-probable-lineups.js",
+      "status": 0,
+      "output": "Fantacalcio MD7: 20 squadre, 220 titolari, 448 collegati, 0 non collegati.\n"
+    },
+    {
+      "command": "node scripts/test-player-identities.js",
+      "status": 0,
+      "output": "Identità collegate: 2226 righe calciatore in 70 referti, 2128 righe di formazioni ufficiali; null ammessi solo per riserve non impiegate con nome sorgente preservato, fallback role-baseline o candidati cartellini esplicitamente irrisolti.\n"
+    },
+    {
+      "command": "node scripts/validate-data.js",
+      "status": 0,
+      "output": "OK 20 squadre ufficiali e 20 loghi locali\nOK organico CAN 2026/27: 42 arbitri con fonti e statistiche non inventate\nOK snapshot arbitri 2025/26: Serie A e Serie B separate per 42 arbitri\nOK 38 giornate x 10 partite = 380\nOK Coppa Italia 2026/27: 43 incontri e percorsi con fonte, turni e programmazione\nOK ogni squadra: 38 gare, 19 casa, 19 trasferta\nOK 190 coppie: doppio confronto con casa/trasferta invertite\nOK prime 5 giornate: 50 programmazioni (50 confermate, 0 provvisorie)\nOK nessuna data o orario assegnati oltre la quinta giornata\nOK classifica finale 2025/26: 20 squadre e valori coerenti\nOK rendimento casa 2025/26: 20 squadre e valori coerenti\nOK rendimento trasferta 2025/26 e riconciliazione con classifica finale\nOK riepilogo statistico 2025/26 riconciliato con classifiche generale/casa/trasferta\nOK verdetti 2025/26 e promosse 2026/27 coerenti con le classifiche\nOK profili tattici WhoScored 2025/26: 20/20 con copertura e campioni dichiarati\n"
+    },
+    {
+      "command": "node scripts/referee-stats/test.js",
+      "status": 0,
+      "output": "OK aggregazioni arbitro e arbitro-squadra, baseline esclusiva e linguaggio neutrale\n"
+    },
+    {
+      "command": "node scripts/referee-stats/validate-season.js --season 2023-24",
+      "status": 0,
+      "output": "{\n  \"season\": \"2023-24\",\n  \"status\": \"validated\",\n  \"regularSeason\": {\n    \"serieA\": 380,\n    \"serieB\": 380\n  },\n  \"postseason\": 10,\n  \"missingFields\": {\n    \"matchday\": 0,\n    \"referee\": 0\n  },\n  \"checks\": [\n    {\n      \"name\": \"serie-a: 380 gare regolari\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-a: fixture univoche\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-a: 38 giornate complete\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-a: fonti tracciate\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: 380 gare regolari\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: fixture univoche\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: 38 giornate complete\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: fonti tracciate\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"Serie B: postseason separata\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"Import: join calendario completa\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"Aggregati: stagione coerente\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"10 fixture ESPN confrontate con i raw\",\n      \"ok\": true\n    }\n  ]\n}\n"
+    },
+    {
+      "command": "node scripts/referee-stats/validate-season.js --season 2024-25",
+      "status": 0,
+      "output": "{\n  \"season\": \"2024-25\",\n  \"status\": \"validated\",\n  \"regularSeason\": {\n    \"serieA\": 380,\n    \"serieB\": 380\n  },\n  \"postseason\": 10,\n  \"missingFields\": {\n    \"matchday\": 0,\n    \"referee\": 0\n  },\n  \"checks\": [\n    {\n      \"name\": \"serie-a: 380 gare regolari\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-a: fixture univoche\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-a: 38 giornate complete\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-a: fonti tracciate\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: 380 gare regolari\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: fixture univoche\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: 38 giornate complete\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: fonti tracciate\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"Serie B: postseason separata\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"Import: join calendario completa\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"Aggregati: stagione coerente\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"10 fixture ESPN confrontate con i raw\",\n      \"ok\": true\n    }\n  ]\n}\n"
+    },
+    {
+      "command": "node scripts/referee-stats/validate-2025-26.js",
+      "status": 0,
+      "output": "{\n  \"status\": \"validated-with-source-differences\",\n  \"checks\": [\n    {\n      \"name\": \"serie-a: 380 gare regolari\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-a: fixture univoche\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-a: giornate complete\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-a: source e retrievedAt\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: 380 gare regolari\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: fixture univoche\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: giornate complete\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"serie-b: source e retrievedAt\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"Serie B: stage postseason separati\",\n      \"ok\": true\n    },\n    {\n      \"name\": \"10 fixture ESPN confrontate con snapshot originali\",\n      \"ok\": true\n    }\n  ],\n  \"missing\": {\n    \"matchday\": 0,\n    \"referee\": 40\n  },\n  \"historicalOnly\": 11,\n  \"sourceDifferences\": 84\n}\n"
+    },
+    {
+      "command": "node scripts/test-team-referee-profiles.js",
+      "status": 0,
+      "output": "OK team-referee: 20/20 squadre, 336 righe, 313 collegamenti ESPN\n"
+    },
+    {
+      "command": "node scripts/test-team-volume-profiles.js",
+      "status": 0,
+      "output": "OK profili volume: 380 gare, casa/trasferta e percentili p20-p80 validati\n"
+    },
+    {
+      "command": "node scripts/test-team-matchup-profiles.js",
+      "status": 0,
+      "output": "OK profili matchup di tutte le 20 squadre (20); Venezia 15.923 tiri opponent-normalized, SOT high, xGA/shot 0.1636 WATCH; Udinese 16.404 tiri opponent-normalized; Torino 15.834 tiri opponent-normalized; Sassuolo 14.491; Parma 17.786; Napoli 14.821; Monza suppression -1.58%/0% SOT; Milan suppression ACTIVE; Lecce 0.68%/0.68% SOT; Juventus -2.13%/-1.58% SOT; Inter -1.22%/0% SOT; Frosinone 0.62% tiri\n"
+    },
+    {
+      "command": "node scripts/test-future-data-readiness.js",
+      "status": 0,
+      "output": "OK future-data readiness: 30 controlli\n01. 1 MD6 -> MD7 update\n02. 2 MD6 -> MD10\n03. 3 MD6 -> MD20/MD30\n04. 4 historical weight decay\n05. 5 maturity growth\n06. 6 player hierarchy change\n07. 7 Expected Minutes decline\n08. 8 new player fallback\n09. 9 transferred/inactive player\n10. 10 WATCH -> ACTIVE\n11. 11 ACTIVE -> WATCH\n12. 12 WATCH -> INACTIVE\n13. 13 role residual accumulation\n14. 14 outlier dilution\n15. 15 shots/SOT independence\n16. 16 shots/xG independence\n17. 17 opponent normalization update\n18. 18 no future leakage\n19. 19 target match exclusion\n20. 20 unplayed fixture exclusion\n21. 21 duplicate match protection\n22. 22 shuffled chronological input\n23. 23 idempotency\n24. 24 probability monotonicity\n25. 25 SOT <= shots\n26. 26 team/player reconciliation\n27. 27 outsider 0..N\n28. 28 missing != zero\n29. 29 all 20 Team Profiles regression\n30. player structural baseline reacts without discarding history\n"
+    },
+    {
+      "command": "node scripts/test-css-modules.js",
+      "status": 0,
+      "output": "CSS modulare valido: 11 moduli, entry point 994 byte.\n"
+    },
+    {
+      "command": "node --no-warnings scripts/test-app-modules.mjs",
+      "status": 0,
+      "output": "OK moduli applicazione: 9 pagine e 4 componenti condivisi\n"
+    },
+    {
+      "command": "node --no-warnings scripts/test-reading-prediction-v2.mjs",
+      "status": 0,
+      "output": "OK Lettura Prediction V2: 24 contratti UI/data\n"
+    },
+    {
+      "command": "node scripts/team-pages/test.js",
+      "status": 0,
+      "output": "Team pages: 20 JSON e 20 pagine valide; competizioni separate; null preservati.\n"
+    },
+    {
+      "command": "node scripts/team-pages/test-milan.js",
+      "status": 0,
+      "output": "Milan pilot: 26 giocatori, 26 con statistiche, duplicati 0, per90 validato.\n"
+    },
+    {
+      "command": "node scripts/team-pages/test-completed-teams.js",
+      "status": 0,
+      "output": "Inter, Juventus e Napoli: rose, statistiche /90, pagine, fonti e collegamenti validati.\n"
+    },
+    {
+      "command": "node scripts/team-pages/test-all-teams.js",
+      "status": 0,
+      "output": "Tutte le squadre: 20/20, 533 calciatori, 533 con statistiche 2025/26, 389 ruoli tattici specifici fuori dal Milan.\n"
+    },
+    {
+      "command": "node scripts/sisal/test.js",
+      "status": 0,
+      "output": "OK normalizzazione Sisal, quote decimali e matching calendario\nOK Sisal identifiers: additive/idempotent enrichment, null vs zero, DOM distinction, six real selections and unchanged BetSelection/DUO semantics\nOK Sisal consumer regression: real multiple/MyCombo/DUO, addMany, deduplication, assessment and saved-slip reload unchanged\n"
+    },
+    {
+      "command": "node scripts/test-understat-xg.js",
+      "status": 0,
+      "output": "OK Understat xG: 2660 partite, 7 stagioni complete\n"
+    },
+    {
+      "command": "node scripts/test-predictions.js",
+      "status": 0,
+      "output": "OK motore pronostici 4.13.0: 59 partite, dati mancanti dichiarati, fattore sorpresa validato\n"
+    },
+    {
+      "command": "node scripts/test-schedina.js",
+      "status": 0,
+      "output": "Schedina valida: Scintilla 4.51 · Bagliore 7.08 · Supernova 6.37 · Prisma 144.47 · Quasar 87.15 · Costellazione 26.45 · Quadrante 2499.00 · Ventaglio 68.51\nLiquidazione visiva Schedina valida.\n"
+    },
+    {
+      "command": "node scripts/test-schedina-md02.js",
+      "status": 0,
+      "output": "Schedina MD2 valida: stessa matrice MD1, 8 proposte e 47 selezioni uniche, snapshot 2026-08-28T13:46:22.294Z.\nLiquidazione Milan-Venezia MD2 valida: 5 esiti verdi e 2 rossi.\n"
+    },
+    {
+      "command": "node scripts/test-schedina-md05.js",
+      "status": 0,
+      "output": "Schedina MD05 valida: 8 proposte, 45 selezioni e 10 MyCombo distinte.\n"
+    },
+    {
+      "command": "node scripts/test-betting-selection-contract.js",
+      "status": 0,
+      "output": "OK BetSelection v1: 6 schedina, 137 MyCombo e 137 prediction legs verificate\n"
+    },
+    {
+      "command": "node scripts/test-schedina-md06.js",
+      "status": 0,
+      "output": "OK Schedina MD06: 2 schedine/6 gambe, 89 DUO quotati con P/EV N/D, Yeboah corretto, archivi invariati\n"
+    },
+    {
+      "command": "node scripts/test-personal-betslip.mjs",
+      "status": 0,
+      "output": "OK schedina personale: store, deduplica, compatibilità, quote, contesti e persistenza\n"
+    },
+    {
+      "command": "node scripts/test-european-player-match-stats.js",
+      "status": 0,
+      "output": "Dati europei validi: storico italiano 90/91 completo (Mattia Marello N/D); 5 gare, 80 presenze e 25 cambi acquisiti.\n"
+    },
+    {
+      "command": "node scripts/test-prediction-backtest.js",
+      "status": 0,
+      "output": "OK backtest walk-forward: 190 gare fuori campione, log-loss 1.0055\n"
+    },
+    {
+      "command": "node scripts/test-prediction-backtest-multiseason.js",
+      "status": 0,
+      "output": "OK backtest pluristagionale: 1201 gare, keep-current\n"
+    },
+    {
+      "command": "node scripts/test-prediction-backtest-opening-rounds.js",
+      "status": 0,
+      "output": "OK opening rounds: 296 training, 90 validation, carry-over regolarizzato\n"
+    },
+    {
+      "command": "node scripts/head-to-head/test.js",
+      "status": 0,
+      "output": "OK importer scontri diretti: 190 gare di andata, marcatori, ammoniti e controlli copertura\n"
+    },
+    {
+      "command": "node scripts/test-head-to-head-integration.js",
+      "status": 0,
+      "output": "OK collegamento H2H: motore, 190 letture, copertura esplicita e cache aggiornata\n"
+    },
+    {
+      "command": "node scripts/test-fantasy-squad.js",
+      "status": 0,
+      "output": "Fantasy squad planner: test superati.\n"
+    },
+    {
+      "command": "node scripts/test-no-shirt-numbers.js",
+      "status": 0,
+      "output": "OK: 515 verified numbers; 20 rosters unchanged; missing numbers null; no predictive dependency.\n"
+    },
+    {
+      "command": "node scripts/test-champions-branding.js",
+      "status": 0,
+      "output": "OK Champions: 36 squadre · 36 ID UEFA · 36 PNG · designazioni MD1 e MD2\n"
+    },
+    {
+      "command": "node scripts/test-champions-registered-squads.js",
+      "status": 0,
+      "output": "Rose registrate Champions: test superato.\n"
+    },
+    {
+      "command": "node scripts/test-champions-pilot-backtest.js",
+      "status": 0,
+      "output": "OK backtest volumi Champions: tiri/corner sopra baseline · cartellini stabili in MAE e migliori in Brier\n"
+    },
+    {
+      "command": "node scripts/test-champions-pilot-predictions.js",
+      "status": 0,
+      "output": "OK pronostici Champions MD1: 18 gare · risultato e gol completi · volumi mancanti espliciti\n"
+    },
+    {
+      "command": "node scripts/test-champions-surprise-factor.js",
+      "status": 0,
+      "output": "OK Fattore Sorpresa Champions MD1\n"
+    },
+    {
+      "command": "node scripts/test-champions-reading-page.mjs",
+      "status": 0,
+      "output": "OK dettaglio lettura Champions\n(node:3184) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/utente/Desktop/seria-a-2026-27/js/pages/champions.js is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\utente\\Desktop\\seria-a-2026-27\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "command": "node scripts/test-lineup-field.mjs",
+      "status": 0,
+      "output": "OK horizontal lineups: 3 fixtures, 22 players, mirrored positions, spacing and unchanged source data.\nOK MD7: 20 XI, quattro elenchi senza posizioni inventate; fallback futuro verificato.\n(node:7600) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/utente/Desktop/seria-a-2026-27/js/pages/readings.js is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to \\\\?\\C:\\Users\\utente\\Desktop\\seria-a-2026-27\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "command": "node scripts/test-schedina-md07.mjs",
+      "status": 0,
+      "output": "{\n  \"status\": \"PASS\",\n  \"rows\": [\n    {\n      \"matchId\": \"bologna-inter-2026-27-md-07\",\n      \"partita\": \"bologna–inter\",\n      \"tiri\": 7,\n      \"sot\": 8,\n      \"altri\": 5,\n      \"totale\": 20,\n      \"quote\": 20\n    },\n    {\n      \"matchId\": \"fiorentina-como-2026-27-md-07\",\n      \"partita\": \"fiorentina–como\",\n      \"tiri\": 9,\n      \"sot\": 8,\n      \"altri\": 4,\n      \"totale\": 21,\n      \"quote\": 17\n    },\n    {\n      \"matchId\": \"frosinone-sassuolo-2026-27-md-07\",\n      \"partita\": \"frosinone–sassuolo\",\n      \"tiri\": 9,\n      \"sot\": 8,\n      \"altri\": 5,\n      \"totale\": 22,\n      \"quote\": 22\n    },\n    {\n      \"matchId\": \"juventus-lazio-2026-27-md-07\",\n      \"partita\": \"juventus–lazio\",\n      \"tiri\": 13,\n      \"sot\": 11,\n      \"altri\": 6,\n      \"totale\": 30,\n      \"quote\": 26\n    },\n    {\n      \"matchId\": \"milan-atalanta-2026-27-md-07\",\n      \"partita\": \"milan–atalanta\",\n      \"tiri\": 11,\n      \"sot\": 9,\n      \"altri\": 6,\n      \"totale\": 26,\n      \"quote\": 22\n    },\n    {\n      \"matchId\": \"monza-cagliari-2026-27-md-07\",\n      \"partita\": \"monza–cagliari\",\n      \"tiri\": 12,\n      \"sot\": 9,\n      \"altri\": 5,\n      \"totale\": 26,\n      \"quote\": 22\n    },\n    {\n      \"matchId\": \"parma-torino-2026-27-md-07\",\n      \"partita\": \"parma–torino\",\n      \"tiri\": 11,\n      \"sot\": 6,\n      \"altri\": 4,\n      \"totale\": 21,\n      \"quote\": 17\n    },\n    {\n      \"matchId\": \"roma-genoa-2026-27-md-07\",\n      \"partita\": \"roma–genoa\",\n      \"tiri\": 6,\n      \"sot\": 5,\n      \"altri\": 5,\n      \"totale\": 16,\n      \"quote\": 16\n    },\n    {\n      \"matchId\": \"udinese-lecce-2026-27-md-07\",\n      \"partita\": \"udinese–lecce\",\n      \"tiri\": 7,\n      \"sot\": 5,\n      \"altri\": 5,\n      \"totale\": 17,\n      \"quote\": 17\n    },\n    {\n      \"matchId\": \"venezia-napoli-2026-27-md-07\",\n      \"partita\": \"venezia–napoli\",\n      \"tiri\": 8,\n      \"sot\": 6,\n      \"altri\": 5,\n      \"totale\": 19,\n      \"quote\": 19\n    }\n  ],\n  \"total\": 218,\n  \"quoted\": 198,\n  \"unquoted\": 20,\n  \"technicalUnquoted\": 1,\n  \"tests\": [\n    \"10 fixture / 20 squadre\",\n    \"quote provider e contratto esatti\",\n    \"titolari probabili e identita canoniche\",\n    \"selezionabilita store per ogni pronostico\",\n    \"nessun duplicato\",\n    \"DUO senza probabilita o EV inventati\",\n    \"pronostici altre giornate identici a HEAD\"\n  ]\n}\n"
+    },
+    {
+      "command": "node scripts/test-champions-md02-integration.js",
+      "status": 0,
+      "output": "OK test Fase 12 MD2: 18/18 · titolari 392/396 · disponibilità 108/124 · 28109 mercati · 92818 selezioni integre\nHISTORICAL_GUARD data/normalized/odds/sisal/champions-league.json @ c3f193bae2ebe6407693004489e6ffd8685ca63f: original hash verified; current semantic checks are separate\nHISTORICAL_GUARD data/normalized/champions-league-2026-27.json @ d4ae4f28e8464d1f096974687bbf19139df736ef: original hash verified; current semantic checks are separate\nOK current MD2 integration: 18 fixtures, 28109 markets, 92818 unchanged provider selections\n"
+    },
+    {
+      "command": "node scripts/test-champions-md3-approved.mjs",
+      "status": 0,
+      "output": "OK CL3 seven independent singles; official finish gate; 1/X2 win/loss/draw; missing score pending.\n"
+    },
+    {
+      "command": "node scripts/test-update-workflow.cjs",
+      "status": 0,
+      "output": "OK update workflow: explicit scope, MD8 plan, separate competitions, staging path guards, unchanged historical contracts\n"
+    }
+  ]
+}

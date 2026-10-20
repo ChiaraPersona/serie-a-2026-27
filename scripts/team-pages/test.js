@@ -99,7 +99,7 @@ assert.ok(!mainApp.includes("classifiche disponibili"), "Il conteggio delle clas
 assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non deve usare un menu a tendina");
 assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes('class="season-summary"'), "Il vecchio riepilogo statistico non deve essere mostrato in Statistiche squadre");
 for (const contract of ["reading-fixture-preview", "Anteprima della lettura", "prediction.verdict.label", "likelyScore", "Risultato esatto", "prediction.confidence.value"]) assert.ok(mainApp.includes(contract), `Card Letture: anteprima ${contract} assente`);
-for (const contract of ["readingPostMatchReport", "Tabellino e statistiche", "Partite concluse", "reading-player-table", "match.playerStats", "item.ownGoal", "Analisi prepartita archiviata"]) assert.ok(mainApp.includes(contract), `Letture post-partita: contratto ${contract} assente`);
+for (const contract of ["readingPostMatchReport", "Tabellino e statistiche", "Archivio risultati", "reading-player-table", "match.playerStats", "item.ownGoal", "Analisi prepartita archiviata"]) assert.ok(mainApp.includes(contract), `Letture post-partita: contratto ${contract} assente`);
 const postMatchSource = mainApp.slice(mainApp.indexOf("function readingPostMatchReport"), mainApp.indexOf("function readingPrototypeDetail"));
 assert.ok(!postMatchSource.includes("reading-post-match-score"), "Il tabellino non deve ripetere il riquadro con risultato e squadre");
 for (const contract of ['["Tiri totali", "shots", ""]', '["Falli commessi", "fouls", ""]', '["Falli subiti", "fouls", "", true]', 'fromOpponent?"away":"home"', 'fromOpponent?"home":"away"']) assert.ok(postMatchSource.includes(contract), `Tabella statistiche reali: contratto ${contract} assente`);
@@ -126,9 +126,8 @@ assert.ok(styles.includes(".squad-table{width:1621px;min-width:1621px;table-layo
 for (const removedCopy of ["Copertura statistica" + " individuale", "Le schede separano squadra" + " e competizione 2025/26"]) assert.ok(!teamInterface.includes(removedCopy), `Pagine squadra: testo rimosso ancora presente: ${removedCopy}`);
 const teamPageSource = teamInterface.slice(teamInterface.indexOf("function teamPage"), teamInterface.indexOf("async function init"));
 assert.ok(!teamPageSource.includes('<h2>Fonti</h2>') && !teamPageSource.includes("team.sources.map"), "Le fonti non devono comparire in fondo alle pagine squadra");
-assert.strictEqual((sourcesShell.match(/data-source-team=/g) || []).length, 20, "La pagina Fonti deve raccogliere tutte le 20 squadre");
-assert.ok(sourcesShell.includes("Fonti registrate") && sourcesShell.includes("Apri la fonte"), "La pagina Fonti non espone i riferimenti registrati");
-assert.ok(teamPageShell.includes('../fonti.html">Fonti</a>') && sourcesShell.includes('href="fonti.html">Fonti</a>'), "Il footer deve collegare la pagina Fonti a ogni profondità");
+assert.strictEqual((sourcesShell.match(/data-source-team=/g) || []).length, 0, "La pagina pubblica non deve elencare fonti");
+assert.ok(!sourcesShell.includes("Apri la fonte") && !teamPageShell.includes('fonti.html">Fonti</a>'), "Link pubblici alle fonti ancora presenti");
 for (const contract of ['data-team-season="2026/27"', "Statistiche 2026/27", "teamSeasonStatsColumn", "teamSeasonList", "Produzione offensiva", "Solidità difensiva"]) assert.ok(teamInterface.includes(contract), `Statistiche essenziali: manca ${contract}`);
 for (const contract of [".team-season-comparison", ".team-season-columns", ".team-season-column", ".team-season-list", ".team-season-splits", ".team-season-empty"]) assert.ok(styles.includes(contract), `Confronto statistiche squadra: stile ${contract} assente`);
 for (const contract of ["teamAttackChannels", "Direzioni d'attacco", "team-attack-channel-bars", "Canale prevalente:"]) assert.ok(teamInterface.includes(contract), `Direzioni d'attacco nelle statistiche squadra: manca ${contract}`);
@@ -214,8 +213,8 @@ assert.ok(teamInterface.includes("probable-lineup-substitutes") && fs.readFileSy
 assert.ok(teamInterface.includes('official ? "Formazione ufficiale" : "Probabile formazione"'), "Le pagine squadra non distinguono la formazione ufficiale");
 assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":referenceLineups?"Formazioni di riferimento":"Probabili formazioni"'), "La Lettura non distingue formazioni ufficiali, di riferimento e probabili");
 assert.ok(readingLineupSource.includes('"Distinte ufficiali della giornata "+match.matchday'), "La Lettura non associa le distinte ufficiali alla giornata corretta");
-assert.ok(mainApp.includes('<details class="reading-completed-matchday">') && mainApp.includes("Tabellini delle partite precedenti"), "I tabellini conclusi non usano il menu a tendina dedicato alle partite precedenti");
-assert.ok(readingsInterface.includes("const chronological=(left,right)=>scheduleChronology(left,right)||left.id.localeCompare(right.id)") && readingsInterface.includes("nextMatches=scheduled.filter(match=>match.matchday===nextDay).sort(chronological)") && readingsInterface.includes("firstLeg.filter(match=>match.matchday===matchday).sort(chronological)"), "Le card Letture non sono ordinate cronologicamente per data e orario");
+assert.ok(mainApp.includes('data-archive-day=') && mainApp.includes('ri-archive-panel') && mainApp.includes('ri-archive-content-'), "I tabellini conclusi non usano il menu a tendina dedicato alle partite precedenti");
+assert.ok(readingsInterface.includes("const chronological=(a,b)=>scheduleChronology(a,b)||a.id.localeCompare(b.id)") && readingsInterface.includes("league.filter(m=>m.matchday===day).sort(chronological)"), "Le card Letture devono usare data, orario e ID per ogni giornata");
 assert.ok(!mainApp.includes("Candidato MVP") && !mainApp.includes("prediction-mvp"), "Il candidato MVP non deve essere esposto nelle Letture");
 assert.ok(mainApp.includes("reading-official-mvp") && mainApp.includes("Panini Player of the Match") && mainApp.includes("match.mvp"), "L'MVP ufficiale della partita conclusa non è esposto nelle Letture");
 assert.ok(mainApp.includes("La partita in numeri") && mainApp.includes("prediction-v2-team-grid") && mainApp.includes("p20–p80"), "I volumi V2 casa/trasferta non sono esposti nelle Letture");
@@ -286,12 +285,12 @@ for (const summary of index.teams) {
 }
 assert.ok(teamPageShell.includes("scripts/standings.js") && teamPageShell.includes("scripts/objective-metrics.js"), "Le pagine squadra non caricano il motore condiviso degli obiettivi");
 assert.ok(!teamInterface.includes("Copertura completa") && !mainApp.includes("Copertura completa") && !teamStatsShell.includes("Copertura completa"), "Il banner Copertura completa non deve essere mostrato");
-assert.ok(!fs.existsSync(path.join(root, "statistiche-giocatori.html")), "La pagina Statistiche giocatori deve essere rimossa");
+assert.ok(fs.readFileSync(path.join(root,"statistiche-giocatori.html"),"utf8").includes('data-page="player-stats"'), "Pagina statistiche giocatori dedicata assente");
 assert.ok(!fs.existsSync(path.join(root, "classifica.html")), "La pagina Classifica deve essere rimossa");
 assert.ok(!fs.existsSync(path.join(root, "calendario.html")), "La pagina Calendario globale deve essere rimossa");
 const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, file), "utf8"))
   .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, "statistiche-squadra", file), "utf8"))).join("\n");
-assert.ok(!generatedHtml.includes("statistiche-giocatori"), "Un collegamento alla pagina rimossa è ancora presente");
+assert.ok(generatedHtml.includes("statistiche-giocatori.html"), "Navigazione alla pagina giocatori assente");
 assert.ok(!generatedHtml.includes('href="classifica.html"') && !generatedHtml.includes('href="../classifica.html"'), "Un collegamento alla pagina Classifica rimossa è ancora presente");
 assert.ok(!generatedHtml.includes('href="calendario.html"') && !generatedHtml.includes('href="../calendario.html"'), "Un collegamento alla pagina Calendario rimossa è ancora presente");
 assert.ok(matchesInterface.includes('if(page==="team")') && matchesInterface.includes("personalCalendar(team,league,europe,cup,teams)") && !matchesInterface.includes('page==="calendar"'), "Devono restare soltanto i calendari personali delle squadre");
@@ -321,7 +320,7 @@ assert.ok(!homeStandingsSource.includes("objectiveStatusSection(") && !homeStand
 assert.ok(mainApp.includes('const routes={home:"home",team:"matches","team-stats":"teams"') && !mainApp.includes('calendar:"matches"') && mainApp.includes('[teams,matches,previousStandings]=await Promise.all') && mainApp.includes('[teamDirectory,playerLeaderboards]=await Promise.all'), "Router e pagine devono caricare soltanto i dataset necessari");
 assert.ok(mainApp.includes('requestedMatchId?"first-leg-2026-27.json":"first-leg-2026-27-summary.json"'), "L'indice Letture deve usare il riepilogo H2H leggero");
 const expectedNavigation = [
-  ["index.html", "Home"], ["statistiche-squadre.html", "Statistiche squadre"], ["lettura.html", "Lettura"],
+  ["index.html", "Home"], ["statistiche-squadre.html", "Squadre"], ["statistiche-giocatori.html", "Giocatori"], ["lettura.html", "Lettura"],
   ["coppa-italia.html", "Coppa Italia"], ["champions-league.html", "Champions League"],
   ["schedina.html", "Schedina"]
 ];

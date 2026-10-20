@@ -38,11 +38,14 @@ for (const ids of [
       return { selectionId: betSelection.selectionId, context, fixture: event.name, label: `${market.variantName}: ${selection.name}`, market: market.marketName, betSelection };
     });
     const result = store.addMany(rows);
-    assert.equal(result.added, 3);
-    assert.equal(store.addMany(rows).duplicates, 3, 'stable IDs must still deduplicate');
+    const eligible=rows.filter(row=>globalThis.officialStarterPolicy.eligible(row));
+    assert(eligible.length>0, 'fixture di test senza selezioni ammissibili');
+    assert.equal(result.added, eligible.length);
+    assert.equal(result.added + (result.rejected?.length||0), rows.length);
+    assert.equal(store.addMany(rows).duplicates, eligible.length, 'stable IDs must still deduplicate');
     const beforeReload = store.getSnapshot();
     const restored = createPersonalBetslipStore({ storage, now }).getSnapshot();
-    assert.equal(restored.selections.length, 3);
+    assert.equal(restored.selections.length, eligible.length);
     assert.deepEqual(restored.assessment, beforeReload.assessment);
     return { rows, result, restored };
   }

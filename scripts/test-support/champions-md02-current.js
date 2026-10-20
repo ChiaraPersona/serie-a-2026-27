@@ -2,14 +2,20 @@
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
-const { sha256, assertHistoricalFile } = require("./historical-files");
+const { sha256, assertHistoricalFile, gitSnapshotReader } = require("./historical-files");
 
 function assertCurrentIntegration(root) {
   const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
   const data = read("data/normalized/champions-md02-integration-2026-27.json");
   const official = read("data/sources/champions-official-formations-md02-2026-27.json");
   const probable = read("data/sources/champions-probable-formations-md02-2026-27.json");
-  const odds = read("data/normalized/odds/sisal/champions-league.json");
+  const liveOdds = read("data/normalized/odds/sisal/champions-league.json");
+  const frozenRevision = "c3f193bae2ebe6407693004489e6ffd8685ca63f";
+  // The live provider file rotates to later matchdays. Validate archived MD2
+  // contracts against the exact snapshot recorded by the MD2 manifest, while
+  // still comparing any MD2 events retained in the live file below.
+  const frozenOdds = gitSnapshotReader(frozenRevision).read(data.sources.odds.normalized.path);
+  assertHistoricalFile(data.sources.odds.normalized, frozenRevision);
   const canonical = new Map();
   for (const file of ["champions-registered-squads-2026-27.json", "champions-player-stats-2025-26.json"]) {
     for (const team of read(`data/normalized/${file}`).teams) {
@@ -56,8 +62,9 @@ function assertCurrentIntegration(root) {
         if (!player.availabilityConflict) assert.equal(player.expectedMinutes, player.role === "goalkeeper" ? 90 : 84.6);
       }
     }
-    const event = odds.events.find(e => e.canonicalMatchId === fixture.fixtureId);
-    assert(event, `Missing current odds ${fixture.fixtureId}`);
+    const event = liveOdds.events.find(e => e.canonicalMatchId === fixture.fixtureId)
+      || frozenOdds.events.find(e => e.canonicalMatchId === fixture.fixtureId);
+    assert(event, `Missing verified MD2 odds ${fixture.fixtureId}`);
     const originals = new Map(event.markets.filter(m => m.marketScope === "player").map(m => [m.providerMarketId, m]));
     assert.equal(fixture.oddsEvent.playerMarkets.length, originals.size);
     for (const market of fixture.oddsEvent.playerMarkets) {
@@ -86,9 +93,9 @@ function assertCurrentIntegration(root) {
   assert.equal(data.coverage.odds.usedForPlayerProbabilityOrEv, 0);
   // Metadata records the authoritative original odds snapshot, rather than a
   // promise that every later normalized serialization has identical bytes.
-  assertHistoricalFile(data.sources.odds.normalized, "c3f193bae2ebe6407693004489e6ffd8685ca63f");
   assert.equal(sha256(fs.readFileSync(path.join(root, data.sources.odds.raw.path))).toUpperCase(), data.sources.odds.raw.sha256);
-  for (const source of Object.values(data.sources)) if (source?.input?.path) assert.equal(sha256(fs.readFileSync(path.join(root, source.input.path))).toUpperCase(), source.input.sha256);
+  for (const source of Object.values(data.sources)) if (source?.input?.path)
+    assertHistoricalFile(source.input, "d4ae4f28e8464d1f096974687bbf19139df736ef");
   console.log(`OK current MD2 integration: ${data.fixtures.length} fixtures, ${markets} markets, ${selections} unchanged provider selections`);
 }
 module.exports = { assertCurrentIntegration };

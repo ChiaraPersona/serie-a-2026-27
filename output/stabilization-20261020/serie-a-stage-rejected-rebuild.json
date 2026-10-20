@@ -1,0 +1,212 @@
+{
+  "plan": [
+    [
+      "scripts/build-readings.js"
+    ],
+    [
+      "scripts/team-pages/build.js"
+    ],
+    [
+      "scripts/build-team-matchup-profiles.js"
+    ],
+    [
+      "scripts/build-betting-matchday.js",
+      "--matchday",
+      "7"
+    ]
+  ],
+  "failure": null,
+  "promoted": false,
+  "changed": [
+    {
+      "path": "data/analysis/serie-a-md07-statistical-models.json",
+      "bytes": 1278246,
+      "topLevelDifferences": [
+        "generatedAt"
+      ]
+    },
+    {
+      "path": "data/generated/prediction-preview-md07-2026-27.json",
+      "bytes": 6358169,
+      "topLevelDifferences": [
+        "generatedAt",
+        "diagnostics",
+        "sources",
+        "predictions"
+      ]
+    },
+    {
+      "path": "data/normalized/predictions.json",
+      "bytes": 20599431,
+      "topLevelDifferences": [
+        "generatedAt",
+        "predictions"
+      ]
+    },
+    {
+      "path": "data/normalized/schedina-md07.json",
+      "bytes": 14138505,
+      "topLevelDifferences": [
+        "generatedAt",
+        "marketCatalog"
+      ]
+    },
+    {
+      "path": "data/sources/mycombo-serie-a-2026-27-md-07.json",
+      "bytes": 703536,
+      "topLevelDifferences": [
+        "constraints"
+      ]
+    }
+  ],
+  "historicPredictionsUnchanged": true,
+  "changedFixtures": [
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "fields": [
+        "generatedAt",
+        "dataQuality"
+      ]
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "fields": [
+        "generatedAt",
+        "dataQuality"
+      ]
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "fields": [
+        "generatedAt",
+        "dataQuality"
+      ]
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "fields": [
+        "generatedAt",
+        "dataQuality"
+      ]
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "fields": [
+        "generatedAt",
+        "dataQuality"
+      ]
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "fields": [
+        "generatedAt",
+        "dataQuality"
+      ]
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "fields": [
+        "generatedAt",
+        "expectedGoals",
+        "matchProjection",
+        "teamProjections",
+        "shooters",
+        "likelyBooked",
+        "combinations",
+        "dataQuality",
+        "decisionSupport"
+      ]
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "fields": [
+        "generatedAt",
+        "expectedGoals",
+        "matchProjection",
+        "teamProjections",
+        "shooters",
+        "likelyBooked",
+        "combinations",
+        "dataQuality",
+        "decisionSupport"
+      ]
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "fields": [
+        "generatedAt",
+        "dataQuality"
+      ]
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "fields": [
+        "generatedAt",
+        "dataQuality"
+      ]
+    }
+  ],
+  "numericDifferences": 4648,
+  "numericExamples": [
+    {
+      "path": "predictions.55.expectedGoals.components.away.lineup.defenceWeakness",
+      "before": 0.984,
+      "after": 0.982
+    },
+    {
+      "path": "predictions.55.expectedGoals.components.xg.homeRaw",
+      "before": 1.368,
+      "after": 1.366
+    },
+    {
+      "path": "predictions.55.matchProjection.shotsOnTarget.sd",
+      "before": 3.15,
+      "after": 3.18
+    },
+    {
+      "path": "predictions.55.teamProjections.1.shotsOnTarget.max",
+      "before": 6.03,
+      "after": 5.93
+    },
+    {
+      "path": "predictions.55.teamProjections.1.shotsOnTarget.sd",
+      "before": 1.88,
+      "after": 1.93
+    },
+    {
+      "path": "predictions.55.teamProjections.1.legacyVolumeProjection.shotsOnTarget.central",
+      "before": 3.7,
+      "after": 3.8
+    },
+    {
+      "path": "predictions.55.teamProjections.1.legacyVolumeProjection.shotsOnTarget.sd",
+      "before": 1.88,
+      "after": 1.93
+    },
+    {
+      "path": "predictions.55.teamProjections.1.ownOffensiveInteraction.shotsOnTargetAdjustmentPct",
+      "before": 0.14,
+      "after": -2.5
+    },
+    {
+      "path": "predictions.55.teamProjections.1.ownOffensiveInteraction.capDiagnostics.shotsOnTarget.uncappedAdjustmentPct",
+      "before": 0.14,
+      "after": -2.5
+    },
+    {
+      "path": "predictions.55.teamProjections.1.ownOffensiveInteraction.capDiagnostics.shotsOnTarget.appliedAdjustmentPct",
+      "before": 0.14,
+      "after": -2.5
+    },
+    {
+      "path": "predictions.55.shooters.totalShots.0.projectedShotsV1",
+      "before": 2.82,
+      "after": 3.07
+    },
+    {
+      "path": "predictions.55.shooters.totalShots.0.projectedShotsOnTargetV1",
+      "before": 1.07,
+      "after": 1.13
+    }
+  ]
+}

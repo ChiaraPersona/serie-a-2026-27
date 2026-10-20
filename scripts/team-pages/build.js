@@ -354,6 +354,7 @@ function buildTeam(team) {
     slug: team.slug, logo: `../${team.logo}`, monochromeLogo: `../assets/images/teams/monochrome/${team.id}-black.svg`, currentSeason: "2026/27", city: details.city, stadium: details.stadium, coach: details.coach, preferredFormation: details.preferredFormation,
     probableLineup: {
       formation: lineup.formation,
+      ...(lineup.tacticalOrder === false ? { tacticalOrder: false } : {}),
       players: starters.map(player => officialLineup ? player.currentName || player.sourceName : player.sourceName),
       matchday: officialLineup?.matchday || probableLineups.matchday,
       context: officialLineup ? `Formazione ufficiale della ${officialLineup.matchday}ª giornata · ${officialLineup.fixtureLabel}` : `Proiezione della ${probableLineups.matchday}ª giornata`,
@@ -393,6 +394,7 @@ const index = { schemaVersion: 1, season: "2026/27", previousSeason: "2025/26", 
   `${fixture.matchId}:${team.teamId}`,
   {
     formation: team.formation,
+    ...(team.tacticalOrder === false ? { tacticalOrder: false } : {}),
     players: team.players.map(player => player.currentName || player.sourceName),
     substitutes: team.substitutes?.map(player => player.currentName || player.sourceName) || null,
     coach: team.coach || null,

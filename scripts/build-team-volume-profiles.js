@@ -7,7 +7,14 @@ const zlib = require("zlib");
 const root = path.resolve(__dirname, "..");
 const normalized = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/referee-matches/2025-26/serie-a.json"), "utf8"));
 const rawDir = path.join(root, "data/raw/referee-stats/espn/2025-26/serie-a");
-const outputPath = path.join(root, "data/normalized/team-volume-profiles-2025-26.json");
+const outputArg = process.argv.indexOf("--output");
+if (outputArg >= 0 && !process.argv[outputArg + 1]) throw new Error("--output richiede un percorso");
+const outputPath = path.resolve(root, outputArg >= 0 ? process.argv[outputArg + 1] : "data/normalized/team-volume-profiles-2025-26.json");
+// Prefer the original referee snapshot, then its relocated archive. No copies.
+const rawDirs = [rawDir, path.join(root, "seria-a-2026-27-raw-archive-2026-08-24/data/raw/referee-stats/espn/2025-26/serie-a"), path.join(root, "data/raw/team-pages/espn/2025-26/serie-a")];
+const inputs = new Map(normalized.matches.map(match => [match.providerFixtureId, rawDirs.flatMap(dir => [path.join(dir, `${match.providerFixtureId}.json`), path.join(dir, `${match.providerFixtureId}.json.gz`)]).find(file => fs.existsSync(file))]));
+const missing = [...inputs].filter(([, file]) => !file).map(([id]) => id);
+if (missing.length) throw new Error(`Referti realmente assenti (${missing.length}): ${missing.join(", ")}. Cercati in: ${rawDirs.join(", ")}`);
 const metricNames = ["totalShots", "shotsOnTarget", "wonCorners"];
 const emptyVenue = () => Object.fromEntries(metricNames.map(metric => [metric, { for: [], against: [] }]));
 const rows = new Map();
@@ -47,10 +54,7 @@ const summary = values => {
 
 let retrievedAt = null;
 for (const match of normalized.matches) {
-  const jsonPath = path.join(rawDir, `${match.providerFixtureId}.json`);
-  const gzipPath = `${jsonPath}.gz`;
-  const rawPath = fs.existsSync(jsonPath) ? jsonPath : gzipPath;
-  if (!fs.existsSync(rawPath)) throw new Error(`Referto grezzo mancante: ${match.providerFixtureId}`);
+  const rawPath = inputs.get(match.providerFixtureId);
   const rawBuffer = fs.readFileSync(rawPath);
   const raw = JSON.parse((rawPath.endsWith(".gz") ? zlib.gunzipSync(rawBuffer) : rawBuffer).toString("utf8"));
   retrievedAt = [retrievedAt, raw.retrievedAt, raw.bundle?.source?.retrievedAt].filter(Boolean).sort().at(-1) || retrievedAt;
@@ -106,5 +110,6 @@ const output = {
   source: { provider: "ESPN", rawDirectory: "data/raw/referee-stats/espn/2025-26/serie-a", retrievedAt },
   profiles
 };
+if (outputArg < 0 && fs.existsSync(outputPath) && JSON.stringify(JSON.parse(fs.readFileSync(outputPath,"utf8"))) !== JSON.stringify(output)) throw new Error("Output consolidato divergente: rigenerare con --output in una destinazione temporanea e confrontare prima della promozione.");
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK profili volume: ${output.coverage.matches} gare · ${output.coverage.teamPerformances} prestazioni · ${profiles.length} squadre`);

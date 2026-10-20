@@ -1,0 +1,207 @@
+[
+  {
+    "command": "node scripts/test-probable-lineups.js",
+    "status": 0,
+    "output": "Fantacalcio MD7: 20 squadre, 220 titolari, 448 collegati, 0 non collegati.\n"
+  },
+  {
+    "command": "node scripts/test-player-identities.js",
+    "status": 0,
+    "output": "Identità collegate: 2226 righe calciatore in 70 referti, 2128 righe di formazioni ufficiali; null ammessi solo per riserve non impiegate con nome sorgente preservato, fallback role-baseline o candidati cartellini esplicitamente irrisolti.\n"
+  },
+  {
+    "command": "node scripts/validate-data.js",
+    "status": 0,
+    "output": "OK 20 squadre ufficiali e 20 loghi locali\nOK organico CAN 2026/27: 42 arbitri con fonti e statistiche non inventate\nOK snapshot arbitri 2025/26: Serie A e Serie B separate per 42 arbitri\nOK 38 giornate x 10 partite = 380\nOK Coppa Italia 2026/27: 43 incontri e percorsi con fonte, turni e programmazione\nOK ogni squadra: 38 gare, 19 casa, 19 trasferta\nOK 190 coppie: doppio confronto con casa/trasferta invertite\nOK prime 5 giornate: 50 programmazioni (50 confermate, 0 provvisorie)\nOK nessuna data o orario assegnati oltre la quinta giornata\nOK classifica finale 2025/26: 20 squadre e valori coerenti\nOK rendimento casa 2025/26: 20 squadre e valori coerenti\nOK rendimento trasferta 2025/26 e riconciliazione con classifica finale\nOK riepilogo statistico 2025/26 riconciliato con classifiche generale/casa/trasferta\nOK verdetti 2025/26 e promosse 2026/27 coerenti con le classifiche\nOK profili tattici WhoScored 2025/26: 20/20 con copertura e campioni dichiarati\n"
+  },
+  {
+    "command": "node scripts/referee-stats/test.js",
+    "status": 0,
+    "output": "OK aggregazioni arbitro e arbitro-squadra, baseline esclusiva e linguaggio neutrale\n"
+  },
+  {
+    "command": "node scripts/referee-stats/validate-season.js --season 2023-24",
+    "status": 1,
+    "output": "node:fs:561\r\n  return binding.open(\r\n                 ^\r\n\r\nError: ENOENT: no such file or directory, open 'C:\\Users\\utente\\Desktop\\seria-a-2026-27\\data\\raw\\referee-stats\\espn\\2023-24\\serie-a\\679226.json.gz'\r\n    at Object.openSync (node:fs:561:18)\r\n    at Object.readFileSync (node:fs:445:35)\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\referee-stats\\validate-season.js:20:162)\r\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\r\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\r\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:218:24)\r\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5) {\r\n  errno: -4058,\r\n  code: 'ENOENT',\r\n  syscall: 'open',\r\n  path: 'C:\\\\Users\\\\utente\\\\Desktop\\\\seria-a-2026-27\\\\data\\\\raw\\\\referee-stats\\\\espn\\\\2023-24\\\\serie-a\\\\679226.json.gz'\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node scripts/referee-stats/validate-season.js --season 2024-25",
+    "status": 1,
+    "output": "node:fs:561\r\n  return binding.open(\r\n                 ^\r\n\r\nError: ENOENT: no such file or directory, open 'C:\\Users\\utente\\Desktop\\seria-a-2026-27\\data\\raw\\referee-stats\\espn\\2024-25\\serie-a\\712116.json.gz'\r\n    at Object.openSync (node:fs:561:18)\r\n    at Object.readFileSync (node:fs:445:35)\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\referee-stats\\validate-season.js:20:162)\r\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\r\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\r\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:218:24)\r\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5) {\r\n  errno: -4058,\r\n  code: 'ENOENT',\r\n  syscall: 'open',\r\n  path: 'C:\\\\Users\\\\utente\\\\Desktop\\\\seria-a-2026-27\\\\data\\\\raw\\\\referee-stats\\\\espn\\\\2024-25\\\\serie-a\\\\712116.json.gz'\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node scripts/referee-stats/validate-2025-26.js",
+    "status": 1,
+    "output": "node:fs:561\r\n  return binding.open(\r\n                 ^\r\n\r\nError: ENOENT: no such file or directory, open 'C:\\Users\\utente\\Desktop\\seria-a-2026-27\\data\\raw\\referee-stats\\espn\\2025-26\\serie-a\\736790.json.gz'\r\n    at Object.openSync (node:fs:561:18)\r\n    at Object.readFileSync (node:fs:445:35)\r\n    at C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\referee-stats\\validate-2025-26.js:8:261\r\n    at Array.map (<anonymous>)\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\referee-stats\\validate-2025-26.js:8:92)\r\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\r\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\r\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14) {\r\n  errno: -4058,\r\n  code: 'ENOENT',\r\n  syscall: 'open',\r\n  path: 'C:\\\\Users\\\\utente\\\\Desktop\\\\seria-a-2026-27\\\\data\\\\raw\\\\referee-stats\\\\espn\\\\2025-26\\\\serie-a\\\\736790.json.gz'\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node scripts/test-team-referee-profiles.js",
+    "status": 0,
+    "output": "OK team-referee: 20/20 squadre, 336 righe, 313 collegamenti ESPN\n"
+  },
+  {
+    "command": "node scripts/test-team-volume-profiles.js",
+    "status": 0,
+    "output": "OK profili volume: 380 gare, casa/trasferta e percentili p20-p80 validati\n"
+  },
+  {
+    "command": "node scripts/test-team-matchup-profiles.js",
+    "status": 1,
+    "output": "node:assert:90\r\n  throw new AssertionError(obj);\r\n  ^\r\n\r\nAssertionError [ERR_ASSERTION]: Il profilo corrente deve includere MD1-MD6\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\test-team-matchup-profiles.js:11:8)\r\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\r\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\r\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:218:24)\r\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\r\n    at node:internal/main/run_main_module:36:49 {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: 70,\r\n  expected: 60,\r\n  operator: '=='\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node scripts/test-future-data-readiness.js",
+    "status": 0,
+    "output": "OK future-data readiness: 30 controlli\n01. 1 MD6 -> MD7 update\n02. 2 MD6 -> MD10\n03. 3 MD6 -> MD20/MD30\n04. 4 historical weight decay\n05. 5 maturity growth\n06. 6 player hierarchy change\n07. 7 Expected Minutes decline\n08. 8 new player fallback\n09. 9 transferred/inactive player\n10. 10 WATCH -> ACTIVE\n11. 11 ACTIVE -> WATCH\n12. 12 WATCH -> INACTIVE\n13. 13 role residual accumulation\n14. 14 outlier dilution\n15. 15 shots/SOT independence\n16. 16 shots/xG independence\n17. 17 opponent normalization update\n18. 18 no future leakage\n19. 19 target match exclusion\n20. 20 unplayed fixture exclusion\n21. 21 duplicate match protection\n22. 22 shuffled chronological input\n23. 23 idempotency\n24. 24 probability monotonicity\n25. 25 SOT <= shots\n26. 26 team/player reconciliation\n27. 27 outsider 0..N\n28. 28 missing != zero\n29. 29 all 20 Team Profiles regression\n30. player structural baseline reacts without discarding history\n"
+  },
+  {
+    "command": "node scripts/test-css-modules.js",
+    "status": 0,
+    "output": "CSS modulare valido: 11 moduli, entry point 994 byte.\n"
+  },
+  {
+    "command": "node --no-warnings scripts/test-app-modules.mjs",
+    "status": 1,
+    "output": "node:internal/modules/run_main:122\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: Schedina: viste dedicate alle prime sei giornate assenti\r\n    at file:///C:/Users/utente/Desktop/seria-a-2026-27/scripts/test-app-modules.mjs:45:10 {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: 'const release=new URL(import.meta.url).searchParams.get(\"v\")||\"development\";\\r\\n' +\r\n    'const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=${encodeURIComponent(release)}`);\\r\\n' +\r\n    'const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=${encodeURIComponent(release)}`);\\r\\n' +\r\n    'const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast}=await import(`./shared-forecast-contract.mjs?v=${encodeURIComponent(release)}`);\\r\\n' +\r\n    '\\r\\n' +\r\n    'const {loadChampionsWorkspace}=await import(`./champions-workspace-catalog.mjs?v=${encodeURIComponent(release)}`);\\r\\n' +\r\n    'const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=${encodeURIComponent(release)}`);\\r\\n' +\r\n    '\\r\\n' +\r\n    'export function createPage(deps){\\r\\n' +\r\n    '  const {esc,dateOnly,hero,load}=deps;\\r\\n' +\r\n    '  let recordedOutcomes=[];\\r\\n' +\r\n    '  const settleLeg=(leg,match)=>settleArchivedLeg(leg,match,recordedOutcomes);\\r\\n' +\r\n    '  const pct=value=>Number(value).toLocaleString(\"it-IT\",Number(value)>0&&Number(value)<.01?{minimumFractionDigits:4,maximumFractionDigits:6}:{minimumFractionDigits:2,maximumFractionDigits:2});\\r\\n' +\r\n    '  const odds=value=>Number(value).toLocaleString(\"it-IT\",{minimumFractionDigits:2,maximumFractionDigits:2});\\r\\n' +\r\n    '  const metric=(value,formatter,suffix=\"\")=>Number.isFinite(value)?`${formatter(value)}${suffix}`:\"N/D\";\\r\\n' +\r\n    '  let personalStore=null,currentContext=null,personalNotice=\"\",personalUnsubscribe=null,personalDocumentClick=null,personalDocumentKeydown=null,personalMediaCleanup=null,personalNoticeTimer=null;\\r\\n' +\r\n    '  const selectionRegistry=new Map(),slipRegistry=new Map();\\r\\n' +\r\n    '\\r\\n' +\r\n    '  function registerSelection(leg,{fixture=leg.fixture,sourceSection=\"modello\"}={}){\\r\\n' +\r\n    '    const contract=leg?.betSelection;\\r\\n' +\r\n    '    if(!currentContext||!leg?.selectionId||contract?.selectionId!==leg.selectionId||(contract?.identity?.status!==\"VERIFIED_PROVIDER_IDS\"&&!isCanonicalModelForecast(leg)))return null;\\r\\n' +\r\n    '    const selection={selectionId:leg.selectionId,context:{...currentContext},fixture:fixture||contract.identity.matchId,label:leg.label||contract.market?.selection||\"Selezione\",market:leg.market||contract.market?.name||\"Mercato\",sourceSection,scenarioAnalysis:leg.scenarioAnalysis||null,betSelection:contract};\\r\\n' +\r\n    '    selectionRegistry.set(selection.selectionId,selection);\\r\\n' +\r\n    '    return selection;\\r\\n' +\r\n    '  }\\r\\n' +\r\n    '\\r\\n' +\r\n    '  const personalPickButton=(selection,finished=false)=>selection?`<button type=\"button\" class=\"betting-personal-pick\" data-personal-pick=\"${esc(selection.selectionId)}\" aria-pressed=\"false\"${finished?\" disabled\":\"\"}><span aria-hidden=\"true\">＋</span><span>${finished?\"Archiviata\":\"Aggiungi\"}</span></button>`:\"\";\\r\\n' +\r\n    '\\r\\n' +\r\n    '  function slipCard(slip,matchById){\\r\\n' +\r\n    '    if(slip.qualityStatus===\"nd\"&&!slip.legs.length)return `<article class=\"betting-nd-compact\"><strong>${esc(slip.name)} · N/D</strong><span>${esc(slip.filterNote||\"Dati insufficienti per una proposta prudenziale.\")}</span></article>`;\\r\\n' +\r\n    '    const selectable=[];\\r\\n' +\r\n    '    const legs=slip.legs.map(leg=>{\\r\\n' +\r\n    '      const settlement=settleLeg(leg,matchById.get(leg.matchId));\\r\\n' +\r\n    '      const settled=[\"won\",\"lost\",\"void\"].includes(settlement.status);\\r\\n' +\r\n    '      const symbol=settlement.status===\"won\"?\"✓\":settlement.status===\"lost\"?\"×\":\"—\";\\r\\n' +\r\n    '      const badge=settled?`<span class=\"betting-leg-result\" aria-label=\"Esito ${esc(settlement.label.toLowerCase())}\"><span aria-hidden=\"true\">${symbol}</span> ${esc(settlement.label)}${settlement.reviewRequired?\" · archiviato, target da verificare\":\"\"}</span>`:\"\";\\r\\n' +\r\n    '      const selection=registerSelection(leg,{sourceSection:\"schedina-modello\"});\\r\\n' +\r\n    '      if(selection&&!settled)selectable.push(selection);\\r\\n' +\r\n    '      return `<li${settled?` class=\"betting-leg--${settlement.status}\" data-settlement=\"${settlement.status}\"`:\"\"}><div><strong>${esc(leg.fixture)}</strong><span>${esc(leg.label)} <small>· ${esc(leg.evidenceLabel)}</small></span>${badge}</div><b>${odds(leg.odds)}</b>${personalPickButton(selection,settled)}</li>`;\\r\\n' +\r\n    '    }).join(\"\");\\r\\n' +\r\n    '    const slipKey=`model:${slip.id}`;\\r\\n' +\r\n    '    if(selectable.length)slipRegistry.set(slipKey,selectable);\\r\\n' +\r\n    '    const cardHeuristic=slip.legs.some(leg=>leg.marketFamily===\"Ammoniti\"||/PUNTI CARTELLINI/.test(leg.market||\"\"));\\r\\n' +\r\n    '    const duoIncompatible=slip.legs.some(leg=>leg.compatibility===\"INCOMPATIBILE_DUO\"||String(leg.probabilitySemantics||\"\").includes(\"INDIVIDUAL_V2_VS\"));\\r\\n' +\r\n    '    const families=slip.marketFamilies.map(esc).join(\" · \");\\r\\n' +\r\n    '    const weak=slip.weakestLeg?`<p class=\"betting-weakest\">Gamba più fragile: <strong>${esc(slip.weakestLeg.label)}</strong> · ${cardHeuristic?\"EV euristico non validato\":\"EV\"} ${slip.weakestLeg.expectedValuePct>0?\"+\":\"\"}${pct(slip.weakestLeg.expectedValuePct)}%${slip.filterNote?`<small>${esc(slip.filterNote)}</small>`:\"\"}</p>`:\"\";\\r\\n' +\r\n    '    const validation=slip.validationStatus?`<p class=\"betting-coverage\"><strong>${esc(slip.validationStatus)}</strong> · ${esc(slip.risk||\"rischio N/D\")}</p>`:\"\";\\r\\n' +\r\n    `    const semanticWarning=cardHeuristic?'<p class=\"betting-weakest\">Cartellini: valori euristici non calibrati; probabilità DUO non modellata. Le quote derivate e l’EV non dimostrano un vantaggio statistico.</p>':duoIncompatible?'<p class=\"betting-weakest\">Mercati giocatore DUO: la quota include il sostituto; sui SOT include anche pali/traverse. P V2 individuale, probabilità congiunta ed EV non calcolabili.</p>':\"\";\\r\\n` +\r\n    '    const addAll=selectable.length?`<button type=\"button\" class=\"betting-personal-add-slip\" data-personal-add-slip=\"${esc(slipKey)}\"><span aria-hidden=\"true\">＋</span> Aggiungi tutte le ${selectable.length} selezioni</button>`:\"\";\\r\\n' +\r\n    '    return `<article class=\"betting-slip betting-slip--${esc(slip.id)}\" data-quality=\"${esc(slip.qualityStatus)}\"><header><div><p>${esc(slip.eyebrow)}</p><h2>${esc(slip.name)}</h2><small>${families}</small></div></header>${validation}<div class=\"betting-slip-metrics\"><div class=\"betting-slip-total\"><span>Quota totale</span><strong>${odds(slip.combinedOdds)}</strong><small>${slip.legs.length} giocate</small></div><div><span>${cardHeuristic?\"Indice euristico non calibrato\":duoIncompatible?\"Probabilità congiunta\":\"Probabilità\"}</span><strong>${metric(slip.jointModelProbabilityPct,pct,\"%\")}</strong></div><div><span>${cardHeuristic?\"Quota derivata euristica\":\"Quota equa\"}</span><strong>${metric(slip.fairOdds,odds)}</strong></div><div><span>${cardHeuristic?\"EV euristico non validato\":duoIncompatible?\"EV non calcolabile\":\"EV stimato\"}</span><strong>${metric(slip.expectedValuePct,pct,\"%\")}</strong></div></div>${addAll}<ol>${legs}</ol>${semanticWarning}${weak}</article>`;\\r\\n' +\r\n    '  }\\r\\n' +\r\n    '\\r\\n' +\r\n    '  function modelSections(data,matchById,{showLegend=false}={}){\\r\\n' +\r\n    '    const model=data.slips.filter(slip=>![\"laboratorio\",\"nd\"].includes(slip.qualityStatus)),laboratory=data.slips.filter(slip=>[\"laboratorio\",\"nd\"].includes(slip.qualityStatus));\\r\\n' +\r\n    '    const selected=model.length?`<div class=\"betting-slip-grid betting-slip-grid-qualified\">${model.map(slip=>slipCard(slip,matchById)).join(\"\")}</div>`:`<div class=\"betting-nd-compact\"><strong>Nessuna schedina del modello</strong><span>Non sono state forzate combinazioni per questa giornata.</span></div>`;\\r\\n' +\r\n    '    const legend=showLegend?`<div class=\"betting-result-legend\" aria-label=\"Legenda esiti\"><span class=\"betting-result-legend--won\"><b aria-hidden=\"true\">✓</b> Esatto</span><span class=\"betting-result-legend--lost\"><b aria-hidden=\"true\">×</b> Sbagliato</span><span class=\"betting-result-legend--void\"><b aria-hidden=\"true\">—</b> Annullata</span><small>Se il calciatore non entra, la quota è annullata e la puntata viene restituita.</small></div>`:\"\";\\r\\n' +\r\n    '    const coverage=data.coverage?`<p class=\"betting-coverage\"><strong>${data.coverage.qualifiedProfiles} proposte qualificate</strong> su ${data.coverage.profilesEvaluated} profili valutati · ${data.coverage.unavailableProfiles} profili N/D.</p>`:\"\";\\r\\n' +\r\n    '    const main=`<section class=\"betting-stage betting-model-section\" aria-labelledby=\"betting-model-title\"><header class=\"betting-section-heading\"><h3 id=\"betting-model-title\">Schedine del modello</h3></header>${legend}${selected}</section>`;\\r\\n' +\r\n    '    const lab=laboratory.length?`<section class=\"betting-stage betting-lab-section\" aria-labelledby=\"betting-lab-title\"><header class=\"betting-section-heading\"><h3 id=\"betting-lab-title\">Analisi e laboratorio</h3></header><div class=\"betting-slip-grid\">${laboratory.map(slip=>slipCard(slip,matchById)).join(\"\")}</div><footer class=\"betting-method\"><strong>Metodo</strong><p>${esc(data.methodology)}</p><p>Quote ${esc(data.provider)} aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}. <a href=\"${esc(data.sourceUrl)}\" target=\"_blank\" rel=\"noreferrer\">Fonte quote</a>.</p></footer></section>`:\"\";\\r\\n' +\r\n    '    const summary=`<section class=\"betting-essential\" aria-labelledby=\"betting-essential-title\"><h3 id=\"betting-essential-title\">In sintesi</h3>${coverage}<p>${esc(data.selectionRule||\"Nessuna selezione viene forzata.\")}</p><p>Under, falli individuali, corner per tempo e doppia chance 12 non sono proposte giocabili dalla MD6; i corner dell\\'intera partita restano eleggibili. Quote: ${esc(data.provider)}, snapshot ${esc(dateOnly(data.oddsRetrievedAt))}.</p></section>`;\\r\\n' +\r\n    '    return {summary,main,lab};\\r\\n' +\r\n    '  }\\r\\n' +\r\n    '\\r\\n' +\r\n    '  const hasValidEvaluation=leg=>{\\r\\n' +\r\n    '    const evaluation=leg?.betSelection?.evaluation;\\r\\n' +\r\n    '    return evaluation?.status!==\"NOT_MODELLED\"&&[evaluation?.modelProbabilityPct,evaluation?.fairOdds,evaluation?.expectedValuePct].every(Number.isFinite);\\r\\n' +\r\n    '  };\\r\\n' +\r\n    '\\r\\n' +\r\n    '  const isPlayableSelection=leg=>leg?.betSelection?.operational?.playability?.status!==\"NOT_PLAYABLE\"&&leg?.betSelection?.operational?.classification!==\"ESCLUSO\";\\r\\n' +\r\n    '\\r\\n' +\r\n    '  const hasVisiblePreferred=leg=>leg?.context?.competition!==\"champions\"&&leg?.isPreferred===true;\\r\\n' +\r\n    '\\r\\n' +\r\n    '  const editorialBadges=leg=>{\\r\\n' +\r\n    '    const badges=[];\\r\\n' +\r\n    `    if(leg?.isOutsider===true)badges.push('<b class=\"betting-outsider-badge\">OUTSIDER</b>');\\r\\n` +\r\n    `    if(hasVisiblePreferred(leg))badges.push('<b class=\"betting-preferred-badge\"><span aria-hidden=\"true\">★</span> PREFERITO</b>');\\r\\n` +\r\n    '    return badges.length?`<span class=\"betting-editorial-badges\">${badges.join(\"'... 64338 more characters,\r\n  expected: /const rounds=\\{1:md1,2:md2,3:md3,4:md4,5:md5,6:md6\\}/,\r\n  operator: 'match'\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node --no-warnings scripts/test-reading-prediction-v2.mjs",
+    "status": 1,
+    "output": "node:internal/modules/run_main:122\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: V2: sezione mancante Disciplina e ammoniti\r\n    at file:///C:/Users/utente/Desktop/seria-a-2026-27/scripts/test-reading-prediction-v2.mjs:32:166\r\n    at ModuleJob.run (node:internal/modules/esm/module_job:268:25)\r\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:543:26)\r\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5) {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: false,\r\n  expected: true,\r\n  operator: '=='\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node scripts/team-pages/test.js",
+    "status": 1,
+    "output": "node:internal/assert/utils:281\r\n    throw err;\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: Letture post-partita: contratto Partite concluse assente\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\team-pages\\test.js:102:200)\r\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\r\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\r\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:218:24)\r\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\r\n    at node:internal/main/run_main_module:36:49 {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: false,\r\n  expected: true,\r\n  operator: '=='\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node scripts/team-pages/test-milan.js",
+    "status": 1,
+    "output": "node:assert:90\r\n  throw new AssertionError(obj);\r\n  ^\r\n\r\nAssertionError [ERR_ASSERTION]: La rosa ufficiale Milan deve contenere 31 giocatori\r\n\r\n26 !== 31\r\n\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\team-pages\\test-milan.js:15:8)\r\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\r\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\r\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:218:24)\r\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\r\n    at node:internal/main/run_main_module:36:49 {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: 26,\r\n  expected: 31,\r\n  operator: 'strictEqual'\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node scripts/team-pages/test-completed-teams.js",
+    "status": 0,
+    "output": "Inter, Juventus e Napoli: rose, statistiche /90, pagine, fonti e collegamenti validati.\n"
+  },
+  {
+    "command": "node scripts/team-pages/test-all-teams.js",
+    "status": 0,
+    "output": "Tutte le squadre: 20/20, 533 calciatori, 533 con statistiche 2025/26, 389 ruoli tattici specifici fuori dal Milan.\n"
+  },
+  {
+    "command": "node scripts/sisal/test.js",
+    "status": 1,
+    "output": "OK normalizzazione Sisal, quote decimali e matching calendario\nOK Sisal identifiers: additive/idempotent enrichment, null vs zero, DOM distinction, six real selections and unchanged BetSelection/DUO semantics\nnode:internal/modules/run_main:122\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\r\n\r\n1 !== 3\r\n\r\n    at simulate (file:///C:/Users/utente/Desktop/seria-a-2026-27/scripts/sisal/test-consumers.mjs:41:12)\r\n    at file:///C:/Users/utente/Desktop/seria-a-2026-27/scripts/sisal/test-consumers.mjs:49:20\r\n    at ModuleJob.run (node:internal/modules/esm/module_job:268:25)\r\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:543:26)\r\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5) {\r\n  generatedMessage: true,\r\n  code: 'ERR_ASSERTION',\r\n  actual: 1,\r\n  expected: 3,\r\n  operator: 'strictEqual'\r\n}\r\n\r\nNode.js v22.11.0\r\nnode:child_process:927\r\n    throw err;\r\n    ^\r\n\r\nError: Command failed: C:\\Program Files\\nodejs\\node.exe C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\sisal\\test-consumers.mjs\r\n    at genericNodeError (node:internal/errors:983:15)\r\n    at wrappedFn (node:internal/errors:537:14)\r\n    at checkExecSyncError (node:child_process:888:11)\r\n    at execFileSync (node:child_process:924:15)\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\sisal\\test.js:85:1)\r\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\r\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\r\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14) {\r\n  status: 1,\r\n  signal: null,\r\n  output: [ null, null, null ],\r\n  pid: 4892,\r\n  stdout: null,\r\n  stderr: null\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node scripts/test-understat-xg.js",
+    "status": 0,
+    "output": "OK Understat xG: 2660 partite, 7 stagioni complete\n"
+  },
+  {
+    "command": "node scripts/test-predictions.js",
+    "status": 1,
+    "output": "node:internal/assert/utils:281\r\n    throw err;\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: parma-torino-2026-27-md-07: probabile ammonito fuori dall'XI ufficiale\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\test-predictions.js:227:25)\r\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\r\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\r\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:218:24)\r\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\r\n    at node:internal/main/run_main_module:36:49 {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: false,\r\n  expected: true,\r\n  operator: '=='\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node scripts/test-schedina.js",
+    "status": 0,
+    "output": "Schedina valida: Scintilla 4.51 · Bagliore 7.08 · Supernova 6.37 · Prisma 144.47 · Quasar 87.15 · Costellazione 26.45 · Quadrante 2499.00 · Ventaglio 68.51\nLiquidazione visiva Schedina valida.\n"
+  },
+  {
+    "command": "node scripts/test-schedina-md02.js",
+    "status": 0,
+    "output": "Schedina MD2 valida: stessa matrice MD1, 8 proposte e 47 selezioni uniche, snapshot 2026-08-28T13:46:22.294Z.\nLiquidazione Milan-Venezia MD2 valida: 5 esiti verdi e 2 rossi.\n"
+  },
+  {
+    "command": "node scripts/test-schedina-md05.js",
+    "status": 0,
+    "output": "Schedina MD05 valida: 8 proposte, 45 selezioni e 10 MyCombo distinte.\n"
+  },
+  {
+    "command": "node scripts/test-betting-selection-contract.js",
+    "status": 0,
+    "output": "OK BetSelection v1: 6 schedina, 137 MyCombo e 137 prediction legs verificate\n"
+  },
+  {
+    "command": "node scripts/test-schedina-md06.js",
+    "status": 1,
+    "output": "node:internal/assert/utils:281\r\n    throw err;\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: intermedia-doppia-chance-compatibile: quota non presente nello snapshot\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\test-schedina-md06.js:50:3)\r\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\r\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\r\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:218:24)\r\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\r\n    at node:internal/main/run_main_module:36:49 {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: false,\r\n  expected: true,\r\n  operator: '=='\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node scripts/test-personal-betslip.mjs",
+    "status": 0,
+    "output": "OK schedina personale: store, deduplica, compatibilità, quote, contesti e persistenza\n"
+  },
+  {
+    "command": "node scripts/test-european-player-match-stats.js",
+    "status": 0,
+    "output": "Dati europei validi: storico italiano 90/91 completo (Mattia Marello N/D); 5 gare, 80 presenze e 25 cambi acquisiti.\n"
+  },
+  {
+    "command": "node scripts/test-prediction-backtest.js",
+    "status": 0,
+    "output": "OK backtest walk-forward: 190 gare fuori campione, log-loss 1.0055\n"
+  },
+  {
+    "command": "node scripts/test-prediction-backtest-multiseason.js",
+    "status": 0,
+    "output": "OK backtest pluristagionale: 1201 gare, keep-current\n"
+  },
+  {
+    "command": "node scripts/test-prediction-backtest-opening-rounds.js",
+    "status": 0,
+    "output": "OK opening rounds: 296 training, 90 validation, carry-over regolarizzato\n"
+  },
+  {
+    "command": "node scripts/head-to-head/test.js",
+    "status": 0,
+    "output": "OK importer scontri diretti: 190 gare di andata, marcatori, ammoniti e controlli copertura\n"
+  },
+  {
+    "command": "node scripts/test-head-to-head-integration.js",
+    "status": 1,
+    "output": "node:internal/assert/utils:281\r\n    throw err;\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: La directory del girone di andata non è renderizzata\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\test-head-to-head-integration.js:26:1)\r\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\r\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\r\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:218:24)\r\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\r\n    at node:internal/main/run_main_module:36:49 {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: false,\r\n  expected: true,\r\n  operator: '=='\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  },
+  {
+    "command": "node scripts/test-fantasy-squad.js",
+    "status": 0,
+    "output": "Fantasy squad planner: test superati.\n"
+  },
+  {
+    "command": "node scripts/test-no-shirt-numbers.js",
+    "status": 0,
+    "output": "OK: 515 verified numbers; 20 rosters unchanged; missing numbers null; no predictive dependency.\n"
+  },
+  {
+    "command": "node scripts/test-champions-branding.js",
+    "status": 0,
+    "output": "OK Champions: 36 squadre · 36 ID UEFA · 36 PNG · designazioni MD1 e MD2\n"
+  },
+  {
+    "command": "node scripts/test-champions-registered-squads.js",
+    "status": 0,
+    "output": "Rose registrate Champions: test superato.\n"
+  },
+  {
+    "command": "node scripts/test-champions-pilot-backtest.js",
+    "status": 0,
+    "output": "OK backtest volumi Champions: tiri/corner sopra baseline · cartellini stabili in MAE e migliori in Brier\n"
+  },
+  {
+    "command": "node scripts/test-champions-pilot-predictions.js",
+    "status": 0,
+    "output": "OK pronostici Champions MD1: 18 gare · risultato e gol completi · volumi mancanti espliciti\n"
+  },
+  {
+    "command": "node scripts/test-champions-surprise-factor.js",
+    "status": 0,
+    "output": "OK Fattore Sorpresa Champions MD1\n"
+  },
+  {
+    "command": "node scripts/test-champions-reading-page.mjs",
+    "status": 1,
+    "output": "(node:14540) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/utente/Desktop/seria-a-2026-27/js/pages/champions.js is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to C:\\Users\\utente\\Desktop\\seria-a-2026-27\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\nnode:internal/modules/run_main:122\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\r\n\r\n  assert(app.innerHTML.includes(\"reading-lineup-grid\"))\r\n\r\n    at file:///C:/Users/utente/Desktop/seria-a-2026-27/scripts/test-champions-reading-page.mjs:77:1 {\r\n  generatedMessage: true,\r\n  code: 'ERR_ASSERTION',\r\n  actual: false,\r\n  expected: true,\r\n  operator: '=='\r\n}\r\n\r\nNode.js v22.11.0\r\n"
+  }
+]

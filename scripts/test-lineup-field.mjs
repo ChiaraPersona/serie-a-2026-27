@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import {lineupPositions, renderLineupField} from "../js/components/lineup-field.mjs";
+import {formationMarkup} from "../js/pages/reading-detail/people.mjs";
 import {fixtureLineupForMatch} from "../js/pages/readings.js";
 
 const directory = JSON.parse(fs.readFileSync(new URL("../data/teams/index.json", import.meta.url)));
@@ -40,3 +41,30 @@ for (const id of ["milan-atalanta-2026-27-md-07", "bologna-inter-2026-27-md-07",
   assert.equal(JSON.stringify(sides), snapshot, `${id}: no source mutation`);
 }
 console.log("OK horizontal lineups: 3 fixtures, 22 players, mirrored positions, spacing and unchanged source data.");
+// Every MD7 XI: report ordering can never become a tactical position.
+const canonical=JSON.parse(fs.readFileSync(new URL('../data/sources/official-lineups-2026-27.json',import.meta.url)));
+for(const fixture of canonical.fixtures.filter(f=>f.matchday===7))for(const team of fixture.teams){
+ const lineup=directory.officialLineups[`${fixture.matchId}:${team.teamId}`];
+ assert.equal(lineup.players.length,11);
+ if(team.tacticalOrder===false){
+  assert.equal(lineupPositions(lineup).length,0);
+  const html=renderLineupField([{team:{name:team.teamId},lineup}]);
+  assert.equal((html.match(/<li>/g)||[]).length,11);
+  assert(!html.includes('is-goalkeeper'));
+  assert(!team.players.some(p=>'positionIndex' in p));
+ }else{
+  assert.equal(team.players[0].role,'Portiere',`${fixture.matchId}/${team.teamId}: portiere documentato`);
+  assert.equal(lineupPositions(lineup).filter(p=>p.goalkeeper).length,1);
+ }
+}
+for(const formation of [null,'4-4','inventato'])assert.equal(lineupPositions({formation,players:Array(11).fill('Nome')}).length,0);
+assert.equal(lineupPositions({formation:'4-3-3',players:Array(11).fill('Nome'),tacticalOrder:false}).length,0,'Future report-only lineups must remain lists');
+console.log('OK MD7: 20 XI, quattro elenchi senza posizioni inventate; fallback futuro verificato.');
+
+for(const fixture of canonical.fixtures.filter(f=>f.matchday===7)){
+ const lineups=fixture.teams.map(t=>({...t,side:{id:t.teamId,name:t.teamId},players:t.players.map(p=>({name:p.currentName,shirtNumber:null}))}));
+ const html=formationMarkup({lineups,directory});
+ assert.equal((html.match(/class="rd-field-player/g)||[]).length, lineups.filter(l=>l.tacticalOrder!==false).length*11);
+ assert.equal((html.match(/<li>/g)||[]).length,lineups.filter(l=>l.tacticalOrder===false).length*11);
+}
+console.log('OK reading-detail: tutte le formazioni MD7 usano il contratto tattico condiviso.');

@@ -29,7 +29,7 @@ const allHtml=sections=>Object.values(sections).join("");
 
 // 1. Prediction V2 completa.
 const complete=render(fullPrediction),completeHtml=allHtml(complete);
-for(const contract of ["La partita in numeri","Perché il modello vede la partita così","Possibili migliori tiratori","Outsider del modello","Disciplina e ammoniti"])assert(completeHtml.includes(contract),`V2: sezione mancante ${contract}`);
+for(const contract of ["La partita in numeri","Perché il modello vede la partita così","Possibili migliori tiratori","Outsider del modello","Probabili ammoniti"])assert(completeHtml.includes(contract),`V2: sezione mancante ${contract}`);
 
 // 2. Prediction V1 senza campi V2: progressive enhancement, nessuna eccezione.
 const legacy=render({teamProjections:[{teamId:"home",expectedGoals:1.1,shotsTotal:range(9)}],shooters:{totalShots:[{name:"Legacy",team:"Casa",role:"Attaccante",projectedShots:1.8}],shotsOnTarget:[]}});

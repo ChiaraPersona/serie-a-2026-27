@@ -23,8 +23,7 @@ assert.strictEqual(predictions.predictions.length, 59, "Devono restare disponibi
 assert(predictions.predictions.every(prediction => prediction.headToHead?.usedInModel), "Ogni pronostico deve usare il correttivo H2H");
 assert(predictions.predictions.every(prediction => prediction.headToHead.home >= 0.95 && prediction.headToHead.home <= 1.05 && prediction.headToHead.away >= 0.95 && prediction.headToHead.away <= 1.05), "Il correttivo H2H deve restare entro il 5%");
 assert(app.includes('requestedMatchId?"first-leg-2026-27.json":"first-leg-2026-27-summary.json"'), "La pagina Lettura non separa indice e dettaglio H2H");
-assert(app.includes("Precedenti per tutte le 190 partite"), "La directory del girone di andata non è renderizzata");
-assert(app.includes("match.matchday<=19&&match.matchday!==nextDay"), "La directory non deve ripetere la giornata gia mostrata nel prossimo turno");
+assert(app.includes("Archivio risultati") && app.includes("Giornate future") && app.includes("ri-archive-content-"), "Indice Letture: archivio e calendario navigabili assenti");
 assert(app.includes("Dettaglio ammoniti N/D"), "La UI non distingue i cartellini mancanti dallo zero");
 assert(appRelease && page.includes(appRelease), "Cache busting non propagato alla pagina Lettura");
 console.log("OK collegamento H2H: motore, 190 letture, copertura esplicita e cache aggiornata");

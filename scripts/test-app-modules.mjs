@@ -42,7 +42,7 @@ const bettingPage = fs.readFileSync(path.join(root, "js", "pages", "betting.js")
   assert.doesNotMatch(bettingPage, /currentMyCombo=myComboRoundContent/, "Schedina: le MyCombo MD5 non devono comparire nella pagina principale");
   assert.match(bettingPage, /const myCombo=number===5\?myComboRoundContent/, "Schedina: MyCombo MD5 assente dalla pagina archiviata");
   assert.match(bettingPage, /matchdayWorkspaceContent\(data,predictionData\.predictions\|\|\[\],matchById,teamById,number\)/, "Schedina MD6: MyCombo e mercati non organizzati per partita");
-  assert.match(bettingPage, /const rounds=\{1:md1,2:md2,3:md3,4:md4,5:md5,6:md6\}/, "Schedina: viste dedicate alle prime sei giornate assenti");
+  assert.match(bettingPage, /const rounds=\{1:md1,2:md2,3:md3,4:md4,5:md5,6:md6,7:md7\}/, "Schedina: viste dedicate alle prime sei giornate assenti");
   assert.match(bettingPage, /archiveCard\(md2,2,matchById\)/, "Schedina: card della seconda giornata assente dall'archivio");
   assert.match(bettingPage, /archiveCard\(md3,3,matchById\)/, "Schedina: card della terza giornata assente dall'archivio");
 assert.doesNotMatch(bettingPage, /<details class="betting-archive-card">|<summary class="betting-archive-card-heading">/, "Schedina: la card archivio non deve essere un menu a tendina");
@@ -88,7 +88,7 @@ assert.doesNotMatch(bettingPage, /active\.reduce\(\(total,leg\)=>total\*leg\.odd
 const bettingCss = fs.readFileSync(path.join(root, "css", "betting.css"), "utf8");
 assert.doesNotMatch(bettingCss, /betting-market-tools|betting-market-filters|betting-market-sort/, "Schedina MD6: stili della barra filtri ancora presenti");
 assert.doesNotMatch(bettingCss, /\.betting-leg-number/, "Schedina: stile della numerazione decorativa ancora presente");
-assert.match(bettingCss, /\.betting-archive-list\{width:100%;max-width:1180px/, "Schedina: griglia archivio non allineata alle card Statistiche squadra");
+assert.match(bettingCss, /\.betting-archive-list\{width:100%;max-width:var\(--max\)/, "Schedina: griglia archivio non allineata alle card Statistiche squadra");
 assert.match(bettingCss, /\.betting-archive-performance small,\.betting-archive-performance strong\{display:block;color:#000\}/, "Schedina: valori del retro senza contrasto nero leggibile");
 assert.doesNotMatch(bettingCss, /betting-archive-performance[^}]*var\(--betting-gold\)/, "Schedina: il giallo poco leggibile e ancora usato negli indicatori del retro");
 assert.match(bettingCss, /\.betting-slip-grid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/, "Schedina: card desktop non organizzate su due colonne");
@@ -112,7 +112,7 @@ const championsPage = fs.readFileSync(path.join(root, "js", "pages", "champions.
 const championsCss = fs.readFileSync(path.join(root, "css", "champions.css"), "utf8");
 const championsFixtureCard = championsPage.slice(championsPage.indexOf("function fixtureCard"), championsPage.indexOf("function fixtureGroups"));
 assert.doesNotMatch(championsPage, /Scenari e dipendenze|prediction-decision-panel/, "Champions: sezione Scenari e dipendenze ancora esposta");
-assert.match(championsPage, /completo di tutte le partite/, "Champions: copertura completa delle partite non dichiarata");
+assert.match(championsPage, /const completedMatchdays=matchdays.filter/, "Champions: copertura completa delle partite non dichiarata");
 assert.doesNotMatch(championsPage, /Squadre italiane/, "Champions: copertura ancora presentata come limitata alle italiane");
 assert.match(championsPage, /champions-team-strength-2026-27\.json/, "Champions: profili di forza non caricati");
 assert.match(championsPage, /uefa-team-history-2026-27\.json/, "Champions: storico europeo pluriennale non caricato");

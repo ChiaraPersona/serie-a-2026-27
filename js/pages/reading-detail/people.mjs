@@ -11,16 +11,16 @@ function preserve(container,content,title){
 }
 export function formationMarkup(evidence){
  const field=evidence.lineups.map((l,i)=>{
-  const valid=typeof l.formation==='string'&&/^\d+(?:-\d+)+$/.test(l.formation)&&l.formation.split('-').map(Number).reduce((a,b)=>a+b,1)===11&&l.players.length===11;
-  if(!valid)return '';
+  const positions=lineupPositions(l,i===1);
+  if(positions.length!==11)return '';
   const team=evidence.directory?.teams?.find(t=>t.id===l.side.id)||l.side;
-  return lineupPositions({formation:l.formation,players:l.players},i===1).map(pos=>`<div class="rd-field-player is-${i?'away':'home'}${pos.goalkeeper?' is-goalkeeper':''}" style="left:${pos.x}%;top:${pos.y}%"><span class="rd-kit" aria-label="Numero ${pos.name.shirtNumber??'non disponibile'}">${renderLineupKit(team,{goalkeeper:pos.goalkeeper})}<b>${esc(pos.name.shirtNumber??'—')}</b></span><strong>${esc(pos.name.name)}</strong></div>`).join('');
+  return positions.map(pos=>`<div class="rd-field-player is-${i?'away':'home'}${pos.goalkeeper?' is-goalkeeper':''}" style="left:${pos.x}%;top:${pos.y}%"><span class="rd-kit" aria-label="Numero ${pos.name.shirtNumber??'non disponibile'}">${renderLineupKit(team,{goalkeeper:pos.goalkeeper})}<b>${esc(pos.name.shirtNumber??'—')}</b></span><strong>${esc(pos.name.name)}</strong></div>`).join('');
  }).join('');
  const headings=`<div class="rd-lineup-head">${evidence.lineups.map(l=>`<div><h3>${esc(l.side.name)}</h3><b>${esc(l.formation||'Modulo N/D')} · ${label(l.status)}</b><span>Allenatore: ${esc(l.coach||'N/D')}</span></div>`).join('')}</div>`;
  // Internal note: one shared pitch; narrow screens retain horizontal scrolling and lists.
  // Missing shirt numbers are displayed as an em dash.
  const pitch=`<div class="rd-pitch-scroll" tabindex="0" role="region" aria-label="Campo delle formazioni, scorrimento orizzontale"><div class="rd-pitch"><svg viewBox="0 0 1080 600" aria-hidden="true"><g fill="none" stroke="currentColor"><rect x="14" y="14" width="1052" height="572"/><path d="M540 14V586M14 170H165V430H14M1066 170H915V430H1066"/><circle cx="540" cy="300" r="70"/></g></svg>${field}</div></div>`;
- return headings+(field?pitch:missing('Disposizione tattica non disponibile: consulta la sezione Giocatori.'));
+ return headings+(field?pitch:'')+evidence.lineups.filter(l=>lineupPositions(l).length!==11).map(l=>`<section><h3>${esc(l.side.name)}</h3><p>Disposizione tattica non disponibile</p><ol>${l.players.map(p=>`<li>${esc(p.name)}</li>`).join('')}</ol></section>`).join('');
 }
 export function playersMarkup(model,evidence){
  const players=individualPlayers(model,evidence);

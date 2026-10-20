@@ -2,6 +2,29 @@
 
 Sito statico autonomo per Serie A, Coppa Italia e statistiche arbitrali, compatibile con GitHub Pages.
 
+## Procedura di manutenzione e aggiornamento
+
+Usare Node >=22.12 (verificato con Node 24.19). Node 22.11 richiede flag sperimentali per i moduli ESM e non e supportato dal build.
+
+| Operazione | Comando | Effetto |
+|---|---|---|
+| Verifica completa | `npm test` | Esegue tutti i contratti anche dopo un fallimento; report `output/test-suite/latest.json` |
+| Verifica Serie A / Champions | `npm run verify:serie-a` / `npm run verify:champions` | Controlla artefatti locali; nessun import quote |
+| Build pagine | `npm run build` | Solo presentazione dai dataset gia verificati; non rigenera pronostici |
+| Piano Serie A MD7 (MD8: cambiare numero) | `npm run update:serie-a -- --matchday 7` | Elenca le dipendenze per la giornata esplicita |
+| Generazione controllata Serie A | `npm run update:serie-a -- --matchday 7 --stage --output output/serie-a-md07-candidati` | Genera in copia isolata, senza promozione |
+| Piano Champions MD1/MD2/MD3 | `npm run update:champions -- --matchday 3` | Catena specifica per la giornata; rifiuta giornate non ancora documentate |
+| Generazione controllata Champions MD3 | `npm run update:champions -- --matchday 3 --stage --output output/champions-md03-candidati` | Database giocatori, probabili, motore offline, catalogo e contratti gia approvati |
+| Volumi, confronto preliminare | `npm run build:volumes -- --output output/volumi-candidati.json` | Legge 380 raw originali senza copiarli; confrontare con il consolidato |
+
+Lo staging condivide soltanto i raw immutabili tramite junction; copia gli altri input e produce `generation-report.json` con tutti i file divergenti. I builder possono aggiornare aggregati condivisi nella copia: confrontare semanticamente le sole fixture della giornata richiesta, mantenere identiche tutte le altre e le previsioni archiviate. Nessuna promozione automatica: integrare solo i candidati controllati, poi eseguire verifiche e build. MD1-MD5 e tutte le giornate Serie A con gare gia concluse usano soltanto --validate-only: la rigenerazione e bloccata prima di qualsiasi scrittura, anche invocando direttamente il builder. --validate-only rifiuta --refresh-odds e non modifica i vincoli MyCombo. Per MD8 non eseguire un rebuild globale di predictions.json nel workspace operativo.
+
+Risultati/esiti richiedono prima l'import documentato della singola fixture nella fonte canonica `data/sources/match-results-2026-27.json` (Champions: relativa fonte della competizione), con identita e statistiche osservate verificate; non si ricavano risultati da pronostici. `scripts/update-results-md07-2026-10-20.js` e un import datato, non un comando da riusare sulle future giornate. Dopo una modifica agli undici ufficiali eseguire `node scripts/apply-official-starter-policy.js`, verificare Letture/Schedine/MyCombo e quindi `npm run build`. Le liquidazioni certificate restano distinte dai confronti statistici. Nella copia isolata, la normalizzazione Serie A delle fonti risultati e calendario usa `node scripts/import-official-calendar.js`; la normalizzazione Champions usa `node scripts/build-champions-league.js --fixtures ID_CANONICO_1,ID_CANONICO_2`. Questi comandi a basso livello leggono le fonti locali gia verificate: confrontare le fixture non richieste prima di integrare risultati, poi rieseguire le catene di verifica e presentazione. Non importarli nel workspace operativo senza il confronto. Per rose, classifica, letture e risultati gli aggregati si generano nello staging; quote e approvazioni devono gia esistere negli input verificati. La catena MD3 riusa le sette approvazioni esistenti, senza approvare nuovi contratti.
+
+I vecchi alias generali `build:predictions`, `build:schedina`, `build:champions` e `build:champions-markets` richiedono ora la giornata e mostrano un piano; aggiungere esplicitamente `--stage --output ...` per produrre candidati. `build:readings` aggiorna la presentazione. I comandi a basso livello elencati sotto possono scrivere dati: usarli soltanto nella procedura specifica e dopo confronto degli archivi. Import quote, pubblicazione, commit, push e deploy rimangono operazioni separate, mai implicite nella verifica o nel build.
+
+Input volumi: ordine di ricerca `data/raw/referee-stats/espn/2025-26/serie-a`, archivio spostato `seria-a-2026-27-raw-archive-2026-08-24/data/raw/referee-stats/espn/2025-26/serie-a`, cache `data/raw/team-pages/espn/2025-26/serie-a`; JSON semplice o gzip. La join usa `providerFixtureId` del manifest normalizzato, mai il nome della partita. Alla verifica del 20 ottobre: 10 referti nel percorso corrente e 370 nell'archivio; nessun input esterno necessario, output rigenerato identico. Il builder elenca tutte le vere assenze e rifiuta sovrascritture divergenti del consolidato; usare `--output` per ispezionarle.
+
 ## Comandi
 
 - `npm run build` genera tutte le pagine HTML dalle sorgenti condivise.

@@ -5,6 +5,7 @@ const esc = value => String(value ?? "").replace(/[&<>"]/g, char => ({"&":"&amp;
 // Rotate tactical lines into columns; mirror the visitors toward the left goal.
 // Source arrays remain untouched, including the order within every tactical line.
 export function lineupPositions(lineup, away = false) {
+  if (!lineup || lineup.tacticalOrder === false || !/^\d+(?:-\d+)+$/.test(lineup.formation || "") || lineup.players?.length !== 11 || lineup.formation.split("-").map(Number).reduce((a,b)=>a+b,1)!==11) return [];
   const units = [1, ...lineup.formation.split("-").map(Number)];
   let offset = 0;
   return units.flatMap((count, line) => {
@@ -20,6 +21,9 @@ export function lineupPositions(lineup, away = false) {
 }
 
 export function renderLineupField(sides, { orientation = "horizontal", shirtNumberFor = () => null } = {}) {
+  if (sides.some(({lineup}) => lineup && !lineupPositions(lineup).length)) {
+    return `<div class="reading-lineup-grid">${sides.map(({team,lineup})=>`<section><h3>${esc(team.name)}</h3><p>Disposizione tattica non disponibile</p><ol>${(lineup?.players||[]).map(p=>`<li>${esc(typeof p==='string'?p:p.name||p.currentName)}</li>`).join('')}</ol></section>`).join('')}</div>`;
+  }
   if (orientation === "vertical") {
     const {team, lineup} = sides[0];
     const [primary = "#174fa5", secondary = "#081d48"] = team.colors || [];

@@ -13,7 +13,9 @@ const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "
 const normalized = read("data/normalized/schedina-md06.json");
 const source = read("data/sources/schedina-serie-a-2026-27-md-06.json");
 const myCombo = read("data/sources/mycombo-serie-a-2026-27-md-06.json");
-const odds = read("data/normalized/odds/sisal/serie-a.json");
+const rawFile = "data/raw/odds/sisal/serie-a/2026-10-10T09-57-30-921Z.json.gz";
+const odds = require("./sisal/normalize").normalizeSisalCapture({capture:JSON.parse(require("zlib").gunzipSync(fs.readFileSync(path.join(root,rawFile)))),competitionKey:"serie-a",competition:read("data/sources/sisal-odds.json").competitions["serie-a"],rawFile,root});
+assert.equal(odds.retrievedAt, normalized.oddsRetrievedAt, "Lo snapshot deve coincidere con la data delle quote archiviate MD6");
 const predictions = read("data/normalized/predictions.json").predictions.filter(row => row.matchId.endsWith("-md-06"));
 const review = read("output/reports/serie-a-md05-betting-decision-review-2026-10-09.json");
 const selection = read("output/reports/serie-a-md06-betting-selection-2026-10-09.json");

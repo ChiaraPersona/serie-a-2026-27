@@ -15,6 +15,9 @@ const validateOnly = process.argv.includes("--validate-only");
 const refreshOdds = process.argv.includes("--refresh-odds");
 if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("Specificare --matchday N, con N compreso tra 1 e 38.");
 if (!validateOnly && matchday < 6) throw new Error("MD1-MD5 sono archivi immutabili: usare soltanto --validate-only.");
+const roundFixtures=JSON.parse(fs.readFileSync(path.join(root,"data/normalized/matches.json"),"utf8")).filter(m=>m.competition==="serie-a"&&m.matchday===matchday);
+if (!validateOnly && roundFixtures.some(m=>m.status==="finished")) throw new Error("La giornata contiene gare concluse: usare --validate-only. Rigenerazione dei pronostici storici vietata.");
+if (validateOnly && refreshOdds) throw new Error("--validate-only non puo aggiornare quote");
 
 const walk = directory => fs.existsSync(directory) ? fs.readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
   const full = path.join(directory, entry.name);
@@ -81,7 +84,7 @@ if (!validateOnly) {
   }
 }
 
-run("scripts/enforce-mycombo-risk.js", ["--matchday", String(matchday)]);
+if (!validateOnly) run("scripts/enforce-mycombo-risk.js", ["--matchday", String(matchday)]);
 if (matchday === 6) {
   run("scripts/test-betting-selection-contract.js");
   run("scripts/test-schedina-md06.js");

@@ -29,6 +29,7 @@ const digest = file=>createHash('sha256').update(fs.readFileSync(path.join(root,
 const protectedBefore = new Map(protectedFiles.map(file=>[file,digest(file)]));
 const fixtures = read("data/normalized/matches.json");
 const round = fixtures.filter(m => m.competition === "serie-a" && m.matchday === 7);
+if(round.some(m=>m.status==="finished")) throw new Error("MD7 contiene gare concluse: usare build-betting-matchday.js --matchday 7 --validate-only; archivi invariati.");
 const ids = new Set(round.map(m => m.id));
 const lineups = read("data/sources/probable-lineups-md7-2026-27.json");
 assert.equal(round.length, 10);

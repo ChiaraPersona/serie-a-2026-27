@@ -5,7 +5,7 @@ const load = async name => JSON.parse(fs.readFileSync(new URL(`../data/normalize
 const calendar = await load('champions-league-2026-27.json');
 const markets = await load('champions-player-markets-md01-2026-27.json');
 const app = { innerHTML: '' };
-globalThis.document = { querySelector: () => app };
+globalThis.document = { querySelector: selector => selector === '#app' ? app : null };
 for (const [id, names, excluded] of [
   ['ucl-2026-27-md01-14', ['Kostic', 'Geertruida', 'Isaque Silva', 'Bosz P.', 'Turan A.'], /Flamingo|Mijnans|Newerton|Kryskiv|Gasiorowski/i],
   ['ucl-2026-27-md01-09', ['Jacquet', 'Ngumoha', 'Pubill'], /Gravenberch|Frimpong|Lookman|Hjulmand/i],
@@ -31,7 +31,9 @@ for (const [id, names, excluded] of [
   await createPage({ load, esc: value => String(value ?? '') }).render();
   assert(app.innerHTML.includes('Formazioni ufficiali'));
   for (const name of names) assert(app.innerHTML.includes(name));
-  assert(app.innerHTML.includes('Panchina:'));
+  assert(/Panchina:|A disposizione:/.test(app.innerHTML));
+  for (const side of ['home', 'away']) for (const name of lineup[side].bench || [])
+    assert(app.innerHTML.includes(name), `${id}: missing bench player ${name}`);
 }
 assert.equal(calendar.fixtures[12].probableFormation.status, 'editorial-probable');
 console.log('OK ufficiali Champions: precedenza, panchine escluse, rendering, altre gare preservate');
