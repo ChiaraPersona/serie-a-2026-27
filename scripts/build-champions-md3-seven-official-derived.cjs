@@ -4,8 +4,8 @@ const {buildSharedIndividualCatalog}=require('./champions/md3-shared-forecast-in
 const {buildPublication}=require('./champions/md3-publication-policy.cjs');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
-const individualPath='data/derived/champions-md03/official-individuals-seven-v1-2026-10-20.json';
-const outputPath='data/derived/champions-md03/market-catalog-official-seven-v1-2026-10-20.json';
+const individualPath='data/derived/champions-md03/official-individuals-seven-v2-2026-10-20.json';
+const outputPath='data/derived/champions-md03/market-catalog-official-seven-v2-2026-10-20.json';
 async function build(){
  const individuals=read(individualPath),ids=new Set(individuals.fixtures.map(f=>f.fixtureId));assert.equal(ids.size,7);
  const calendar=read('data/normalized/champions-league-2026-27.json');
@@ -47,13 +47,18 @@ async function build(){
     assert.equal(leg.odds,original.odds);assert.equal(leg.betSelection.evaluation.modelProbabilityPct,original.betSelection.evaluation.modelProbabilityPct);
    }
   }
-  m.forecastCoverage={lineupStatus:'official',kickoffAt:fixture.kickoffAt,distributions:fixture.teams.flatMap(t=>t.players.filter(p=>p.projectedRole==='starter').map(p=>({playerId:p.playerId,teamId:t.teamId,role:p.role,expectedMinutes:p.expectedMinutes,projectedShots:p.projectedShots,projectedSOT:p.projectedSOT,blockers:p.blockers,conditionalOnProbableStart:false}))),teamProjections:preview.fixtures.find(f=>f.fixtureId===m.matchId).collective.teamProjections};
+  const collective=preview.fixtures.find(f=>f.fixtureId===m.matchId).collective;
+  const xg=collective.expectedGoals,btts=Number.isFinite(xg?.home)&&Number.isFinite(xg?.away)?(1-Math.exp(-xg.home))*(1-Math.exp(-xg.away)):null;
+  m.forecastCoverage={lineupStatus:'official',kickoffAt:fixture.kickoffAt,distributions:fixture.teams.flatMap(t=>t.players.filter(p=>p.projectedRole==='starter').map(p=>({playerId:p.playerId,teamId:t.teamId,role:p.role,expectedMinutes:p.expectedMinutes,projectedShots:p.projectedShots,projectedSOT:p.projectedSOT,blockers:p.blockers,conditionalOnProbableStart:false}))),teamProjections:collective.teamProjections,matchProjection:collective.matchProjection,cards:collective.cards,result:collective.probabilities,
+   generatedIndividualMarkets:fixture.teams.flatMap(t=>t.players.filter(p=>p.projectedRole==='starter')).reduce((n,p)=>n+Object.values(p.eventProbabilities||{}).filter(Number.isFinite).length,0),
+   doubleChance:{'1X':collective.probabilities.home+collective.probabilities.draw,X2:collective.probabilities.draw+collective.probabilities.away},btts:btts===null?null:{goalPct:btts*100,noGoalPct:(1-btts)*100,status:'PRELIMINARY_INDEPENDENT_POISSON'},
+   missing:fixture.teams.filter(t=>!t.players.some(p=>p.projectedRole==='starter'&&p.projectedShots!==null)).map(t=>({teamId:t.teamId,team:t.team,reason:t.reconciliation.status}))};
  }
  const selected=publication.matches.flatMap(m=>m.selections.filter(l=>l.suggestionAnalysis.suggested));
  const summary={fixtures:7,starters:154,projectedStarters:individuals.fixtures.flatMap(f=>f.teams.flatMap(t=>t.players)).filter(p=>p.projectedRole==='starter'&&p.projectedShots!==null).length,
   selected:selected.length,individualSelected:selected.filter(l=>l.marketScope==='player').length,duoSelected:selected.filter(l=>l.betSelection.market.bookmakerSemantics?.duo).length,
   byFixture:publication.matches.map(m=>({fixtureId:m.matchId,selected:m.suggestions.length,individual:m.selections.filter(l=>l.marketScope==='player'&&l.suggestionAnalysis.suggested).length,byFamily:Object.fromEntries([...new Set(m.selections.filter(l=>l.suggestionAnalysis.suggested).map(l=>l.suggestionAnalysis.family))].map(k=>[k,m.selections.filter(l=>l.suggestionAnalysis.suggested&&l.suggestionAnalysis.family===k).length]))}))};
- const out={schemaVersion:1,version:'official-seven-v1-2026-10-20',status:'PRELIMINARY_NOT_STATISTICALLY_VALIDATED',matchday:3,generatedAt:new Date().toISOString(),
+ const out={schemaVersion:1,version:'official-seven-v2-2026-10-20',status:'PRELIMINARY_NOT_STATISTICALLY_VALIDATED',matchday:3,generatedAt:new Date().toISOString(),
   source:{path:individuals.source.path,sha256:individuals.source.sha256},individuals:{path:individualPath,sha256:hash(individualPath)},summary,integration:integration.summary,myCombo:publication.myCombo,matches:publication.matches};
  fs.writeFileSync(outputPath,JSON.stringify(out,null,2)+'\n');
  fs.mkdirSync('data/technical-archive/champions-md03',{recursive:true});fs.writeFileSync('data/technical-archive/champions-md03/seven-official-excluded-2026-10-20.json',JSON.stringify(archive,null,2)+'\n');

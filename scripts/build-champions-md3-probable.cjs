@@ -73,7 +73,7 @@ const fixtures=preview.fixtures.filter(f=>targetFixtureIds.has(f.fixtureId)).map
    let old=previous?.primary?.candidate?previous:recovered;
    const observedRows=observed?.byPlayer.get(t.teamId+':'+p.playerId)||[];
    if((observedRows.length||recovered?.identityCorrection)&&recovered){
-    const primary=require('./champions/current-season-offline').rateCandidate({historical:recovered,role:recovered.position,rows:observedRows,contextFactor:old?.primary?.contextFactor??1});
+    const primary=require('./champions/current-season-offline').rateCandidate({historical:recovered,role:recovered.position,rows:observedRows,contextFactor:recovered.identityCorrection?1:old?.primary?.contextFactor??1});
     old={...old,primary,historicalMinutes:recovered.historicalMinutes,sample:{...old?.sample,overlap:0,observedCurrentAppearances:observedRows.length}};
    }
    const member=p.playerId?currentTeam.players.find(x=>x.id===p.playerId):null;

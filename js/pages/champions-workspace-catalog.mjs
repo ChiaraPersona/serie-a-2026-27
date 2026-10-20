@@ -135,9 +135,9 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday,{upcoming=t
     sabah.fixtureId!=='ucl-2026-27-md03-02'||sabah.matches.length!==1||sabah.matches[0].matchId!==sabah.fixtureId)
     throw new Error('Selezione Sabah-Dortmund MD3 non coerente');
   overrides.set(sabah.fixtureId,sabah.matches[0]);
-  const seven=await load('../derived/champions-md03/market-catalog-official-seven-v1-2026-10-20.json');
+  const seven=await load('../derived/champions-md03/market-catalog-official-seven-v2-2026-10-20.json');
   const sevenIds=new Set(['03','04','05','06','07','08','09'].map(n=>'ucl-2026-27-md03-'+n));
-  if(seven.version!=='official-seven-v1-2026-10-20'||seven.status!=='PRELIMINARY_NOT_STATISTICALLY_VALIDATED'||seven.matches.length!==7||
+  if(seven.version!=='official-seven-v2-2026-10-20'||seven.status!=='PRELIMINARY_NOT_STATISTICALLY_VALIDATED'||seven.matches.length!==7||
     new Set(seven.matches.map(m=>m.matchId)).size!==7||seven.matches.some(m=>!sevenIds.has(m.matchId)))throw Error('Aggiornamento ufficiale delle sette gare Champions non coerente');
   for(const match of seven.matches)overrides.set(match.matchId,match);
   const matches=derived.matches.map(match=>overrides.get(match.matchId)||match);
