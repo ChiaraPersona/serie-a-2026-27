@@ -1,3 +1,4 @@
+import {championsShirtNumber} from '../../components/champions-shirt-numbers.mjs';
 import {shirtNumberAt} from './shirt-numbers.mjs';
 import {connectBenchForecasts,connectStarterScenarios} from './bench-contract.mjs?v=20261019-starter-scenario-v1';
 // Read existing public artifacts only; no builder, importer, or model dependency.
@@ -27,7 +28,7 @@ export async function loadEvidence(model,{benchForecasts=true}={}){
    const mapped=canonical?.players?.find(q=>q.currentName===name)||probable?.teams?.find(t=>t.teamId===side.id)?.players?.find(q=>q.lineupStatus==='starter'&&(q.sourceName===name||q.currentName===name));
    const id=typeof p==='object'?(p.canonicalPlayerId||p.playerId||null):mapped?.playerId||null;
    const member=id?roster.find(q=>q.id===id):null;
-   const shirtNumber=numbering?shirtNumberAt(numbering,side.id,id,model.fixture.date):member?.shirtNumber??null;
+   const shirtNumber=numbering?shirtNumberAt(numbering,side.id,id,model.fixture.date):championsShirtNumber(analysis.squads?.shirtNumbers,registered||side,p,member?.shirtNumber??(typeof p==='object'?p.shirtNumber:null));
    return {id,name:mapped?.currentName||name,index,shirtNumber,source:p,member};
   });
   const listedBench=raw?.bench||raw?.substitutes||canonical?.substitutes||[];
@@ -40,7 +41,7 @@ export async function loadEvidence(model,{benchForecasts=true}={}){
    const id=typeof p==='object'?(p.canonicalPlayerId||p.playerId||p.id||linked?.playerId||null):linked?.playerId||null;
    const exactMember=id?roster.find(q=>q.id===id):roster.filter(q=>[q.name,q.canonicalName,q.currentName].includes(rawName)).length===1?roster.find(q=>[q.name,q.canonicalName,q.currentName].includes(rawName)):null;
    const canonicalId=id||exactMember?.id||null;
-   const shirtNumber=numbering?shirtNumberAt(numbering,side.id,canonicalId,model.fixture.date):(typeof p==='object'?p.shirtNumber:null)??exactMember?.shirtNumber??null;
+   const shirtNumber=numbering?shirtNumberAt(numbering,side.id,canonicalId,model.fixture.date):championsShirtNumber(analysis.squads?.shirtNumbers,registered||side,p,(typeof p==='object'?p.shirtNumber:null)??exactMember?.shirtNumber??null);
    return {id:canonicalId,name:linked?.currentName||rawName,index,shirtNumber,source:p,member:exactMember};
   });
   const benchPlayerIds=[...bench,...(canonical?.substitutes||[])].map(p=>typeof p==='object'?(p.canonicalPlayerId||p.playerId||null):null).filter(Boolean);

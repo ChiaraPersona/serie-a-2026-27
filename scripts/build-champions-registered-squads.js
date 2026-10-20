@@ -7,6 +7,7 @@ const fragmentsDir = path.join(root, "data/sources/champions-squads");
 const calendarPath = path.join(root, "data/normalized/champions-league-2026-27.json");
 const playerStatsPath = path.join(root, "data/normalized/champions-player-stats-2025-26.json");
 const outputPath = path.join(root, "data/normalized/champions-registered-squads-2026-27.json");
+const shirtNumbers = JSON.parse(fs.readFileSync(path.join(root, "data/sources/champions-shirt-numbers-2026-27.json"), "utf8"));
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const calendar = JSON.parse(fs.readFileSync(calendarPath, "utf8"));
 const playerStats = JSON.parse(fs.readFileSync(playerStatsPath, "utf8"));
@@ -35,6 +36,7 @@ const teams = calendar.teams.map(teamName => teamByName.get(teamName)).map(team 
     const historical = statsByPlayer.get(`${team.team}|${slug(name)}`) || null;
     return {
       id: slug(name),
+      ...(() => { const record = shirtNumbers.records.find(r => r.status === "accepted" && r.teamId === slug(team.team) && r.playerId === slug(name)); return record ? {shirtNumber: record.shirtNumber} : {}; })(),
       name,
       position,
       registrationList,
@@ -88,7 +90,8 @@ const output = {
     playersWithoutHistoricalStats: teams.flatMap(team => team.players).filter(player => !player.previousSeason).length
   },
   playerStatistics: { season: playerStats.season, generatedAt: playerStats.generatedAt, source: playerStats.source },
-  teams
+  teams,
+  shirtNumbers
 };
 
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
