@@ -24,7 +24,9 @@ for(const f of catalog.fixtures){
  }
  if(f.fixtureId==='ucl-2026-27-md03-02')assert(f.oddsEvent.playerMarkets.every(m=>!['shots','corners'].includes(m.family)));
 }
-assert.equal(contracts.length,657);
+assert.equal(contracts.length,catalog.summary.selections);
+assert(contracts.length>657);
+for(const family of ['team-shots','team-sot','team-corners'])assert(catalog.fixtures.some(f=>f.oddsEvent.playerMarkets.some(m=>m.family===family&&m.selections.some(s=>s.modelProbability!==null))));
 const sameMarket=contracts.filter(c=>c.matchId===contracts[0].matchId&&c.betSelection.identity.providerMarketId===contracts[0].betSelection.identity.providerMarketId);
 assert(assessSelections(sameMarket.slice(0,2)).issues.some(i=>i.type==='MARKET_CONTRADICTION'));
 const memory=new Map(),storage={getItem:k=>memory.get(k)||null,setItem:(k,v)=>memory.set(k,v),removeItem:k=>memory.delete(k)};
@@ -34,4 +36,4 @@ assert.equal(store.add(a).status,'ADDED');assert.equal(store.add(b).status,'ADDE
 assert(Math.abs(store.getSnapshot().assessment.theoreticalCombinedOdds-a.betSelection.quote.decimal*b.betSelection.quote.decimal)<1e-8);
 const restored=createPersonalBetslipStore({storage});restored.setContext({competition:'champions',season:'2026-27',matchday:3});assert.equal(restored.getSnapshot().selections.length,2);
 restored.setContext({competition:'champions',season:'2026-27',matchday:2});assert.equal(restored.getSnapshot().selections.length,0);
-console.log('OK 18 frozen forecasts; 426 exact collective markets / 657 open provider selections; no individual or suspended selections; MD3 store, combined odds, persistence and MD2 isolation.');
+console.log(`OK 18 frozen forecasts; ${catalog.summary.markets} exact collective markets / ${contracts.length} open provider selections; exact team thresholds; MD3 store, persistence and MD2 isolation.`);

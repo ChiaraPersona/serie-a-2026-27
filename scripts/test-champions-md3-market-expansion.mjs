@@ -25,8 +25,13 @@ const rawOdds=read('data/normalized/odds/sisal/champions-league.json');
 for(const f of catalog.fixtures){
  const original=before.fixtures.find(x=>x.fixtureId===f.fixtureId);assert.deepEqual(f.forecast,original.forecast);
  const event=rawOdds.events.find(e=>e.canonicalMatchId===f.fixtureId);assert.equal(event.canonicalDate,f.date);
+ for(const team of f.forecast.teamProjections)for(const lines of Object.values(team.lines||{})){
+  const sorted=[...lines].sort((a,b)=>a.threshold-b.threshold);sorted.forEach((line,i)=>{assert(Math.abs(line.overPct+line.underPct-100)<0.11);if(i)assert(sorted[i-1].overPct>=line.overPct);});
+ }
+
  for(const m of f.oddsEvent.playerMarkets){const raw=event.markets.find(x=>x.providerMarketId===m.providerMarketId);assert(raw);assert.equal(m.marketName,raw.marketName);assert.equal(m.threshold,raw.threshold);
  for(const s of m.selections){const price=raw.selections.find(x=>x.providerSelectionId===s.providerSelectionId);assert.equal(price.odds,s.odds);assert.equal(price.name,s.name);
+ if(m.family==='double-chance'&&s.name!==f.forecast.verdict.outcome){const keys={'1X':['home','draw'],'X2':['draw','away'],'12':['home','away']}[s.name];assert.equal(s.modelProbabilityPct,Number(keys.reduce((n,k)=>n+f.forecast.probabilities[k],0).toFixed(1)));}
  if(m.subject){const team=f.forecast.teamProjections.find(t=>t.teamId===m.subject.id),metric={'team-shots':'shotsTotal','team-sot':'shotsOnTarget','team-corners':'corners'}[m.family];const line=team.lines[metric].find(x=>x.threshold===Number(m.threshold));assert.equal(s.modelProbabilityPct,line?.[s.name==='OVER'?'overPct':'underPct']??null);}
  }
  }
@@ -44,6 +49,7 @@ assert.equal((html.match(/data-selected-forecast="true"/g)||[]).length,55);
 for(const fixture of workspace.fixtures){const single=page.championsWorkspaceMarkup(workspace,fixture.id);for(const leg of admitted.filter(l=>l.matchId===fixture.id)){assert(single.includes(esc(leg.label)));}}
 const memory=new Map(),storage={getItem:k=>memory.get(k)||null,setItem:(k,v)=>memory.set(k,v)};const store=createPersonalBetslipStore({storage});store.setContext({competition:'champions',season:'2026-27',matchday:3});
 for(const family of ['team-shots','team-sot','team-corners','double-chance','goals']){const leg=admitted.find(l=>l.suggestionAnalysis.family===family&&!l.approvedPreliminary);assert(leg,family);assert(html.includes(`data-personal-pick="${esc(leg.selectionId)}"`));assert.equal(store.add(leg).status,'ADDED');store.remove(leg.selectionId);}
+const chance12=admitted.find(l=>l.suggestionAnalysis.family==='double-chance'&&l.selection==='12');assert(chance12);assert.equal(store.add(chance12).status,'ADDED');store.remove(chance12.selectionId);
 for(const [p,h] of Object.entries(read(dir+'/protected.json')))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),h,p);
 const group=l=>l.catalogOrigin==='champions-md03-individual-model'?(l.marketFamily==='SOT'?'individual-sot':'individual-shots'):l.suggestionAnalysis.family;
 const counts=rows=>rows.reduce((a,l)=>(a[group(l)]=(a[group(l)]||0)+1,a),{});
