@@ -426,14 +426,14 @@ export function createPage(deps){
     const target=section||host;
     const markup=controller.championsWorkspaceMarkup(workspace,fixtureId);
     if(section){
-      target.insertAdjacentHTML('beforeend',`<details class="rd-disclosure rd-champions-catalog"><summary>Catalogo completo, MyCombo e schedina personale</summary>${markup}</details>`);
+      target.insertAdjacentHTML('beforeend',`<details class="rd-disclosure rd-champions-catalog"><summary>${matchday===3?'Schedina personale e dettagli dei pronostici':'Catalogo completo, MyCombo e schedina personale'}</summary>${markup}</details>`);
       target.querySelectorAll('.betting-round-page > .rd-section-heading,.betting-round-page > .betting-round-heading').forEach(n=>n.remove());
     }else target.insertAdjacentHTML('beforeend',markup);
     const store=controller.mountChampionsWorkspace(workspace);
     if(section){
-      const [{createReadingView},{installForecasts}]=await Promise.all([import('./reading-detail/view-model.mjs'),import('./reading-detail/forecasts.mjs')]);
+      const [{createReadingView},{installForecasts},{sharedForecastsForMatch}]=await Promise.all([import('./reading-detail/view-model.mjs'),import('./reading-detail/forecasts.mjs'),import('./shared-forecast-contract.mjs')]);
       const fixture=workspace.fixtures.find(f=>f.id===fixtureId);
-      const model=createReadingView({competition:'champions',fixture,home:{name:fixture.homeTeam},away:{name:fixture.awayTeam},forecasts:workspace.all.filter(l=>l.matchId===fixtureId&&l.suggestionAnalysis?.suggested)});
+      const model=createReadingView({competition:'champions',fixture,home:{name:fixture.homeTeam},away:{name:fixture.awayTeam},forecasts:sharedForecastsForMatch(workspace.marketCatalog,fixtureId,fixture)});
       const table=document.createElement('div');section.prepend(table);
       installForecasts(model,table,host,store);
     }

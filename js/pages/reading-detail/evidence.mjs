@@ -22,13 +22,14 @@ export async function loadEvidence(model,{benchForecasts=true}={}){
   const raw=model.competition==='serie-a'?analysis.lineups?.[i]?.lineup:analysis.lineups?.[i?'away':'home']||(()=>{const formation=analysis.match?.probableFormation,side=formation?.[i?'away':'home'];return side?{...side,status:formation.status,source:formation.source,updatedAt:formation.updatedAt}:null})();
   const canonical=official?.teams?.find(t=>t.teamId===side.id);
   const registered=analysis.squads?.teams?.find(t=>t.team===side.name);
+  const numberedTeam=model.competition==='champions'&&analysis.squads?.shirtNumbers?.scope.includes(registered?.id);
   const roster=squadFiles[i]?.squad||registered?.players||[];
   const players=(raw?.players||[]).map((p,index)=>{
    const name=typeof p==='string'?p:p.canonicalName||p.currentName||p.suppliedName||p.name;
    const mapped=canonical?.players?.find(q=>q.currentName===name)||probable?.teams?.find(t=>t.teamId===side.id)?.players?.find(q=>q.lineupStatus==='starter'&&(q.sourceName===name||q.currentName===name));
    const id=typeof p==='object'?(p.canonicalPlayerId||p.playerId||null):mapped?.playerId||null;
    const member=id?roster.find(q=>q.id===id):null;
-   const shirtNumber=numbering?shirtNumberAt(numbering,side.id,id,model.fixture.date):championsShirtNumber(analysis.squads?.shirtNumbers,registered||side,p,member?.shirtNumber??(typeof p==='object'?p.shirtNumber:null));
+   const shirtNumber=numbering?shirtNumberAt(numbering,side.id,id,model.fixture.date):numberedTeam?championsShirtNumber(analysis.squads?.shirtNumbers,registered||side,p,member?.shirtNumber??(typeof p==='object'?p.shirtNumber:null)):member?.shirtNumber??null;
    return {id,name:mapped?.currentName||name,index,shirtNumber,source:p,member};
   });
   const listedBench=raw?.bench||raw?.substitutes||canonical?.substitutes||[];
@@ -46,7 +47,7 @@ export async function loadEvidence(model,{benchForecasts=true}={}){
   });
   const benchPlayerIds=[...bench,...(canonical?.substitutes||[])].map(p=>typeof p==='object'?(p.canonicalPlayerId||p.playerId||null):null).filter(Boolean);
   if(raw?.status==='probable')benchPlayerIds.push(...(probable?.teams?.find(t=>t.teamId===side.id)?.players||[]).filter(p=>p.lineupStatus==='reserve').map(p=>p.playerId).filter(Boolean));
-  return {side,tacticalOrder:canonical?.tacticalOrder??raw?.tacticalOrder,formation:raw?.formation??null,status:raw?.status??null,coach:raw?.coach||canonical?.coach||squadFiles[i]?.coach||registered?.coach||null,players,bench,benchPlayers,benchPlayerIds,source:raw?.source??null,updatedAt:raw?.updatedAt??null};
+  return {side,...(numberedTeam?{kitTeamId:registered.id}:{}),tacticalOrder:canonical?.tacticalOrder??raw?.tacticalOrder,formation:raw?.formation??null,status:raw?.status??null,coach:raw?.coach||canonical?.coach||squadFiles[i]?.coach||registered?.coach||null,players,bench,benchPlayers,benchPlayerIds,source:raw?.source??null,updatedAt:raw?.updatedAt??null};
  });
  const benchData=benchForecasts?await readArtifact('data/normalized/reading-bench-forecasts.json').catch(()=>null):null;
  const starterScenarios=benchForecasts&&model.competition==='serie-a'&&model.prediction?await readArtifact('data/generated/reading-bench-starter-scenarios/'+encodeURIComponent(model.fixture.id)+'.json').catch(()=>null):null;

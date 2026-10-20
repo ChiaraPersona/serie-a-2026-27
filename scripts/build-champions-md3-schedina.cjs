@@ -4,6 +4,7 @@
 const fs=require('node:fs'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 const {buildSharedIndividualCatalog}=require('./champions/md3-shared-forecast-integration.cjs');
+const {buildPublication}=require('./champions/md3-publication-policy.cjs');
 const {playablePolicyFor}=require('./betting-market-policy');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
@@ -33,6 +34,8 @@ async function build(){
     l.context={...l.context,forecastPolicy:'SERIE_A_CURRENT'};return true;
   })}));
   const result=buildSharedIndividualCatalog({baseMatches,individuals,database,odds:read(oddsPath),identityArchive:read('data/normalized/champions-md02-integration-2026-27.json')});
+  const publication=await buildPublication({matches:result.matches,fixtures:read('data/normalized/champions-md03-preliminary-2026-27.json').fixtures,individuals,evidence:{officialRegistry:read('data/normalized/official-starter-registry.json'),preview:read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json'),pilot:read('data/normalized/champions-pilot-volume-backtest.json'),calibration:read('data/analysis/champions/model-calibration-audit-2026-10-11.json')}});
+  result.matches=publication.matches;
   const all=result.matches.flatMap(m=>m.selections),selected=all.filter(l=>l.suggestionAnalysis?.suggested),players=all.filter(l=>l.marketScope==='player');
   for(const leg of all)leg.context={...leg.context,forecastPolicy:'SERIE_A_CURRENT'};
   assert.equal(new Set(all.map(l=>l.selectionId)).size,all.length);
@@ -41,13 +44,13 @@ async function build(){
     assert(p&&p.projectedRole==='starter'&&p.availability==='probable-starter'&&!p.blockers.length);
     if(leg.betSelection.market.bookmakerSemantics?.duo){for(const key of ['modelProbabilityPct','fairOdds','expectedValuePct'])assert.equal(leg.betSelection.evaluation[key],null);}
   }
-  const marketCatalog={schemaVersion:4,policy:'SHARED_SERIE_A_LINEUP_FORECASTS',matchday:3,matches:result.matches,
+  const marketCatalog={schemaVersion:4,policy:'SHARED_SERIE_A_LINEUP_FORECASTS',matchday:3,matches:result.matches,publicationPolicy:{version:1,selector:'md06-suggested-forecasts.selectMatchSuggestions',preliminaryIsApproved:false,manualCatalogPublic:false},myCombo:publication.myCombo,
     playerForecastIntegration:{...result.summary,source:individualPath,identitySource:'data/normalized/champions-md02-integration-2026-27.json',identityConflicts:result.identityConflicts},
-    totals:{finalSelections:all.length,suggestions:selected.length,playerForecasts:players.length,quotedPlayerForecasts:players.filter(l=>l.odds!==null).length,unquotedPlayerForecasts:players.filter(l=>l.odds===null).length},
+    totals:{finalSelections:all.length,suggestions:selected.length,approved:selected.filter(l=>l.qualifiedSelection).length,preliminary:selected.filter(l=>!l.qualifiedSelection).length,playerForecasts:players.length,quotedPlayerForecasts:players.filter(l=>l.odds!==null).length,unquotedPlayerForecasts:players.filter(l=>l.odds===null).length},
     policyDetails:{primaryShortlist:'predictions/rank-shooter-candidates',admission:'md06-player-forecast-integration.evaluateCandidate',collectiveAdmission:'md06-suggested-forecasts.selectMatchSuggestions',playability:'betting-market-policy current Serie A rules',probableIsNotOfficial:true,benchUsedForTeamAllocation:true,benchEligibleForStarterMarkets:false,formulasChanged:false}};
   const out={...previous,status:'PROBABLE_LINEUP_FORECASTS',oddsRetrievedAt:read(oddsPath).retrievedAt,
     lineupInput:{path:sourcePath,sha256:hash(sourcePath)},individualInput:{path:individualPath,sha256:hash(individualPath)},
-    selectionRule:'Criteri Serie A condivisi per minuti, soglie, sostegno statistico e contratti; panchina provvisoria dalla rosa in assenza dei convocati. Probabilità dei contratti DUO ed EV non validati: N/D.',
+    selectionRule:'Criteri Serie A condivisi per minuti, soglie, sostegno statistico e contratti; panchina provvisoria dalla rosa in assenza dei convocati. Probabilità preliminari non calibrate; ammissione approvata solo con i controlli MD7 e validazione Champions. Probabilità dei contratti DUO ed EV non validati: N/D.',
     marketCatalog};
   assert.deepEqual(out.slips,previous.slips,'Original approved contracts must remain unchanged');
   fs.mkdirSync('data/technical-archive/champions-md03',{recursive:true});

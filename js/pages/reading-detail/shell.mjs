@@ -161,6 +161,7 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     const sectionObserver=new IntersectionObserver(entries=>{const active=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];if(active)nav.querySelectorAll('[data-section-link]').forEach(link=>{if(link.hash==='#'+active.target.id)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current')})},{rootMargin:'-20% 0px -65% 0px'});
     groups.forEach(group=>{if(group.isConnected)sectionObserver.observe(group)});
     window.addEventListener('pagehide',()=>{heroObserver.disconnect();sectionObserver.disconnect();sizeObserver?.disconnect()},{once:true});
+    shell.dataset.readingReady='true';
   }catch(error){
     undo.reverse().forEach(fn=>fn());
     // Restore moved nodes to their original parents in reverse order.

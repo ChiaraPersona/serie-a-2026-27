@@ -9,7 +9,7 @@ if(competition==='serie-a'){
  const concluded=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/matches.json'),'utf8')).some(m=>m.competition==='serie-a'&&m.matchday===day&&m.status==='finished');
  plan=[command('scripts/build-readings.js'),command('scripts/team-pages/build.js'),command('scripts/build-team-matchup-profiles.js'),command('scripts/build-betting-matchday.js','--matchday',String(day),...(concluded||day<6?['--validate-only']:[]))];
 }else if(day===3){
- plan=['build-champions-md3-player-database.cjs','build-champions-md3-probable.cjs','build-champions-md3-offline.js','build-champions-md3-preliminary.js','build-champions-md3-approved.cjs'].map(f=>command('scripts/'+f));
+ plan=['build-champions-md3-player-database.cjs','build-champions-md3-probable.cjs','build-champions-md3-offline.js','build-champions-md3-preliminary.js','build-champions-md3-approved.cjs'].map(f=>command('scripts/'+f)).concat([command('scripts/build-champions-md3-schedina.cjs','--catalog-only')]);
 }else if(day===2){
  plan=[command('scripts/build-champions-pilot-predictions.js','--matchday','2'),command('scripts/build-champions-md02-integration.js'),command('scripts/build-champions-md02-schedina.js')];
 }else if(day===1){plan=['build-champions-player-stats.js','build-champions-pilot-predictions.js','build-champions-surprise-factor.js','build-champions-player-markets.js','build-champions-schedina.js'].map(f=>command('scripts/'+f));}

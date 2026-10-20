@@ -1,6 +1,6 @@
 # Numeri Champions 2026/27 - Blocco 1
 
-Esito parziale: 106 associazioni affidabili; 3 giocatori assenti dalla rosa attuale e non aggiunti. Nessun conflitto di numerazione.
+Esito parziale: 106 associazioni affidabili; 3 giocatori assenti dalla rosa attuale e non aggiunti. Nessun conflitto di numerazione. Resta inoltre non associata la voce di formazione MD1 "Garcia" del Barcellona: cognome ambiguo tra Joan ed Eric, senza ID nella voce originale. Numero lasciato —.
 
 Le 106 proposte coincidono con i numeri gia confermati nella fonte MD3. Aggiunti 96 campi shirtNumber allo snapshot registrato iniziale; le altre 10 identita esistevano gia nella rosa MD3 e non sono state inserite retroattivamente nello snapshot iniziale.
 
@@ -167,3 +167,27 @@ Giocatori dello snapshot iniziale lasciati senza nuovo numero in questo blocco: 
 - Confronto strutturale prima/dopo: soltanto numeri e metadati di numerazione aggiunti; rose, anagrafiche, statistiche e altre 32 squadre invariati.
 - Hash dei file dati preesistenti: invariati salvo il registro normalizzato aggiornato.
 - Test registro Champions, formazioni e contratto MD3 superati.
+
+## Visualizzazione e limiti residui
+
+- La voce "Garcia" in ucl-2026-27-md01-07 resta senza numero: non si sceglie automaticamente tra Joan Garcia (1) ed Eric Garcia (24). Le due identita complete hanno numeri associati correttamente nel registro.
+- Manchester City MD1 conserva l'elenco: il modulo ufficiale e assente e non sono state inventate posizioni per disegnare un campo.
+- Alias ortografici MD1 espliciti aggiunti al registro numeri; nessuna modifica alle identita originali o alle formazioni.
+- Colori, pattern, sagome, dimensioni e posizioni delle maglie non modificati nei rispettivi componenti grafici.
+
+## File dell'intervento
+
+- data/sources/champions-shirt-numbers-2026-27.json
+- data/normalized/champions-registered-squads-2026-27.json
+- scripts/build-champions-registered-squads.js
+- scripts/test-champions-shirt-numbers.mjs
+- js/components/champions-shirt-numbers.mjs
+- js/components/lineup-field.mjs
+- js/pages/champions.js
+- js/pages/reading-detail/evidence.mjs
+- js/pages/reading-detail/people.mjs
+- output/champions-shirt-numbers-block1/ (report e verifiche)
+
+Nel checkout sono comparse durante il lavoro anche modifiche concorrenti alle schedine e alla loro presentazione. Questo intervento non ha eseguito i relativi builder o alterato tali file; nessun ripristino delle modifiche concorrenti.
+
+Verifica browser completata: 12 gare MD1-MD3 a 1440 e 390 px (24 controlli), nessun overflow o errore JavaScript; 11 campi disponibili per viewport, salvo Manchester City MD1 senza modulo. Nei campi disponibili tutte le numerazioni delle quattro squadre sono visibili salvo Garcia in Barcellona MD1. Controllati anche renderer legacy e isolamento Serie A.

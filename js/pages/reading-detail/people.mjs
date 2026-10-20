@@ -14,7 +14,7 @@ export function formationMarkup(evidence){
   const positions=lineupPositions(l,i===1);
   if(positions.length!==11)return '';
   const team=evidence.directory?.teams?.find(t=>t.id===l.side.id)||l.side;
-  return positions.map(pos=>`<div class="rd-field-player is-${i?'away':'home'}${pos.goalkeeper?' is-goalkeeper':''}" style="left:${pos.x}%;top:${pos.y}%"><span class="rd-kit" aria-label="Numero ${pos.name.shirtNumber??'non disponibile'}">${renderLineupKit(team,{goalkeeper:pos.goalkeeper,competition:evidence.competition,shirtNumber:evidence.competition==='champions'?pos.name.shirtNumber:null})}${evidence.competition==='champions'?'':`<b>${esc(pos.name.shirtNumber??'—')}</b>`}</span><strong>${esc(pos.name.name)}</strong></div>`).join('');
+  return positions.map(pos=>`<div class="rd-field-player is-${i?'away':'home'}${pos.goalkeeper?' is-goalkeeper':''}" style="left:${pos.x}%;top:${pos.y}%"><span class="rd-kit" aria-label="Numero ${pos.name.shirtNumber??'non disponibile'}">${renderLineupKit(l.kitTeamId?{...team,id:l.kitTeamId}:team,{goalkeeper:pos.goalkeeper,competition:evidence.competition,shirtNumber:evidence.competition==='champions'?pos.name.shirtNumber:null})}${evidence.competition==='champions'?'':`<b>${esc(pos.name.shirtNumber??'—')}</b>`}</span><strong>${esc(pos.name.name)}</strong></div>`).join('');
  }).join('');
  const headings=`<div class="rd-lineup-head">${evidence.lineups.map(l=>`<div><h3>${esc(l.side.name)}</h3><b>${esc(l.formation||'Modulo N/D')} · ${label(l.status)}</b><span>Allenatore: ${esc(l.coach||'N/D')}</span></div>`).join('')}</div>`;
  // Internal note: one shared pitch; narrow screens retain horizontal scrolling and lists.

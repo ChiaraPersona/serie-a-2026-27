@@ -34,9 +34,10 @@ const teams = calendar.teams.map(teamName => teamByName.get(teamName)).map(team 
     if (!validPositions.has(position)) throw new Error(`${team.team}: ruolo non valido per ${name}`);
     if (![null, "B"].includes(registrationList)) throw new Error(`${team.team}: lista non valida per ${name}`);
     const historical = statsByPlayer.get(`${team.team}|${slug(name)}`) || null;
+    const numberRecord = shirtNumbers.records.find(r => r.status === "accepted" && r.teamId === slug(team.team) && (r.playerId === slug(name) || r.playerIdAliases?.includes(slug(name))));
     return {
       id: slug(name),
-      ...(() => { const record = shirtNumbers.records.find(r => r.status === "accepted" && r.teamId === slug(team.team) && r.playerId === slug(name)); return record ? {shirtNumber: record.shirtNumber} : {}; })(),
+      ...(numberRecord ? {shirtNumber: numberRecord.shirtNumber} : {}),
       name,
       position,
       registrationList,
