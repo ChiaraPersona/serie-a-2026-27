@@ -71,6 +71,14 @@ const fixtures=preview.fixtures.filter(f=>targetFixtureIds.has(f.fixtureId)).map
    const previous=p.playerId?oldTeam.individuals.find(x=>x.playerId===p.playerId||(p.providerPlayerId&&String(x.providerPlayerId)===String(p.providerPlayerId))):null;
    const recovered=md3Database.teams.find(x=>x.teamId===t.teamId).players.find(x=>x.playerId===p.playerId);
    let old=previous?.primary?.candidate?previous:recovered;
+   // An explicit MD3 refresh may recover a missing current baseline from the
+   // exact canonical player's existing history, using the unchanged estimator.
+   if(process.argv.includes('--historical-fallback')&&recovered&&
+      (!old?.primary?.candidate||old.primary.status!=='diagnostic-rate-only'||old.sample?.overlap)&&
+      !Object.values(old?.primary?.channels||{}).some(c=>c.minutes>0)){
+    const primary=require('./champions/current-season-offline').rateCandidate({historical:recovered,role:recovered.position,rows:[],disableCurrent:true});
+    if(primary.status==='diagnostic-rate-only')old={...recovered,primary,sample:{overlap:0}};
+   }
    const observedRows=observed?.byPlayer.get(t.teamId+':'+p.playerId)||[];
    if((observedRows.length||recovered?.identityCorrection)&&recovered){
     const primary=require('./champions/current-season-offline').rateCandidate({historical:recovered,role:recovered.position,rows:observedRows,contextFactor:recovered.identityCorrection?1:old?.primary?.contextFactor??1});

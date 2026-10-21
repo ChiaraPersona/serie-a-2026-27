@@ -1,21 +1,14 @@
 | Partita | Probabili | Mercati individuali | Pubblicati (individuali) | Dati mancanti |
 |---|---|---:|---:|---|
-| G3 Roma - Slovan Bratislava | 22/22 | 0 | 5 (0) | Ammonizioni e falli individuali: modello operativo non disponibile; Riconciliazione volumi non superata; Squadra con soli dati collettivi; Minuti previsti insufficienti; Baseline individuale insufficiente |
-| G3 Porto - PSV Eindhoven | 22/22 | 140 | 11 (4) | Ammonizioni e falli individuali: modello operativo non disponibile |
-| G3 Liverpool - Villarreal | 22/22 | 126 | 12 (4) | Ammonizioni e falli individuali: modello operativo non disponibile; Minuti previsti insufficienti; Baseline individuale insufficiente |
-| G3 Manchester City - AEK Athens | 22/22 | 140 | 10 (4) | Ammonizioni e falli individuali: modello operativo non disponibile |
-| G3 Paris Saint-Germain - Barcelona | 22/22 | 140 | 12 (6) | Ammonizioni e falli individuali: modello operativo non disponibile |
-| G3 Napoli - Bodø/Glimt | 22/22 | 140 | 10 (3) | Ammonizioni e falli individuali: modello operativo non disponibile |
-| G3 Stuttgart - Atlético de Madrid | 22/22 | 140 | 11 (5) | Ammonizioni e falli individuali: modello operativo non disponibile |
 | G3 Como - Manchester United | 22/22 | 0 | 7 (0) | Ammonizioni e falli individuali: modello operativo non disponibile; Riconciliazione volumi non superata; Minuti previsti insufficienti; Titolare in dubbio |
 | G3 Lille - Galatasaray | 22/22 | 63 | 6 (0) | Ammonizioni e falli individuali: modello operativo non disponibile; Riconciliazione volumi non superata; Minuti previsti insufficienti; Baseline individuale insufficiente |
-| G3 Aston Villa - Viking | 22/22 | 133 | 10 (3) | Ammonizioni e falli individuali: modello operativo non disponibile; Minuti previsti insufficienti |
+| G3 Aston Villa - Viking | 22/22 | 140 | 10 (3) | Ammonizioni e falli individuali: modello operativo non disponibile |
 | G3 Club Brugge - Lens | 22/22 | 133 | 12 (6) | Ammonizioni e falli individuali: modello operativo non disponibile; Baseline individuale insufficiente |
-| G3 Bayern München - Arsenal | 22/22 | 140 | 13 (5) | Ammonizioni e falli individuali: modello operativo non disponibile |
-| G3 Inter - Shakhtar Donetsk | 22/22 | 70 | 10 (3) | Ammonizioni e falli individuali: modello operativo non disponibile; Squadra con soli dati collettivi; Minuti previsti insufficienti |
+| G3 Bayern München - Arsenal | 22/22 | 140 | 11 (3) | Ammonizioni e falli individuali: modello operativo non disponibile |
+| G3 Inter - Shakhtar Donetsk | 22/22 | 70 | 11 (4) | Ammonizioni e falli individuali: modello operativo non disponibile; Squadra con soli dati collettivi; Minuti previsti insufficienti |
 | G3 Real Madrid - Leipzig | 22/22 | 133 | 10 (4) | Ammonizioni e falli individuali: modello operativo non disponibile; Minuti previsti insufficienti |
-| G3 Real Betis - Feyenoord | 22/22 | 133 | 12 (5) | Ammonizioni e falli individuali: modello operativo non disponibile; Baseline individuale insufficiente |
-| G3 Sporting CP - LASK | 22/22 | 119 | 12 (4) | Ammonizioni e falli individuali: modello operativo non disponibile; Identità irrisolta; Minuti previsti insufficienti; Baseline individuale insufficiente |
+| G3 Real Betis - Feyenoord | 22/22 | 133 | 13 (6) | Ammonizioni e falli individuali: modello operativo non disponibile; Baseline individuale insufficiente |
+| G3 Sporting CP - LASK | 22/22 | 126 | 12 (4) | Ammonizioni e falli individuali: modello operativo non disponibile; Identità irrisolta; Minuti previsti insufficienti; Baseline individuale insufficiente |
 | G4 Shakhtar Donetsk - Sporting CP | non disponibili | 0 | 0 (0) | Probabili formazioni non presenti per questa giornata |
 | G4 Galatasaray - Stuttgart | non disponibili | 0 | 0 (0) | Probabili formazioni non presenti per questa giornata |
 | G4 Atlético de Madrid - Bayern München | non disponibili | 0 | 0 (0) | Probabili formazioni non presenti per questa giornata |

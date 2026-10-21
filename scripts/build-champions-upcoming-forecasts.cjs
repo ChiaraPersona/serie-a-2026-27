@@ -9,7 +9,9 @@ const {zonedLocalToUtc}=require('./champions/complete-forecast-snapshots');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const OUTPUT='data/derived/champions-md03/upcoming-forecasts.json';
-const inputPath='data/derived/champions-md03/probable-individuals-v2-2026-10-20.json';
+const inputIndex=process.argv.indexOf('--individuals');
+const inputPath=inputIndex<0?'data/derived/champions-md03/probable-individuals-history-v2-2026-10-21.json':process.argv[inputIndex+1];
+if(!inputPath||!/^data\/derived\/champions-md03\/[a-z0-9-]+\.json$/.test(inputPath))throw Error('Versioned MD3 individuals required');
 const lineupPath='data/sources/champions-probable-formations-md03-2026-27.json';
 const eligible=(f,now)=>f.status==='scheduled'&&Date.parse(zonedLocalToUtc(f.date,f.kickoff,'Europe/Rome'))>now;
 async function build(){
