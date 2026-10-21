@@ -419,7 +419,7 @@ export function createPage(deps){
 
   async function appendSharedSchedina(matchday,fixtureId,host){
     if(!host||typeof host.insertAdjacentHTML!=="function")return;
-    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261020-official-seven-v2'),import('./betting.js?v=20261020-champions-official-seven-v2')]);
+    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261021-official-v1'),import('./betting.js?v=20261021-champions-official-v1')]);
     const workspace=await loadChampionsWorkspaceMd3Derived(load,matchday);
     const controller=createBettingPage({...deps,dateOnly:deps.dateOnly||(value=>String(value||"").slice(0,10))});
     const section=host.querySelector('#lettura-pronostici .rd-section-content');
@@ -454,7 +454,8 @@ export function createPage(deps){
       const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
       const fixture=catalog.fixtures.find(f=>f.fixtureId===requestedMatchId);
       const sevenOfficial=await loadDerived('champions-md03/official-individuals-seven-v2-2026-10-20.json');
-      const probableFixture=sevenOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||officialProbables.fixtures.find(f=>f.fixtureId===requestedMatchId)||probables.fixtures.find(f=>f.fixtureId===requestedMatchId);
+      const todayOfficial=await loadDerived('champions-md03/official-individuals-2026-10-21.json');
+      const probableFixture=todayOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||sevenOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||officialProbables.fixtures.find(f=>f.fixtureId===requestedMatchId)||probables.fixtures.find(f=>f.fixtureId===requestedMatchId);
       const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261020-champions-event-validation-v1');
       await mountChampionsReading({fixture:requestedCalendarFixture,prediction:fixture.forecast,profile,probableFixture,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:md3RefereeMarkup(requestedCalendarFixture,profile,branding),probableMarkup:md3ProbableMarkup(probableFixture),extend:({shell})=>appendSharedSchedina(3,requestedMatchId,shell)});
       return;

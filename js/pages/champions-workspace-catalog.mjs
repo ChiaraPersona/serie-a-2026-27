@@ -140,6 +140,10 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday,{upcoming=t
   if(seven.version!=='official-seven-v2-2026-10-20'||seven.status!=='PRELIMINARY_NOT_STATISTICALLY_VALIDATED'||seven.matches.length!==7||
     new Set(seven.matches.map(m=>m.matchId)).size!==7||seven.matches.some(m=>!sevenIds.has(m.matchId)))throw Error('Aggiornamento ufficiale delle sette gare Champions non coerente');
   for(const match of seven.matches)overrides.set(match.matchId,match);
+  const todayOfficial=await load('../derived/champions-md03/market-catalog-official-2026-10-21.json');
+  const todayIds=new Set(['12','13','14','15','16','17','18'].map(n=>'ucl-2026-27-md03-'+n));
+  if(todayOfficial.version!=='official-2026-10-21'||todayOfficial.status!=='PRELIMINARY_NOT_STATISTICALLY_VALIDATED'||todayOfficial.matches.length!==7||new Set(todayOfficial.matches.map(m=>m.matchId)).size!==7||todayOfficial.matches.some(m=>!todayIds.has(m.matchId)))throw Error('Ufficiali Champions 21 ottobre non coerenti');
+  for(const match of todayOfficial.matches)overrides.set(match.matchId,match);
   const matches=derived.matches.map(match=>overrides.get(match.matchId)||match);
   if(upcoming){
     const publication=await load('../derived/champions-md03/upcoming-forecasts.json');
@@ -147,7 +151,7 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday,{upcoming=t
     for(const match of publication.matches){
       // An official recalculation supersedes the earlier probable overlay for
       // this fixture, including saved nonstarter candidates.
-      if(sevenIds.has(match.matchId))continue;
+      if(sevenIds.has(match.matchId)||todayIds.has(match.matchId))continue;
       const index=matches.findIndex(m=>m.matchId===match.matchId);
       if(index<0)throw Error('Fixture estranea al catalogo probabili Champions');
       const previous=matches[index],ids=new Set(previous.selections.map(l=>l.selectionId));
@@ -157,9 +161,9 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday,{upcoming=t
   }
   const all=matches.flatMap(match=>match.selections);
   // The official-starter policy may remove selections after a lineup update.
-  if(!upcoming&&all.filter(leg=>leg.suggestionAnalysis?.suggested).length>derived.summary.selected+sabah.matches[0].suggestions.length+seven.summary.selected)
+  if(!upcoming&&all.filter(leg=>leg.suggestionAnalysis?.suggested).length>derived.summary.selected+sabah.matches[0].suggestions.length+seven.summary.selected+todayOfficial.summary.selected)
     throw new Error('Selezioni preliminari Champions MD3 non coerenti');
-  return {...workspace,all,derivedVersion:seven.version,
+  return {...workspace,all,derivedVersion:todayOfficial.version,
     marketCatalog:{...workspace.marketCatalog,matches,
       totals:{...workspace.marketCatalog.totals,approved:all.filter(leg=>leg.suggestionAnalysis?.suggested&&leg.qualifiedSelection).length,preliminary:all.filter(leg=>leg.suggestionAnalysis?.suggested&&!leg.qualifiedSelection).length}}};
 }
