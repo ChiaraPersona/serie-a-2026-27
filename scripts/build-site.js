@@ -61,7 +61,12 @@ for (const obsoletePage of ((teamPagesOnly || presentationOnly) ? [] : ["calenda
 const renderedPages = readingPagesOnly ? pages.filter(([,id])=>bettingPageOnly?id==='betting':md3PagesOnly?['champions','betting'].includes(id):championsPageOnly?id==='champions':readingsIndexOnly?id==="readings":["readings","champions"].includes(id)) : teamPagesOnly ? [] : pages;
 // Refresh the browser projection from the existing archive, including during a
 // presentation-only build. Never invoke the MD2 forecasting/integration builder.
-if (renderedPages.some(([,id]) => id === 'readings')) require('./build-reading-browser-data.cjs').build();
+if (renderedPages.some(([,id]) => id === 'readings')) {
+  const dayIndex = process.argv.indexOf('--matchday');
+  const matchday = dayIndex < 0 ? null : Number(process.argv[dayIndex + 1]);
+  if (matchday !== null && (!Number.isInteger(matchday) || matchday < 1 || matchday > 38)) throw Error('Giornata non valida');
+  require('./build-reading-browser-data.cjs').build({matchday});
+}
 if (renderedPages.some(([,id]) => id === 'champions')) require('./build-champions-md02-browser-data.cjs').build();
 if (renderedPages.some(([,id]) => id === 'betting')) require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-schedina-browser-data.mjs')],{cwd:root,stdio:'inherit'});
 if (renderedPages.some(([,id]) => id === 'betting')) require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-champions-md3-browser-data.mjs')],{cwd:root,stdio:'inherit'});

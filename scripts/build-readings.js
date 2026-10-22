@@ -2,6 +2,9 @@ const fs = require("fs");
 const path = require("path");
 
 const root = path.resolve(__dirname, "..");
+const matchdayIndex = process.argv.indexOf('--matchday');
+const scopedMatchday = matchdayIndex < 0 ? null : Number(process.argv[matchdayIndex + 1]);
+if (scopedMatchday !== null && (!Number.isInteger(scopedMatchday) || scopedMatchday < 1 || scopedMatchday > 38)) throw Error('Giornata non valida');
 const sourceDir = path.join(root, "data", "sources", "readings");
 const outputFile = path.join(root, "data", "normalized", "readings.json");
 const matches = JSON.parse(fs.readFileSync(path.join(root, "data", "normalized", "matches.json"), "utf8"));
@@ -39,7 +42,7 @@ const availabilityLine = teamId => {
   if (!reports.length) return `${teamName}: nessuna segnalazione presente nel monitor alla data di aggiornamento.`;
   return `${teamName}: ${reports.map(report => `${report.currentName || report.sourceName} - ${report.description}`).join("; ")}`;
 };
-const readings = files.flatMap(file => {
+let readings = files.flatMap(file => {
   const source = JSON.parse(fs.readFileSync(path.join(sourceDir, file), "utf8"));
   if (source.type !== "prototype-batch") return [source];
   return source.matchIds.map(matchId => ({
@@ -53,6 +56,8 @@ const readings = files.flatMap(file => {
     sections: emptySections()
   }));
 });
+const scopedIds = new Set(matches.filter(m => m.competition === 'serie-a' && m.matchday === scopedMatchday).map(m => m.id));
+if (scopedMatchday !== null) readings = readings.filter(r => scopedIds.has(r.matchId));
 
 for (const reading of readings) {
   if (!reading.id || !reading.matchId || !["draft", "published", "archived"].includes(reading.status)) {
@@ -116,6 +121,11 @@ for (const team of cupOpponents.teams) {
   }
 }
 
+if (scopedMatchday !== null) {
+  const previous = JSON.parse(fs.readFileSync(outputFile, 'utf8'));
+  const replacements = new Map(readings.map(r => [r.matchId, r]));
+  readings = [...previous.map(r => replacements.get(r.matchId) || r), ...readings.filter(r => !previous.some(p => p.matchId === r.matchId))];
+}
 fs.writeFileSync(outputFile, `${JSON.stringify(readings, null, 2)}\n`);
-fs.writeFileSync(cupOpponentsOutputFile, `${JSON.stringify(cupOpponents, null, 2)}\n`);
+if (scopedMatchday === null) fs.writeFileSync(cupOpponentsOutputFile, `${JSON.stringify(cupOpponents, null, 2)}\n`);
 console.log(`OK letture generate: ${readings.length}`);

@@ -20,7 +20,15 @@ export function formationMarkup(evidence){
  // Internal note: one shared pitch; narrow screens retain horizontal scrolling and lists.
  // Missing shirt numbers are displayed as an em dash.
  const pitch=`<div class="rd-pitch-scroll" tabindex="0" role="region" aria-label="Campo delle formazioni, scorrimento orizzontale"><div class="rd-pitch"><svg viewBox="0 0 1080 600" aria-hidden="true"><g fill="none" stroke="currentColor"><rect x="14" y="14" width="1052" height="572"/><path d="M540 14V586M14 170H165V430H14M1066 170H915V430H1066"/><circle cx="540" cy="300" r="70"/></g></svg>${field}</div></div>`;
- return headings+(field?pitch:'')+evidence.lineups.filter(l=>lineupPositions(l).length!==11).map(l=>`<section><h3>${esc(l.side.name)}</h3><p>Disposizione tattica non disponibile</p><ol>${l.players.map(p=>`<li>${esc(p.name)}</li>`).join('')}</ol></section>`).join('');
+ const availability=evidence.availability?`<div class="rd-lineup-head" data-md8-availability>${evidence.lineups.map(l=>{
+  const t=evidence.availability.teams.find(t=>t.teamId===l.side.id);
+  if(!t)return `<section><h3>${esc(l.side.name)}</h3><p>Disponibilità N/D.</p></section>`;
+  const name=p=>esc(p.currentName||p.sourceName||'Identità N/D')+(p.playerId?'':' (identità N/D)');
+  const list=key=>t[key]?.length?t[key].map(p=>`${name(p)}${p.description?` (${esc(p.description)})`:''}`).join('; '):'Nessuna segnalazione nello snapshot; convocazione da confermare.';
+  const ballots=t.ballots?.length?t.ballots.map(group=>group.map(p=>`${name(p)}${finite(p.probability)?` ${p.probability}%`:''}`).join(' / ')).join('; '):'Nessun ballottaggio segnalato.';
+  return `<section><h3>${esc(l.side.name)}</h3><p>Probabili scelte, da riconfermare prima della gara.</p><p><strong>Indisponibili:</strong> ${list('unavailable')}</p><p><strong>Squalificati:</strong> ${list('suspended')}</p><p><strong>In dubbio:</strong> ${list('doubtful')}</p><p><strong>Ballottaggi:</strong> ${ballots}</p></section>`;
+ }).join('')}</div>`:'';
+ return headings+(field?pitch:'')+evidence.lineups.filter(l=>lineupPositions(l).length!==11).map(l=>`<section><h3>${esc(l.side.name)}</h3><p>Disposizione tattica non disponibile</p><ol>${l.players.map(p=>`<li>${esc(p.name)}</li>`).join('')}</ol></section>`).join('')+availability;
 }
 export function playersMarkup(model,evidence){
  const players=individualPlayers(model,evidence);
