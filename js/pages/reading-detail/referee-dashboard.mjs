@@ -1,3 +1,4 @@
+import {imageSource} from '../../core/image-source.mjs';
 import {esc} from './format.mjs';
 const known=v=>typeof v==='number'&&Number.isFinite(v);
 const fmt=(v,d=1)=>known(v)?v.toLocaleString('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
@@ -10,7 +11,7 @@ function recentFor(entry,rows){
  const result={};for(const key of [...metrics.map(m=>m[0]),'directRedCards','secondYellowCards']){const values=rows.map(r=>r[key]).filter(known);result[key]={average:values.length?values.reduce((a,b)=>a+b,0)/values.length:null,n:values.length};}return result;
 }
 function averages(title,sample){return `<section class="rf-averages"><h4>${esc(title)}</h4><dl>${metrics.map(([key,label])=>`<div><dd>${fmt(sample?.[key]?.average)}</dd><dt>${label}</dt></div>`).join('')}</dl></section>`;}
-function badge(team,teams){const t=teams.find(t=>[t.name,t.officialName,t.id].some(v=>v&&v.toLocaleLowerCase('it-IT')===String(team).toLocaleLowerCase('it-IT')));const logo=t?.logo?.replace(/^\.\.\//,'');return `${logo?`<img src="${esc(logo)}" alt="" loading="lazy">`:''}<span>${esc(t?.name||team||'—')}</span>`;}
+function badge(team,teams){const t=teams.find(t=>[t.name,t.officialName,t.id].some(v=>v&&v.toLocaleLowerCase('it-IT')===String(team).toLocaleLowerCase('it-IT')));const logo=t?.logo?.replace(/^\.\.\//,'');return `${logo?`<img src="${imageSource(`${esc(logo)}`)}" alt="" loading="lazy">`:''}<span>${esc(t?.name||team||'—')}</span>`;}
 export function refereeDashboardMarkup(model,entry,teams=[]){
  const assignment=model.analysis?.match?.refereeAssignment||{},ref=assignment.referee;
  const rows=rowsFor(entry),recent=recentFor(entry,rows),season=entry?.analysis?.seasonal;

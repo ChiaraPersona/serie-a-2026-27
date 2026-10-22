@@ -1,3 +1,4 @@
+import {imageSource} from '../core/image-source.mjs';
 export function createPage(deps){
   const {esc,hero,empty,matchdayChronology,homeMatchListItem,load}=deps;
 const standingsColumns=[
@@ -18,7 +19,7 @@ const standingsColumns=[
 ];
 function standingsTable(rows,teams){
   const teamFor=row=>teams.find(team=>team.id===row.team),name=row=>row.teamName||teamFor(row)?.name||row.team;
-  const teamCell=row=>{const team=teamFor(row);return `<span class="standing-team">${team?.logo?`<span class="standing-logo"><img src="${team.logo}" alt="" onerror="this.hidden=true"></span>`:'<span class="standing-logo fallback"></span>'}<span>${esc(name(row))}</span></span>`};
+  const teamCell=row=>{const team=teamFor(row);return `<span class="standing-team">${team?.logo?`<span class="standing-logo"><img src="${imageSource(`${team.logo}`)}" alt="" onerror="this.hidden=true"></span>`:'<span class="standing-logo fallback"></span>'}<span>${esc(name(row))}</span></span>`};
   const value=(row,key,index)=>key==="position"?(row.position||index+1):key==="teamName"?name(row):row[key];
   const display=(key,current)=>current===null||current===undefined?"N/D":key==="goalDifference"&&current>0?`+${current}`:current;
   const head=standingsColumns.map((column,index)=>`<th aria-sort="none"><button class="standings-sort" type="button" data-standings-sort="${column.key}" data-column-index="${index}" data-sort-type="${column.type}" data-default-direction="${column.direction}" title="${column.title}" aria-label="Ordina per ${column.title}" aria-pressed="false">${column.label}</button></th>`).join("");

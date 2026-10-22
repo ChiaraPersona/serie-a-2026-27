@@ -1,3 +1,4 @@
+import {imageSource} from '../core/image-source.mjs';
 import {championsShirtNumber} from '../components/champions-shirt-numbers.mjs';
 import {renderLineupField} from '../components/lineup-field.mjs';
 import {isReadingPilot} from './reading-detail/view-model.mjs';
@@ -13,7 +14,7 @@ export function createPage(deps){
   const teamBadge=(teamName,branding,{showName=true}={})=>{
     const team=branding.get(teamName);
     const initials=team?.shortName||teamName.split(/\s+/).map(part=>part[0]).join("").slice(0,3).toUpperCase();
-    return `<span class="team-with-logo"><span class="team-logo"><img src="${esc(team?.logo||"")}" alt="Stemma ${esc(teamName)}" loading="lazy" onerror="this.hidden=true;this.parentElement.classList.add('fallback')"><b>${esc(initials)}</b></span>${showName?`<span class="team-name">${esc(teamName)}</span>`:""}</span>`;
+    return `<span class="team-with-logo"><span class="team-logo"><img src="${imageSource(`${esc(team?.logo||"")}`)}" alt="Stemma ${esc(teamName)}" loading="lazy" onerror="this.hidden=true;this.parentElement.classList.add('fallback')"><b>${esc(initials)}</b></span>${showName?`<span class="team-name">${esc(teamName)}</span>`:""}</span>`;
   };
 
   const refereeMetric=metric=>metric?`<strong class="${metric.highlight?"is-highlighted":""}">${esc(metric.display)}</strong>`:"N/D";
@@ -116,7 +117,7 @@ export function createPage(deps){
 
   function teamLogoDirectory(teams,squads){
     const squadIds=new Map(squads.teams.map(team=>[team.team,team.id]));
-    const logos=teams.map(team=>`<a href="champions-league.html?team=${esc(squadIds.get(team.team))}" aria-label="Apri la scheda Champions di ${esc(team.team)}" title="${esc(team.team)}"><img src="${esc(team.logo)}" alt="" loading="eager"></a>`).join("");
+    const logos=teams.map(team=>`<a href="champions-league.html?team=${esc(squadIds.get(team.team))}" aria-label="Apri la scheda Champions di ${esc(team.team)}" title="${esc(team.team)}"><img src="${imageSource(`${esc(team.logo)}`)}" alt="" loading="eager"></a>`).join("");
     return `<nav id="champions-team-directory" class="champions-team-logo-directory" aria-label="Squadre della Champions League"><div class="champions-team-logo-scroll"><div class="champions-team-logo-grid">${logos}</div></div></nav>`;
   }
 
@@ -525,7 +526,7 @@ export function createPage(deps){
     const dayButton=number=>`<button type="button" class="champions-day ${completedMatchdays.includes(number)?'is-completed':number===defaultMatchday?'is-current':'is-future'}" data-champions-day="${number}" aria-expanded="${number===defaultMatchday}" aria-controls="champions-fixtures" aria-label="${matchdayLabel(number)} · ${roundStatus(number)} · ${esc(roundRange(number))}"><span>Giornata</span><strong>${number}</strong><small>${roundStatus(number)}</small></button>`;
     const teamOptions=data.teams.map(team=>`<option value="${esc(team)}">${esc(team)}</option>`).join("");
     document.querySelector("#app").innerHTML=`<div class="champions-overview">
-      <section class="champions-hero champions-home-banner" aria-label="UEFA Champions League 2026/27"><img src="assets/images/champions-home-2026-27.png" alt="UEFA Champions League, stadio illuminato in blu e viola" width="1920" height="1080" fetchpriority="high"><div class="champions-banner-title"><h2>CHAMPIONS LEAGUE</h2><p>Stagione 2026/27</p></div></section>
+      <section class="champions-hero champions-home-banner" aria-label="UEFA Champions League 2026/27"><img src="assets/images/optimized/champions-home-2026-27-1600.webp" srcset="assets/images/optimized/champions-home-2026-27-800.webp 800w, assets/images/optimized/champions-home-2026-27-1600.webp 1600w" sizes="(max-width: 760px) calc(100vw - 24px), 1050px" alt="UEFA Champions League, stadio illuminato in blu e viola" width="1920" height="1080" fetchpriority="high"><div class="champions-banner-title"><h2>CHAMPIONS LEAGUE</h2><p>Stagione 2026/27</p></div></section>
       ${teamLogoDirectory(data.teamBranding,squads)}${roundTable(data)}
       <section class="champions-calendar" aria-labelledby="champions-calendar-title">
         <header class="champions-calendar-heading"><div><p class="eyebrow">UEFA Champions League 2026/27 · Fase campionato</p><h1 id="champions-calendar-title">Calendario</h1><p>144 partite · 36 squadre · 8 giornate. Seleziona una giornata per consultare partite e risultati.</p></div></header>

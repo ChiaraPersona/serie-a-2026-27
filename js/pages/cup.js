@@ -3,7 +3,7 @@ export function createPage(deps){
 function cupTeamSlot(match,team="Da definire"){
   const events=[...(match.scorers||[]).filter(item=>item.team===team).map(item=>({...item,type:"goal"})),...(match.bookings||[]).filter(item=>item.team===team).map(item=>({...item,type:"yellow"})),...(match.redCards||[]).filter(item=>item.team===team).map(item=>({...item,type:"red"}))].sort((a,b)=>(parseInt(a.minute)||0)-(parseInt(b.minute)||0));
   const eventLabel=event=>event.type==="goal"?`Gol di ${event.player} al ${event.minute}`:event.type==="yellow"?`Ammonizione di ${event.player} al ${event.minute}`:`Espulsione di ${event.player} al ${event.minute}`;
-  const eventIcon=event=>event.type==="goal"?'<img src="assets/images/icons/goal-ball.jpg" alt="" aria-hidden="true">':`<i class="cup-card-symbol is-${event.type}" aria-hidden="true"></i>`;
+  const eventIcon=event=>event.type==="goal"?'<img src="assets/images/optimized/goal-ball.webp" alt="" aria-hidden="true">':`<i class="cup-card-symbol is-${event.type}" aria-hidden="true"></i>`;
   const eventRows=events.map(event=>`<span class="cup-team-event is-${event.type}" aria-label="${esc(eventLabel(event))}">${eventIcon(event)}<span>${esc(event.player)} <strong>${esc(event.minute)}${event.detail?` · ${esc(event.detail)}`:""}</strong></span></span>`).join("");
   return `<span class="cup-team-slot${eventRows?" has-events":""}"><i class="cup-team-dot" aria-hidden="true"></i><span class="cup-team-name">${esc(team)}</span>${eventRows?`<span class="cup-team-events">${eventRows}</span>`:""}</span>`;
 }

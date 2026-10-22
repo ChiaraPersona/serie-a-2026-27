@@ -1,9 +1,10 @@
+import {imageSource} from '../core/image-source.mjs';
 export function createPage(deps){
   const {dateOnly,esc,hero,scheduleChronology,load}=deps;
   const competitionMarks={"champions-league":"UCL","europa-league":"UEL","conference-league":"UECL"};
   const statusLabels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
   const normalize=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("it").replace(/[^a-z0-9]+/g," ").trim();
-  const teamNav=(teams,selected="")=>`<nav class="team-nav" aria-label="Calendari delle squadre"><span>Calendario per squadra</span><div>${teams.map(team=>`<a class="team-nav-link ${team.id===selected?'active':''}" data-team="${team.id}" href="squadra.html?team=${team.id}" aria-label="Calendario ${esc(team.name)}" title="${esc(team.name)}"><img src="${esc(team.logo)}" alt="" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><b hidden>${esc(team.shortName.slice(0,2).toUpperCase())}</b></a>`).join("")}</div></nav>`;
+  const teamNav=(teams,selected="")=>`<nav class="team-nav" aria-label="Calendari delle squadre"><span>Calendario per squadra</span><div>${teams.map(team=>`<a class="team-nav-link ${team.id===selected?'active':''}" data-team="${team.id}" href="squadra.html?team=${team.id}" aria-label="Calendario ${esc(team.name)}" title="${esc(team.name)}"><img src="${imageSource(`${esc(team.logo)}`)}" alt="" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><b hidden>${esc(team.shortName.slice(0,2).toUpperCase())}</b></a>`).join("")}</div></nav>`;
   function empty(text){return `<div class="empty">${text}</div>`}
   const scheduleLabel=match=>match.date?`${dateOnly(match.date)} · ${match.kickoff||"orario da definire"}`:"Data da definire";
   const teamNameIndex=teams=>new Map(teams.flatMap(team=>[team.name,team.officialName,team.shortName,team.id].filter(Boolean).map(name=>[normalize(name),team.id])));
@@ -31,7 +32,7 @@ export function createPage(deps){
   };
   const calendarClub=(name,teamId,teams,currentTeamId)=>{
     const club=teams.find(team=>team.id===teamId),current=teamId===currentTeamId;
-    return `<span class="team-calendar-club${current?" is-current":""}">${club?`<img src="${esc(club.logo)}" alt="" loading="lazy">`:`<i class="team-calendar-opponent-mark" aria-hidden="true">${esc(String(name).split(/\s+/).map(part=>part[0]).join("").slice(0,3).toUpperCase())}</i>`}<span>${esc(name)}</span></span>`;
+    return `<span class="team-calendar-club${current?" is-current":""}">${club?`<img src="${imageSource(`${esc(club.logo)}`)}" alt="" loading="lazy">`:`<i class="team-calendar-opponent-mark" aria-hidden="true">${esc(String(name).split(/\s+/).map(part=>part[0]).join("").slice(0,3).toUpperCase())}</i>`}<span>${esc(name)}</span></span>`;
   };
   const appointmentRow=(match,team,teams,european)=>{
     const isLeague=match.calendarType==="league",isEurope=match.calendarType==="europe",isCup=match.calendarType==="cup";
@@ -55,7 +56,7 @@ export function createPage(deps){
     if(page==="team"){
       const [europe,cup]=await Promise.all([load("european-fixtures-2026-27.json"),load("coppa-italia-2026-27.json")]);
       const teamId=new URLSearchParams(location.search).get("team"),team=teams.find(t=>t.id===teamId)||teams[0],calendar=personalCalendar(team,league,europe,cup,teams);
-      html=hero("Calendario squadra",team.name,"Serie A, Champions League, Europa League, Conference League e Coppa Italia in un'unica sequenza cronologica.",`<div class="team-hero-logo"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"></div>`)+teamNav(teams,team.id)+calendar.html;
+      html=hero("Calendario squadra",team.name,"Serie A, Champions League, Europa League, Conference League e Coppa Italia in un'unica sequenza cronologica.",`<div class="team-hero-logo"><img src="${imageSource(`${team.logo}`)}" alt="Stemma ${esc(team.name)}"></div>`)+teamNav(teams,team.id)+calendar.html;
       document.title=`${team.name} | Calendario 2026/27`;document.querySelector("#app").innerHTML=html;return;
     }
     document.querySelector("#app").innerHTML=html;
