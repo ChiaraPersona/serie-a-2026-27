@@ -29,6 +29,19 @@ export function createDataService(release,{deduplicate=false}={}){
       return globalThis.officialStarterPolicy.filter(data);
     },
     loadGenerated:path=>fetchJson(`data/generated/${path}`,path),
+    loadReading:async id=>{
+      const registry=await fetchJson(`${DATA}official-starter-registry.json`,'official starters');
+      globalThis.officialStarterPolicy.configure(registry);
+      const data=await fetchJson(`data/generated/readings/matches/${encodeURIComponent(id)}.json`);
+      const archived=new Set(data.finishedIds);
+      data.predictionDataset=globalThis.officialStarterPolicy.filter(data.predictionDataset,undefined,archived);
+      data.forecastDataset=data.forecastDataset?globalThis.officialStarterPolicy.filter(data.forecastDataset,undefined,Number(data.matches.find(m=>m.id===id)?.matchday)===1?undefined:archived):null;
+      return data;
+    },
+    loadReadingCatalog:async id=>{
+      const data=await fetchJson(`data/generated/readings/catalogs/${encodeURIComponent(id)}.json`);
+      return data.forecastDataset?globalThis.officialStarterPolicy.filter(data.forecastDataset,undefined,Number(data.forecastDataset.matchday)===1?undefined:new Set(data.finishedIds)):null;
+    },
     loadDerived:path=>{if(!/^champions-md03\/[a-z0-9-]+\.json$/.test(path))throw new Error('Percorso derivato non valido');return fetchJson(`data/derived/${path}`,path)},
     loadTeamDirectory:()=>fetchJson("data/teams/index.json","data/teams/index.json"),
     loadPlayerLeaderboards:()=>fetchJson("data/teams/player-leaderboards.json","data/teams/player-leaderboards.json"),

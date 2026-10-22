@@ -13,7 +13,7 @@ const mainApp = fs.readdirSync(path.join(root, "js"), { recursive: true })
   .filter(file => file.endsWith(".js"))
   .map(file => fs.readFileSync(path.join(root, "js", file), "utf8"))
   .join("\n");
-const styles = ["styles", "base", "layout", "components", "home", "matches", "team", "players", "fantasy", "responsive"]
+const styles = ["styles", "base", "layout", "components", "home", "matches", "team", "players", "responsive"]
   .map(name => fs.readFileSync(path.join(root, `css/${name}.css`), "utf8"))
   .join("\n");
 const teamStatsShell = fs.readFileSync(path.join(root, "statistiche-squadre.html"), "utf8");

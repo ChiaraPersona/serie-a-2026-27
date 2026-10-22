@@ -5,6 +5,7 @@ const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForM
 
 const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=${encodeURIComponent(release)}`);
 const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=${encodeURIComponent(release)}`);
+const {settleMd3Leg}=await import(`./champions-md3-results.mjs?v=${encodeURIComponent(release)}`);
 
 export function createPage(deps){
   const {esc,dateOnly,hero,load,loadGenerated}=deps;
@@ -27,7 +28,7 @@ export function createPage(deps){
   const visualOrder=(rows,getLeg=row=>row)=>compactForecasts?[...rows].sort((a,b)=>presentationRank(getLeg(a))-presentationRank(getLeg(b))):rows;
   const manualChampionsLegs=(legs,match)=>legs.filter(leg=>!leg.suggestionAnalysis?.suggested&&(leg.context?.matchday!==3||Number.isFinite(leg.betSelection?.evaluation?.modelProbabilityPct)));
   let recordedOutcomes=[];
-  const settleLeg=(leg,match)=>settleArchivedLeg(leg,match,recordedOutcomes);
+  const settleLeg=(leg,match)=>match?.id?.startsWith('ucl-2026-27-md03-')?settleMd3Leg(leg,match):settleArchivedLeg(leg,match,recordedOutcomes);
   const pct=value=>Number(value).toLocaleString("it-IT",Number(value)>0&&Number(value)<.01?{minimumFractionDigits:4,maximumFractionDigits:6}:{minimumFractionDigits:2,maximumFractionDigits:2});
   const odds=value=>Number(value).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2});
   const metric=(value,formatter,suffix="")=>Number.isFinite(value)?`${formatter(value)}${suffix}`:"N/D";

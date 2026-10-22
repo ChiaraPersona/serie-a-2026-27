@@ -1,8 +1,10 @@
 import {championsShirtNumber} from '../../components/champions-shirt-numbers.mjs';
 import {shirtNumberAt} from './shirt-numbers.mjs';
+import {projectedArtifact} from './projected-artifacts.mjs';
 import {connectBenchForecasts,connectStarterScenarios} from './bench-contract.mjs?v=20261019-starter-scenario-v1';
 // Read existing public artifacts only; no builder, importer, or model dependency.
 export async function readArtifact(path){
+ const projected=projectedArtifact(path);if(projected)return projected.value;
  const response=await fetch(new URL('../../../'+path,import.meta.url));
  if(!response.ok)throw new Error(`Dati non disponibili: ${path}`);
  return response.json();

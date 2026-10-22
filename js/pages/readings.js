@@ -1,4 +1,5 @@
 import {renderLineupField} from "../components/lineup-field.mjs";
+import {setReadingArtifacts} from './reading-detail/projected-artifacts.mjs';
 import {isReadingPilot} from './reading-detail/view-model.mjs';
 import {cardType} from './disciplinary.mjs';
 import {sharedForecastsForMatch} from './shared-forecast-contract.mjs';
@@ -79,7 +80,7 @@ export function renderSharedForecasts({marketCatalog,match}={}){
 }
 
 export function createPage(deps){
-  const {esc,contrastInk,dateOnly,scheduleLabel,scheduleChronology,teamLogo,empty,hero,competitionLabel,load,loadGenerated,loadObjectiveProfiles,loadTeamDirectory}=deps;
+  const {esc,contrastInk,dateOnly,scheduleLabel,scheduleChronology,teamLogo,empty,hero,competitionLabel,loadGenerated,loadReading,loadReadingCatalog}=deps;
 const readingModules=[
   ["context","01","Contesto e posta in gioco","Classifica, obiettivi stagionali, momento e peso della partita."],
   ["form","02","Forma e numeri","Rendimento recente, casa/trasferta e indicatori con campione dichiarato."],
@@ -202,7 +203,11 @@ function renderTacticalBaselines(match,dataset,teams){
   async function render(){
     const page="readings",requestedMatchId=new URLSearchParams(location.search).get("match");
     const requestedMatchday=Number(requestedMatchId?.match(/-md-(\d{2})$/)?.[1]),forecastFile=requestedMatchday===1?"schedina.json":requestedMatchday?`schedina-md${String(requestedMatchday).padStart(2,"0")}.json`:null;
-    const [teams,matches,readings,objectiveProfiles,teamDirectory,teamStyleProfiles,predictionDataset,headToHeadData,refereeProfiles,forecastDataset]=await Promise.all([load("teams.json"),load("matches.json"),load("readings.json"),loadObjectiveProfiles(),loadTeamDirectory(),load("team-style-profiles.json"),load("predictions.json"),loadGenerated(`head-to-head/${requestedMatchId?"first-leg-2026-27.json":"first-leg-2026-27-summary.json"}`),requestedMatchId?loadGenerated("reading-referee-profiles-2025-26.json"):Promise.resolve(null),forecastFile?load(forecastFile).catch(()=>null):Promise.resolve(null)]);
+    // The directory never needs forecasts, rosters, events or historical archives.
+    const index=await loadGenerated('readings/index.json');
+    const payload=requestedMatchId&&index.fixtureIds.includes(requestedMatchId)?await loadReading(requestedMatchId):index;
+    const {teams,matches,readings=[],objectiveProfiles=null,teamDirectory=null,teamStyleProfiles=null,predictionDataset=null,headToHeadData=null,refereeProfiles=null,forecastDataset=null}=payload;
+    setReadingArtifacts(payload.artifacts||null);
     const league=matches.filter(m=>m.competition==="serie-a");
     const allTeams=teams;
     let html="",activeReading=null,activeReadingMatch=null,activePrediction=null;
@@ -247,7 +252,10 @@ function renderTacticalBaselines(match,dataset,teams){
     if(activeReadingMatch&&publishedReadingForecasts(forecastDataset?.marketCatalog,activeReadingMatch.id,activeReadingMatch).length){
       const context={competition:'serie-a',season:'2026-27',matchday:requestedMatchday};
       const store=createPersonalBetslipStore();personalReadingStore=store;store.setContext(context);
-      const latest=(forecastDataset?.marketCatalog?.matches||[]).flatMap(m=>sharedForecastsForMatch(forecastDataset.marketCatalog,m.matchId)).map(leg=>({...leg,context}));
+      // Reconcile saved selections from other fixtures only when that bucket needs them.
+      const savedIds=[...new Set(store.getSnapshot().selections.map(l=>l.matchId||l.betSelection?.identity?.matchId).filter(id=>id&&id!==activeReadingMatch.id&&index.fixtureIds.includes(id)))];
+      const savedCatalogs=await Promise.all(savedIds.map(id=>loadReadingCatalog(id)));
+      const latest=[forecastDataset,...savedCatalogs].flatMap(dataset=>(dataset?.marketCatalog?.matches||[]).flatMap(m=>sharedForecastsForMatch(dataset.marketCatalog,m.matchId))).map(leg=>({...leg,context}));
       store.reconcile(latest);
       if(!finishReading){const content=document.querySelector('[data-reading-forecast-content]');if(content)installForecasts({competition:'serie-a',fixture:activeReadingMatch,forecasts:publishedReadingForecasts(forecastDataset.marketCatalog,activeReadingMatch.id,activeReadingMatch)},content,document.querySelector('#app'),store);}
     }

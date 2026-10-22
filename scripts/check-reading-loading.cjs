@@ -23,6 +23,29 @@ try{for(const width of [1440,390])for(const id of ['', 'fiorentina-como-2026-27-
  const key=`${id||'index'}-${width}`;fs.writeFileSync(path.join(out,`${phase}-${key}.html`),html);await page.screenshot({path:path.join(out,`${phase}-${key}.png`),fullPage:true});
  if(phase==='after'){const baseline=JSON.parse(fs.readFileSync(path.join(out,'before.json'))).find(r=>r.key===key);assert.equal(text,baseline.text,`content changed ${key}`);}
  results.push({key,width,id,text,jsonBytes:requests.reduce((n,r)=>n+r.bytes,0),requests,errors});await page.close();
-}fs.writeFileSync(path.join(out,phase+'.json'),JSON.stringify(results,null,2));console.log(results.map(({key,jsonBytes})=>({key,jsonBytes})));}finally{await browser.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});
+}
+if(phase==='after'){
+ const page=await browser.newPage();const origin=`http://127.0.0.1:${server.address().port}`;
+ await page.goto(origin+'/lettura.html?match=milan-atalanta-2026-27-md-07');await page.waitForSelector('.rd-shell');
+ const seed=await page.evaluate(async()=>{
+  const {createPersonalBetslipStore}=await import('/js/pages/personal-betslip-store.mjs');
+  const {sharedForecastsForMatch}=await import('/js/pages/shared-forecast-contract.mjs');
+  const {createDataService}=await import('/js/services/data-service.js');
+  const data=await createDataService('saved-test').loadReadingCatalog('milan-atalanta-2026-27-md-07');
+  const context={competition:'serie-a',season:'2026-27',matchday:7},store=createPersonalBetslipStore();store.setContext(context);
+  for(const leg of sharedForecastsForMatch(data.marketCatalog,'milan-atalanta-2026-27-md-07')){store.add({...leg,context});if(store.getSnapshot().selections.length)return store.getSnapshot().selections[0].selectionId;}
+ });assert(seed,'saved selection seed');
+ const requested=[];page.on('request',r=>requested.push(new URL(r.url()).pathname));
+ await page.goto(origin+'/lettura.html?match=fiorentina-como-2026-27-md-07');await page.waitForSelector('.rd-shell');
+ assert(requested.includes('/data/generated/readings/catalogs/milan-atalanta-2026-27-md-07.json'));
+ const stored=await page.evaluate(async()=>{const {createPersonalBetslipStore}=await import('/js/pages/personal-betslip-store.mjs');const s=createPersonalBetslipStore();s.setContext({competition:'serie-a',season:'2026-27',matchday:7});return s.getSnapshot().selections});
+ assert.equal(stored.find(l=>l.selectionId===seed)?.dataStatus,'CURRENT');
+ for(const filter of ['bench','starter']){const button=page.locator(`[data-player-lineup-filter="${filter}"]`);await button.click();assert.equal(await button.getAttribute('aria-pressed'),'true');}
+ const player=page.locator('[data-player-card]:visible').first();await player.locator('summary').click();assert.notEqual(await player.getAttribute('open'),null);
+ assert.equal(await page.locator('[data-rd-pick]:not([disabled])').count(),0,'completed fixture must remain read-only');
+ await page.locator('.rd-slip-trigger').click();assert(await page.locator('dialog.rd-slip').isVisible());
+ await page.close();
+}
+fs.writeFileSync(path.join(out,phase+'.json'),JSON.stringify(results,null,2));console.log(results.map(({key,jsonBytes})=>({key,jsonBytes})));}finally{await browser.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});
 
 

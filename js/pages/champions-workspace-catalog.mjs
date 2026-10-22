@@ -2,6 +2,7 @@ import {createChampionsSelection} from './champions-market-ui.mjs';
 import {md3IndividualMarkets,md3IndividualCandidates} from './champions-md3-individual-markets.mjs';
 import {championsAuditDisplay} from './champions-audit-display.mjs';
 import {hasVerifiedPlayableQuote} from './shared-forecast-contract.mjs';
+import {md3ResultMatch,settleMd3Leg} from './champions-md3-results.mjs';
 
 const familyLabels={result:'Risultato', 'double-chance':'Doppia chance',goals:'Gol',corners:'Corner',shots:'Tiri','team-shots':'Tiri squadra','team-sot':'SOT squadra','team-corners':'Corner squadra'};
 const finite=value=>value!=null&&Number.isFinite(value);
@@ -159,11 +160,15 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday,{upcoming=t
       matches[index]={...previous,selections:previous.selections.concat(match.selections),suggestions:previous.suggestions.concat(match.suggestions),forecastCoverage:match.forecastCoverage};
     }
   }
+  for(const match of matches){
+    const fixture=workspace.fixtures.find(f=>f.id===match.matchId);
+    match.selections=match.selections.map(leg=>({...leg,settlement:settleMd3Leg(leg,fixture)}));
+  }
   const all=matches.flatMap(match=>match.selections);
   // The official-starter policy may remove selections after a lineup update.
   if(!upcoming&&all.filter(leg=>leg.suggestionAnalysis?.suggested).length>derived.summary.selected+sabah.matches[0].suggestions.length+seven.summary.selected+todayOfficial.summary.selected)
     throw new Error('Selezioni preliminari Champions MD3 non coerenti');
-  return {...workspace,all,derivedVersion:todayOfficial.version,
+  return {...workspace,fixtures:workspace.fixtures.map(md3ResultMatch),all,derivedVersion:todayOfficial.version,
     marketCatalog:{...workspace.marketCatalog,matches,
       totals:{...workspace.marketCatalog.totals,approved:all.filter(leg=>leg.suggestionAnalysis?.suggested&&leg.qualifiedSelection).length,preliminary:all.filter(leg=>leg.suggestionAnalysis?.suggested&&!leg.qualifiedSelection).length}}};
 }

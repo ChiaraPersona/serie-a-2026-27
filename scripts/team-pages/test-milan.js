@@ -6,7 +6,7 @@ const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "
 const generated = read("data/generated/team-pages/milan-squad.json");
 const team = read("data/teams/milan.json");
 const interfaceSource = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
-const stylesSource = ["styles", "base", "layout", "components", "home", "matches", "team", "players", "fantasy", "responsive"]
+const stylesSource = ["styles", "base", "layout", "components", "home", "matches", "team", "players", "responsive"]
   .map(name => fs.readFileSync(path.join(root, `css/${name}.css`), "utf8"))
   .join("\n");
 const allowedStatuses = new Set(["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"]);
