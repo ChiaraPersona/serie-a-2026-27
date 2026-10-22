@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createDataService} from '../js/services/data-service.js';
+import {createPage} from '../js/pages/betting.js';
 const read=name=>JSON.parse(fs.readFileSync('data/normalized/'+name,'utf8'));
 const requests=[];
 const oldFetch=globalThis.fetch;
@@ -34,5 +35,9 @@ try{
   await assert.rejects(retry.loadGenerated('retry.json'),/temporary/);
   assert.deepEqual(await retry.loadGenerated('retry.json'),{ok:true});
   assert.equal(attempts,2);
+  let loads=0;
+  globalThis.location={search:'?competizione=champions&giornata=99'};
+  await assert.rejects(createPage({load:async()=>{loads++;throw Error('unexpected load')}}).render(),/Giornata Champions non disponibile/);
+  assert.equal(loads,0,'Invalid Champions round fetched data before validation');
   console.log('PASS scoped cache: concurrent deduplication, fresh official registry per view, retry, archived contracts, MD5/6/7 projections and 10 index cards');
 }finally{globalThis.fetch=oldFetch;}

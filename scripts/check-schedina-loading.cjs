@@ -26,6 +26,7 @@ const snapshot=page=>page.locator('#app').evaluate(n=>({html:n.innerHTML,text:n.
     let cases=queries.map(query=>({query,width:1440}));
     cases.push(...['','?giornata=5','?giornata=7','?competizione=champions&giornata=2','?competizione=champions&giornata=3'].map(query=>({query,width:390})));
     if(process.argv.includes('--interactive-only'))cases=[1440,390].map(width=>({query:'?giornata=7',width,simulateUpcoming:true}));
+    if(process.argv.includes('--fallback-only'))cases=[{query:'?giornata=7',width:1440,simulateUpcoming:true,simulateFallback:true}];
     for(const [i,test] of cases.entries()){
       const pair=[];
       for(const baseline of [true,false]){
@@ -43,14 +44,20 @@ const snapshot=page=>page.locator('#app').evaluate(n=>({html:n.innerHTML,text:n.
             fixture.status='scheduled';fixture.score=null;
             await page.route('**/data/normalized/matches.json*',r=>r.fulfill({contentType:'application/json',body:JSON.stringify(matches)}));
           }
+          if(test.simulateFallback){
+            const day=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/schedina-md07.json')));
+            day.marketCatalog.matches.find(m=>m.matchId==='bologna-inter-2026-27-md-07').selections=[];
+            await page.route('**/data/normalized/schedina-md07.json*',r=>r.fulfill({contentType:'application/json',body:JSON.stringify(day)}));
+          }
           if(baseline)for(const [route,file] of [['**/js/pages/betting.js*','betting.js'],['**/js/services/data-service.js*','data-service.js'],['**/js/core/app.js*','app.js']]){
             await page.route(route,r=>r.fulfill({contentType:'text/javascript',body:fs.readFileSync(path.join(out,'baseline',file))}));
           }
           const navigate=async()=>{await page.goto(base+'/schedina.html'+test.query,{timeout:90000});await page.waitForSelector(test.query?'#app .betting-round-page':'#app .betting-archive',{timeout:90000});await page.waitForLoadState('networkidle');};
           await navigate();assert.deepEqual(errors,[],test.query+' errors');
           const state=await snapshot(page),initialUrls=urls.slice();
-          const image=await page.screenshot({path:path.join(out,`${test.simulateUpcoming?'interactive-':''}${i}-${test.width}-${baseline?'before':'after'}.png`),animations:'disabled'});
+          const image=await page.screenshot({path:path.join(out,`${test.simulateFallback?'fallback-':test.simulateUpcoming?'interactive-':''}${i}-${test.width}-${baseline?'before':'after'}.png`),animations:'disabled'});
           if(!baseline){const counts=new Map();for(const u of initialUrls)counts.set(u,(counts.get(u)||0)+1);assert([...counts.values()].every(n=>n===1),'Duplicate JSON request: '+test.query);}
+          if(!baseline&&test.simulateFallback)assert(initialUrls.includes('data/normalized/predictions-md07.json'));
           // Same disclosure and open-all actions, including MyCombo/archive details.
           await page.locator('#app details > summary').evaluateAll(nodes=>nodes.forEach(n=>n.click()));
           const openAll=page.locator('[data-match-open-all]').first();if(await openAll.count())await openAll.click();
@@ -66,7 +73,9 @@ const snapshot=page=>page.locator('#app').evaluate(n=>({html:n.innerHTML,text:n.
             await navigate();
             restored=await page.locator('[data-personal-content]').innerText();assert.equal(restored,selected,'Saved selection lost on reload');
             assert(await page.locator(`[data-personal-pick="${id}"][aria-pressed="true"]`).count());
-            await page.locator('[data-personal-remove]').first().click({force:true});
+            // On mobile the restored personal panel starts closed.
+            if(!await page.locator('[data-personal-remove]').first().isVisible())await page.locator('.personal-betslip-trigger').click();
+            await page.locator('[data-personal-remove]').first().click();
             assert.equal(await page.locator('[data-personal-remove]').count(),0);
             persistence='add, restore on reload, remove: PASS';
           }
@@ -81,7 +90,7 @@ const snapshot=page=>page.locator('#app').evaluate(n=>({html:n.innerHTML,text:n.
       const a=PNG.sync.read(pair[0].image),b=PNG.sync.read(pair[1].image);
       assert.equal(pixelmatch(a.data,b.data,null,a.width,a.height,{threshold:0.1}),0,test.query+' visual difference');
       results.push({...test,before:{...pair[0].weight,requests:pair[0].urls.length},after:{...pair[1].weight,requests:pair[1].urls.length},resources:pair[1].urls,persistence:pair[1].persistence,dom:'IDENTICAL',visualDifferences:0,overflow:pair[1].state.overflow});
-      fs.writeFileSync(path.join(out,test.simulateUpcoming?'interactive-audit.json':'audit.json'),JSON.stringify({results,fontComparison:'External fonts blocked equally',visualThreshold:0.1},null,2)+'\n');
+      fs.writeFileSync(path.join(out,test.simulateFallback?'fallback-audit.json':test.simulateUpcoming?'interactive-audit.json':'audit.json'),JSON.stringify({results,fontComparison:'External fonts blocked equally',visualThreshold:0.1},null,2)+'\n');
       console.log('PASS',test.query||'index',test.width,JSON.stringify(results.at(-1)));
     }
   }finally{await browser?.close();await new Promise(r=>server.close(r))}

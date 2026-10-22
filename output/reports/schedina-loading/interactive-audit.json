@@ -25,6 +25,32 @@
       "dom": "IDENTICAL",
       "visualDifferences": 0,
       "overflow": false
+    },
+    {
+      "query": "?giornata=7",
+      "width": 390,
+      "simulateUpcoming": true,
+      "before": {
+        "raw": 67810233,
+        "gzip": 4811316,
+        "requests": 35
+      },
+      "after": {
+        "raw": 16477690,
+        "gzip": 894584,
+        "requests": 5
+      },
+      "resources": [
+        "data/normalized/official-starter-registry.json",
+        "data/normalized/schedina-md07.json",
+        "data/normalized/matches.json",
+        "data/normalized/card-settlement-records.json",
+        "data/normalized/teams.json"
+      ],
+      "persistence": "add, restore on reload, remove: PASS",
+      "dom": "IDENTICAL",
+      "visualDifferences": 0,
+      "overflow": false
     }
   ],
   "fontComparison": "External fonts blocked equally",
