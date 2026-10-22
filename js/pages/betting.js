@@ -1,11 +1,11 @@
 const release=new URL(import.meta.url).searchParams.get("v")||"development";
-const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=${encodeURIComponent(release)}`);
-const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=${encodeURIComponent(release)}`);
-const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast}=await import(`./shared-forecast-contract.mjs?v=${encodeURIComponent(release)}`);
+const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=20261022-assets-v1`);
+const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261022-assets-v1`);
+const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast}=await import(`./shared-forecast-contract.mjs?v=20261022-assets-v1`);
 
-const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=${encodeURIComponent(release)}`);
-const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=${encodeURIComponent(release)}`);
-const {settleMd3Leg}=await import(`./champions-md3-results.mjs?v=${encodeURIComponent(release)}`);
+const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=20261022-assets-v1`);
+const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=20261022-assets-v1`);
+const {settleMd3Leg}=await import(`./champions-md3-results.mjs?v=20261022-assets-v1`);
 
 export function createPage(deps){
   const {esc,dateOnly,hero,load,loadGenerated}=deps;
@@ -451,7 +451,7 @@ export function createPage(deps){
     const [champions,championsMd02Operational,md1,md2,md3,md4,md5,md6,md7,matches,audit]=await Promise.all([load("schedina-champions-md01.json"),load("schedina-champions-md02.json"),load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("schedina-md04.json"),load("schedina-md05.json"),load("schedina-md06.json"),load("schedina-md07.json"),load("matches.json"),load("champions-md02-audit-display.json")]);
     const championsMd02=championsAuditDisplay(championsMd02Operational,audit);
     const matchById=new Map((Array.isArray(matches)?matches:matches.matches||[]).map(match=>[match.id,match]));
-    const {settleMd3}=await import("./champions-md3-approved.mjs");
+    const {settleMd3}=await import("./champions-md3-approved.mjs?v=20261022-assets-v1");
     const md3Workspace=await loadChampionsWorkspaceMd3Derived(load,3);
     const championsMd03={...settleMd3({...md3Workspace.source,slips:[{legs:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).map(leg=>({...leg,fixtureId:leg.matchId}))}]},{fixtures:md3Workspace.fixtures}),availableForecasts:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).length};
     return hero("Archivio · Stagione 2026/27","Schedina","Le schedine e le MyCombo sono raccolte separatamente giornata per giornata.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>Le card blu raccolgono la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${championsArchiveCard(championsMd02,2)}${championsArchiveCard(championsMd03,3)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}${archiveCard(md5,5,matchById)}${archiveCard(md6,6,matchById)}${archiveCard(md7,7,matchById)}</div></section>`;
@@ -466,7 +466,7 @@ export function createPage(deps){
     if(competition==="champions"){
       const number=Number(matchday||1);
       if(![1,2,3].includes(number))throw new Error("Giornata Champions non disponibile");
-      const [workspace,outcomes]=await Promise.all([number===3?load("schedina-champions-md03-ui.json").then(async data=>(await import('./champions-md3-browser-workspace.mjs')).restoreMd3Workspace(data)):loadChampionsWorkspaceMd3Derived(load,number),load("card-settlement-records.json")]);
+      const [workspace,outcomes]=await Promise.all([number===3?load("schedina-champions-md03-ui.json").then(async data=>(await import('./champions-md3-browser-workspace.mjs?v=20261022-assets-v1')).restoreMd3Workspace(data)):loadChampionsWorkspaceMd3Derived(load,number),load("card-settlement-records.json")]);
       recordedOutcomes=outcomes.records;
       document.querySelector("#app").innerHTML=hero(`UEFA Champions League · ${number}ª giornata`,"Schedine",number===3?"Pronostici aggiornati con le formazioni probabili e la panchina provvisoria, secondo i criteri condivisi con la Serie A.":"Pronostici e risultati originali archiviati, in sola consultazione.")+`<nav class="betting-round-back"><a href="schedina.html">← Tutte le giornate</a><a href="champions-league.html">Letture Champions →</a></nav>`+championsWorkspaceMarkup(workspace);
       mountChampionsWorkspace(workspace);

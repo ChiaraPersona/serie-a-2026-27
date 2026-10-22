@@ -1,4 +1,4 @@
-import {imageSource} from '../core/image-source.mjs';
+import {imageSource} from '../core/image-source.mjs?v=20261022-assets-v1';
 export function createPage(deps){
   const {esc,hero,empty,matchdayChronology,homeMatchListItem,load}=deps;
 const standingsColumns=[

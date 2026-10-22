@@ -1,5 +1,5 @@
-import {esc} from './reading-detail/format.mjs';
-import {renderLineupField} from '../components/lineup-field.mjs';
+import {esc} from './reading-detail/format.mjs?v=20261022-assets-v1';
+import {renderLineupField} from '../components/lineup-field.mjs?v=20261022-assets-v1';
 const number=v=>Number.isFinite(v)?v.toLocaleString('it-IT',{maximumFractionDigits:2}):'—';
 const pct=v=>Number.isFinite(v)?(v*100).toLocaleString('it-IT',{maximumFractionDigits:1})+'%':'—';
 const roles={goalkeeper:'Portiere',defender:'Difensore',midfielder:'Centrocampista',forward:'Attaccante'};

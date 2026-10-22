@@ -1,5 +1,5 @@
-import {createReadingView} from './view-model.mjs';
-import {publishedReadingForecasts} from './forecasts.mjs?v=20261019-compact-all-v1';
+import {createReadingView} from './view-model.mjs?v=20261022-assets-v1';
+import {publishedReadingForecasts} from './forecasts.mjs?v=20261022-assets-v1';
 
 export function adaptSerieAReading({match,teams,teamDirectory,prediction,marketCatalog,formation,analysis=null,sources=null}){
   const side=id=>{

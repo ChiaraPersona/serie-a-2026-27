@@ -1,4 +1,4 @@
-import {esc} from './reading-detail/format.mjs';
+import {esc} from './reading-detail/format.mjs?v=20261022-assets-v1';
 export const md3CatalogMarkup=fixture=>`<section class="champions-sisal-catalog" data-md3-fixture="${esc(fixture.fixtureId)}"><h3>Mercati collettivi · preliminare</h3><p>Le quote possono essere selezionate manualmente. Le proposte riprendono solo il verdetto della preview; non sono una Schedina definitiva.</p><div data-champions-market-root data-fixture-id="${esc(fixture.fixtureId)}"></div></section>`;
 const value=v=>typeof v==='number'&&Number.isFinite(v)?v.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
 export function md3ForecastMarkup(fixture){

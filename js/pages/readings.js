@@ -1,10 +1,10 @@
-import {renderLineupField} from "../components/lineup-field.mjs";
-import {setReadingArtifacts} from './reading-detail/projected-artifacts.mjs';
-import {isReadingPilot} from './reading-detail/view-model.mjs';
-import {cardType} from './disciplinary.mjs';
-import {sharedForecastsForMatch} from './shared-forecast-contract.mjs';
-import {compactForecastMarkup,publishedReadingForecasts,installForecasts} from './reading-detail/forecasts.mjs?v=20261019-compact-all-v1';
-import {createPersonalBetslipStore} from './personal-betslip-store.mjs';
+import {renderLineupField} from "../components/lineup-field.mjs?v=20261022-assets-v1";
+import {setReadingArtifacts} from './reading-detail/projected-artifacts.mjs?v=20261022-assets-v1';
+import {isReadingPilot} from './reading-detail/view-model.mjs?v=20261022-assets-v1';
+import {cardType} from './disciplinary.mjs?v=20261022-assets-v1';
+import {sharedForecastsForMatch} from './shared-forecast-contract.mjs?v=20261022-assets-v1';
+import {compactForecastMarkup,publishedReadingForecasts,installForecasts} from './reading-detail/forecasts.mjs?v=20261022-assets-v1';
+import {createPersonalBetslipStore} from './personal-betslip-store.mjs?v=20261022-assets-v1';
 const isFiniteNumber=value=>typeof value==="number"&&Number.isFinite(value);
 const decimal=(value,digits=1)=>isFiniteNumber(value)?value.toLocaleString("it-IT",{minimumFractionDigits:digits,maximumFractionDigits:digits}):"N/D";
 const probability=value=>isFiniteNumber(value)?`${(value*100).toLocaleString("it-IT",{minimumFractionDigits:0,maximumFractionDigits:1})}%`:"N/D";
@@ -225,7 +225,7 @@ function renderTacticalBaselines(match,dataset,teams){
     let finishReading=null;
   if(isReadingPilot('serie-a',activeReadingMatch?.id,location.search)&&typeof document.createElement==='function'){
     try{
-      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs?v=20261019-compact-all-v1'),import('./reading-detail/shell.mjs?v=20261019-starter-scenario-v1')]);
+      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261022-assets-v1')]);
       const analysis={match:activeReadingMatch,matches,teamDirectory,styles:teamStyleProfiles,referees:refereeProfiles,reading:activeReading,history:headToHeadData?.fixtures?.find(f=>f.fixtureId===activeReadingMatch.id),lineups:[activeReadingMatch.homeTeam,activeReadingMatch.awayTeam].map(id=>{const team=teamDirectory.teams.find(t=>t.id===id);return {team,lineup:fixtureLineupForMatch(activeReadingMatch,team,teamDirectory)}})};
       const model=adaptSerieAReading({match:activeReadingMatch,teams,teamDirectory,prediction:activePrediction,marketCatalog:forecastDataset?.marketCatalog,formation:formationPresentation(activeReadingMatch,teamDirectory),analysis});
       const prepared=await prepareReadingShell(model);

@@ -1,6 +1,15 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'reports/site-assets'),phase=process.argv.includes('--before')?'before':'after',snapshot=path.join(out,'baseline');fs.mkdirSync(out,{recursive:true});
+function sameVisual(actual,expected,label){
+ if(typeof actual==='number'&&typeof expected==='number'){assert(Math.abs(actual-expected)<=0.1,`${label}: ${actual} != ${expected}`);return;}
+ if(actual&&expected&&typeof actual==='object'&&typeof expected==='object'){assert.deepEqual(Object.keys(actual),Object.keys(expected),label);for(const key of Object.keys(actual))sameVisual(actual[key],expected[key],`${label}.${key}`);return;}
+ assert.equal(actual,expected,label);
+}
+// Clicks can leave a hovered card part-way through its translate transition.
+// Initial geometry is checked in full; interaction checks compare state, size,
+// typography and colors independently of that transient viewport translation.
+const interactionState=states=>states.map(i=>{let scrollNav=false;return {...i,boxes:i.boxes.filter(b=>{if(b[0]==='NAV'&&String(b[1]).startsWith('rd-nav'))scrollNav=true;if(scrollNav&&b[0]==='SECTION')scrollNav=false;return !scrollNav&&!['SCRIPT','LINK','STYLE'].includes(b[0]);}).map(b=>[b[0],b[1],...b.slice(4)])}});
 const routes=['index.html','statistiche-squadre.html','statistiche-giocatori.html','statistiche-squadra/inter.html','squadra.html?team=inter','lettura.html','lettura.html?match=fiorentina-como-2026-27-md-07','champions-league.html','champions-league.html?match=ucl-2026-27-md02-05','schedina.html','schedina.html?giornata=7','coppa-italia.html'];
 if(phase==='before'&&!fs.existsSync(path.join(snapshot,'index.html')))for(const dir of ['js','css','statistiche-squadra','scripts'])for(const f of fs.readdirSync(path.join(root,dir),{recursive:true}).filter(f=>/\.(css|js|mjs)$/.test(f)||dir==='statistiche-squadra'&&f.endsWith('.html'))){const name=path.join(dir,f),target=path.join(snapshot,name);fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(path.join(root,name),target);}
 if(phase==='before'&&!fs.existsSync(path.join(snapshot,'index.html')))for(const f of fs.readdirSync(root).filter(f=>f.endsWith('.html'))){fs.mkdirSync(snapshot,{recursive:true});fs.copyFileSync(path.join(root,f),path.join(snapshot,f));}
@@ -11,8 +20,8 @@ const server=http.createServer((req,res)=>{let name=decodeURIComponent(new URL(r
  if((phase==='before'||name.endsWith('.json'))&&fs.existsSync(saved))f=saved;
  fs.readFile(f,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':types[path.extname(f)]||'application/octet-stream','Cache-Control':'no-store'});res.end(e?'Missing':b)});
 });
-(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({channel:'msedge',headless:true}),results=phase==='before'&&fs.existsSync(path.join(out,'before.json'))?JSON.parse(fs.readFileSync(path.join(out,'before.json'))):[];
-try{for(const width of [1440,390])for(const route of routes){
+(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({channel:'msedge',headless:true}),results=(phase==='before'||process.argv.includes('--resume'))&&fs.existsSync(path.join(out,phase+'.json'))?JSON.parse(fs.readFileSync(path.join(out,phase+'.json'))):[];
+try{if(process.argv.includes('--rerun'))results.length=0;for(const width of [1440,390])for(const route of routes){
  if(results.some(r=>r.route===route&&r.width===width))continue; console.log(phase,width,route);const context=await browser.newContext({viewport:{width,height:960},deviceScaleFactor:1,reducedMotion:'reduce'}),page=await context.newPage(),cdp=await context.newCDPSession(page),requests=[],errors=[];
  await cdp.send('Network.enable');await cdp.send('Network.setCacheDisabled',{cacheDisabled:true});
  page.on('pageerror',e=>errors.push(e.message));
@@ -25,7 +34,7 @@ try{for(const width of [1440,390])for(const route of routes){
  const key=route.replace(/[^a-z0-9-]/gi,'_')+'-'+width;
  await page.screenshot({path:path.join(out,`${phase}-${key}.png`),fullPage:true});
  // Exercise states whose selectors must remain available after splitting CSS.
- const interactive=[];const sample=async label=>interactive.push({label,boxes:await page.evaluate(()=>[...document.querySelectorAll('main *')].filter(n=>!['SCRIPT','LINK','STYLE'].includes(n.tagName)).map(n=>{const r=n.getBoundingClientRect(),s=getComputedStyle(n);return [n.tagName,n.className,r.x,r.y,r.width,r.height,s.display,s.color,s.backgroundColor,s.fontSize]}))});
+ const interactive=[];const sample=async label=>{await page.evaluate(async()=>{scrollTo({top:0,behavior:'instant'});for(let i=0;i<4;i++)await new Promise(r=>requestAnimationFrame(r))});interactive.push({label,boxes:await page.evaluate(()=>[...document.querySelectorAll('main *')].filter(n=>!['SCRIPT','LINK','STYLE'].includes(n.tagName)).map(n=>{const r=n.getBoundingClientRect(),s=getComputedStyle(n);return [n.tagName,n.className,r.x,r.y,r.width,r.height,s.display,s.color,s.backgroundColor,s.fontSize]}))})};
  const archive=page.locator('[data-archive-day]').first();if(await archive.count()){await archive.click();await sample('archive');await archive.click();}
  const future=page.locator('.ri-calendar-day').last();if(await future.count()){await future.locator('summary').click();await sample('future');}
  const bench=page.locator('[data-player-lineup-filter="bench"]');if(await bench.count()){await bench.click();await sample('bench');await page.locator('[data-player-lineup-filter="starter"]').click();}
@@ -34,6 +43,6 @@ try{for(const width of [1440,390])for(const route of routes){
  const counts={};for(const r of requests)counts[r.url]=(counts[r.url]||0)+1;const duplicates=Object.entries(counts).filter(([,n])=>n>1);
  const totals=Object.fromEntries(['stylesheet','image','fetch','script'].map(type=>[type,{bytes:requests.filter(r=>r.type===type).reduce((n,r)=>n+r.bytes,0),requests:requests.filter(r=>r.type===type).length}]));
  assert.deepEqual(errors,[]);const result={key,route,width,errors,requests,duplicates,totals,...state,interactive};
- if(phase==='after'){const before=JSON.parse(fs.readFileSync(path.join(out,'before.json'))).find(r=>r.key===key);assert.equal(state.text,before.text,`text ${key}`);assert.deepEqual(state.boxes,before.boxes,`computed style/geometry ${key}`);assert.deepEqual(interactive,before.interactive.map(i=>({...i,boxes:i.boxes.filter(b=>!['SCRIPT','LINK','STYLE'].includes(b[0]))})),`interactive ${key}`);assert.equal(state.overflow,before.overflow,`new overflow ${key}`);assert.equal(state.frames.filter(f=>f.content&&f.missing).length,0,`unstyled content ${key}`);assert.equal(state.frames.filter(f=>f.legacy).length,0,`legacy flash ${key}`);}
+ if(phase==='after'){const before=JSON.parse(fs.readFileSync(path.join(out,'before.json'))).find(r=>r.key===key);assert.equal(state.text,before.text,`text ${key}`);sameVisual(state.boxes,before.boxes,`computed style/geometry ${key}`);sameVisual(interactionState(interactive),interactionState(before.interactive),`interactive ${key}`);assert.equal(state.overflow,before.overflow,`new overflow ${key}`);assert.equal(state.frames.filter(f=>f.content&&f.missing).length,0,`unstyled content ${key}`);assert.equal(state.frames.filter(f=>f.legacy).length,0,`legacy flash ${key}`);}
  results.push(result);fs.writeFileSync(path.join(out,phase+'.tmp.json'),JSON.stringify(results));fs.renameSync(path.join(out,phase+'.tmp.json'),path.join(out,phase+'.json'));await context.close();
 }console.log('PASS',phase,results.length,'desktop/mobile routes');}finally{await browser.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});

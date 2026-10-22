@@ -1,6 +1,6 @@
-import {mountRefereeDashboard} from './referee-dashboard.mjs?v=20261018-referee-compact-v1';
-import {esc} from './format.mjs';
-import {readArtifact} from './evidence.mjs';
+import {mountRefereeDashboard} from './referee-dashboard.mjs?v=20261022-assets-v1';
+import {esc} from './format.mjs?v=20261022-assets-v1';
+import {readArtifact} from './evidence.mjs?v=20261022-assets-v1';
 const known=v=>typeof v==='number'&&Number.isFinite(v);
 const value=(v,digits=0)=>known(v)?v.toLocaleString('it-IT',{minimumFractionDigits:digits,maximumFractionDigits:digits}):'—';
 export function refereeHistoryMarkup(entry){

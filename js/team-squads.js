@@ -3,10 +3,10 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  await import(`${base}js/public-presentation.js`);
-  const { renderLineupField } = await import(`${base}js/components/lineup-field.mjs?v=20261015-team-dashboard`);
-  const {shirtNumberAt}=await import(`${base}js/pages/reading-detail/shirt-numbers.mjs`);
-  const {imageSource}=await import(`${base}js/core/image-source.mjs`);
+  if(!globalThis[Symbol.for('serie-a.public-presentation')])await import(`${base}js/public-presentation.js`);
+  const { renderLineupField } = await import(`${base}js/components/lineup-field.mjs?v=20261022-assets-v1`);
+  const {shirtNumberAt}=await import(`${base}js/pages/reading-detail/shirt-numbers.mjs?v=20261022-assets-v1`);
+  const {imageSource}=await import(`${base}js/core/image-source.mjs?v=20261022-assets-v1`);
   let numbering,officialNumbers,probableNumbers;
   const numberFor=(team,lineup,name)=>{
     const date=lineup.status==='official'?numberingMatches.find(m=>m.id===lineup.matchId)?.date:lineup.source?.retrievedAt;

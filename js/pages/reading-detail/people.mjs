@@ -1,7 +1,7 @@
-import {esc,number,pct,finite,metric,missing} from './format.mjs';
-import {lineupPositions} from '../../components/lineup-field.mjs';
-import {renderLineupKit} from '../../components/lineup-kit.mjs';
-import {individualPlayers} from './evidence.mjs?v=20261019-starter-scenario-v1';
+import {esc,number,pct,finite,metric,missing} from './format.mjs?v=20261022-assets-v1';
+import {lineupPositions} from '../../components/lineup-field.mjs?v=20261022-assets-v1';
+import {renderLineupKit} from '../../components/lineup-kit.mjs?v=20261022-assets-v1';
+import {individualPlayers} from './evidence.mjs?v=20261022-assets-v1';
 const label=s=>s==='official'?'Ufficiale':s==='probable'?'Probabile':s==='reference'?'Riferimento':'Da confermare';
 function preserve(container,content,title){
  const original=[...container.childNodes];

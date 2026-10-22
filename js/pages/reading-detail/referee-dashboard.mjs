@@ -1,5 +1,5 @@
-import {imageSource} from '../../core/image-source.mjs';
-import {esc} from './format.mjs';
+import {imageSource} from '../../core/image-source.mjs?v=20261022-assets-v1';
+import {esc} from './format.mjs?v=20261022-assets-v1';
 const known=v=>typeof v==='number'&&Number.isFinite(v);
 const fmt=(v,d=1)=>known(v)?v.toLocaleString('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
 const name=v=>typeof v==='string'?v:v?.name||'—';

@@ -1,7 +1,7 @@
-import {imageSource} from '../core/image-source.mjs';
-import {championsShirtNumber} from '../components/champions-shirt-numbers.mjs';
-import {renderLineupField} from '../components/lineup-field.mjs';
-import {isReadingPilot} from './reading-detail/view-model.mjs';
+import {imageSource} from '../core/image-source.mjs?v=20261022-assets-v1';
+import {championsShirtNumber} from '../components/champions-shirt-numbers.mjs?v=20261022-assets-v1';
+import {renderLineupField} from '../components/lineup-field.mjs?v=20261022-assets-v1';
+import {isReadingPilot} from './reading-detail/view-model.mjs?v=20261022-assets-v1';
 export function createPage(deps){
   const {esc,load,loadDerived}=deps;
   const dayLabel=value=>new Intl.DateTimeFormat("it-IT",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Europe/Rome"}).format(new Date(`${value}T12:00:00+01:00`));
@@ -420,7 +420,7 @@ export function createPage(deps){
 
   async function appendSharedSchedina(matchday,fixtureId,host){
     if(!host||typeof host.insertAdjacentHTML!=="function")return;
-    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261021-official-v1'),import('./betting.js?v=20261021-champions-official-v1')]);
+    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261022-assets-v1'),import('./betting.js?v=20261021-champions-official-v1')]);
     const workspace=await loadChampionsWorkspaceMd3Derived(load,matchday);
     const controller=createBettingPage({...deps,dateOnly:deps.dateOnly||(value=>String(value||"").slice(0,10))});
     const section=host.querySelector('#lettura-pronostici .rd-section-content');
@@ -432,7 +432,7 @@ export function createPage(deps){
     }else target.insertAdjacentHTML('beforeend',markup);
     const store=controller.mountChampionsWorkspace(workspace);
     if(section){
-      const [{createReadingView},{installForecasts},{sharedForecastsForMatch}]=await Promise.all([import('./reading-detail/view-model.mjs'),import('./reading-detail/forecasts.mjs'),import('./shared-forecast-contract.mjs')]);
+      const [{createReadingView},{installForecasts},{sharedForecastsForMatch}]=await Promise.all([import('./reading-detail/view-model.mjs?v=20261022-assets-v1'),import('./reading-detail/forecasts.mjs?v=20261022-assets-v1'),import('./shared-forecast-contract.mjs?v=20261022-assets-v1')]);
       const fixture=workspace.fixtures.find(f=>f.id===fixtureId);
       const model=createReadingView({competition:'champions',fixture,home:{name:fixture.homeTeam},away:{name:fixture.awayTeam},forecasts:sharedForecastsForMatch(workspace.marketCatalog,fixtureId,fixture)});
       const table=document.createElement('div');section.prepend(table);
@@ -451,13 +451,13 @@ export function createPage(deps){
     const motivationByFixture=new Map(motivation.fixtures.map(fixture=>[fixture.matchId,fixture]));
     const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;
     if(requestedCalendarFixture?.matchday===3&&requestedCalendarFixture.refereeAssignment?.status==='assigned'){
-      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,officialProbables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261019-md3-referees-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261019-md3-callups-v3'),load('../derived/champions-md03/probable-individuals-v2-2026-10-20.json'),loadDerived('champions-md03/official-individuals-two-v1-2026-10-20.json'),import('./champions-md3-probable.mjs?v=20261020-md3-official-two-v1')]);
+      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,officialProbables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261022-assets-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261022-assets-v1'),load('../derived/champions-md03/probable-individuals-v2-2026-10-20.json'),loadDerived('champions-md03/official-individuals-two-v1-2026-10-20.json'),import('./champions-md3-probable.mjs?v=20261022-assets-v1')]);
       const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
       const fixture=catalog.fixtures.find(f=>f.fixtureId===requestedMatchId);
       const sevenOfficial=await loadDerived('champions-md03/official-individuals-seven-v2-2026-10-20.json');
       const todayOfficial=await loadDerived('champions-md03/official-individuals-2026-10-21.json');
       const probableFixture=todayOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||sevenOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||officialProbables.fixtures.find(f=>f.fixtureId===requestedMatchId)||probables.fixtures.find(f=>f.fixtureId===requestedMatchId);
-      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261020-champions-event-validation-v1');
+      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261022-assets-v1');
       await mountChampionsReading({fixture:requestedCalendarFixture,prediction:fixture.forecast,profile,probableFixture,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:md3RefereeMarkup(requestedCalendarFixture,profile,branding),probableMarkup:md3ProbableMarkup(probableFixture),extend:({shell})=>appendSharedSchedina(3,requestedMatchId,shell)});
       return;
     }
@@ -475,7 +475,7 @@ export function createPage(deps){
       let finishReading=null;
       if(isReadingPilot('champions',requestedMatchId,location.search)&&typeof document.createElement==='function'){
         try{
-          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261020-champions-event-validation-v1')]);
+          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261022-assets-v1')]);
           const analysis={match:requestedCalendarFixture,matches:data.fixtures,lineups:md2MarketEntry?.lineups,availability:md2MarketEntry?.availability,referee:refereeProfile,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads,teamProfiles:activePilot.profiles};
           const model=adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[],analysis});
           const prepared=await prepareReadingShell(model);

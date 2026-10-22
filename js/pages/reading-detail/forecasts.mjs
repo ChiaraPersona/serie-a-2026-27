@@ -1,6 +1,6 @@
-import {esc,number,pct,finite,missing} from './format.mjs';
-import {isCanonicalModelForecast,isPublishedForecast,hasVerifiedPlayableQuote,sharedForecastsForMatch} from '../shared-forecast-contract.mjs';
-import {createPersonalBetslipStore} from '../personal-betslip-store.mjs';
+import {esc,number,pct,finite,missing} from './format.mjs?v=20261022-assets-v1';
+import {isCanonicalModelForecast,isPublishedForecast,hasVerifiedPlayableQuote,sharedForecastsForMatch} from '../shared-forecast-contract.mjs?v=20261022-assets-v1';
+import {createPersonalBetslipStore} from '../personal-betslip-store.mjs?v=20261022-assets-v1';
 
 export function forecastPresentation(leg){
  const contract=leg.betSelection||{},market=contract.market||{},subject=market.subject||{},player=leg.player&&typeof leg.player==='object'?leg.player:{};

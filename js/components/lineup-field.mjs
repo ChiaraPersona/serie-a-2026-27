@@ -1,4 +1,4 @@
-import {renderLineupKit} from "./lineup-kit.mjs";
+import {renderLineupKit} from "./lineup-kit.mjs?v=20261022-assets-v1";
 
 const esc = value => String(value ?? "").replace(/[&<>"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
 

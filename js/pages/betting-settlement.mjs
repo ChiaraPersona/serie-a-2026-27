@@ -1,4 +1,4 @@
-import { MARKET_RULES, playerCardOutcome, teamCardPoints } from './disciplinary.mjs';
+import { MARKET_RULES, playerCardOutcome, teamCardPoints } from './disciplinary.mjs?v=20261022-assets-v1';
 const finite=value=>value!==null&&value!==undefined&&value!==""&&Number.isFinite(Number(value));
 const normalized=value=>String(value??"").trim().toUpperCase().replaceAll("–","-").replaceAll(",",".");
 

@@ -1,4 +1,4 @@
-import {createPersonalBetslipStore} from "./personal-betslip-store.mjs";
+import {createPersonalBetslipStore} from "./personal-betslip-store.mjs?v=20261022-assets-v1";
 
 const esc=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
 const formatOdds=value=>Number.isFinite(Number(value))?Number(value).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}):"N/D";

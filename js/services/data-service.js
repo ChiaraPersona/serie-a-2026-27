@@ -1,16 +1,19 @@
 import '../official-starter-policy.js';
+import {requestJson,clearJsonRequests} from './json-requests.mjs?v=20261022-assets-v1';
 export function createDataService(release,{deduplicate=false}={}){
   const DATA="data/normalized/";
   const requests=new Map();
+  if(deduplicate)clearJsonRequests();
   const fetchJson=(url,label=url)=>{
     if(deduplicate&&requests.has(url))return requests.get(url);
-    const request=(async()=>{const response=await fetch(`${url}${url.includes("?")?"&":"?"}v=${release}`,{cache:label==='official starters'?'no-store':'default'});if(!response.ok)throw new Error(`${label}: ${response.status}`);return response.json()})();
+    const versioned=`${url}${url.includes("?")?"&":"?"}v=${release}`,options={cache:label==='official starters'?'no-store':'default',label};
+    const request=deduplicate?requestJson(versioned,options):(async()=>{const response=await fetch(versioned,{cache:options.cache});if(!response.ok)throw new Error(`${label}: ${response.status}`);return response.json()})();
     if(deduplicate){requests.set(url,request);request.catch(()=>{if(requests.get(url)===request)requests.delete(url)});}
     return request;
   };
   return {
     // One cache per rendered view. A later render refreshes the official registry.
-    beginView:()=>requests.clear(),
+    beginView:()=>{requests.clear();if(deduplicate)clearJsonRequests();},
     load:async name=>{
       const registry=await fetchJson(`${DATA}official-starter-registry.json`,'official starters');
       globalThis.officialStarterPolicy.configure(registry);

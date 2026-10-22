@@ -2,6 +2,10 @@
   "name": "serie-a-2026-27",
   "private": true,
   "scripts": {
+    "build:assets": "node scripts/build-optimized-images.cjs && node scripts/normalize-browser-imports.cjs && node scripts/refresh-presentation-assets.cjs",
+    "test:assets": "node scripts/test-presentation-assets.cjs && node scripts/test-initial-render.cjs",
+    "test:assets:browser": "node scripts/check-site-assets.cjs",
+    "test:assets:reloads": "node scripts/check-site-asset-reloads.cjs",
     "build:readings:browser-data": "node scripts/build-reading-browser-data.cjs",
     "test:readings:browser-data": "node scripts/test-reading-browser-data.mjs",
     "test:readings:loading:browser": "node scripts/check-reading-loading.cjs",

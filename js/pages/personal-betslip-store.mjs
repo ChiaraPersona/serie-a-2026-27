@@ -1,5 +1,5 @@
 import '../official-starter-policy.js';
-import {isCanonicalModelForecast,usesCurrentForecastPolicy} from './shared-forecast-contract.mjs';
+import {isCanonicalModelForecast,usesCurrentForecastPolicy} from './shared-forecast-contract.mjs?v=20261022-assets-v1';
 export const PERSONAL_BETSLIP_VERSION=1;
 export const PERSONAL_BETSLIP_STORAGE_KEY="serie-a-2026-27:personal-betslip:v1";
 

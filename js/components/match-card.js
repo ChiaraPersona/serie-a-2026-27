@@ -1,4 +1,4 @@
-import {imageSource} from '../core/image-source.mjs';
+import {imageSource} from '../core/image-source.mjs?v=20261022-assets-v1';
 export function createMatchComponents({dateOnly,esc,labels}){
 function scheduleLabel(m){
   if(!m.date)return "Data da definire";

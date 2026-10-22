@@ -1,4 +1,4 @@
-import {esc,number,missing} from './format.mjs';
+import {esc,number,missing} from './format.mjs?v=20261022-assets-v1';
 const name=team=>typeof team==='string'?team:team?.name||'Squadra N/D';
 const key=m=>String(m.providerFixtureId||m.id||[m.date,name(m.homeTeam),name(m.awayTeam),m.competition].join('|'));
 const pair=(a,b)=>[String(a),String(b)].sort().join('|');

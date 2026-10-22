@@ -1,4 +1,4 @@
-import {settleMd3Leg as settleLeg} from './champions-md3-results.mjs';
+import {settleMd3Leg as settleLeg} from './champions-md3-results.mjs?v=20261022-assets-v1';
 // Reuse shared settlement; forecasts and unfinished scores never settle a leg.
 export function settleMd3(data,calendar){
  const fixtures=new Map(calendar.fixtures.map(f=>[f.id,f]));

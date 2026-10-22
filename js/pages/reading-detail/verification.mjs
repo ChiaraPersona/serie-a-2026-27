@@ -1,6 +1,6 @@
-import {esc,number,finite,metric,details,recordList,missing,sourceLink} from './format.mjs';
-import {readArtifact} from './evidence.mjs';
-import {settleArchivedLeg} from '../betting-settlement.mjs';
+import {esc,number,finite,metric,details,recordList,missing,sourceLink} from './format.mjs?v=20261022-assets-v1';
+import {readArtifact} from './evidence.mjs?v=20261022-assets-v1';
+import {settleArchivedLeg} from '../betting-settlement.mjs?v=20261022-assets-v1';
 
 const stable=value=>Array.isArray(value)?value.map(stable):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(k=>[k,stable(value[k])])):value;
 export async function verifySnapshot(snapshot,entry,fixture){

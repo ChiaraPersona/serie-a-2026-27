@@ -1,4 +1,4 @@
-import {createReadingView} from './view-model.mjs';
+import {createReadingView} from './view-model.mjs?v=20261022-assets-v1';
 
 export function adaptChampionsReading({fixture,calendarFixture,branding,publishedSelections=[],analysis=null,sources=null}){
   const side=name=>{const team=branding.get(name);return {id:team?.id??null,name,logo:team?.logo??null,colors:team?.colors};};

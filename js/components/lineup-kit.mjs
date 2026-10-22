@@ -1,4 +1,4 @@
-import {championsKit} from './champions-kits.mjs';
+import {championsKit} from './champions-kits.mjs?v=20261022-assets-v1';
 // Presentation only. Palette indices refer to the existing team.colors values.
 const styles = Object.freeze({
   frosinone: { pattern: "solid", primary: 1 },

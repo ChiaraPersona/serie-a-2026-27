@@ -1,4 +1,4 @@
-import {esc,number,finite,pct,missing} from './format.mjs';
+import {esc,number,finite,pct,missing} from './format.mjs?v=20261022-assets-v1';
 // One display scale per metric, shared by both sides; never a share of the total.
 export function comparisonWidths(values){
  const max=Math.max(0,...values.filter(finite));

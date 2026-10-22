@@ -5,11 +5,12 @@ const pages=[...fs.readdirSync(root).filter(f=>f.endsWith('.html')),...fs.readdi
 for(const file of pages){
  const html=fs.readFileSync(path.join(root,file),'utf8');
  const prefix=file.startsWith('statistiche-squadra/')?'../':'';
- const reading=/<body[^>]*data-page="(?:readings|champions)"/.test(html);
- assert(html.includes(styleLinks(prefix,reading)),`${file}: cascade or content hashes out of date`);
+ const page=/<body[^>]*data-depth="team"/.test(html)?'team-detail':html.match(/<body[^>]*data-page="([^"]+)"/)?.[1]||'home';
+ assert(html.includes(styleLinks(prefix,page)),`${file}: cascade or content hashes out of date`);
  assert(!html.includes('css/styles.css?'),`${file}: legacy CSS entry`);
  assert.equal(applyStyleLinks(html),html,`${file}: non-idempotent generation`);
- const head=html.split('</head>')[0];assert(head.includes('css/page-background.css?'),`${file}: background missing before render`);
+ const head=html.split('</head>')[0];assert(head.includes('page-styles:start'),`${file}: blocking page CSS missing before render`);
+ const sheet=fs.readFileSync(path.join(root,'css/pages',page+'.css'),'utf8');assert(sheet.includes('page-background.css: original cascade position'),`${file}: background missing from page cascade`);
 }
 const boot=fs.readFileSync(path.join(root,'js/initial-presentation.js'),'utf8');
 for(const [page,search,expected] of [['readings','?match=a','serie-a'],['champions','?match=b','champions'],['readings','?match=a&layout=legacy',undefined],['readings','',undefined],['home','?match=a',undefined]]){

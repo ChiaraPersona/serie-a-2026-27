@@ -1,4 +1,4 @@
-import {settleLeg} from './betting-settlement.mjs';
+import {settleLeg} from './betting-settlement.mjs?v=20261022-assets-v1';
 
 // Adapt verified post-match evidence only; never rebuild a forecast or quote.
 const minute=value=>Number(String(value).match(/^\d+/)?.[0] ?? NaN);
