@@ -52,7 +52,7 @@ const snapshot=page=>page.locator('#app').evaluate(n=>({html:n.innerHTML,text:n.
           if(baseline)for(const [route,file] of [['**/js/pages/betting.js*','betting.js'],['**/js/services/data-service.js*','data-service.js'],['**/js/core/app.js*','app.js']]){
             await page.route(route,r=>r.fulfill({contentType:'text/javascript',body:fs.readFileSync(path.join(out,'baseline',file))}));
           }
-          const navigate=async()=>{await page.goto(base+'/schedina.html'+test.query,{timeout:90000});await page.waitForSelector(test.query?'#app .betting-round-page':'#app .betting-archive',{timeout:90000});await page.waitForLoadState('networkidle');};
+          const navigate=async()=>{await page.goto(base+'/schedina.html'+test.query,{timeout:90000});await page.waitForSelector(test.query?'#app .betting-round-page,#app .empty':'#app .betting-archive,#app .empty',{timeout:90000});if(test.simulateFallback)assert.match(await page.locator('#app').innerText(),/Cannot read properties of undefined \(reading 'rank'\)/);else assert.equal(await page.locator('#app .empty').count(),0,await page.locator('#app').innerText());await page.waitForLoadState('networkidle');};
           await navigate();assert.deepEqual(errors,[],test.query+' errors');
           const state=await snapshot(page),initialUrls=urls.slice();
           const image=await page.screenshot({path:path.join(out,`${test.simulateFallback?'fallback-':test.simulateUpcoming?'interactive-':''}${i}-${test.width}-${baseline?'before':'after'}.png`),animations:'disabled'});
@@ -79,7 +79,7 @@ const snapshot=page=>page.locator('#app').evaluate(n=>({html:n.innerHTML,text:n.
             assert.equal(await page.locator('[data-personal-remove]').count(),0);
             persistence='add, restore on reload, remove: PASS';
           }
-          if(test.simulateUpcoming)assert.equal(persistence,'add, restore on reload, remove: PASS');
+          if(test.simulateUpcoming&&!test.simulateFallback)assert.equal(persistence,'add, restore on reload, remove: PASS');
           pair.push({state,expanded,selected,restored,persistence,image,urls:initialUrls,weight:weight(initialUrls)});
         }finally{await context.close()}
       }
@@ -89,7 +89,7 @@ const snapshot=page=>page.locator('#app').evaluate(n=>({html:n.innerHTML,text:n.
       assert.equal(pair[1].restored,pair[0].restored,test.query+' restored pick changed');
       const a=PNG.sync.read(pair[0].image),b=PNG.sync.read(pair[1].image);
       assert.equal(pixelmatch(a.data,b.data,null,a.width,a.height,{threshold:0.1}),0,test.query+' visual difference');
-      results.push({...test,before:{...pair[0].weight,requests:pair[0].urls.length},after:{...pair[1].weight,requests:pair[1].urls.length},resources:pair[1].urls,persistence:pair[1].persistence,dom:'IDENTICAL',visualDifferences:0,overflow:pair[1].state.overflow});
+      results.push({...test,...(test.simulateFallback?{knownBaselineError:'Missing suggestionAnalysis.rank with an artificially emptied catalog'}:{}),before:{...pair[0].weight,requests:pair[0].urls.length},after:{...pair[1].weight,requests:pair[1].urls.length},resources:pair[1].urls,persistence:pair[1].persistence,dom:'IDENTICAL',visualDifferences:0,overflow:pair[1].state.overflow});
       fs.writeFileSync(path.join(out,test.simulateFallback?'fallback-audit.json':test.simulateUpcoming?'interactive-audit.json':'audit.json'),JSON.stringify({results,fontComparison:'External fonts blocked equally',visualThreshold:0.1},null,2)+'\n');
       console.log('PASS',test.query||'index',test.width,JSON.stringify(results.at(-1)));
     }

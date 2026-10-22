@@ -1,0 +1,35 @@
+{
+  "results": [
+    {
+      "query": "?giornata=7",
+      "width": 1440,
+      "simulateUpcoming": true,
+      "simulateFallback": true,
+      "knownBaselineError": "Missing suggestionAnalysis.rank with an artificially emptied catalog",
+      "before": {
+        "raw": 67810233,
+        "gzip": 4811316,
+        "requests": 35
+      },
+      "after": {
+        "raw": 16861946,
+        "gzip": 916433,
+        "requests": 6
+      },
+      "resources": [
+        "data/normalized/official-starter-registry.json",
+        "data/normalized/schedina-md07.json",
+        "data/normalized/matches.json",
+        "data/normalized/card-settlement-records.json",
+        "data/normalized/teams.json",
+        "data/normalized/predictions-md07.json"
+      ],
+      "persistence": "no playable control in this archive",
+      "dom": "IDENTICAL",
+      "visualDifferences": 0,
+      "overflow": false
+    }
+  ],
+  "fontComparison": "External fonts blocked equally",
+  "visualThreshold": 0.1
+}
