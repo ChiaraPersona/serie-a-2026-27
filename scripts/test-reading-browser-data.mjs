@@ -1,12 +1,11 @@
 import fs from 'node:fs';
-import path from 'node:path';
 import assert from 'node:assert/strict';
 import {createDataService} from '../js/services/data-service.js';
 import {sharedForecastsForMatch} from '../js/pages/shared-forecast-contract.mjs';
 import {loadEvidence,individualPlayers} from '../js/pages/reading-detail/evidence.mjs';
 import {setReadingArtifacts} from '../js/pages/reading-detail/projected-artifacts.mjs';
 import {fixtureLineupForMatch} from '../js/pages/readings.js';
-const read=f=>JSON.parse(fs.readFileSync(f,'utf8')),cache=new Map(),root=process.cwd();
+const read=f=>JSON.parse(fs.readFileSync(f,'utf8')),cache=new Map();
 globalThis.fetch=async url=>{const f=url instanceof URL?decodeURIComponent(url.pathname).replace(/^\/(\w:)/,'$1'):String(url).split('?')[0];if(!cache.has(f))cache.set(f,read(f));return {ok:true,json:async()=>structuredClone(cache.get(f))}};
 const service=createDataService('projection-test',{deduplicate:true});
 const [matches,predictions,directory]=[read('data/normalized/matches.json'),read('data/normalized/predictions.json'),read('data/teams/index.json')];

@@ -45,6 +45,6 @@ const selected=records.filter(r=>r.suggested);
 const summary={schemaVersion:1,matchday:3,verifiedAt:'2026-10-22',officiallySettled:false,fixtures:18,
   counts:tally(records),suggested:tally(selected),filteredEconomics:economics(selected),
   originalPublicationEconomics:economics(workspace.all.filter(l=>l.suggestionAnalysis?.suggested).map(l=>({...l,odds:l.betSelection?.quote?.decimal??l.odds,settlement:l.settlement}))),
-  excluded:excluded.length,lineupChanges:changes,unverifiable:records.filter(r=>!['won','lost','void'].includes(r.settlement.status)),records};
+  excluded:excluded.length,lineupChanges:changes.length?changes:(fs.existsSync('data/normalized/champions-md03-settlement.json')?read('data/normalized/champions-md03-settlement.json').lineupChanges:[]),unverifiable:records.filter(r=>!['won','lost','void'].includes(r.settlement.status)),records};
 write('data/normalized/champions-md03-settlement.json',summary);
 console.log(JSON.stringify({counts:summary.counts,suggested:summary.suggested,economics:summary.filteredEconomics,excluded:excluded.length,lineupChanges:changes.length}));

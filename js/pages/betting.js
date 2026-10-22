@@ -352,7 +352,7 @@ export function createPage(deps){
   }
 
   function championsArchiveCard(data,number=1){
-    const selections=data.slips?data.slips.flatMap(slip=>slip.legs):data.fixtures.flatMap(fixture=>fixture.selections||[]);
+    const selections=(data.slips?data.slips.flatMap(slip=>slip.legs):data.fixtures.flatMap(fixture=>fixture.selections||[])).filter(leg=>number!==3||hasVerifiedPlayableQuote(leg));
     const stats=archiveStats({matchday:number,slips:[{legs:selections}]},null,leg=>leg.settlement||{status:"pending"});
     const verified=data.isAuditArchive?null:data.verificationReport?.filtered;
     const wins=verified?verified.green:stats.archiveWins;

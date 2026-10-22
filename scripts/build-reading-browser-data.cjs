@@ -22,7 +22,7 @@ function build(){
   const add=(f,project=x=>x)=>{const d=artifact(f);if(d!==null)artifacts[f]=project(d)};
   for(const team of ids)add(`data/teams/${team}.json`,d=>pick(d,['id','coach','squad']));
   add('data/sources/official-lineups-2026-27.json',d=>({...d,fixtures:d.fixtures.filter(f=>f.matchId===id)}));
-  if(day===7)add('data/sources/probable-lineups-md7-2026-27.json',d=>({...d,teams:d.teams.filter(t=>ids.includes(t.teamId))}));
+  add(`data/sources/probable-lineups-md${day}-2026-27.json`,d=>({...d,teams:d.teams.filter(t=>ids.includes(t.teamId))}));
   add('data/sources/team-pages/shirt-numbers-2026-27.json',d=>({numberHistory:d.numberHistory.filter(p=>ids.includes(p.teamId))}));
   add('data/normalized/reading-bench-forecasts.json',d=>({fixtures:d.fixtures.filter(f=>f.fixtureId===id)}));
   add(`data/generated/reading-bench-starter-scenarios/${id}.json`);

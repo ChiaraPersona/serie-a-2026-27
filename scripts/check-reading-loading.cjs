@@ -1,6 +1,6 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const root=path.resolve(__dirname,'..'),phase=process.argv.includes('--baseline')?'before':'after',out=path.join(root,'reports/reading-loading');fs.mkdirSync(out,{recursive:true});
+const root=path.resolve(__dirname,'..'),phase=process.argv.includes('--baseline')?'before':process.argv.includes('--current')?'current':'after',out=path.join(root,'reports/reading-loading');fs.mkdirSync(out,{recursive:true});
 const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.svg':'image/svg+xml','.png':'image/png'};
 const server=http.createServer((req,res)=>{const f=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));if(!f.startsWith(root+path.sep))return res.writeHead(403).end();fs.readFile(f,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':types[path.extname(f)]||'application/octet-stream'});res.end(e?'Missing':b)})});
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({channel:'msedge',headless:true});const results=[];
@@ -24,7 +24,7 @@ try{for(const width of [1440,390])for(const id of ['', 'fiorentina-como-2026-27-
  if(phase==='after'){const baseline=JSON.parse(fs.readFileSync(path.join(out,'before.json'))).find(r=>r.key===key);assert.equal(text,baseline.text,`content changed ${key}`);}
  results.push({key,width,id,text,jsonBytes:requests.reduce((n,r)=>n+r.bytes,0),requests,errors});await page.close();
 }
-if(phase==='after'){
+if(phase!=='before'){
  const page=await browser.newPage();const origin=`http://127.0.0.1:${server.address().port}`;
  await page.goto(origin+'/lettura.html?match=milan-atalanta-2026-27-md-07');await page.waitForSelector('.rd-shell');
  const seed=await page.evaluate(async()=>{
@@ -47,5 +47,6 @@ if(phase==='after'){
  await page.close();
 }
 fs.writeFileSync(path.join(out,phase+'.json'),JSON.stringify(results,null,2));console.log(results.map(({key,jsonBytes})=>({key,jsonBytes})));}finally{await browser.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});
+
 
 

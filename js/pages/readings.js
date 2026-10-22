@@ -202,7 +202,7 @@ function renderTacticalBaselines(match,dataset,teams){
 }
   async function render(){
     const page="readings",requestedMatchId=new URLSearchParams(location.search).get("match");
-    const requestedMatchday=Number(requestedMatchId?.match(/-md-(\d{2})$/)?.[1]),forecastFile=requestedMatchday===1?"schedina.json":requestedMatchday?`schedina-md${String(requestedMatchday).padStart(2,"0")}.json`:null;
+    const requestedMatchday=Number(requestedMatchId?.match(/-md-(\d{2})$/)?.[1]);
     // The directory never needs forecasts, rosters, events or historical archives.
     const index=await loadGenerated('readings/index.json');
     const payload=requestedMatchId&&index.fixtureIds.includes(requestedMatchId)?await loadReading(requestedMatchId):index;

@@ -72,7 +72,8 @@ if (fs.existsSync(previewMd3Path)) {
   assert(previewMd3.predictions.every(prediction => prediction.market.status === "unavailable" && prediction.probabilities.marketNoMargin === null), "L'anteprima MD3 non deve inventare quote");
 }
 
-assert.strictEqual(dataset.predictions.length, 59, "Il motore deve conservare MD1-MD6 e aggiungere le dieci gare della settima giornata");
+assert.strictEqual(dataset.predictions.filter(p => !p.matchId.endsWith('-md-08')).length, 59, "Conservare i 59 pronostici precedenti alla MD8");
+assert.strictEqual(dataset.predictions.filter(p => p.matchId.endsWith('-md-08')).length, 10, "MD8: dieci previsioni aggiornate");
 const firstMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-01"));
 const secondMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-02"));
 const fourthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-04"));
@@ -119,7 +120,7 @@ assert.strictEqual(dataset.engine.promotedTeamModel.defenceWeaknessFactor, 1.29,
 assert(dataset.predictions.every(prediction => prediction.dataQuality.missing.some(item => item.includes("meteo"))), "Il meteo non verificabile deve essere dichiarato N/D");
 assert(dataset.predictions.filter(prediction => /-md-0[1-5]$/.test(prediction.matchId)).every(prediction => !prediction.dataQuality.missing.some(item => item.includes("indisponibili"))), "Il monitor indisponibili aggiornato deve raggiungere tutte le letture archiviate fino alla quinta giornata");
 for (const prediction of dataset.predictions) {
-  if (["-md-05", "-md-06", "-md-07"].some(suffix => prediction.matchId.endsWith(suffix))) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
+  if (["-md-05", "-md-06", "-md-07", "-md-08"].some(suffix => prediction.matchId.endsWith(suffix))) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
   else if (prediction.matchId.endsWith("-md-04")) assert.strictEqual(prediction.engineVersion, "4.12.0", `${prediction.matchId}: lo snapshot MD4 deve conservare la propria versione`);
   else assert.strictEqual(prediction.engineVersion, "4.11.0", `${prediction.matchId}: lo snapshot archiviato deve conservare la propria versione`);
   const probabilities = Object.values(prediction.probabilities.final);

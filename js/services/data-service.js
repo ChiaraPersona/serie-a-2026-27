@@ -18,7 +18,10 @@ export function createDataService(release,{deduplicate=false}={}){
       // MD1 is a read-only historical archive: retain the original settled legs.
       // Operational selections and saved MyCombo entries still use the starter policy.
       // Final match evidence includes substitutes required by DUO settlement.
-      if(name==='schedina-champions-md01.json'||name==='matches.json')return data;
+      if(name==='schedina-champions-md01.json'||name==='matches.json'||name==='champions-league-2026-27.json')return data;
+      // Final evidence includes substitutes for DUO contracts; filter contracts,
+      // never the observed match report embedded in the lightweight projection.
+      if(name==='schedina-champions-md03-ui.json')return {...globalThis.officialStarterPolicy.filter({...data,fixtures:[]}),fixtures:data.fixtures};
       // Preserve original contracts on completed Serie A fixtures for settlement.
       // eligible() remains strict for operational selections and saved MyCombo.
       if(/^schedina-md\d+\.json$/.test(name)||/^predictions(?:-md\d+)?\.json$/.test(name)){

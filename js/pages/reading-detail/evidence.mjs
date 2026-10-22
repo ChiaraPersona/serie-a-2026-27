@@ -18,7 +18,7 @@ export async function loadEvidence(model,{benchForecasts=true}={}){
   return readArtifact(`data/teams/${encodeURIComponent(id)}.json`);
  }));
  const official=model.competition==='serie-a'?(await readArtifact('data/sources/official-lineups-2026-27.json')).fixtures.find(f=>f.matchId===model.fixture.id):null;
- const probable=model.competition==='serie-a'&&Number(model.fixture.matchday)===7?await readArtifact('data/sources/probable-lineups-md7-2026-27.json'):null;
+ const probable=model.competition==='serie-a'?await readArtifact(`data/sources/probable-lineups-md${Number(model.fixture.matchday)}-2026-27.json`).catch(()=>null):null;
  const numbering=model.competition==='serie-a'?await readArtifact('data/sources/team-pages/shirt-numbers-2026-27.json'):null;
  const lineups=sides.map((side,i)=>{
   const raw=model.competition==='serie-a'?analysis.lineups?.[i]?.lineup:analysis.lineups?.[i?'away':'home']||(()=>{const formation=analysis.match?.probableFormation,side=formation?.[i?'away':'home'];return side?{...side,status:formation.status,source:formation.source,updatedAt:formation.updatedAt}:null})();

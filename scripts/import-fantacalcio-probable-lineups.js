@@ -140,6 +140,41 @@ async function main() {
   });
 
   const players = teams.flatMap(team => team.players);
+  // Detail sections contain two columns in fixture order, outside the XI cards.
+  const clean = value => decodeHtml(value.replace(/<[^>]*>/g, " ")).replace(/\s+/g, " ").trim();
+  const detailPlayer = (item, team) => {
+    const link = item.match(/href="[^"]+\/(\d+)"[^>]*>\s*<span>([^<]+)<\/span>/);
+    if (!link) return null;
+    const sourceId = Number(link[1]), sourceName = decodeHtml(link[2]);
+    const roster = rosterBySourceId.get(sourceId);
+    const identity = identities.resolve(team.teamId, sourceName);
+    const linked = roster?.teamId === team.teamId ? roster : null;
+    return { sourceId, sourceName, playerId: linked?.playerId || identity?.playerId || null,
+      currentName: linked?.currentName || identity?.canonicalName || null,
+      probability: Number(item.match(/class="percentage">(\d+)%/)?.[1]) || null,
+      description: clean(item.match(/<p class="description">([\s\S]*?)<\/p>/)?.[1] || "") || null };
+  };
+  for (const [sectionClass, field] of [["ballots", "ballots"], ["suspendeds", "suspended"], ["injureds", "unavailable"], ["dubts", "doubtful"]]) {
+    const sections = [...html.matchAll(new RegExp(`<section class="${sectionClass}">([\\s\\S]*?)<\\/section>`, "g"))];
+    if (sections.length !== 10) throw new Error(`${field}: ${sections.length} sezioni, attese 10`);
+    sections.forEach((section, fixtureIndex) => {
+      const columns = section[1].split(/<div class="content">/).slice(1);
+      if (columns.length !== 2) throw new Error(`${field}: colonne incomplete`);
+      columns.forEach((column, side) => {
+        const team = teams[fixtureIndex * 2 + side];
+        const lists = field === "ballots" ? [...column.matchAll(/<ul class="ballot-list">([\s\S]*?)<\/ul>/g)].map(m => m[1]) : [column];
+        const groups = lists.map(list => [...list.matchAll(/<li\b[^>]*>([\s\S]*?)<\/li>/g)].map(m => detailPlayer(m[1], team)).filter(Boolean));
+        team[field] = field === "ballots" ? groups : groups.flat();
+        team.status = "probable";
+      });
+    });
+  }
+  const fixtures = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/matches.json"), "utf8")).filter(m => m.competition === "serie-a" && m.matchday === matchday);
+  for (let index = 0; index < teams.length; index += 2) {
+    const fixture = fixtures.find(m => m.homeTeam === teams[index].teamId && m.awayTeam === teams[index + 1].teamId);
+    if (!fixture) throw new Error(`Fixture MD${matchday} non collegata: ${teams[index].team}`);
+    teams[index].matchId = teams[index + 1].matchId = fixture.id;
+  }
   const dataset = {
     schemaVersion: 1,
     provider: "Fantacalcio.it",
