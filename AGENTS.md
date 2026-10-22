@@ -13,3 +13,11 @@ Verificare esclusioni, sincronizzazione Lettura/Schedina/Preferiti/MyCombo, rige
 ## Regola permanente: fonti solo interne
 
 Non mostrare nell'interfaccia pubblica del sito Serie A e Champions League sezioni Fonti/Provenienza, elenchi, collegamenti, provider o note dedicati alle fonti dei dati. Conservare integralmente fonti, URL, metadati, archivi e documentazione nei file interni e continuare a verificarli per ogni aggiornamento. Non alterare statistiche, calcoli, motori o informazioni operative per applicare questa regola. Le nuove pagine devono usare la policy condivisa `js/public-presentation.js` e non aggiungere nuove sezioni pubbliche sulle fonti. Conservare attribuzioni e avvisi legalmente obbligatori: marcarli con `data-required-attribution` o `data-legal-notice`, senza nasconderli come provenienza statistica. Conservare inoltre stato ufficiale/probabile, limiti statistici e indicazioni N/D, esprimendoli senza riferimenti alle fonti.
+
+## Economia del contesto Codex
+
+- Partire da nomi e percorsi (`rg --files`, `rg -l`) in directory pertinenti; cercare poi simboli e righe mirate. Consultare [la mappa operativa](docs/codex-operational-map.md) prima di riscoprire una pipeline.
+- Escludere inizialmente da ricerche generiche dipendenze, raw, archivi, `tmp/`, `output/`, `outputs/`, `reports/` e `work/`; aprirli esplicitamente quando pertinenti. Non identificarli come radice del progetto.
+- Per JSON grandi estrarre con un parser solo fixture/player ID, campi, conteggi o campioni necessari; evitare dump integrali e ricerche testuali su intere righe JSON minificate.
+- Per verifiche UI riutilizzare proiezioni leggere e riepiloghi esistenti; verificare gli originali per identità, contratti, calcoli, provenienza e dettagli omessi. Non rigenerare dati per la sola consultazione.
+- Restituire sintesi, errori pertinenti e percorsi delle evidenze; ampliare progressivamente letture e output quando necessario, senza omettere verifiche obbligatorie. Prima di eseguire un comando controllarne gli effetti: nomi `test`, `audit` o `presentation-only` non garantiscono sola lettura.

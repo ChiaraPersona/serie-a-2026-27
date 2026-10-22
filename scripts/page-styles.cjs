@@ -1,6 +1,6 @@
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'..');
-const entries={home:'js/pages/home.js',team:'js/pages/matches.js','team-stats':'js/pages/teams.js','team-detail':'js/team-squads.js','player-stats':'js/pages/teams.js',readings:'js/pages/readings.js',champions:'js/pages/champions.js',betting:'js/pages/betting.js',cup:'js/pages/cup.js'};
+const entries={home:'js/pages/home.js','team-stats':'js/pages/teams.js','team-detail':'js/team-squads.js','player-stats':'js/pages/teams.js',readings:'js/pages/readings.js',champions:'js/pages/champions.js',betting:'js/pages/betting.js',cup:'js/pages/cup.js'};
 // Scan complete renderer modules (including dialogs/templates and their imports),
 // never a single DOM snapshot: toggles, responsive rules and future fixtures survive.
 function vocabulary(page){

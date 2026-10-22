@@ -19,7 +19,6 @@ const styles = ["styles", "base", "layout", "components", "home", "matches", "te
 const teamStatsShell = fs.readFileSync(path.join(root, "statistiche-squadre.html"), "utf8");
 const teamPageShell = fs.readFileSync(path.join(root, "statistiche-squadra", "inter.html"), "utf8");
 const readingsInterface = fs.readFileSync(path.join(root, "js/pages/readings.js"), "utf8");
-const matchesInterface = fs.readFileSync(path.join(root, "js/pages/matches.js"), "utf8");
 const bettingInterface = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
 const homeInterface = fs.readFileSync(path.join(root, "js/pages/home.js"), "utf8");
 const tacticalProfiles = read("data/normalized/team-style-profiles.json");
@@ -235,9 +234,8 @@ assert.ok(!teamInterface.includes("Aggiornato automaticamente") && !teamInterfac
 assert.ok(!teamInterface.includes("Distinta confermata") && !teamInterface.includes("Profilo completo"), "I badge Distinta confermata e Profilo completo non devono essere mostrati");
 assert.ok(!teamInterface.includes('<div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26'), "Il hero della squadra non deve mostrare la competizione 2025/26 sopra il nome");
 for (const removedCalendarContract of ["personalCalendar", "teamFixtureRow", "teamFixtures", "team-calendar-select", "team-calendar-selection", "european-fixtures-2026-27.json"]) assert.ok(!teamInterface.includes(removedCalendarContract), `Il calendario incorporato deve essere rimosso: ${removedCalendarContract}`);
-assert.ok(teamInterface.includes('class="team-calendar-link"') && teamInterface.includes('squadra.html?team=${esc(team.id)}') && teamInterface.includes("Calendario completo →"), "La pagina squadra deve collegare il calendario completo dedicato");
-assert.ok(styles.includes(".team-page-jumps a.team-calendar-link"), "Il pulsante del calendario completo non ha uno stile dedicato");
-const teamNavSource = matchesInterface.slice(matchesInterface.indexOf('const teamNav='), matchesInterface.indexOf('function empty'));
+assert.ok(!teamInterface.includes('squadra.html') && !teamInterface.includes('Calendario completo'), 'Il calendario pubblico non deve avere accessi dalle pagine squadra');
+assert.ok(!fs.existsSync(path.join(root,'js/pages/matches.js')), 'Renderer del calendario pubblico rimosso');
 const matchCardSource = mainApp.slice(mainApp.indexOf('function matchCard'), mainApp.indexOf('function homeMatchListItem'));
 assert.ok(matchCardSource.includes('class="card match fixture-card fixture-card-link"') && matchCardSource.includes('href="lettura.html?match=${esc(m.id)}"'), "L'intera card partita deve aprire direttamente la lettura");
 assert.ok(matchCardSource.includes('class="fixture-official"') && matchCardSource.includes('m.refereeAssignment?.referee?.name'), "La card deve mostrare l'arbitro quando la designazione AIA e disponibile");
@@ -250,10 +248,6 @@ const readingDetailReturn=readingDetailSource.slice(readingDetailSource.lastInde
 assert.ok(readingDetailReturn.indexOf("${v2.discipline}")<readingDetailReturn.indexOf("${refereePanel}")&&readingDetailReturn.indexOf("${refereePanel}")<readingDetailReturn.indexOf("reading-info-grid"),"Disciplina, squadra arbitrale e formazioni devono mantenere l'ordine editoriale V2");
 assert.ok(matchCardSource.includes('m.status!=="scheduled"') && !matchCardSource.includes('<div class="actions">'), "Le card partita non devono mostrare Programmata o i pulsanti Lettura/Statistiche");
 assert.ok(!matchCardSource.includes('match-events') && !matchCardSource.includes('Marcatori') && !matchCardSource.includes('Ammoniti'), "Le card partita non devono mostrare riquadri evento prima dei dati reali");
-assert.ok(teamNavSource.includes('src="${esc(team.logo)}"') && !teamNavSource.includes("monochrome"), "La barra Calendario per squadra deve usare i loghi originali colorati");
-assert.ok(styles.includes('.team-nav-link img') && styles.includes('filter:drop-shadow('), "I loghi del selettore squadre devono avere un'ombreggiatura di contrasto");
-const teamMatchdayStyle = styles.slice(styles.indexOf('.team-matchday .match{'), styles.indexOf('.team-matchday .match-head{'));
-assert.ok(!teamMatchdayStyle.includes('background:') && !teamMatchdayStyle.includes('border-color:') && !teamMatchdayStyle.includes('box-shadow:'), "Le card del calendario squadra devono conservare la stessa superficie chiara delle card globali");
 assert.ok(styles.includes('.match.fixture-card .matchday-chip{') && styles.includes('background:transparent;'), "Il testo Giornata X nelle card deve restare privo di riquadro");
 assert.ok(styles.includes('body[data-page="cup"] main>.hero+.cup-stage') && styles.includes('body[data-page="readings"] main>.hero+.section{margin-top:24px}'), "Coppa Italia e Lettura devono usare la spaziatura compatta delle altre pagine interne");
 const cupCardSource = mainApp.slice(mainApp.indexOf('function cupTeamSlot'), mainApp.indexOf('function cupRound'));
@@ -269,9 +263,6 @@ assert.equal(juventusNec?.status, "finished", "Juventus-NEC deve risultare concl
 assert.deepStrictEqual(juventusNec?.score, { home: 5, away: 0 }, "Juventus-NEC: risultato errato");
 assert.ok(juventusNec?.resultSource?.url, "Juventus-NEC: fonte risultato mancante");
 for (const [teamId, expected] of Object.entries({ inter: 8, napoli: 8, roma: 8, como: 8, milan: 8, juventus: 8, atalanta: 6 })) assert.strictEqual(europeanCalendar.fixtures.filter(match => match.teamId === teamId).length, expected, `${teamId}: sono richiesti ${expected} impegni UEFA`);
-assert.ok(matchesInterface.includes('load("european-fixtures-2026-27.json")') && matchesInterface.includes('calendarType:"europe"'), "Il calendario personale non integra gli impegni europei");
-assert.ok(matchesInterface.includes('load("coppa-italia-2026-27.json")') && matchesInterface.includes('calendarType:"cup"'), "Il calendario personale non integra gli impegni di Coppa Italia");
-for (const marker of ["Solo carico calendario · nessun pronostico", "Fatica: a", "Rendimento sotto fatica:", "38 giornate di Serie A", "gare UEFA", "gare di Coppa Italia", "Tutti gli appuntamenti"]) assert.ok(matchesInterface.includes(marker), `Calendario personale: manca ${marker}`);
 assert.ok(readingsInterface.includes('match.resultCoverage?.bookings==="unavailable"?"Cartellini N/D"') && readingsInterface.includes('match.resultCoverage?.substitutions==="unavailable"?"Sostituzioni N/D"'), "I dati evento non disponibili devono restare esplicitamente N/D");
 assert.ok(bettingInterface.includes('verde = esito preso') && bettingInterface.includes('betting-leg--${status}') && bettingInterface.includes('combo.legs.map(leg=>settleLeg'), "Le MyCombo concluse devono mostrare in verde gli esiti presi");
 const predictionIds = new Set(read("data/normalized/predictions.json").predictions.map(prediction => prediction.matchId));
@@ -291,7 +282,6 @@ const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")
 assert.ok(generatedHtml.includes("statistiche-giocatori.html"), "Navigazione alla pagina giocatori assente");
 assert.ok(!generatedHtml.includes('href="classifica.html"') && !generatedHtml.includes('href="../classifica.html"'), "Un collegamento alla pagina Classifica rimossa è ancora presente");
 assert.ok(!generatedHtml.includes('href="calendario.html"') && !generatedHtml.includes('href="../calendario.html"'), "Un collegamento alla pagina Calendario rimossa è ancora presente");
-assert.ok(matchesInterface.includes('if(page==="team")') && matchesInterface.includes("personalCalendar(team,league,europe,cup,teams)") && !matchesInterface.includes('page==="calendar"'), "Devono restare soltanto i calendari personali delle squadre");
 assert.ok(mainApp.includes('if(page==="home")') && mainApp.includes('data-standings-tab="current"') && mainApp.includes('data-standings-tab="archive"'), "Le due classifiche devono essere renderizzate nella Home");
 assert.ok(!mainApp.includes('class="season-overview"'), "Il riepilogo Squadre/Partite/Capolista/Copertura non deve essere mostrato nella Home");
 for (const marker of ['label:"R+"', 'label:"R-"', 'label:"C+"', 'label:"C-"', "configureStandingsTables()", "data-sortable-standings"]) assert.ok(mainApp.includes(marker), `Classifica dinamica: manca ${marker}`);

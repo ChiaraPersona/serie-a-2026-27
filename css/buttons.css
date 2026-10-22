@@ -22,8 +22,7 @@
 .fantasy-recommendation-actions button,
 .fantasy-excluded button,
 .referee-card-action,
-.referee-season-nav a,
-.team-calendar-actions a{
+.referee-season-nav a{
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -61,8 +60,7 @@
 .fantasy-recommendation-actions button:hover,
 .fantasy-excluded button:hover,
 .referee-card-action:hover,
-.referee-season-nav a:hover,
-.team-calendar-actions a:hover{
+.referee-season-nav a:hover{
   border-color:rgba(16,68,112,.62);
   background:linear-gradient(135deg,#276da8,var(--button-blue-strong));
   box-shadow:0 11px 24px rgba(22,76,130,.22),inset 0 1px 0 rgba(255,255,255,.22);
@@ -84,8 +82,7 @@
 .fantasy-recommendation-actions button:active,
 .fantasy-excluded button:active,
 .referee-card-action:active,
-.referee-season-nav a:active,
-.team-calendar-actions a:active{
+.referee-season-nav a:active{
   box-shadow:0 3px 9px rgba(40,58,59,.09),inset 0 1px 2px rgba(40,58,59,.08);
   transform:translateY(0) scale(.98);
 }
@@ -103,8 +100,7 @@
 .fantasy-recommendation-actions button:focus-visible,
 .fantasy-excluded button:focus-visible,
 .referee-card-action:focus-visible,
-.referee-season-nav a:focus-visible,
-.team-calendar-actions a:focus-visible{
+.referee-season-nav a:focus-visible{
   outline:3px solid rgba(167,116,22,.28);
   outline-offset:3px;
 }
@@ -284,12 +280,11 @@ button:disabled{
 @media(max-width:900px){.menu-button{display:inline-flex}}
 
 @media(max-width:580px){
-  .button,.menu-button,.home-matchday-button,.standings-switch button,.standings-scope-switch button,.fantasy-strategy-tabs button,.referee-season-nav a,.team-calendar-actions a{min-height:42px}
+  .button,.menu-button,.home-matchday-button,.standings-switch button,.standings-scope-switch button,.fantasy-strategy-tabs button,.referee-season-nav a{min-height:42px}
   .standings-switch{flex-direction:row}
-  .team-calendar-actions a{flex:1}
   .home-standings .standings-switch button,.home-standings .standings-scope-switch button{min-height:36px;padding:8px 14px}
 }
 
 @media(prefers-reduced-motion:reduce){
-  .button,.menu-button,.global-stat-button,.home-matchday-button,.standings-switch button,.standings-scope-switch button,.fantasy-main-toggle,.fantasy-reset,.fantasy-row-actions button,.fantasy-strategy-tabs button,.fantasy-recommendation-actions button,.fantasy-excluded button,.referee-card-action,.referee-season-nav a,.team-calendar-actions a,.fantasy-remove,.player-detail-close,.referee-profile-close{transition:none}
+  .button,.menu-button,.global-stat-button,.home-matchday-button,.standings-switch button,.standings-scope-switch button,.fantasy-main-toggle,.fantasy-reset,.fantasy-row-actions button,.fantasy-strategy-tabs button,.fantasy-recommendation-actions button,.fantasy-excluded button,.referee-card-action,.referee-season-nav a,.fantasy-remove,.player-detail-close,.referee-profile-close{transition:none}
 }

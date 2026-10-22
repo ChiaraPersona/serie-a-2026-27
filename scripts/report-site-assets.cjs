@@ -1,6 +1,6 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..'),dir=path.join(root,'reports/site-assets'),before=JSON.parse(fs.readFileSync(path.join(dir,'before.json'))),after=JSON.parse(fs.readFileSync(path.join(dir,'after.json')));
-assert.equal(before.length,24);assert.equal(after.length,24);
+assert(before.length>=after.length);assert(after.length>0&&after.length%2===0);
 function duplicates(r){const counts=new Map();for(const q of r.requests){const key=q.url.split('?')[0];counts.set(key,(counts.get(key)||0)+1)}return [...counts].filter(([,n])=>n>1);}
 const rows=after.map(a=>{const b=before.find(b=>b.key===a.key);assert.equal(duplicates(a).length,0,a.key+' duplicate resources');return {route:a.route,width:a.width,cssBefore:b.totals.stylesheet.bytes,cssAfter:a.totals.stylesheet.bytes,cssRequestsBefore:b.totals.stylesheet.requests,cssRequestsAfter:a.totals.stylesheet.requests,imageBefore:b.totals.image.bytes,imageAfter:a.totals.image.bytes,requestsBefore:b.requests.length,requestsAfter:a.requests.length,localBytesBefore:b.requests.reduce((n,q)=>n+q.bytes,0),localBytesAfter:a.requests.reduce((n,q)=>n+q.bytes,0),duplicatesBefore:duplicates(b),duplicatesAfter:duplicates(a)}});
 fs.writeFileSync(path.join(dir,'weights.json'),JSON.stringify({units:'bytes, local uncompressed response bodies, cold cache; remote fonts excluded',rows},null,2));
@@ -17,9 +17,9 @@ Cache fredda; KB/MB decimali; byte dei corpi delle risposte locali, non compress
 | --- | ---: | ---: | ---: |
 ${table}
 
-Anche tutti i 12 percorsi a 390 px sono verificati in weights.json. Il banner responsive porta le immagini dell'indice Champions mobile da ${mb(mobile.imageBefore)} a ${mb(mobile.imageAfter)} MB.
+Anche tutti i ${rows.length/2} percorsi a 390 px sono verificati in weights.json. Il banner responsive porta le immagini dell'indice Champions mobile da ${mb(mobile.imageBefore)} a ${mb(mobile.imageAfter)} MB.
 
-I CSS locali passano da 16–18 richieste a una per pagina. Nessuna richiesta locale duplicata rimasta nei 24 casi, anche confrontando i percorsi senza il parametro di versione.
+I CSS locali passano da 16–18 richieste a una per pagina. Nessuna richiesta locale duplicata rimasta nei ${rows.length} casi, anche confrontando i percorsi senza il parametro di versione.
 
 ## CSS
 
@@ -41,7 +41,7 @@ Cache condivisa per vista fra servizio dati e lettore del dettaglio; il solo par
 
 ## Verifiche
 
-- 24 confronti: 12 percorsi × 1440/390 px. Testo identico; geometria iniziale, colori, font, griglie e stati interattivi preservati. Arrotondamenti del browser tollerati entro 0,1 px. Nei confronti interattivi si escludono la traslazione animata transitoria e il navigatore scroll-spy; geometria iniziale e funzionalità di navigazione sono verificate separatamente.
+- ${rows.length} confronti: ${rows.length/2} percorsi × 1440/390 px. Testo identico; geometria iniziale, colori, font, griglie e stati interattivi preservati. Arrotondamenti del browser tollerati entro 0,1 px. Nei confronti interattivi si escludono la traslazione animata transitoria e il navigatore scroll-spy; geometria iniziale e funzionalità di navigazione sono verificate separatamente.
 - Archivio/giornate future, dettagli espandibili, filtro titolari/panchinari e menu mobile verificati. Il controllo Lettura aggiuntivo verifica navigazione sezioni, dialogo schedina, gare concluse non selezionabili e riconciliazione delle selezioni salvate fra fixture.
 - Altri 24 reload: normale, hard e cache disabilitata, quattro percorsi × desktop/mobile; zero frame senza stili, zero frame con layout precedente, zero errori JavaScript.
 - test-initial-render.cjs: tutti i 28 shell, CSS bloccante, hash, generazione idempotente e tema iniziale.

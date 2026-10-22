@@ -332,7 +332,7 @@
     const lineupSection = probableLineupSection(team, teams.find(item => item.id === team.id));
     const styleSection = tacticalProfileSection(team, teamStyleProfiles);
     const currentLeaderboardRows = currentSquadLeaderboardRows(team, matches);
-    const pageJumps = `<nav class="team-page-jumps" aria-label="Indice della pagina"><a href="#team-season-summary-title">Stagione</a><a href="#team-tactics-heading">Formazione e stile</a><a href="#team-statistics-title">Statistiche</a><a href="#squad-roster-heading">Protagonisti</a><a href="#team-comparator-disclosure">Comparatore</a><a class="team-calendar-link" href="${base}squadra.html?team=${esc(team.id)}">Calendario completo →</a></nav>`;
+    const pageJumps = `<nav class="team-page-jumps" aria-label="Indice della pagina"><a href="#team-season-summary-title">Stagione</a><a href="#team-tactics-heading">Formazione e stile</a><a href="#team-statistics-title">Statistiche</a><a href="#squad-roster-heading">Protagonisti</a><a href="#team-comparator-disclosure">Comparatore</a></nav>`;
     root.classList.add("team-editorial");
     root.innerHTML = `${teamNavigation(team, teams)}<section class="team-detail-hero" data-editorial-section="identity"><img src="${imageSource(`${team.logo}`)}" alt="Stemma ${esc(team.name)}"><div><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)}</p><p><strong>Allenatore:</strong> ${value(team.coach)} · <strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>${pageJumps}</div></section>
     ${editorialSeason(team, currentStats, standings)}${objectiveSection}
