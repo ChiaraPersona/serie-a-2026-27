@@ -1,0 +1,31 @@
+import {esc} from './format.mjs';
+const known=v=>typeof v==='number'&&Number.isFinite(v);
+const fmt=(v,d=1)=>known(v)?v.toLocaleString('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+const name=v=>typeof v==='string'?v:v?.name||'—';
+const metrics=[['yellowCards','Gialli',8,'yellow'],['dismissals','Rossi',1,'red'],['fouls','Falli',40,'green'],['totalCards','Cartellini',10,'blue']];
+export const whistle='<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M9 70 47 35 77 17 104 27 104 42 94 47C106 75 78 89 61 70L30 93Z" fill="currentColor"/><path d="m15 69 18 13 38-34-16-9Zm47-34 16-9 20 5-25 12Z" fill="var(--rd-surface)"/><path d="m68 35 7-4 8 4-7 5Z" fill="currentColor"/></svg>';
+function rowsFor(entry){return (entry?.rows||[]).filter(r=>r.date<entry.cutoffDate).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5).map(r=>{const copy={...r};for(const key of r.disputedMetrics||[])copy[key]=null;return copy;});}
+function recentFor(entry,rows){
+ if(entry?.analysis?.recent)return entry.analysis.recent;
+ const result={};for(const key of [...metrics.map(m=>m[0]),'directRedCards','secondYellowCards']){const values=rows.map(r=>r[key]).filter(known);result[key]={average:values.length?values.reduce((a,b)=>a+b,0)/values.length:null,n:values.length};}return result;
+}
+function averages(title,sample){return `<section class="rf-averages"><h4>${esc(title)}</h4><dl>${metrics.map(([key,label])=>`<div><dd>${fmt(sample?.[key]?.average)}</dd><dt>${label}</dt></div>`).join('')}</dl></section>`;}
+function badge(team,teams){const t=teams.find(t=>[t.name,t.officialName,t.id].some(v=>v&&v.toLocaleLowerCase('it-IT')===String(team).toLocaleLowerCase('it-IT')));const logo=t?.logo?.replace(/^\.\.\//,'');return `${logo?`<img src="${esc(logo)}" alt="" loading="lazy">`:''}<span>${esc(t?.name||team||'—')}</span>`;}
+export function refereeDashboardMarkup(model,entry,teams=[]){
+ const assignment=model.analysis?.match?.refereeAssignment||{},ref=assignment.referee;
+ const rows=rowsFor(entry),recent=recentFor(entry,rows),season=entry?.analysis?.seasonal;
+ const referee=name(ref||entry?.refereeName),section=ref?.section||ref?.aiaSection;
+ const sampleLabel=entry?.analysis?.seasonLabel||'2026/27 · campione stagionale non disponibile';
+ const crew=[['Assistenti',(assignment.assistants||[]).map(name).join(' – ')],['IV ufficiale',name(assignment.fourthOfficial)],['VAR',name(assignment.var)],['AVAR',name(assignment.avar)]];
+ const table=rows.length?`<div class="rf-table-scroll" tabindex="0" role="region" aria-label="Ultime partite dirette, tabella scorrevole"><table><thead><tr><th>Data</th><th>Competizione</th><th>Partita</th><th aria-label="Gialli"><i class="rd-card-mark rd-card-mark--yellow"></i></th><th aria-label="Espulsioni"><i class="rd-card-mark rd-card-mark--red"></i></th><th>Falli</th></tr></thead><tbody>${rows.map(r=>`<tr data-referee-history-date="${esc(r.date)}"><td><time>${esc(r.date.split('-').reverse().join('/'))}</time></td><td>${esc(r.competition||'—')}</td><td><div class="rf-match"><span>${badge(r.home,teams)}</span><b>${fmt(r.score?.home,0)} - ${fmt(r.score?.away,0)}</b><span>${badge(r.away,teams)}</span></div></td><td>${fmt(r.yellowCards,0)}</td><td>${fmt(r.dismissals,0)}</td><td>${fmt(r.fouls,0)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="rf-empty">Partite precedenti non disponibili.</p>';
+ return `<div class="rf-dashboard" aria-label="Designazione arbitrale"><h3 class="rf-heading">Designazione arbitrale</h3><section class="rf-card rf-designation"><div class="rf-identity">${whistle}<div><span class="rf-label">Arbitro</span><h3>${esc(referee)}</h3>${ref?.countryFlag?`<p>${esc(ref.countryFlag)}${model.analysis?.referee?.country?` ${esc(model.analysis.referee.country)}`:''}</p>`:''}${section?`<p>Sezione di ${esc(section)}</p>`:''}<p class="rf-season">${esc(sampleLabel)}${season?.yellowCards?.n?` · ${season.yellowCards.n} partite nel campione`:''}</p></div></div><dl class="rf-crew">${crew.map(([label,v])=>`<div><dt>${label}</dt><dd>${esc(v||'—')}</dd></div>`).join('')}</dl></section><section class="rf-card rf-indicators" aria-label="Medie stagionali dell’arbitro">${metrics.map(([key,label,scale,color])=>{const v=season?.[key]?.average,max=Math.max(scale,known(v)?v:0);return `<div class="rf-indicator rf-${color}"><strong>${fmt(v,key==='dismissals'?2:1)}</strong><span>${label} / partita</span><div class="rf-bar" role="img" aria-label="${esc(label)}: ${fmt(v)} su scala 0–${max}"><i style="width:${known(v)?Math.max(0,v)/max*100:0}%"></i></div><small>${known(v)?`Campione stagionale · n=${season[key].n}`:'Media stagionale —'}</small></div>`;}).join('')}</section><div class="rf-lower"><section class="rf-card rf-history"><h4>Ultime 5 partite dirette</h4>${table}</section><div class="rf-card rf-average-card">${averages('Media ultime 5',recent)}${averages('Media stagionale 2026/27',season)}</div></div></div>`;
+}
+export function mountRefereeDashboard(model,panel,entry,teams){
+ const node=document.createElement('div');node.innerHTML=refereeDashboardMarkup(model,entry,teams);const dashboard=node.firstElementChild;
+ // Preserve historical samples without relabelling career or 2025/26 figures as this season.
+ const historical=document.createElement('section');historical.className='rf-card rf-historical';historical.innerHTML='<h4>Statistiche storiche · campione separato</h4>';
+ for(const selector of ['.reading-referee-stats','.champions-reading-referee-sample','.champions-reading-referee-detail']){const el=panel.querySelector(selector);if(el)historical.append(el.cloneNode(true));}
+ if(historical.children.length>1){if(model.competition==='serie-a')historical.querySelector('h4').insertAdjacentHTML('afterend','<p class="rf-note">Stagione 2025/26</p>');dashboard.append(historical);}
+ const old=[...panel.childNodes],className=panel.className,oldLabel=panel.getAttribute('aria-labelledby');dashboard.querySelector('.rf-heading').id=(panel.id||'reading-referee')+'-title';panel.setAttribute('aria-labelledby',dashboard.querySelector('.rf-heading').id);panel.className='reading-referee-assignment rf-panel';panel.replaceChildren(dashboard);
+ return ()=>{panel.className=className;if(oldLabel===null)panel.removeAttribute('aria-labelledby');else panel.setAttribute('aria-labelledby',oldLabel);panel.replaceChildren(...old);};
+}

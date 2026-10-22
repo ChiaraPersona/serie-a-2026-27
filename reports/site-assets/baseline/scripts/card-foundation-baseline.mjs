@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import { settleLeg } from '../js/pages/betting-settlement.mjs';
+const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+const read = file => JSON.parse(fs.readFileSync(file));
+if(fs.existsSync('tmp/card-foundation-baseline.json'))throw new Error('PHASE_BASELINE_ALREADY_EXISTS: refusing to overwrite pre-change evidence');
+const matches = read('data/normalized/matches.json');
+const byId = new Map(matches.map(m => [m.id, m]));
+const protectedFiles = ['data/predictions/snapshots/manifest.json', 'data/predictions/snapshots/2026-27/md-06.json', ...fs.readdirSync('data/sources').filter(f => /prediction-archive|schedina|mycombo/.test(f)).map(f => `data/sources/${f}`), ...fs.readdirSync('data/normalized').filter(f => /schedina/.test(f)).map(f => `data/normalized/${f}`), 'data/normalized/team-matchup-profiles-2026-27.json'];
+const settlements = protectedFiles.filter(f => f.startsWith('data/normalized/schedina')).flatMap(file => (read(file).slips || []).flatMap(s => s.legs.map((leg, i) => ({file, slip:s.id, index:i, leg, status:settleLeg(leg, byId.get(leg.matchId)).status}))));
+const predictions = read('data/normalized/predictions.json').predictions;
+fs.writeFileSync('tmp/card-foundation-baseline.json', JSON.stringify({hashes:Object.fromEntries(protectedFiles.map(f => [f,hash(f)])),settlements,predictions},null,2));
+console.log(`Baseline: ${protectedFiles.length} protected files, ${settlements.length} settlements, ${predictions.length} predictions`);

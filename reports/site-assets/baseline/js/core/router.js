@@ -1,0 +1,6 @@
+const routes={home:"home",team:"matches","team-stats":"teams","player-stats":"teams",readings:"readings",betting:"betting",cup:"cup",champions:"champions"};
+export async function loadPage(page,release){
+  const moduleName=routes[page];
+  if(!moduleName)throw new Error(`Pagina non supportata: ${page}`);
+  return import(`../pages/${moduleName}.js?v=${release}`);
+}

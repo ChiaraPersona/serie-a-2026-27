@@ -1,0 +1,19 @@
+"use strict";
+// Prespecified policies. No outcome-driven search, promotion or production import.
+const CONFIG=Object.freeze({version:'cards-c0-c4-recorded-yellow-r2',state:'RESEARCH',category:'RETROSPECTIVE_RESEARCH',target:'RECORDED_YELLOW',targetVersion:'recorded-yellow-v1',marketTarget:'PLAYER_YELLOW',marketTargetVersion:'card-targets-v1',ruleId:'SISAL_CARD_POINTS_REGULATION_V1',
+  targetDisclaimer:'OBSERVATIONAL TARGET — NOT BOOKMAKER-CERTIFIED',
+  estimand:'RECORDED_ORDINARY_YELLOW_IN_RECONSTRUCTED_PREMATCH_CANDIDATE_UNIVERSE',
+  leaguePrior:{alpha:0.5,beta:0.5,rationale:'Jeffreys reference prior for Bernoulli; prior-only mean 0.5 is not an empirically calibrated card rate'},
+  shrinkage:{roleEquivalentObservations:12,individualEquivalentObservations:12,historicalDiscount:0.5,detailedRoleMinimum:20,principle:'12-equivalent-sample stabilization used elsewhere in repository; no shot/referee coefficient copied'},
+  exposure:{referenceMinutes:60,centerMinutes:60,scaleMinutes:30,edges:[0,30,60,75,131],semanticsRequired:'PREMATCH_EXPECTED_MINUTES',actualMinutesPredictor:false,productionPolicy:'EXPECTED_MINUTES_POLICY inherited from scripts/predictions/engine.js; coefficients fitted inside walk-forward folds'},
+  maturity:{LOW:{minutes:450,appearances:5},MEDIUM:{minutes:1800,appearances:20},HIGH:{minutes:4500,appearances:50}},
+  regression:{ridge:4,iterations:40,minimumObservations:200,minimumMatches:20,minimumPositives:30,minimumNegatives:30},
+  signal:{minimumMatches:30,minimumRefereeMatches:20,minimumPositives:30,minimumSplitMatches:10,z:1.96},
+  evaluation:{minimumMatches:20,minimumPositives:20,minimumNegatives:20,minimumCell:30,calibrationMinimum:100,bins:[0,0.2,0.4,0.6,0.8,1],topK:[1,3,5]},
+  bootstrap:{iterations:2000,seed:20261004,minimumMatches:20,alpha:0.05,familyComparisons:9},
+  primaryCohortPolicy:'COMPLETE_CANONICAL_DISCIPLINARY_EVENT_LIST_FOR_OBSERVATIONAL_SCOPE; no outcome-dependent complete-case selection',
+  historicalPolicy:'Canonical ID plus timestamped 2025-26 Serie A ordinary-yellow/minutes/fouls aggregates; other competitions remain separate; no bookmaker eligibility claim',
+  expectedMinutesPolicy:{historicalEquivalentAppearances:12,currentStarterEquivalentMatches:5,recentWindowMatches:5,maximumHistoricalWeight:0.76,maximumCurrentStarterWeight:0.5,rolePriors:{GK:90,DEF:79,MID:76,ATT:74,UNKNOWN:76}},
+  snapshot:{season:'2026-27',matchday:6,maximumLineupAgeHours:72,requireAllRefereeDesignationsForFinalFreeze:true,path:'data/predictions/card-snapshots/2026-27/md-06.json',manifestPath:'data/predictions/card-snapshots/manifest.json'},
+  noProbabilityCalibrationClaim:true,noBookmakerProbability:true,noPromotion:true});
+module.exports={CONFIG};

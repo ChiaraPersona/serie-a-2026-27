@@ -1,0 +1,333 @@
+const fs = require("fs");
+const path = require("path");
+const assert = require("assert");
+const { calculateStandings } = require("../standings.js");
+const root = path.resolve(__dirname, "../..");
+const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
+const index = read("data/teams/index.json");
+const officialLineups = read("data/sources/official-lineups-2026-27.json");
+const probableLineups = require("../probable-lineups").loadLatestProbableLineups(root);
+const playerLeaderboards = read("data/teams/player-leaderboards.json");
+const europeanCalendar = read("data/normalized/european-fixtures-2026-27.json");
+const mainApp = fs.readdirSync(path.join(root, "js"), { recursive: true })
+  .filter(file => file.endsWith(".js"))
+  .map(file => fs.readFileSync(path.join(root, "js", file), "utf8"))
+  .join("\n");
+const styles = ["styles", "base", "layout", "components", "home", "matches", "team", "players", "responsive"]
+  .map(name => fs.readFileSync(path.join(root, `css/${name}.css`), "utf8"))
+  .join("\n");
+const teamStatsShell = fs.readFileSync(path.join(root, "statistiche-squadre.html"), "utf8");
+const teamPageShell = fs.readFileSync(path.join(root, "statistiche-squadra", "inter.html"), "utf8");
+const readingsInterface = fs.readFileSync(path.join(root, "js/pages/readings.js"), "utf8");
+const matchesInterface = fs.readFileSync(path.join(root, "js/pages/matches.js"), "utf8");
+const bettingInterface = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
+const homeInterface = fs.readFileSync(path.join(root, "js/pages/home.js"), "utf8");
+const tacticalProfiles = read("data/normalized/team-style-profiles.json");
+assert.strictEqual(index.teams.length, 20, "Sono richieste 20 squadre");
+assert.strictEqual(new Set(index.teams.map(team => team.id)).size, 20, "ID squadra duplicati");
+for (const summary of index.teams) {
+  const team = read(`data/teams/${summary.id}.json`);
+  assert.strictEqual(summary.monochromeLogo, `../assets/images/teams/monochrome/${summary.id}-black.svg`);
+  assert.strictEqual(team.monochromeLogo, summary.monochromeLogo);
+  assert.ok(fs.existsSync(path.join(root, summary.monochromeLogo.replace(/^\.\.\//, ""))), `${summary.id}: logo monocromatico nero assente`);
+  assert.strictEqual(team.previousSeason.season, "2025/26");
+  assert.ok(["Serie A", "Serie B"].includes(team.previousSeason.competition));
+  assert.ok(Array.isArray(team.squad));
+  assert.ok(Array.isArray(team.sources) && team.sources.length);
+  assert.ok(fs.existsSync(path.join(root, `statistiche-squadra/${team.id}.html`)));
+  assert.strictEqual(team.teamStats.competition, team.previousSeason.competition);
+  assert.deepStrictEqual(Object.keys(team.teamStats.seasons), ["2026/27", "2025/26"], `${team.id}: statistiche stagionali non separate`);
+  assert.strictEqual(team.teamStats.seasons["2026/27"].competition, "Serie A");
+  assert.strictEqual(team.teamStats.seasons["2025/26"].competition, team.previousSeason.competition);
+  const currentTeamStats = team.teamStats.seasons["2026/27"];
+  for (const field of ["shots", "shotsPerGame", "shotsOnTarget", "shotsOnTargetPerGame", "shotAccuracy", "shotConversion", "expectedGoals", "expectedGoalsPerGame", "corners", "cornersPerGame"]) {
+    assert.notStrictEqual(currentTeamStats.attack[field], null, `${team.id}: ${field} 2026/27 non aggregato`);
+  }
+  for (const field of ["shotsConceded", "shotsOnTargetConceded", "expectedGoalsAgainst", "saves", "tackles", "interceptions", "clearances"]) {
+    assert.notStrictEqual(currentTeamStats.defence[field], null, `${team.id}: ${field} 2026/27 non aggregato`);
+  }
+  for (const field of ["averagePossession", "passesAttempted", "passesCompleted", "passAccuracy"]) {
+    assert.notStrictEqual(currentTeamStats.possession[field], null, `${team.id}: ${field} 2026/27 non aggregato`);
+  }
+  assert.strictEqual(team.teamStats.total.results.played, team.teamStats.seasons["2026/27"].results.played + team.teamStats.seasons["2025/26"].results.played, `${team.id}: totale partite incoerente`);
+  assert.strictEqual(team.teamStats.total.results.points, team.teamStats.seasons["2026/27"].results.points + team.teamStats.seasons["2025/26"].results.points, `${team.id}: totale punti incoerente`);
+  for (const section of [team.teamStats.attack, team.teamStats.possession]) {
+    assert.ok(Object.values(section).every(value => value === null), "Un campo non disponibile deve essere null");
+  }
+}
+assert.ok(mainApp.includes("data/teams/index.json") && mainApp.includes("team-directory-grid") && mainApp.includes("statistiche-squadra/${team.id}.html"), "Elenco delle 20 squadre non integrato nella pagina principale");
+assert.ok(mainApp.includes("team.monochromeLogo||team.logo"), "Le card Statistiche squadre non usano il logo monocromatico nero");
+assert.ok(styles.includes("Statistiche squadre mobile: logo e riepilogo dentro un'unica card") && styles.includes("grid-template-columns:98px minmax(0,1fr)") && styles.includes(".team-flip-face{\n    position:relative"), "Su mobile ogni squadra deve usare una sola card visiva");
+const expectedLeaderboardMetrics = ["goals", "assists", "shots", "shotsOnTarget", "cards", "foulsCommitted", "foulsWon"];
+const expectedComparatorMetrics = ["minutes", ...expectedLeaderboardMetrics];
+assert.strictEqual(playerLeaderboards.schemaVersion, 3);
+assert.deepStrictEqual(playerLeaderboards.comparator.metrics.map(metric => metric.id), expectedComparatorMetrics, "Il comparatore globale non copre tutte le metriche");
+assert.strictEqual(playerLeaderboards.comparator.metrics[0].hasPer90, false, "Il minutaggio del comparatore non deve esporre un valore /90");
+assert.deepStrictEqual(Object.keys(playerLeaderboards.comparator.periods), ["2026/27", "2025/26", "total"], "Il comparatore globale non separa i periodi");
+assert.ok(mainApp.includes("Comparatore calciatori") && mainApp.includes("team-player-comparator"), "Comparatore calciatori mancante nella home o nelle pagine squadra");
+assert.deepStrictEqual(Object.keys(playerLeaderboards.periods), ["2026/27", "2025/26", "total"], "Le classifiche individuali non sono separate per periodo");
+for (const [periodId, period] of Object.entries(playerLeaderboards.periods)) for (const [metric, ranking] of Object.entries(period.rankings)) {
+  assert.deepStrictEqual(Object.keys(period.rankings), expectedLeaderboardMetrics, `${periodId}: le Top 15 non coprono tutte le statistiche giocatore`);
+  assert.strictEqual(ranking.players.length, Math.min(15, ranking.availablePlayers), `${periodId} ${metric}: dimensione classifica incoerente con la copertura`);
+  assert.ok(ranking.players.every((player, index) => Number.isFinite(player.totalValue) && (!index || player.totalValue <= ranking.players[index - 1].totalValue)), `${metric}: valori non ordinati`);
+  assert.ok(ranking.players.every(player => !ranking.hasPer90 || player.per90Value === null || Number.isFinite(player.per90Value)), `${metric}: media /90 non valida`);
+  assert.strictEqual(new Set(ranking.players.map(player => `${player.currentTeamId}|${player.id}`)).size, ranking.players.length, `${metric}: calciatori duplicati`);
+  assert.ok(ranking.players.every(player => index.teams.some(team => team.id === player.currentTeamId)), `${metric}: squadra 2026/27 non valida`);
+  assert.ok(ranking.players.every(player => !["Internazionale", "AS Roma"].includes(player.previousTeam)), `${metric}: alias squadra non normalizzato`);
+  assert.ok(ranking.players.every(player => !player.sameClub || player.previousTeam === player.currentTeam), `${metric}: duplicato fra squadra attuale e precedente non riconosciuto`);
+}
+const currentFoulParticipants = playerLeaderboards.periods["2026/27"].rankings.foulsCommitted.availablePlayers;
+assert.ok(currentFoulParticipants >= 303, "La copertura dei falli 2026/27 non deve regredire rispetto al campione verificato");
+assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsWon.availablePlayers, currentFoulParticipants, "Falli commessi e subiti 2026/27 devono avere la stessa copertura");
+const totalFoulParticipants = playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers;
+assert.ok(totalFoulParticipants >= 241 && totalFoulParticipants <= currentFoulParticipants, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
+const currentParticipants = playerLeaderboards.periods["2026/27"].rankings.goals.availablePlayers;
+assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.shots.availablePlayers, currentParticipants, "La copertura dei tiri 2026/27 deve restare allineata alle gare concluse importate");
+assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.shotsOnTarget.availablePlayers, currentParticipants, "La copertura dei tiri nello specchio 2026/27 deve restare allineata alle gare concluse importate");
+for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Classifica calciatori per statistica", "data-leader-period", "data-player-stat", "serie-b-marker", "aria-pressed", "per90Value", "data-compare-key"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
+assert.strictEqual(playerLeaderboards.periods.total.label, "Totale 2025/26 + 2026/27", "La Top 15 globale deve conservare il periodo totale combinato");
+assert.ok(mainApp.includes("ranking.availablePlayers") && mainApp.includes("ranking.availablePlayers"), "La Top 15 deve mostrare una copertura dinamica per ogni statistica");
+for (const contract of [".global-player-leaders", ".global-player-table", ".global-leader-player", ".global-leader-value", ".global-leader-rate", ".global-stat-button", ".serie-b-marker", ".global-col-player", ".global-col-rate"]) assert.ok(styles.includes(contract), `Top 15 globale: stile ${contract} assente`);
+const globalTableSource = mainApp.slice(mainApp.indexOf("function globalPlayerLeaderboardTable"), mainApp.indexOf("function globalPlayerLeaderboards"));
+assert.ok(!globalTableSource.includes("<th>Competizione</th>"), "La Top 15 non deve mostrare la colonna Competizione");
+assert.ok(globalTableSource.includes("<th>Pres.</th><th>Min.</th>"), "Presenze e minuti devono comparire in ogni classifica");
+assert.ok(!globalTableSource.includes("Squadra 2025/26") && !globalTableSource.includes("same-club-marker"), "La Top 15 non deve mostrare la squadra 2025/26");
+assert.ok(globalTableSource.includes("<colgroup>") && styles.includes("table-layout:fixed"), "Le colonne della Top 15 devono mantenere larghezze fisse fra le classifiche");
+assert.ok(!mainApp.includes('data-player-stat="appearances"') && !mainApp.includes('data-player-stat="minutes"'), "Presenze e minuti non devono avere classifiche autonome");
+assert.ok(!mainApp.includes("classifiche disponibili"), "Il conteggio delle classifiche non deve comparire nel selettore compatto");
+assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non deve usare un menu a tendina");
+assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes('class="season-summary"'), "Il vecchio riepilogo statistico non deve essere mostrato in Statistiche squadre");
+for (const contract of ["reading-fixture-preview", "Anteprima della lettura", "prediction.verdict.label", "likelyScore", "Risultato esatto", "prediction.confidence.value"]) assert.ok(mainApp.includes(contract), `Card Letture: anteprima ${contract} assente`);
+for (const contract of ["readingPostMatchReport", "Tabellino e statistiche", "Archivio risultati", "reading-player-table", "match.playerStats", "item.ownGoal", "Analisi prepartita archiviata"]) assert.ok(mainApp.includes(contract), `Letture post-partita: contratto ${contract} assente`);
+const postMatchSource = mainApp.slice(mainApp.indexOf("function readingPostMatchReport"), mainApp.indexOf("function readingPrototypeDetail"));
+assert.ok(!postMatchSource.includes("reading-post-match-score"), "Il tabellino non deve ripetere il riquadro con risultato e squadre");
+for (const contract of ['["Tiri totali", "shots", ""]', '["Falli commessi", "fouls", ""]', '["Falli subiti", "fouls", "", true]', 'fromOpponent?"away":"home"', 'fromOpponent?"home":"away"']) assert.ok(postMatchSource.includes(contract), `Tabella statistiche reali: contratto ${contract} assente`);
+assert.ok(mainApp.includes("Risultato esatto pronosticato") && mainApp.includes("prediction?.scoreForecast?.display") && mainApp.includes('class="is-central"') && mainApp.includes("Centrale dai gol attesi arrotondati"), "Le Letture devono mostrare il risultato esatto centrale e le alternative senza sostituirlo con una fascia gol");
+const readingHeroSource = mainApp.slice(mainApp.indexOf("function readingPrototypeDetail"), mainApp.indexOf("function renderProbableLineups"));
+for (const contract of ["serie-a-shooters", "Possibili migliori tiratori", "shotProbabilities", "shotOnTargetProbabilities", "expectedMinutes", "prediction-v2-player-cards"]) assert.ok(mainApp.includes(contract), `Letture: pannello tiratori V2 incompleto: ${contract}`);
+assert.ok(readingHeroSource.includes('class="reading-matchup" aria-label=') && readingHeroSource.includes("teamLogo(home,{showName:false})") && readingHeroSource.includes("teamLogo(away,{showName:false})"), "La testata della Lettura non deve ripetere i nomi delle squadre accanto al risultato");
+assert.ok(readingHeroSource.includes("reading-exact-scores") && readingHeroSource.includes("reading-hero-surprise") && readingHeroSource.includes("prediction.confidence.value"), "Risultati esatti, sorpresa e confidenza devono stare nel primo blocco");
+for (const removed of ["Dati mancanti", "Verdetto preliminare", "Pronostico archiviato", "reading-verdict-prototype"]) assert.ok(!readingHeroSource.includes(removed), `Dettaglio Lettura: blocco rimosso ancora presente: ${removed}`);
+for (const removed of [".reading-picks", ".reading-verdict-prototype"]) assert.ok(!styles.includes(removed), `Dettaglio Lettura: stile obsoleto ancora presente: ${removed}`);
+for (const removed of ["Risultato principale pronosticato", "Probabilità 1X2 e gol attesi", "Pronostico preliminare, non garanzia", "La scheda include ora le probabili formazioni indicate dalla fonte editoriale"]) assert.ok(!mainApp.includes(removed), `Letture: testo o blocco rimosso ancora presente: ${removed}`);
+for (const removed of ["reading-result-card", "reading-coverage-card", "Copertura post-partita", "Risultato finale"]) assert.ok(!readingHeroSource.includes(removed), `Riepilogo Lettura: contenuto rimosso ${removed} ancora presente`);
+for (const contract of [".reading-hero-summary.reading-result-summary", ".reading-match-hero.is-finished .reading-matchup>b"]) assert.ok(styles.includes(contract), `Riepilogo Lettura conclusa: stile ${contract} assente`);
+for (const contract of [".reading-fixture-preview", ".reading-fixture-preview-text"]) assert.ok(styles.includes(contract), `Card Letture: stile ${contract} assente`);
+for (const contract of ['reading-fixture match fixture-card fixture-card-link', 'class="match-head"', 'class="matchday-chip"', 'class="match-date"', 'teamColorStyle']) assert.ok(mainApp.includes(contract), `Card Letture: struttura calendario ${contract} assente`);
+for (const removed of ['reading-fixture-footer', 'Pronostico preliminare · sorpresa', 'Precedenti ${history.coverage.available}/5']) assert.ok(!mainApp.includes(removed), `Card Letture: contenuto inferiore ${removed} ancora presente`);
+const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
+assert.ok(!teamInterface.includes("Leader statistici"), "Il blocco storico Leader statistici deve essere rimosso dalle pagine squadra");
+const squadTableSource = teamInterface.slice(teamInterface.indexOf("function squadTable"), teamInterface.indexOf("function entryDetail"));
+for (const removedColumn of ["Stato", "Squadra 2025/26", "Competizione", "squad-col-status", "squad-col-team", "squad-col-competition"]) assert.ok(!squadTableSource.includes(removedColumn), `Tabella calciatori: colonna rimossa ancora presente: ${removedColumn}`);
+for (const retainedColumn of ["Valore mercato", "PG", "Min", "squad-col-market", "squad-col-played", "squad-col-minutes"]) assert.ok(squadTableSource.includes(retainedColumn), `Tabella calciatori: colonna richiesta assente: ${retainedColumn}`);
+for (const contract of ["combinedSquadStats", "addCovered", "statsByPlayer.get(player.id)", "I dati sommano 2025/26 e 2026/27", "per90Rate(totals[stat.key], minutes)"]) assert.ok(teamInterface.includes(contract), `Tabella calciatori: totale biennale mancante: ${contract}`);
+assert.ok(styles.includes(".squad-table{width:1621px;min-width:1621px;table-layout:fixed}"), "Tabella calciatori: larghezza non riallineata alle colonne rimaste");
+for (const removedCopy of ["Copertura statistica" + " individuale", "Le schede separano squadra" + " e competizione 2025/26"]) assert.ok(!teamInterface.includes(removedCopy), `Pagine squadra: testo rimosso ancora presente: ${removedCopy}`);
+const teamPageSource = teamInterface.slice(teamInterface.indexOf("function teamPage"), teamInterface.indexOf("async function init"));
+assert.ok(!teamPageSource.includes('<h2>Fonti</h2>') && !teamPageSource.includes("team.sources.map"), "Le fonti non devono comparire in fondo alle pagine squadra");
+assert.ok(!fs.existsSync(path.join(root, "fonti.html")), "Pagina Fonti rimossa");
+for (const contract of ['data-team-season="2026/27"', "Statistiche 2026/27", "teamSeasonStatsColumn", "teamSeasonList", "Produzione offensiva", "Solidità difensiva"]) assert.ok(teamInterface.includes(contract), `Statistiche essenziali: manca ${contract}`);
+for (const contract of [".team-season-comparison", ".team-season-columns", ".team-season-column", ".team-season-list", ".team-season-splits", ".team-season-empty"]) assert.ok(styles.includes(contract), `Confronto statistiche squadra: stile ${contract} assente`);
+for (const contract of ["teamAttackChannels", "Direzioni d'attacco", "team-attack-channel-bars", "Canale prevalente:"]) assert.ok(teamInterface.includes(contract), `Direzioni d'attacco nelle statistiche squadra: manca ${contract}`);
+for (const contract of [".team-attack-channels", ".team-attack-channel-bars"]) assert.ok(styles.includes(contract), `Direzioni d'attacco nelle statistiche squadra: stile ${contract} assente`);
+for (const contract of ['class="prediction-channels"', "Lati d'attacco", "Canale prevalente:", "prediction-v2-channels"]) assert.ok(readingsInterface.includes(contract), `Lati d'attacco nelle Letture: manca ${contract}`);
+assert.strictEqual(tacticalProfiles.profiles.filter(profile => profile.attackChannels).length, 20, "Le direzioni d'attacco devono coprire tutte le 20 squadre");
+for (const profile of tacticalProfiles.profiles) {
+  const channels = profile.attackChannels;
+  assert.ok(["left", "central", "right"].includes(channels.dominant), `Canale prevalente non valido: ${profile.teamId}`);
+  assert.ok(Math.abs(channels.left + channels.central + channels.right - 100) <= .2, `Percentuali direzioni non valide: ${profile.teamId}`);
+}
+for (const removedContract of ["teamTotalStatsBlock", "team.teamStats.total", "Totale 2025/26 + 2026/27", "Riepilogo complessivo", '<details class="detail-section team-season-section"', '<summary class="team-season-summary"']) assert.ok(!teamInterface.includes(removedContract), `Confronto statistiche squadra: contenuto rimosso ancora presente: ${removedContract}`);
+for (const contract of ["currentSquadLeaderboardRows", "Classifiche individuali ${season}", 'id="squad-leaderboards"', "Dati non disponibili", "Scheda N/D", 'closest("button.leader-player")']) assert.ok(teamInterface.includes(contract), `Top 3 squadra 2026/27: manca ${contract}`);
+const squadLeaderboardsSource = teamInterface.slice(teamInterface.indexOf("function squadLeaderboards"), teamInterface.indexOf("function squadTable"));
+assert.ok(!teamInterface.includes("previousSquadLeaderboardRows") && !squadLeaderboardsSource.includes('"2025/26"'), "Il blocco I migliori del 2025/26 deve essere rimosso da ogni pagina squadra");
+const squadLeaderboardSectionSource = teamInterface.slice(teamInterface.indexOf("function squadLeaderboardSection"), teamInterface.indexOf("function squadLeaderboards"));
+assert.ok(squadLeaderboardSectionSource.includes('<section class="squad-leaders') && squadLeaderboardSectionSource.includes('class="squad-leader-grid"') && !squadLeaderboardSectionSource.includes("<details") && !squadLeaderboardSectionSource.includes("<summary"), "I migliori del 2026/27 devono essere sempre visibili e senza tendina");
+const currentTeamLeadersSource = teamInterface.slice(teamInterface.indexOf("function currentSquadLeaderboardRows"), teamInterface.indexOf("function squadLeaderboardSection"));
+for (const field of ["foulsCommitted", "foulsWon"]) {
+  assert.ok(currentTeamLeadersSource.includes(`row.coverage.${field} === row.appearances`) && currentTeamLeadersSource.includes(`row.sums.${field}`), `Top 3 squadra 2026/27: ${field} non aggregato`);
+  assert.ok(!currentTeamLeadersSource.includes(`${field}: null`), `Top 3 squadra 2026/27: ${field} non deve essere forzato a N/D`);
+}
+for (const contract of [".squad-leaders-header", ".squad-leaders-content"]) assert.ok(styles.includes(contract), `Top 3 squadra 2026/27: stile ${contract} assente`);
+for (const removedContract of [".squad-leaders-summary", ".squad-leaders[open]"]) assert.ok(!styles.includes(removedContract), `Top 3 squadra 2026/27: stile della tendina ancora presente: ${removedContract}`);
+const readingLineupSource = mainApp.slice(mainApp.indexOf("function renderProbableLineups"), mainApp.indexOf("function renderReadingPilotEvidence"));
+assert.ok(teamInterface.includes('orientation: "vertical"') && teamInterface.includes('components/lineup-field.mjs'), "Le pagine squadra devono riutilizzare il campo condiviso in verticale");
+assert.ok(readingLineupSource.includes("renderLineupField([{team:home,lineup:homeLineup},{team:away,lineup:awayLineup}])"), "Le Letture devono mantenere il campo orizzontale condiviso");
+const officialFixtureByTeam = new Map(officialLineups.fixtures
+  .filter(fixture => fixture.matchday === probableLineups.matchday)
+  .flatMap(fixture => fixture.teams.map(team => [team.teamId, fixture.matchId])));
+for (const team of index.teams) {
+  const lineup = team.probableLineup;
+  const fixtureId = officialFixtureByTeam.get(team.id) || null;
+  assert.strictEqual(lineup.status, fixtureId ? "official" : "probable", `${team.id}: stato formazione della giornata corrente errato`);
+  assert.strictEqual(lineup.matchId, fixtureId, `${team.id}: formazione associata alla gara errata`);
+  assert.strictEqual(lineup.players.length, 11, `${team.id}: XI della giornata corrente incompleto`);
+  assert(!Object.hasOwn(lineup,"shirt"+"Numbers"), `${team.id}: i numeri di maglia non devono essere conservati`);
+}
+const atalantaBolognaOfficial = officialLineups.fixtures.find(fixture => fixture.matchId === "atalanta-bologna-2026-27-md-02");
+assert.ok(atalantaBolognaOfficial, "Atalanta-Bologna: distinta ufficiale assente");
+const atalantaBolognaExpected = {
+  atalanta: { formation: "4-3-3", coach: "Sarri", players: ["Carnesecchi", "Zappacosta", "Kossounou", "Scalvini", "Kolasinac", "Pasalic", "Gaetano", "Ederson", "De Ketelaere", "Scamacca", "Raspadori"] },
+  bologna: { formation: "4-3-3", coach: "Tedesco", players: ["Skorupski", "Holm", "Heggem", "Helland", "Alhassane", "Odgaard", "Pobega", "Ferguson", "Bernardeschi", "Piccoli", "Cambiaghi"] }
+};
+for (const [teamId, expected] of Object.entries(atalantaBolognaExpected)) {
+  const lineup = atalantaBolognaOfficial.teams.find(team => team.teamId === teamId);
+  assert.strictEqual(lineup.formation, expected.formation, `${teamId}: modulo Atalanta-Bologna errato`);
+  assert.strictEqual(lineup.coach, expected.coach, `${teamId}: allenatore Atalanta-Bologna errato`);
+  assert.deepStrictEqual(lineup.players.map(player => player.sourceName), expected.players, `${teamId}: ordine titolari Atalanta-Bologna errato`);
+}
+const genoaNapoliOfficial = officialLineups.fixtures.find(fixture => fixture.matchId === "genoa-napoli-2026-27-md-01");
+assert.strictEqual(genoaNapoliOfficial.teams.find(team => team.teamId === "genoa").substitutes.length, 13, "genoa: panchina ufficiale incompleta");
+assert.strictEqual(genoaNapoliOfficial.teams.find(team => team.teamId === "napoli").substitutes.length, 13, "napoli: panchina ufficiale incompleta");
+const genoaFiorentinaOfficial = officialLineups.fixtures.find(fixture => fixture.matchId === "genoa-fiorentina-2026-27-md-06");
+assert.ok(genoaFiorentinaOfficial, "Genoa-Fiorentina: distinta ufficiale assente");
+const genoaFiorentinaExpected = {
+  genoa: {
+    formation: "3-4-2-1",
+    coach: "De Rossi D.",
+    players: ["Bijlow", "Otoa", "Ostigard", "Vasquez", "Ehizibue", "Frendrup", "Traore", "Ellertsson", "Junior Messias", "El Shaarawy", "Osmajic"],
+    substitutes: 13,
+    unresolvedSubstitutes: ["Klisys", "Lafont", "Wiafe"]
+  },
+  fiorentina: {
+    formation: "4-3-3",
+    coach: "Vanoli P.",
+    players: ["de Gea", "Jimenez", "Dragusin", "Ranieri", "Valdepenas", "Ndour", "Inao Oulai", "Fagioli", "Mastantuono", "Beto", "Gnonto"],
+    substitutes: 11,
+    unresolvedSubstitutes: ["Mazzeo"]
+  }
+};
+for (const [teamId, expected] of Object.entries(genoaFiorentinaExpected)) {
+  const lineup = genoaFiorentinaOfficial.teams.find(team => team.teamId === teamId);
+  assert.strictEqual(lineup.formation, expected.formation, `${teamId}: modulo Genoa-Fiorentina errato`);
+  assert.strictEqual(lineup.coach, expected.coach, `${teamId}: allenatore Genoa-Fiorentina errato`);
+  assert.deepStrictEqual(lineup.players.map(player => player.sourceName), expected.players, `${teamId}: ordine titolari Genoa-Fiorentina errato`);
+  assert.strictEqual(lineup.substitutes.length, expected.substitutes, `${teamId}: panchina Genoa-Fiorentina incompleta`);
+  assert.deepStrictEqual(lineup.substitutes.filter(player => player.playerId === null).map(player => player.sourceName), expected.unresolvedSubstitutes, `${teamId}: identità non risolte Genoa-Fiorentina errate`);
+}
+const torinoMilanSource = officialLineups.fixtures.find(fixture => fixture.matchId === "torino-milan-2026-27-md-01").teams.find(team => team.teamId === "torino");
+assert(torinoMilanSource.players.some(player => player.currentName === "Cesare Casadei") && !torinoMilanSource.players.some(player => player.currentName === "Alieu Njie"), "torino: correzione storica Casadei/Njie non preservata");
+assert.ok(teamInterface.includes("probable-lineup-substitutes") && fs.readFileSync(path.join(root, "js/components/lineup-field.mjs"), "utf8").includes("reading-lineup-substitutes"), "Le panchine ufficiali non sono renderizzate nelle pagine squadra e Letture");
+assert.ok(teamInterface.includes('official ? "Formazione ufficiale" : "Probabile formazione"'), "Le pagine squadra non distinguono la formazione ufficiale");
+assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":referenceLineups?"Formazioni di riferimento":"Probabili formazioni"'), "La Lettura non distingue formazioni ufficiali, di riferimento e probabili");
+assert.ok(readingLineupSource.includes('"Distinte ufficiali della giornata "+match.matchday'), "La Lettura non associa le distinte ufficiali alla giornata corretta");
+assert.ok(mainApp.includes('data-archive-day=') && mainApp.includes('ri-archive-panel') && mainApp.includes('ri-archive-content-'), "I tabellini conclusi non usano il menu a tendina dedicato alle partite precedenti");
+assert.ok(readingsInterface.includes("const chronological=(a,b)=>scheduleChronology(a,b)||a.id.localeCompare(b.id)") && readingsInterface.includes("league.filter(m=>m.matchday===day).sort(chronological)"), "Le card Letture devono usare data, orario e ID per ogni giornata");
+assert.ok(!mainApp.includes("Candidato MVP") && !mainApp.includes("prediction-mvp"), "Il candidato MVP non deve essere esposto nelle Letture");
+assert.ok(mainApp.includes("reading-official-mvp") && mainApp.includes("Panini Player of the Match") && mainApp.includes("match.mvp"), "L'MVP ufficiale della partita conclusa non è esposto nelle Letture");
+assert.ok(mainApp.includes("La partita in numeri") && mainApp.includes("prediction-v2-team-grid") && mainApp.includes("p20–p80"), "I volumi V2 casa/trasferta non sono esposti nelle Letture");
+assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.includes("Data da definire · riferimento"), "Le date non definite non devono mostrare una data di riferimento");
+assert.ok(teamInterface.includes("Obiettivo iniziale") && teamInterface.includes("calculateObjectiveMetrics"), "La sintesi degli obiettivi non è integrata nelle pagine squadra");
+for (const contract of ["team-page-jumps", "team-analysis-grid", "team-roster-section", "team-full-roster-section", "team-tactical-analysis"]) assert.ok(teamInterface.includes(contract), `Gerarchia compatta pagina squadra: manca ${contract}`);
+assert.ok(teamPageSource.includes('${value(team.preferredFormation)}</p>${pageJumps}'), "I collegamenti devono seguire allenatore e modulo preferito nella testata");
+
+assert.ok(!teamInterface.includes('<details class="team-season-group"') && !teamInterface.includes(".team-season-group>summary"), "Risultati, disciplina e casa/trasferta non devono usare tendine");
+for (const removedContract of [".team-season-group>summary", ".team-season-group[open]"]) assert.ok(!styles.includes(removedContract), `Statistiche squadra: stile della tendina ancora presente: ${removedContract}`);
+const editorialSections = ["identity", "season", "tactics", "roster", "statistics", "leaders", "comparator"];
+for (const section of editorialSections) assert.ok(teamInterface.includes('data-editorial-section="'+section+'"'), 'Sezione editoriale assente: '+section);
+for (const id of ["team-comparator-disclosure"]) assert.ok(teamInterface.includes(id), 'Pannello editoriale assente: '+id);
+assert.ok(teamPageSource.includes("${fullSeasonRoster(team, combinedPlayerStats)}") && teamInterface.includes('id="squad-results"'), "La tabella completa deve avere una sezione autonoma con le statistiche originali");
+for (const contract of [".team-page-jumps", ".team-analysis-grid", ".squad-table-disclosure", ".team-style-details", ".team-season-content"]) assert.ok(styles.includes(contract), `Gerarchia compatta pagina squadra: stile ${contract} assente`);
+assert.ok(styles.includes(".team-style-trait-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);align-items:start;gap:10px}") && styles.includes(".team-style-traits:last-child{grid-column:1/-1}"), "Profilo tattico: la distribuzione deve essere 2 + 1 con proporzione 60/40");
+assert.ok(styles.includes(".team-style-traits li{gap:8px;padding-bottom:7px;font-size:.75rem") && styles.includes(".team-style-traits h3{margin-bottom:9px;font-size:.82rem"), "Profilo tattico: tipografia compatta assente");
+assert.ok(teamInterface.includes("teamNavigation(team, teams)") && teamInterface.includes("Squadra precedente") && teamInterface.includes("Squadra successiva"), "La pagina squadra deve offrire la navigazione precedente/successiva");
+assert.ok(!teamInterface.includes("Aggiornato automaticamente") && !teamInterface.includes('class="updated"'), "La pagina squadra non deve mostrare diciture di aggiornamento automatico o la data nel hero");
+assert.ok(!teamInterface.includes("Distinta confermata") && !teamInterface.includes("Profilo completo"), "I badge Distinta confermata e Profilo completo non devono essere mostrati");
+assert.ok(!teamInterface.includes('<div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26'), "Il hero della squadra non deve mostrare la competizione 2025/26 sopra il nome");
+for (const removedCalendarContract of ["personalCalendar", "teamFixtureRow", "teamFixtures", "team-calendar-select", "team-calendar-selection", "european-fixtures-2026-27.json"]) assert.ok(!teamInterface.includes(removedCalendarContract), `Il calendario incorporato deve essere rimosso: ${removedCalendarContract}`);
+assert.ok(teamInterface.includes('class="team-calendar-link"') && teamInterface.includes('squadra.html?team=${esc(team.id)}') && teamInterface.includes("Calendario completo →"), "La pagina squadra deve collegare il calendario completo dedicato");
+assert.ok(styles.includes(".team-page-jumps a.team-calendar-link"), "Il pulsante del calendario completo non ha uno stile dedicato");
+const teamNavSource = matchesInterface.slice(matchesInterface.indexOf('const teamNav='), matchesInterface.indexOf('function empty'));
+const matchCardSource = mainApp.slice(mainApp.indexOf('function matchCard'), mainApp.indexOf('function homeMatchListItem'));
+assert.ok(matchCardSource.includes('class="card match fixture-card fixture-card-link"') && matchCardSource.includes('href="lettura.html?match=${esc(m.id)}"'), "L'intera card partita deve aprire direttamente la lettura");
+assert.ok(matchCardSource.includes('class="fixture-official"') && matchCardSource.includes('m.refereeAssignment?.referee?.name'), "La card deve mostrare l'arbitro quando la designazione AIA e disponibile");
+assert.ok(mainApp.includes('class="section reading-referee-assignment"') && mainApp.includes('id="lettura-referee"'), "La Lettura deve mostrare la squadra arbitrale ufficiale");
+for (const contract of ["reading-referee-profiles-2025-26.json", "reading-referee-stats", "Falli / gara", "Gialli / gara", "Rossi / gara", "Rigori / gara"]) assert.ok(mainApp.includes(contract), `La Lettura deve mostrare la designazione arbitrale essenziale: ${contract}`);
+for (const removedRefereeContract of ["Quando tende ad ammonire", "datasetComparison.yellowCardsPerMatch", "events.reasons.unspecified", "Fonte designazione AIA-FIGC", "Fonti statistiche ESPN", "<dt>Assistenti</dt>", "<dt>IV ufficiale</dt>", "<dt>VAR</dt>", "<dt>AVAR</dt>", 'refereeMetric("Partite"']) assert.ok(!mainApp.includes(removedRefereeContract), `La Lettura non deve mostrare il dettaglio arbitrale rimosso: ${removedRefereeContract}`);
+const readingDetailSource=mainApp.slice(mainApp.indexOf("function readingPrototypeDetail"),mainApp.indexOf("function renderProbableLineups"));
+assert.ok(!readingDetailSource.includes("reading-context-rail")&&!readingDetailSource.includes("reading-evidence-card"),"Le vecchie schede di contesto squadra devono essere rimosse dalla Lettura");
+const readingDetailReturn=readingDetailSource.slice(readingDetailSource.lastIndexOf('return `<nav class="reading-back"'));
+assert.ok(readingDetailReturn.indexOf("${v2.discipline}")<readingDetailReturn.indexOf("${refereePanel}")&&readingDetailReturn.indexOf("${refereePanel}")<readingDetailReturn.indexOf("reading-info-grid"),"Disciplina, squadra arbitrale e formazioni devono mantenere l'ordine editoriale V2");
+assert.ok(matchCardSource.includes('m.status!=="scheduled"') && !matchCardSource.includes('<div class="actions">'), "Le card partita non devono mostrare Programmata o i pulsanti Lettura/Statistiche");
+assert.ok(!matchCardSource.includes('match-events') && !matchCardSource.includes('Marcatori') && !matchCardSource.includes('Ammoniti'), "Le card partita non devono mostrare riquadri evento prima dei dati reali");
+assert.ok(teamNavSource.includes('src="${esc(team.logo)}"') && !teamNavSource.includes("monochrome"), "La barra Calendario per squadra deve usare i loghi originali colorati");
+assert.ok(styles.includes('.team-nav-link img') && styles.includes('filter:drop-shadow('), "I loghi del selettore squadre devono avere un'ombreggiatura di contrasto");
+const teamMatchdayStyle = styles.slice(styles.indexOf('.team-matchday .match{'), styles.indexOf('.team-matchday .match-head{'));
+assert.ok(!teamMatchdayStyle.includes('background:') && !teamMatchdayStyle.includes('border-color:') && !teamMatchdayStyle.includes('box-shadow:'), "Le card del calendario squadra devono conservare la stessa superficie chiara delle card globali");
+assert.ok(styles.includes('.match.fixture-card .matchday-chip{') && styles.includes('background:transparent;'), "Il testo Giornata X nelle card deve restare privo di riquadro");
+assert.ok(styles.includes('body[data-page="cup"] main>.hero+.cup-stage') && styles.includes('body[data-page="readings"] main>.hero+.section{margin-top:24px}'), "Coppa Italia e Lettura devono usare la spaziatura compatta delle altre pagine interne");
+const cupCardSource = mainApp.slice(mainApp.indexOf('function cupTeamSlot'), mainApp.indexOf('function cupRound'));
+assert.ok(cupCardSource.includes('assets/images/icons/goal-ball.jpg')&&cupCardSource.includes('cup-card-symbol is-${event.type}')&&styles.includes('.cup-card-symbol.is-yellow')&&styles.includes('.cup-card-symbol.is-red'), "Gli eventi Coppa Italia devono usare pallone, cartellino giallo e cartellino rosso");
+assert.ok(cupCardSource.includes('cup-team-events')&&!cupCardSource.includes('cup-match-events'), "Marcatori e cartellini devono essere disposti in riga dentro la rispettiva squadra");
+assert.ok(styles.includes('.cup-match-card>header .cup-result')&&styles.includes('background:transparent;color:#9a5a08;font-size:16px'), "Il risultato Coppa Italia deve essere evidente e privo di riquadro o sfondo");
+assert.ok(styles.includes('.cup-match-card.is-finished .cup-team-slot{height:120px')&&styles.includes('.cup-match-card.is-finished .cup-team-slot{height:200px'), "Le righe squadra delle partite concluse devono avere altezza uniforme su desktop e mobile");
+const currentMatches = read("data/normalized/matches.json").filter(match => match.competition === "serie-a" && match.season === "2026-27");
+assert.strictEqual(europeanCalendar.fixtures.length, 54, "Il calendario europeo deve contenere 54 gare");
+assert.ok(europeanCalendar.fixtures.every(match => match.workloadOnly === true && match.predictionEligible === false), "Le gare europee devono restare solo carico calendario e fuori dai pronostici");
+const juventusNec = europeanCalendar.fixtures.find(match => match.id === "juventus-nec-nijmegen-2026-27-uel-01");
+assert.equal(juventusNec?.status, "finished", "Juventus-NEC deve risultare conclusa");
+assert.deepStrictEqual(juventusNec?.score, { home: 5, away: 0 }, "Juventus-NEC: risultato errato");
+assert.ok(juventusNec?.resultSource?.url, "Juventus-NEC: fonte risultato mancante");
+for (const [teamId, expected] of Object.entries({ inter: 8, napoli: 8, roma: 8, como: 8, milan: 8, juventus: 8, atalanta: 6 })) assert.strictEqual(europeanCalendar.fixtures.filter(match => match.teamId === teamId).length, expected, `${teamId}: sono richiesti ${expected} impegni UEFA`);
+assert.ok(matchesInterface.includes('load("european-fixtures-2026-27.json")') && matchesInterface.includes('calendarType:"europe"'), "Il calendario personale non integra gli impegni europei");
+assert.ok(matchesInterface.includes('load("coppa-italia-2026-27.json")') && matchesInterface.includes('calendarType:"cup"'), "Il calendario personale non integra gli impegni di Coppa Italia");
+for (const marker of ["Solo carico calendario · nessun pronostico", "Fatica: a", "Rendimento sotto fatica:", "38 giornate di Serie A", "gare UEFA", "gare di Coppa Italia", "Tutti gli appuntamenti"]) assert.ok(matchesInterface.includes(marker), `Calendario personale: manca ${marker}`);
+assert.ok(readingsInterface.includes('match.resultCoverage?.bookings==="unavailable"?"Cartellini N/D"') && readingsInterface.includes('match.resultCoverage?.substitutions==="unavailable"?"Sostituzioni N/D"'), "I dati evento non disponibili devono restare esplicitamente N/D");
+assert.ok(bettingInterface.includes('verde = esito preso') && bettingInterface.includes('betting-leg--${status}') && bettingInterface.includes('combo.legs.map(leg=>settleLeg'), "Le MyCombo concluse devono mostrare in verde gli esiti presi");
+const predictionIds = new Set(read("data/normalized/predictions.json").predictions.map(prediction => prediction.matchId));
+assert.ok(europeanCalendar.fixtures.every(match => !predictionIds.has(match.id)), "Una gara europea è entrata nei pronostici");
+for (const summary of index.teams) {
+  const fixtures = currentMatches.filter(match => match.homeTeam === summary.id || match.awayTeam === summary.id);
+  assert.strictEqual(fixtures.length, 38, `${summary.id}: il calendario personale deve contenere 38 partite`);
+  assert.deepStrictEqual(fixtures.map(match => match.matchday).sort((left, right) => left - right), Array.from({ length: 38 }, (_, index) => index + 1), `${summary.id}: giornate mancanti o duplicate nel calendario personale`);
+}
+assert.ok(teamPageShell.includes("scripts/standings.js") && teamPageShell.includes("scripts/objective-metrics.js"), "Le pagine squadra non caricano il motore condiviso degli obiettivi");
+assert.ok(!teamInterface.includes("Copertura completa") && !mainApp.includes("Copertura completa") && !teamStatsShell.includes("Copertura completa"), "Il banner Copertura completa non deve essere mostrato");
+assert.ok(fs.readFileSync(path.join(root,"statistiche-giocatori.html"),"utf8").includes('data-page="player-stats"'), "Pagina statistiche giocatori dedicata assente");
+assert.ok(!fs.existsSync(path.join(root, "classifica.html")), "La pagina Classifica deve essere rimossa");
+assert.ok(!fs.existsSync(path.join(root, "calendario.html")), "La pagina Calendario globale deve essere rimossa");
+const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, file), "utf8"))
+  .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, "statistiche-squadra", file), "utf8"))).join("\n");
+assert.ok(generatedHtml.includes("statistiche-giocatori.html"), "Navigazione alla pagina giocatori assente");
+assert.ok(!generatedHtml.includes('href="classifica.html"') && !generatedHtml.includes('href="../classifica.html"'), "Un collegamento alla pagina Classifica rimossa è ancora presente");
+assert.ok(!generatedHtml.includes('href="calendario.html"') && !generatedHtml.includes('href="../calendario.html"'), "Un collegamento alla pagina Calendario rimossa è ancora presente");
+assert.ok(matchesInterface.includes('if(page==="team")') && matchesInterface.includes("personalCalendar(team,league,europe,cup,teams)") && !matchesInterface.includes('page==="calendar"'), "Devono restare soltanto i calendari personali delle squadre");
+assert.ok(mainApp.includes('if(page==="home")') && mainApp.includes('data-standings-tab="current"') && mainApp.includes('data-standings-tab="archive"'), "Le due classifiche devono essere renderizzate nella Home");
+assert.ok(!mainApp.includes('class="season-overview"'), "Il riepilogo Squadre/Partite/Capolista/Copertura non deve essere mostrato nella Home");
+for (const marker of ['label:"R+"', 'label:"R-"', 'label:"C+"', 'label:"C-"', "configureStandingsTables()", "data-sortable-standings"]) assert.ok(mainApp.includes(marker), `Classifica dinamica: manca ${marker}`);
+for (const scope of ['id:"general"', 'id:"home"', 'id:"away"', "data-standings-scope-tab", "data-standings-scope-panel", "activateScope"]) assert.ok(mainApp.includes(scope), `Selettore rendimento 2025/26: manca ${scope}`);
+assert.ok(mainApp.includes('id:"general",label:"Generale",eyebrow:"",title:"",description:""'), "La classifica generale corrente non deve mostrare il blocco introduttivo ridondante");
+assert.ok(homeInterface.includes('class="standings-switch"') && homeInterface.includes('data-standings-tab="current"') && homeInterface.includes('data-standings-tab="archive"') && homeInterface.includes('<button type="button" data-standings-tab=') && styles.includes(".standings-switch"), "La selezione stagione deve mantenere entrambi i pulsanti accessibili e gli stili condivisi");
+assert.ok(mainApp.includes("standings-column-active") && styles.includes("standings-column-active") && mainApp.includes('aria-pressed="false"'), "La colonna ordinata deve essere evidenziata visivamente e annunciata ai lettori di schermo");
+assert.ok(!mainApp.includes("Esito della stagione") && !mainApp.includes("Verdetti 2025/26") && !mainApp.includes("verdictsPanel"), "Il blocco Verdetti 2025/26 deve essere rimosso dalla Home");
+for (const tooltip of ["Rigori assegnati a favore", "Rigori subiti contro", "Cartellini assegnati agli avversari", "Cartellini ricevuti dalla squadra"]) assert.ok(mainApp.includes(tooltip), `Tooltip classifica mancante: ${tooltip}`);
+assert.ok(styles.includes("width:calc(100% + 288px);min-width:1088px"), "Le quattro nuove colonne devono essere aggiunte senza restringere quelle esistenti");
+for (const zone of ["standing-zone-champion", "standing-zone-top", "standing-zone-europa", "standing-zone-conference", "standing-zone-bottom"]) assert.ok(mainApp.includes(zone) && styles.includes(zone), `Fascia classifica mancante: ${zone}`);
+const disciplineStandings = calculateStandings([{ id: "a" }, { id: "b" }], [{ id: "a-b", competition: "serie-a", status: "finished", homeTeam: "a", awayTeam: "b", score: { home: 1, away: 0 }, teamStats: { home: { penaltiesFor: 1, penaltiesAgainst: 2, yellowCards: 2, secondYellowCards: 0, straightRedCards: 1 }, away: { penaltiesFor: 2, penaltiesAgainst: 1, yellowCards: 4, secondYellowCards: 1, straightRedCards: 0 } } }]);
+const disciplineHome = disciplineStandings.find(row => row.team === "a");
+assert.deepStrictEqual([disciplineHome.penaltiesFor, disciplineHome.penaltiesAgainst, disciplineHome.cardsFor, disciplineHome.cardsAgainst], [1, 2, 5, 3], "Conteggio R+/R-/C+/C- errato");
+const unavailableDiscipline = calculateStandings([{ id: "a" }, { id: "b" }], [{ id: "a-b", competition: "serie-a", status: "finished", homeTeam: "a", awayTeam: "b", score: { home: 0, away: 0 } }]).find(row => row.team === "a");
+assert.deepStrictEqual([unavailableDiscipline.penaltiesFor, unavailableDiscipline.penaltiesAgainst, unavailableDiscipline.cardsFor, unavailableDiscipline.cardsAgainst], [null, null, null, null], "I dati disciplinari assenti devono restare N/D");
+const homeRenderSource = homeInterface.slice(homeInterface.indexOf('if(page==="home"){'), homeInterface.indexOf('document.querySelector("#app")'));
+assert.ok(homeRenderSource.includes("homeStandings(standings,currentHomeRows,currentAwayRows,previousStandings,teams,standingsTeams)"), "Le classifiche devono essere presenti nella Home");
+assert.ok(!homeRenderSource.includes("Esplora il progetto") && !homeRenderSource.includes("feature-grid"), "Esplora il progetto deve essere rimosso dalla Home");
+assert.ok(!homeRenderSource.includes("Apri il calendario"), "Il link Apri il calendario deve essere rimosso dalla Home");
+assert.ok(!homeRenderSource.includes("Capolista") && !homeRenderSource.includes("leader="), "La Home non deve calcolare o mostrare la capolista dopo la rimozione del riepilogo");
+const homeStandingsSource = homeInterface.slice(homeInterface.indexOf("function homeStandings"), homeInterface.indexOf("async function render"));
+assert.ok(!homeStandingsSource.includes("objectiveStatusSection(") && !homeStandingsSource.includes("Stato degli obiettivi"), "Lo stato degli obiettivi non deve essere renderizzato nella Home");
+assert.ok(mainApp.includes('const routes={home:"home",team:"matches","team-stats":"teams"') && !mainApp.includes('calendar:"matches"') && mainApp.includes('[teams,matches,previousStandings]=await Promise.all') && mainApp.includes('[teamDirectory,playerLeaderboards]=await Promise.all'), "Router e pagine devono caricare soltanto i dataset necessari");
+assert.ok(mainApp.includes('requestedMatchId?"first-leg-2026-27.json":"first-leg-2026-27-summary.json"'), "L'indice Letture deve usare il riepilogo H2H leggero");
+const expectedNavigation = [
+  ["index.html", "Home"], ["statistiche-squadre.html", "Squadre"], ["statistiche-giocatori.html", "Giocatori"], ["lettura.html", "Lettura"],
+  ["coppa-italia.html", "Coppa Italia"], ["champions-league.html", "Champions League"],
+  ["schedina.html", "Schedina"]
+];
+for (const file of fs.readdirSync(root).filter(file => file.endsWith(".html") && file !== "arbitri.html").map(file => path.join(root, file))
+  .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => path.join(root, "statistiche-squadra", file)))) {
+  const html = fs.readFileSync(file, "utf8");
+  const nav = html.match(/<nav id="site-nav"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
+  assert.ok(nav, `${path.basename(file)}: navbar assente`);
+  const links = [...nav.matchAll(/<a[^>]+href="([^"]+)"[^>]*>([^<]+)<\/a>/g)].map(match => [match[1].replace(/^\.\.\//, ""), match[2]]);
+  assert.deepStrictEqual(links, expectedNavigation, `${path.basename(file)}: navbar non uniforme`);
+}
+console.log("Team pages: 20 JSON e 20 pagine valide; competizioni separate; null preservati.");
