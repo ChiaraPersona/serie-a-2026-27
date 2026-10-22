@@ -465,7 +465,7 @@ export function createPage(deps){
     if(competition==="champions"){
       const number=Number(matchday||1);
       if(![1,2,3].includes(number))throw new Error("Giornata Champions non disponibile");
-      const [workspace,outcomes]=await Promise.all([loadChampionsWorkspaceMd3Derived(load,number),load("card-settlement-records.json")]);
+      const [workspace,outcomes]=await Promise.all([number===3?load("schedina-champions-md03-ui.json").then(async data=>(await import('./champions-md3-browser-workspace.mjs')).restoreMd3Workspace(data)):loadChampionsWorkspaceMd3Derived(load,number),load("card-settlement-records.json")]);
       recordedOutcomes=outcomes.records;
       document.querySelector("#app").innerHTML=hero(`UEFA Champions League · ${number}ª giornata`,"Schedine",number===3?"Pronostici aggiornati con le formazioni probabili e la panchina provvisoria, secondo i criteri condivisi con la Serie A.":"Pronostici e risultati originali archiviati, in sola consultazione.")+`<nav class="betting-round-back"><a href="schedina.html">← Tutte le giornate</a><a href="champions-league.html">Letture Champions →</a></nav>`+championsWorkspaceMarkup(workspace);
       mountChampionsWorkspace(workspace);

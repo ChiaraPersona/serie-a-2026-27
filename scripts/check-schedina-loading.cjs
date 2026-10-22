@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),
 const {pathToFileURL}=require('node:url'),{gzipSync}=require('node:zlib');
 const deps='C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules';
 const {chromium}=require(deps+'/playwright'),{PNG}=require(deps+'/pngjs');
-const root=path.resolve(__dirname,'..'),out=path.join(root,'output/reports/schedina-loading');
+const root=path.resolve(__dirname,'..'),out=path.join(root,process.env.SCHEDINA_REPORT_DIR||'output/reports/schedina-loading');
 const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg'};
 const server=http.createServer((req,res)=>{
   const file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));
@@ -27,6 +27,8 @@ const snapshot=page=>page.locator('#app').evaluate(n=>({html:n.innerHTML,text:n.
     cases.push(...['','?giornata=5','?giornata=7','?competizione=champions&giornata=2','?competizione=champions&giornata=3'].map(query=>({query,width:390})));
     if(process.argv.includes('--interactive-only'))cases=[1440,390].map(width=>({query:'?giornata=7',width,simulateUpcoming:true}));
     if(process.argv.includes('--fallback-only'))cases=[{query:'?giornata=7',width:1440,simulateUpcoming:true,simulateFallback:true}];
+    if(process.argv.includes('--md3-only'))cases=[1440,390].map(width=>({query:'?competizione=champions&giornata=3',width})).concat([{query:'',width:1440},{query:'?competizione=champions&giornata=2',width:1440}]);
+    if(process.argv.includes('--md3-interactive'))cases=[1440,390].map(width=>({query:'?competizione=champions&giornata=3',width,simulateMd3Upcoming:true}));
     for(const [i,test] of cases.entries()){
       const pair=[];
       for(const baseline of [true,false]){
@@ -49,13 +51,19 @@ const snapshot=page=>page.locator('#app').evaluate(n=>({html:n.innerHTML,text:n.
             day.marketCatalog.matches.find(m=>m.matchId==='bologna-inter-2026-27-md-07').selections=[];
             await page.route('**/data/normalized/schedina-md07.json*',r=>r.fulfill({contentType:'application/json',body:JSON.stringify(day)}));
           }
+          if(test.simulateMd3Upcoming)for(const file of ['champions-league-2026-27.json','schedina-champions-md03-ui.json']){
+            const data=JSON.parse(fs.readFileSync(path.join(root,'data/normalized',file)));
+            const fixture=data.fixtures.find(f=>f.id==='ucl-2026-27-md03-01');
+            fixture.status='scheduled';fixture.score=null;
+            await page.route(`**/data/normalized/${file}*`,r=>r.fulfill({contentType:'application/json',body:JSON.stringify(data)}));
+          }
           if(baseline)for(const [route,file] of [['**/js/pages/betting.js*','betting.js'],['**/js/services/data-service.js*','data-service.js'],['**/js/core/app.js*','app.js']]){
             await page.route(route,r=>r.fulfill({contentType:'text/javascript',body:fs.readFileSync(path.join(out,'baseline',file))}));
           }
           const navigate=async()=>{await page.goto(base+'/schedina.html'+test.query,{timeout:90000});await page.waitForSelector(test.query?'#app .betting-round-page,#app .empty':'#app .betting-archive,#app .empty',{timeout:90000});if(test.simulateFallback)assert.match(await page.locator('#app').innerText(),/Cannot read properties of undefined \(reading 'rank'\)/);else assert.equal(await page.locator('#app .empty').count(),0,await page.locator('#app').innerText());await page.waitForLoadState('networkidle');};
           await navigate();assert.deepEqual(errors,[],test.query+' errors');
           const state=await snapshot(page),initialUrls=urls.slice();
-          const image=await page.screenshot({path:path.join(out,`${test.simulateFallback?'fallback-':test.simulateUpcoming?'interactive-':''}${i}-${test.width}-${baseline?'before':'after'}.png`),animations:'disabled'});
+          const image=await page.screenshot({path:path.join(out,`${test.simulateFallback?'fallback-':test.simulateUpcoming||test.simulateMd3Upcoming?'interactive-':''}${i}-${test.width}-${baseline?'before':'after'}.png`),animations:'disabled'});
           if(!baseline){const counts=new Map();for(const u of initialUrls)counts.set(u,(counts.get(u)||0)+1);assert([...counts.values()].every(n=>n===1),'Duplicate JSON request: '+test.query);}
           if(!baseline&&test.simulateFallback)assert(initialUrls.includes('data/normalized/predictions-md07.json'));
           // Same disclosure and open-all actions, including MyCombo/archive details.
@@ -79,7 +87,7 @@ const snapshot=page=>page.locator('#app').evaluate(n=>({html:n.innerHTML,text:n.
             assert.equal(await page.locator('[data-personal-remove]').count(),0);
             persistence='add, restore on reload, remove: PASS';
           }
-          if(test.simulateUpcoming&&!test.simulateFallback)assert.equal(persistence,'add, restore on reload, remove: PASS');
+          if((test.simulateUpcoming||test.simulateMd3Upcoming)&&!test.simulateFallback)assert.equal(persistence,'add, restore on reload, remove: PASS');
           pair.push({state,expanded,selected,restored,persistence,image,urls:initialUrls,weight:weight(initialUrls)});
         }finally{await context.close()}
       }
@@ -90,7 +98,7 @@ const snapshot=page=>page.locator('#app').evaluate(n=>({html:n.innerHTML,text:n.
       const a=PNG.sync.read(pair[0].image),b=PNG.sync.read(pair[1].image);
       assert.equal(pixelmatch(a.data,b.data,null,a.width,a.height,{threshold:0.1}),0,test.query+' visual difference');
       results.push({...test,...(test.simulateFallback?{knownBaselineError:'Missing suggestionAnalysis.rank with an artificially emptied catalog'}:{}),before:{...pair[0].weight,requests:pair[0].urls.length},after:{...pair[1].weight,requests:pair[1].urls.length},resources:pair[1].urls,persistence:pair[1].persistence,dom:'IDENTICAL',visualDifferences:0,overflow:pair[1].state.overflow});
-      fs.writeFileSync(path.join(out,test.simulateFallback?'fallback-audit.json':test.simulateUpcoming?'interactive-audit.json':'audit.json'),JSON.stringify({results,fontComparison:'External fonts blocked equally',visualThreshold:0.1},null,2)+'\n');
+      fs.writeFileSync(path.join(out,test.simulateFallback?'fallback-audit.json':test.simulateUpcoming||test.simulateMd3Upcoming?'interactive-audit.json':'audit.json'),JSON.stringify({results,fontComparison:'External fonts blocked equally',visualThreshold:0.1},null,2)+'\n');
       console.log('PASS',test.query||'index',test.width,JSON.stringify(results.at(-1)));
     }
   }finally{await browser?.close();await new Promise(r=>server.close(r))}
