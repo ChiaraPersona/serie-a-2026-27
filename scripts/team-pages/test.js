@@ -18,7 +18,6 @@ const styles = ["styles", "base", "layout", "components", "home", "matches", "te
   .join("\n");
 const teamStatsShell = fs.readFileSync(path.join(root, "statistiche-squadre.html"), "utf8");
 const teamPageShell = fs.readFileSync(path.join(root, "statistiche-squadra", "inter.html"), "utf8");
-const sourcesShell = fs.readFileSync(path.join(root, "fonti.html"), "utf8");
 const readingsInterface = fs.readFileSync(path.join(root, "js/pages/readings.js"), "utf8");
 const matchesInterface = fs.readFileSync(path.join(root, "js/pages/matches.js"), "utf8");
 const bettingInterface = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
@@ -126,8 +125,7 @@ assert.ok(styles.includes(".squad-table{width:1621px;min-width:1621px;table-layo
 for (const removedCopy of ["Copertura statistica" + " individuale", "Le schede separano squadra" + " e competizione 2025/26"]) assert.ok(!teamInterface.includes(removedCopy), `Pagine squadra: testo rimosso ancora presente: ${removedCopy}`);
 const teamPageSource = teamInterface.slice(teamInterface.indexOf("function teamPage"), teamInterface.indexOf("async function init"));
 assert.ok(!teamPageSource.includes('<h2>Fonti</h2>') && !teamPageSource.includes("team.sources.map"), "Le fonti non devono comparire in fondo alle pagine squadra");
-assert.strictEqual((sourcesShell.match(/data-source-team=/g) || []).length, 0, "La pagina pubblica non deve elencare fonti");
-assert.ok(!sourcesShell.includes("Apri la fonte") && !teamPageShell.includes('fonti.html">Fonti</a>'), "Link pubblici alle fonti ancora presenti");
+assert.ok(!fs.existsSync(path.join(root, "fonti.html")), "Pagina Fonti rimossa");
 for (const contract of ['data-team-season="2026/27"', "Statistiche 2026/27", "teamSeasonStatsColumn", "teamSeasonList", "Produzione offensiva", "Solidità difensiva"]) assert.ok(teamInterface.includes(contract), `Statistiche essenziali: manca ${contract}`);
 for (const contract of [".team-season-comparison", ".team-season-columns", ".team-season-column", ".team-season-list", ".team-season-splits", ".team-season-empty"]) assert.ok(styles.includes(contract), `Confronto statistiche squadra: stile ${contract} assente`);
 for (const contract of ["teamAttackChannels", "Direzioni d'attacco", "team-attack-channel-bars", "Canale prevalente:"]) assert.ok(teamInterface.includes(contract), `Direzioni d'attacco nelle statistiche squadra: manca ${contract}`);
