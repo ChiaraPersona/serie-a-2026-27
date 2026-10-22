@@ -22,8 +22,21 @@ const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const results = JSON.parse(fs.readFileSync(path.join(root, "data/sources/champions-results-md01-2026-27.json"), "utf8"));
   const md02Path=path.join(root,'data/sources/champions-results-md02-2026-27.json');
   const md02Results=fs.existsSync(md02Path)?JSON.parse(fs.readFileSync(md02Path,'utf8')):null;
-  const resultById = new Map([...results.fixtures,...(md02Results?.fixtures||[])].map(item => [item.fixtureId, item]));
-  if (resultById.size !== results.fixtures.length+(md02Results?.fixtures.length||0)) throw new Error("Risultati Champions duplicati");
+  const md03Path=path.join(root,'data/sources/champions-results-md03-2026-27.json');
+  const md03Results=fs.existsSync(md03Path)?JSON.parse(fs.readFileSync(md03Path,'utf8')):null;
+  const resultById = new Map([...results.fixtures,...(md02Results?.fixtures||[]),...(md03Results?.fixtures||[])].map(item => [item.fixtureId, item]));
+  if (resultById.size !== results.fixtures.length+(md02Results?.fixtures.length||0)+(md03Results?.fixtures.length||0)) throw new Error("Risultati Champions duplicati");
+for (const batch of [results, md02Results, md03Results].filter(Boolean)) for (const result of batch.fixtures) {
+  if (!source.fixtures.some(f => f.id === result.fixtureId && f.matchday === batch.matchday) || result.status !== 'finished' || ![result.score?.home,result.score?.away].every(n=>Number.isInteger(n)&&n>=0) || !result.sourceUrl?.startsWith('https://')) throw new Error('Risultato Champions non valido');
+}
+if (process.argv.includes('--results-only')) {
+  const previous=JSON.parse(fs.readFileSync(outputPath,'utf8'));
+  const latest=md03Results||md02Results||results;
+  const output={...previous,generatedAt:latest.verifiedAt,resultsSource:latest.source,resultsCoverageNote:latest.coverageNote,summary:{...previous.summary,finished:resultById.size},fixtures:previous.fixtures.map(f=>resultById.has(f.id)?{...f,status:'finished',score:resultById.get(f.id).score,matchReport:resultById.get(f.id)}:f)};
+  fs.writeFileSync(outputPath,JSON.stringify(output,null,2));
+  console.log('OK Champions risultati: '+resultById.size+' gare concluse');
+  return;
+}
 for (const result of results.fixtures) {
   if (!source.fixtures.some(f => f.id === result.fixtureId && f.matchday === results.matchday) || result.status !== "finished" || ![result.score?.home, result.score?.away].every(n => Number.isInteger(n) && n >= 0) || !result.sourceUrl?.startsWith("https://")) throw new Error("Risultato Champions non valido");
   for (const side of ["home", "away"]) if (result.scorers[side].length !== result.score[side]) throw new Error("Marcatori Champions incoerenti");
@@ -222,9 +235,9 @@ const generatedOutput = {
   season: source.season,
   competition: source.competition,
   phase: source.phase,
-  generatedAt: results.verifiedAt,
-  resultsSource: results.source,
-  resultsCoverageNote: results.coverageNote,
+  generatedAt: (md03Results || md02Results || results).verifiedAt,
+  resultsSource: (md03Results || md02Results || results).source,
+  resultsCoverageNote: (md03Results || md02Results || results).coverageNote,
   source: source.source,
   refereeAssignmentsSource: refereeAssignmentsSources[0].source,
   refereeAssignmentsSources: refereeAssignmentsSources.map(item => ({
