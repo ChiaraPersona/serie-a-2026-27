@@ -55,10 +55,10 @@ for(const fixture of round){
   form:section('Statistiche 2025/26 e gare concluse 2026/27 fino alla settima giornata; nessun risultato MD8 utilizzato.',[p.futureDataDiagnostics.home,p.futureDataDiagnostics.away].map(t=>`${teamNames.get(t.teamId)}: ${t.currentMatchesUsed} gare correnti disponibili.`)),
   availability:section('Probabili formazioni e disponibilità editoriali: gli undici non sono ufficiali. I dubbi restano distinti dalle assenze.',availability),
   tactics:section(p.scenarios[0].description,sides.map(t=>`${t.team}: ${t.formation}, formazione probabile.`)),
-  referee:section(fixture.refereeAssignment?`Arbitro designato: ${fixture.refereeAssignment.referee.name}.`:'Designazione arbitrale N/D; nessuna attribuzione presunta.'),
+  referee:section(fixture.refereeAssignment?`Arbitro designato: ${fixture.refereeAssignment.referee.name}.`:'Designazione arbitrale N/D; nessuna attribuzione presunta.',fixture.refereeAssignment?[`Assistenti: ${fixture.refereeAssignment.assistants.join(' - ')}.`,`IV ufficiale: ${fixture.refereeAssignment.fourthOfficial}.`,`VAR: ${fixture.refereeAssignment.var}; AVAR: ${fixture.refereeAssignment.avar}.`]:[]),
   market:section(`Confronto quote prepartita aggiornato al ${String(p.market.retrievedAt).slice(0,10)}. Quote esterne al modello; i contratti non compatibili restano senza probabilità certificata.`),
   synthesis:section(`${p.verdict.label}; confidenza ${p.confidence.value}/100 (${p.confidence.level}).`,p.scenarios.slice(1).map(s=>s.description))
- },internalSources:[{label:lineups.provider,url:lineups.sourceUrl,rawSnapshot:lineups.rawSnapshot,retrievedAt:lineups.importedAt}]};
+ },internalSources:[{label:lineups.provider,url:lineups.sourceUrl,rawSnapshot:lineups.rawSnapshot,retrievedAt:lineups.importedAt},...fixture.sources.filter(s=>s.sourceType==='aia-figc-designations')]};
  write(`data/sources/readings/${fixture.id}.json`,source);
 }
 execFileSync(process.execPath,['scripts/build-readings.js','--matchday','8'],{cwd:root,stdio:'inherit'});

@@ -8,7 +8,7 @@
 - Catalogo Lettura dedicato: 1233 contratti; 122 selezioni pubblicabili; 369 contratti senza probabilità modellistica verificata.
 - Falli squadra presenti come campo per tutte le gare; N/D per frosinone, venezia, monza. I mercati falli individuali restano esclusi dalle proposte operative dalla MD6 secondo la policy vigente.
 - Identità non risolta: Wiafe, Genoa, sourceId 7608, ballottaggio. Nessun ID canonico inventato.
-- Altre lacune: formazioni ufficiali, designazioni arbitrali, meteo attendibile e conferma definitiva delle indisponibilità. Le segnalazioni editoriali sono visibili e separate dai dubbi.
+- Altre lacune: formazioni ufficiali, meteo attendibile e conferma definitiva delle indisponibilità. Le segnalazioni editoriali sono visibili e separate dai dubbi.
 - Nessuna probabilità DUO viene ricavata dalla sola probabilità del singolo; rispettate le differenze per sostituti e pali/traverse.
 - 10 dettagli verificati a 1440 e 390 px (20 casi), senza errori JS o overflow; formazioni probabili, disponibilità, filtri e cataloghi verificati.
 - Test passati: test-reading-md08.cjs; test-probable-lineups.js; test-predictions.js; test-reading-browser-data.mjs (380 fixture); git diff --check.
@@ -35,3 +35,7 @@
 | genoa-venezia-2026-27-md-08 | 73 | 5 |
 | lecce-juventus-2026-27-md-08 | 76 | 5 |
 | udinese-milan-2026-27-md-08 | 77 | 5 |
+
+## Integrazione designazioni AIA MD8
+
+Fonte ufficiale pubblicata il 21/10/2026, acquisita il 23/10/2026. Importati i dieci sestetti completi nella fonte canonica e nel calendario. Storico arbitrale con cinque gare disponibili antecedenti alla fixture per tutti i dieci arbitri. Ricalcolata solo la MD8: tutti i 50 candidati cartellino usano il campione storico dell’arbitro designato. Gol attesi e probabilità 1X2 invariati. Parametri e quote preservati.

@@ -16,9 +16,10 @@ function markCanonical(leg,target){
   leg.suggestionAnalysis={...leg.suggestionAnalysis,suggested:true,quoteAvailability:'UNAVAILABLE',criteria:'EXISTING_MODEL_ADMISSION_WITHOUT_QUOTE_REQUIREMENT'};
   return leg;
 }
-function build(){
-  const data=read('data/normalized/schedina-md07.json'),before=clone(data);
-  const stats=read('data/analysis/serie-a-md07-statistical-models.json');
+function build({matchday=7,targetMatchIds=null}={}){
+  const code=String(matchday).padStart(2,'0'),targets=targetMatchIds?new Set(targetMatchIds):new Set(['fiorentina-como','milan-atalanta','juventus-lazio','monza-cagliari','parma-torino'].map(p=>`${p}-2026-27-md-07`));
+  const data=read(`data/normalized/schedina-md${code}.json`),before=clone(data);
+  const stats=read(`data/analysis/serie-a-md${code}-statistical-models.json`);
   const teams=new Map(read('data/normalized/teams.json').map(t=>[t.id,t.name]));
   const excluded=clone(data.marketCatalog.unquotedPublication?.excluded||[]);
   for(const match of data.marketCatalog.matches){
@@ -53,7 +54,7 @@ function build(){
         const central=Number((probability*100).toFixed(2)),prudent=Number((Math.max(0,probability-deduction)*100).toFixed(2));
         const selectionId=`forecast:v2:${match.matchId}:team:${teamId}:${metric}:over:${threshold}`;
         const family=metric==='shots'?'Tiri di squadra':'Tiri in porta di squadra',name=teams.get(teamId)||teamId;
-        const evaluation={modelProbabilityPct:central,prudentProbabilityPct:prudent,fairOdds:null,expectedValuePct:null,conservativeExpectedValuePct:null,status:'MODEL_FORECAST',kind:'DISCRETE_COUNT_TEMPORAL_HOLDOUT',probabilitySemantics:'ABSOLUTE_EVENT',provenance:{source:'data/analysis/serie-a-md07-statistical-models.json',modelVersion:'4.13.0',modelTarget:`statistical:${metric}-team-over:${teamId}:${threshold}`,exactThresholdValidation:validation}};
+        const evaluation={modelProbabilityPct:central,prudentProbabilityPct:prudent,fairOdds:null,expectedValuePct:null,conservativeExpectedValuePct:null,status:'MODEL_FORECAST',kind:'DISCRETE_COUNT_TEMPORAL_HOLDOUT',probabilitySemantics:'ABSOLUTE_EVENT',provenance:{source:`data/analysis/serie-a-md${code}-statistical-models.json`,modelVersion:'4.13.0',modelTarget:`statistical:${metric}-team-over:${teamId}:${threshold}`,exactThresholdValidation:validation}};
         const leg={selectionId,matchId:match.matchId,fixture:`${teams.get(match.homeTeam)} – ${teams.get(match.awayTeam)}`,market:metric==='shots'?'U/O TIRI TOTALI SQUADRA':'U/O TIRI IN PORTA SQUADRA',marketFamily:family,marketScope:'team',teamId,threshold,selection:'OVER',label:`${name} ${threshold+.5}+ ${metric==='shots'?'tiri':'tiri in porta'}`,odds:null,modelProbabilityPct:central,fairOdds:null,expectedValuePct:null,catalogOrigin:'prediction-v2-team-forecast',evidenceLabel:'Distribuzione discreta già generata · validazione temporale e soglia PASS',lineupEligibility:{eligible:true,status:'not-applicable'},suggestionAnalysis:{family:metric,familyLabel:family},betSelection:{schemaVersion:1,selectionId,market:{name:metric==='shots'?'U/O TIRI TOTALI SQUADRA':'U/O TIRI IN PORTA SQUADRA',family,scope:'team',threshold,selection:'OVER',subject:{type:'team',id:teamId,name,teamId},bookmakerSemantics:null},quote:{decimal:null,availability:'UNAVAILABLE',verifiedAt:null,source:null},evaluation,operational:{classification:'INTERESSANTE',reliability:{level:limited?'Bassa':'Media'}},overlap:{overlapKey:`team:${match.matchId}:${teamId}:${metric}`,semanticKeys:[`team:${match.matchId}:${teamId}:${metric}`]}}};
         if(prudent<minimumSportsSupportPct(leg)){excluded.push({matchId:match.matchId,metric,teamId,threshold,reason:'SPORTS_SUPPORT_BELOW_MARKET_STANDARD'});continue;}
         markCanonical(leg,{matchId:match.matchId,scope:'team',subjectId:teamId,metric,threshold,direction:'OVER',period:'REGULATION',duo:false,postsAndCrossbarIncluded:false});
@@ -81,10 +82,10 @@ function build(){
   data.marketCatalog.totals.notModelled=after.size-data.marketCatalog.totals.evaluated;
   data.marketCatalog.totals.suggestionsByFamily=data.marketCatalog.matches.flatMap(m=>m.selections).filter(l=>l.suggestionAnalysis?.suggested).reduce((a,l)=>(a[l.suggestionAnalysis.family]=(a[l.suggestionAnalysis.family]||0)+1,a),{});
   data.marketCatalog.unquotedPublication={version:1,source:'cached forecasts only',excluded};
-  const output='data/normalized/schedina-md07.json';
+  const output=`data/normalized/schedina-md${code}.json`;
   fs.writeFileSync(`${output}.tmp`,JSON.stringify(data,null,2)+'\n');
   fs.renameSync(`${output}.tmp`,output);
-  console.log(`MD7: ${data.marketCatalog.totals.suggestions} pronostici condivisi; nessuna ricerca quote o rigenerazione modello.`);
+  console.log(`MD${matchday}: ${data.marketCatalog.totals.suggestions} pronostici condivisi; nessuna ricerca quote o rigenerazione modello.`);
   return data;
 }
 module.exports={build};

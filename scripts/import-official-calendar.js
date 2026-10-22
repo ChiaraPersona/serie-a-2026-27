@@ -11,6 +11,32 @@ const scheduleUrl = "https://images.legaseriea.it/image/private/fl_attachment/pr
 const clubIndexUrl = "https://www.legaseriea.it/team/index";
 const teamColorSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages/footylogos-club-colors.json"), "utf8"));
 const refereeAssignments = JSON.parse(fs.readFileSync(path.join(root, "data/sources/referee-assignments-2026-27.json"), "utf8"));
+function applyRefereeAssignments(matches, matchdays) {
+  const byId = new Map(matches.map(match => [match.id, match]));
+  for (const day of matchdays) {
+    if (day.assignments.length !== 10 || new Set(day.assignments.map(a => a.matchId)).size !== 10) throw Error(`Designazioni incomplete MD${day.matchday}`);
+    for (const assignment of day.assignments) {
+      const match = byId.get(assignment.matchId);
+      if (!match || match.matchday !== day.matchday) throw Error(`Fixture incoerente: ${assignment.matchId}`);
+      const {matchId, ...refereeAssignment} = assignment;
+      match.refereeAssignment = refereeAssignment;
+      match.sources = match.sources.filter(source => source.sourceType !== day.source.sourceType);
+      match.sources.push({sourceUrl:day.source.url,sourceType:day.source.sourceType,publishedAt:day.publishedAt,retrievedAt:day.retrievedAt,note:'Designazione ufficiale: arbitro, assistenti, IV ufficiale, VAR e AVAR.'});
+    }
+  }
+}
+// Assignment-only updates preserve calendar, results and every unrelated fixture verbatim.
+const refereeDayIndex = process.argv.indexOf('--referee-matchday');
+if (refereeDayIndex >= 0) {
+  const matchday = Number(process.argv[refereeDayIndex + 1]);
+  const days = refereeAssignments.matchdays.filter(day => day.matchday === matchday);
+  if (days.length !== 1) throw Error('Giornata designazioni non disponibile');
+  const matches = JSON.parse(fs.readFileSync(path.join(output,'matches.json'),'utf8'));
+  applyRefereeAssignments(matches, days);
+  fs.writeFileSync(path.join(output,'matches.json'),JSON.stringify(matches,null,2)+'\n');
+  console.log(`Importate soltanto le 10 designazioni MD${matchday}; calendario e risultati preservati.`);
+  return;
+}
 const matchResults = JSON.parse(fs.readFileSync(path.join(root, "data/sources/match-results-2026-27.json"), "utf8"));
 const statmusePlayerStats = JSON.parse(fs.readFileSync(path.join(root, "data/sources/statmuse-player-stats-2026-27.json"), "utf8"));
 

@@ -6,7 +6,7 @@ export function isCanonicalModelForecast(leg){
   return Boolean(leg?.selectionId&&bet?.selectionId===leg.selectionId
     &&id?.canonicalForecastId===leg.selectionId&&target?.matchId===id.matchId
     &&/^forecast:v2:/.test(leg.selectionId)
-    &&(target.matchId?.endsWith('-md-07')||(leg.context?.competition==='champions'&&leg.context?.matchday===3&&/^ucl-2026-27-md03-\d{2}$/.test(target.matchId)))
+    &&(/-2026-27-md-(?:0[7-9]|[12]\d|3[0-8])$/.test(target.matchId)||(leg.context?.competition==='champions'&&leg.context?.matchday===3&&/^ucl-2026-27-md03-\d{2}$/.test(target.matchId)))
     &&['player','team'].includes(target.scope)&&['shots','sot'].includes(target.metric)
     &&target.subjectId&&Number.isFinite(target.threshold)&&target.direction==='OVER'
     &&target.period==='REGULATION'&&target.duo===false

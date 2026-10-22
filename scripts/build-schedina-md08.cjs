@@ -1,0 +1,23 @@
+'use strict';
+// Publish the existing MD8 reading forecasts using the MD7 shared-catalog structure.
+const fs=require('node:fs'),assert=require('node:assert/strict');
+const read=f=>JSON.parse(fs.readFileSync(f,'utf8')),write=(f,d)=>{const temp=f+'.md08.tmp';fs.writeFileSync(temp,JSON.stringify(d,null,2)+'\n');for(let i=0;;i++){try{fs.renameSync(temp,f);return}catch(e){if(i===5)throw e;Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,300)}}};
+const fixtures=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'&&m.matchday===8);
+assert.equal(fixtures.length,10);assert(fixtures.every(m=>m.status==='scheduled'),'Non rigenerare gare iniziate');
+const source=read('data/normalized/reading-md08-market-catalog.json'),odds=read('data/normalized/odds/sisal/serie-a.json');
+const predictions=read('data/normalized/predictions.json');
+const data={schemaVersion:1,competition:'serie-a',season:'2026-27',matchday:8,generatedAt:source.generatedAt,title:'Schedine Serie A · 8ª giornata',description:'Pronostici condivisi con le letture delle dieci partite.',provider:odds.provider,sourceUrl:odds.sourceUrl,oddsRetrievedAt:odds.retrievedAt,modelVersion:predictions.engine.version,selectionRule:'Nessun numero fisso per partita. Tutti gli esiti sostenuti dai criteri esistenti; EV informativo, contratti distinti dalle stime individuali. Nessun profilo o preferito.',coverage:{profilesEvaluated:10,qualifiedProfiles:0,unavailableProfiles:0},slips:[],marketCatalog:structuredClone(source.marketCatalog)};
+write('data/normalized/schedina-md08.json',data);
+const published=require('./publish-md07-unquoted').build({matchday:8,targetMatchIds:fixtures.map(m=>m.id)});
+for(const match of published.marketCatalog.matches)for(const leg of match.selections){
+ delete leg.isPreferred;
+ const evaluation=leg.betSelection?.evaluation;
+ if(Number.isFinite(evaluation?.modelProbabilityPct)&&evaluation.modelProbabilityPct>0){
+  evaluation.fairOdds=Number((100/evaluation.modelProbabilityPct).toFixed(4));leg.fairOdds=evaluation.fairOdds;
+ }
+ if(evaluation?.provenance?.source==='data/analysis/serie-a-md07-statistical-models.json')evaluation.provenance.source='data/analysis/serie-a-md08-statistical-models.json';
+}
+write('data/normalized/schedina-md08.json',published);
+// The two views share the final catalog, including model forecasts without a quote.
+write('data/normalized/reading-md08-market-catalog.json',{...source,marketCatalog:published.marketCatalog});
+console.log(`MD8: ${published.marketCatalog.totals.suggestions} pronostici, senza limiti numerici o profili.`);

@@ -68,8 +68,8 @@ if (renderedPages.some(([,id]) => id === 'readings')) {
   require('./build-reading-browser-data.cjs').build({matchday});
 }
 if (renderedPages.some(([,id]) => id === 'champions')) require('./build-champions-md02-browser-data.cjs').build();
-if (renderedPages.some(([,id]) => id === 'betting')) require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-schedina-browser-data.mjs')],{cwd:root,stdio:'inherit'});
-if (renderedPages.some(([,id]) => id === 'betting')) require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-champions-md3-browser-data.mjs')],{cwd:root,stdio:'inherit'});
+if (renderedPages.some(([,id]) => id === 'betting')) require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-schedina-browser-data.mjs'),...(process.argv.includes('--matchday')?['--matchday',process.argv[process.argv.indexOf('--matchday')+1]]:[])],{cwd:root,stdio:'inherit'});
+if (!process.argv.includes('--matchday') && renderedPages.some(([,id]) => id === 'betting')) require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-champions-md3-browser-data.mjs')],{cwd:root,stdio:'inherit'});
 for (const [file,id,label] of renderedPages) {
   const pageVersion = id === "home" ? homeVersion : id === "betting" ? bettingVersion : id === "readings" ? readingVersion : id === "cup" ? cupVersion : id === "champions" ? championsVersion : ["team-stats","player-stats"].includes(id) ? "20261018-player-stats-v4" : version;
   const main = `<main id="app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>${label}</h1></section></main>`;

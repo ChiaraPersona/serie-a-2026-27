@@ -14,7 +14,7 @@ function summary(rows){
  const complete=key=>rows.length&&rows.every(r=>finite(r[key]));
  return {matches:rows.length,yellowCardsAverage:complete('yellowCards')?rows.reduce((n,r)=>n+r.yellowCards,0)/rows.length:null,dismissalsTotal:complete('dismissals')?rows.reduce((n,r)=>n+r.dismissals,0):null,penaltiesTotal:complete('penaltiesAwarded')?rows.reduce((n,r)=>n+r.penaltiesAwarded,0):null};
 }
-function build(){
+function build({matchday=null}={}){
  const curated=read('data/sources/reading-referee-match-history.json'),historical=new Map();
  for(const season of ['2023-24','2024-25','2025-26'])for(const file of fs.readdirSync(path.join(root,'data/normalized/referee-matches',season)).filter(f=>f.endsWith('.json')&&!f.includes('pilot'))){
   for(const m of read(`data/normalized/referee-matches/${season}/${file}`).matches||[]){
@@ -43,7 +43,7 @@ function build(){
   european.set(p.refereeId,rows);
  }
  const fixtures=[];
- for(const m of read('data/normalized/matches.json').filter(m=>m.competition==='serie-a')){
+ for(const m of read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'&&(matchday===null||m.matchday===matchday))){
   const official=m.refereeAssignment?.referee;
   const enrichment=curated.fixtureAnalyses?.find(e=>e.fixtureId===m.id&&e.refereeSlug===official?.slug);
   const archived=enrichment?.historyRef?read(enrichment.historyRef).referees.find(r=>r.refereeId===official?.slug)?.matches.filter(r=>r.officialCompetition===true):null;
@@ -54,14 +54,18 @@ function build(){
   fixtures.push({fixtureId:m.id,competition:'serie-a',cutoffDate:m.date,refereeId:official?.slug||null,refereeName:official?.name||null,rows,summary:summary(rows),...(analysis?{analysis}:{})});
  }
  const checks=new Map(history.officialVerification.checks.map(c=>[c.fixtureId,c.refereeId]));
- for(const m of read('data/normalized/champions-league-2026-27.json').fixtures){
+ for(const m of (matchday===null?read('data/normalized/champions-league-2026-27.json').fixtures:[])){
   const id=checks.get(m.id),rows=recentMatches(european.get(id)||[],m.date||'');
   fixtures.push({fixtureId:m.id,competition:'champions',cutoffDate:m.date,refereeId:id||null,refereeName:m.refereeAssignment?.referee||null,rows,summary:summary(rows)});
  }
  const output={schemaVersion:1,informationalOnly:true,asOf:curated.asOf,policy:{cutoff:'Strictly before reading fixture date; same-day games excluded',selection:'Latest five available verified games; incomplete values remain null',yellowCards:'Provider yellow-card count retained separately; second-yellow dismissals are never added to it',dismissals:'Total dismissals once; secondYellowCards and directRedCards remain separate nullable components',penalties:'Awarded in match; shootout kicks and penalty attempts never substituted',sources:'Internal metadata only; not rendered'},fixtures};
+ if(matchday!==null){
+  const previous=read('data/generated/reading-referee-history.json'),replacements=new Map(fixtures.map(f=>[f.fixtureId,f]));
+  output.fixtures=[...previous.fixtures.map(f=>replacements.get(f.fixtureId)||f),...fixtures.filter(f=>!previous.fixtures.some(p=>p.fixtureId===f.fixtureId))];
+ }
  fs.writeFileSync(path.join(root,'data/generated/reading-referee-history.json'),JSON.stringify(output,null,2)+'\n');
  console.log(JSON.stringify({fixtures:fixtures.length,withFive:fixtures.filter(f=>f.rows.length===5).length,serieA:fixtures.filter(f=>f.competition==='serie-a'&&f.rows.length).length,champions:fixtures.filter(f=>f.competition==='champions'&&f.rows.length).length,missingDomestic:curated.missing}));
  return output;
 }
 module.exports={recentMatches,summary,build};
-if(require.main===module)build();
+if(require.main===module){const index=process.argv.indexOf('--matchday'),matchday=index<0?null:Number(process.argv[index+1]);if(matchday!==null&&(!Number.isInteger(matchday)||matchday<1||matchday>38))throw Error('Giornata non valida');build({matchday});}

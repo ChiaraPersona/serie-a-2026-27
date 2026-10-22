@@ -13,6 +13,17 @@ const stats=read('data/analysis/serie-a-md08-statistical-models.json');
 assert.equal(stats.dataCutoff.matchdayExclusive,8);
 assert.deepEqual(stats.validation,read('data/analysis/serie-a-md06-statistical-models-2026-10-10.json').validation,'Criteri di validazione alterati');
 const odds=read('data/normalized/odds/sisal/serie-a.json');
+const assignments=read('data/sources/referee-assignments-2026-27.json').matchdays.find(d=>d.matchday===8);
+if(assignments){
+ assert.equal(assignments.assignments.length,10);
+ const previousSource=read('output/md08-referee-refresh/assignments-before.json');
+ assert.deepEqual(read('data/sources/referee-assignments-2026-27.json').matchdays.filter(d=>d.matchday!==8),previousSource.matchdays);
+ for(const [name,key] of [['matches',null],['history','fixtures']]){
+  const before=read(`output/md08-referee-refresh/${name}-before.json`),now=read(name==='history'?'data/generated/reading-referee-history.json':'data/normalized/matches.json');
+  assert.deepEqual((key?now[key]:now).filter(f=>!ids.has(f.id||f.fixtureId)),(key?before[key]:before).filter(f=>!ids.has(f.id||f.fixtureId)));
+ }
+ const crypto=require('node:crypto');for(const [file,hash] of Object.entries(read('output/md08-referee-refresh/protected-hashes.json')))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex'),hash,`File protetto alterato: ${file}`);
+}
 for(const match of round){
  const p=predictions.predictions.find(p=>p.matchId===match.id),event=odds.events.find(e=>e.canonicalMatchId===match.id);
  assert(p);assert.equal(p.futureDataDiagnostics.dataCutoff.matchdayExclusive,8);assert.equal(p.futureDataDiagnostics.dataCutoff.targetMatchIdExcluded,match.id);
@@ -22,6 +33,14 @@ for(const match of round){
  for(const s of p.shooters.allPlayers){assert(s.playerId);assert(Number.isFinite(s.expectedMinutes));assert(s.expectedMinutesEvidence.lastAppearanceMatchday<=7||s.expectedMinutesEvidence.lastAppearanceMatchday==null);assert(s.shotProbabilities);assert(s.shotOnTargetProbabilities)}
  const projection=read(`data/generated/readings/matches/${match.id}.json`);
  assert.equal(projection.readings.length,1);assert(Object.values(projection.readings[0].sections).every(s=>s.content));
+ if(assignments){
+  const {matchId,...assignment}=assignments.assignments.find(a=>a.matchId===match.id);
+  assert.deepEqual(match.refereeAssignment,assignment);
+  assert(!p.dataQuality.missing.includes('designazione arbitrale'));
+  assert(p.likelyBooked.every(b=>b.refereeFactorSource==='DESIGNATED_REFEREE_HISTORICAL_SAMPLE'));
+  const history=read('data/generated/reading-referee-history.json').fixtures.find(f=>f.fixtureId===match.id);
+  assert.equal(history.refereeId,assignment.referee.slug);assert.equal(history.rows.length,5);assert(history.rows.every(r=>r.date.slice(0,10)<match.date));
+ }
  for(const teamId of [match.homeTeam,match.awayTeam])assert.equal(lineups.teams.find(t=>t.teamId===teamId).status,'probable');
 }
 if(process.argv.includes('--data-only')){console.log('OK MD8: dati, cutoff, mercati, identità e isolamento.');process.exit(0)}
@@ -40,6 +59,12 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
    const state=await page.evaluate(()=>({shell:!!document.querySelector('.rd-shell'),overflow:document.documentElement.scrollWidth>innerWidth,probable:[...document.querySelectorAll('.rd-lineup-head b')].filter(n=>n.textContent.includes('Probabile')).length,players:document.querySelectorAll('[data-player-card]').length,forecasts:document.querySelectorAll('[data-forecast-id]').length,availability:document.querySelector('[data-md8-availability]').innerText,sections:[...document.querySelectorAll('.rd-section')].map(n=>n.id),text:document.querySelector('.rd-shell').innerText}));
    assert(state.shell);assert(!state.overflow,`${match.id}: overflow ${width}`);assert.equal(state.probable,2);assert(state.players>=20);assert.equal(state.forecasts,sharedForecastsForMatch(catalog,match.id).length);assert(state.availability.includes('Ballottaggi:'));assert(state.text.includes('Falli'));
    assert(!/Fonti|Provenienza|Fantacalcio\.it|Sisal/.test(state.availability));
+   if(assignments){
+    const ref=match.refereeAssignment,text=await page.locator('.reading-referee-assignment').innerText();
+    for(const name of [ref.referee.name,...ref.assistants,ref.fourthOfficial,ref.var,ref.avar])assert(text.includes(name),`${match.id}: incarico non visibile ${name}`);
+    assert(!text.includes('Arbitro non ancora disponibile'));
+    if(match===round[0]){await page.locator('#lettura-disciplina').screenshot({path:path.join(root,`reports/md08-reading-refresh/arbitro-${width}.png`)})}
+   }
    const bench=page.locator('[data-player-lineup-filter="bench"]');await bench.click();assert.equal(await bench.getAttribute('aria-pressed'),'true');await page.locator('[data-player-lineup-filter="starter"]').click();
    results.push({matchId:match.id,width,...state,text:undefined});
    if(match===round[0]){await page.locator('#lettura-formazioni').screenshot({path:path.join(root,`reports/md08-reading-refresh/formazioni-${width}.png`)});await page.screenshot({path:path.join(root,`reports/md08-reading-refresh/lettura-${width}.png`),fullPage:true})}
