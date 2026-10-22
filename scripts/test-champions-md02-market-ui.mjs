@@ -48,7 +48,7 @@ assert.equal(saved.find(row=>row.betSelection.market.code==="28673").betSelectio
 assert.equal(saved.find(row=>row.betSelection.market.code==="28609").betSelection.market.modifiers.periodScope,"both-halves");
 
 const championsSource=fs.readFileSync(path.join(root,"js/pages/champions.js"),"utf8");
-assert.match(championsSource,/champions-md02-integration-2026-27\.json/);
+assert.match(championsSource,/champions-md02-ui-2026-27\.json/);
 assert.match(championsSource,/schedina-champions-md02\.json/);
 assert.match(championsSource,/data-add-published-selection/);
 assert.match(championsSource,/data-champions-published-root data-fixture-id/);

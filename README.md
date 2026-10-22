@@ -47,6 +47,14 @@ Input volumi: ordine di ricerca `data/raw/referee-stats/espn/2025-26/serie-a`, a
 
 Per la verifica locale: `python -m http.server 8000`, poi aprire `http://localhost:8000`.
 
+### Payload browser Champions MD2
+
+Le Letture MD2 caricano `data/normalized/champions-md02-ui-2026-27.json`: una proiezione compatta di fixture ID, formazioni e disponibilità, senza ricalcolare previsioni. Quote, contratti e risultati pubblicati continuano a usare gli artefatti Schedina esistenti. L'integrazione completa `data/normalized/champions-md02-integration-2026-27.json` resta intatta ed è ancora usata da builder, audit, identità e liquidazioni.
+
+Il build del sito rigenera automaticamente la proiezione quando include Champions, anche con `--presentation-only`. Per rigenerare soltanto questo artefatto usare `node scripts/build-champions-md02-browser-data.cjs`. Dopo un aggiornamento dell'archivio MD2 eseguire il build della pagina, senza rilanciare i motori previsionali per aggiornare la presentazione.
+
+Verifiche: `npm run test:champions:md02:browser-data` confronta tutte le 18 fixture, filtro ufficiale, modelli, rose e markup; `npm run test:champions:md02:browser-data:browser` confronta l'archivio completo e il payload leggero in Edge a 1440/390 px, salvando evidenze in `output/reports/champions-md02-browser-data/`. Il test browser richiede Playwright, pngjs e pixelmatch del runtime locale; non installa dipendenze. I font esterni sono bloccati in entrambi i confronti. L'archivio tecnico non è un fallback di rete: un payload mancante deve essere rigenerato con il build.
+
 ## Statistiche arbitrali
 
 I dati restano distinti in tre livelli:

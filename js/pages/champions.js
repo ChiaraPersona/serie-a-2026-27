@@ -460,7 +460,7 @@ export function createPage(deps){
       await mountChampionsReading({fixture:requestedCalendarFixture,prediction:fixture.forecast,profile,probableFixture,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:md3RefereeMarkup(requestedCalendarFixture,profile,branding),probableMarkup:md3ProbableMarkup(probableFixture),extend:({shell})=>appendSharedSchedina(3,requestedMatchId,shell)});
       return;
     }
-    const [md2Pilot,md2Integration,md2Schedina,md2RefereeHistory]=requestedCalendarFixture?.matchday===2?await Promise.all([load("champions-pilot-predictions-md02-2026-27.json"),load("champions-md02-integration-2026-27.json"),load("schedina-champions-md02.json"),load("champions-referee-history-2026-10-13.json")]):[null,null,null,null];
+    const [md2Pilot,md2Integration,md2Schedina,md2RefereeHistory]=requestedCalendarFixture?.matchday===2?await Promise.all([load("champions-pilot-predictions-md02-2026-27.json"),load("champions-md02-ui-2026-27.json"),load("schedina-champions-md02.json"),load("champions-referee-history-2026-10-13.json")]):[null,null,null,null];
     const activePilot=md2Pilot||pilot;
     const requestedPilotFixture=requestedMatchId?activePilot.fixtures.find(fixture=>fixture.fixtureId===requestedMatchId):null;
     const refereeCheck=md2RefereeHistory?.officialVerification?.checks.find(item=>item.fixtureId===requestedMatchId);
