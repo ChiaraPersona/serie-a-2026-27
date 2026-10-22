@@ -35,7 +35,7 @@ const homeVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const calendarVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const teamVersion = "20261018-no-player-media-v1";
 const leaderboardVersion = "20261013-md06-results-v1";
-const bettingVersion = "20261021-champions-official-v1";
+const bettingVersion = "20261022-schedina-scoped-loading-v1";
 const readingVersion = "20261019-archive-grid-v1";
 const cupVersion = "20260919-coppa-events-v1";
 const championsVersion = "20261022-champions-md02-ui-v1";
@@ -68,6 +68,7 @@ const renderedPages = readingPagesOnly ? pages.filter(([,id])=>bettingPageOnly?i
 // Refresh the browser projection from the existing archive, including during a
 // presentation-only build. Never invoke the MD2 forecasting/integration builder.
 if (renderedPages.some(([,id]) => id === 'champions')) require('./build-champions-md02-browser-data.cjs').build();
+if (renderedPages.some(([,id]) => id === 'betting')) require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-schedina-browser-data.mjs')],{cwd:root,stdio:'inherit'});
 for (const [file,id,label] of renderedPages) {
   const pageVersion = id === "home" ? homeVersion : id === "betting" ? bettingVersion : id === "readings" ? readingVersion : id === "cup" ? cupVersion : id === "champions" ? championsVersion : id === "fantasy" ? fantasyVersion : ["team-stats","player-stats"].includes(id) ? "20261018-player-stats-v4" : id === "calendar" || id === "team" ? calendarVersion : version;
   const main = id === "sources" ? `<main id="app"><section class="section"><h1>Pagina non disponibile</h1><a href="index.html">Torna alla Home</a></section></main>` : `<main id="app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>${label}</h1></section></main>`;

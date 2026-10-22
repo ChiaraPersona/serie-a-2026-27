@@ -55,6 +55,14 @@ Il build del sito rigenera automaticamente la proiezione quando include Champion
 
 Verifiche: `npm run test:champions:md02:browser-data` confronta tutte le 18 fixture, filtro ufficiale, modelli, rose e markup; `npm run test:champions:md02:browser-data:browser` confronta l'archivio completo e il payload leggero in Edge a 1440/390 px, salvando evidenze in `output/reports/champions-md02-browser-data/`. Il test browser richiede Playwright, pngjs e pixelmatch del runtime locale; non installa dipendenze. I font esterni sono bloccati in entrambi i confronti. L'archivio tecnico non è un fallback di rete: un payload mancante deve essere rigenerato con il build.
 
+### Caricamento Schedina per vista
+
+Schedina risolve competizione e giornata prima delle richieste. Le giornate Champions caricano il proprio workspace; le giornate Serie A caricano il proprio archivio, risultati e liquidazioni, aggiungendo squadre e combinazioni soltanto quando servono. Il servizio dati deduplica le richieste nella singola vista Schedina e mantiene `no-store` sul registro ufficiale: un nuovo render svuota la cache e lo ricarica. Le altre pagine conservano il comportamento precedente.
+
+L'indice usa `data/generated/schedina-index-2026-27.json`, con le card prodotte dallo stesso renderer e dagli stessi calcoli di archivio durante il build. `predictions-md05.json`, `predictions-md06.json` e `predictions-md07.json` sono proiezioni di `matchId` e combinazioni già esistenti, senza ricalcolo. MD6/MD7 le richiedono solo se manca un catalogo per una partita. Tutti gli originali restano intatti. Dopo aggiornamenti a esiti, quote, ufficialità o cataloghi rigenerare il sito: il build che include Schedina aggiorna automaticamente questi payload anche con `--presentation-only`. Comando limitato: `node scripts/build-site.js --presentation-only --betting-page-only`.
+
+Verifiche: `npm run test:schedina:loading` e `npm run test:schedina:loading:browser`. Evidenze e baseline del confronto sono in `output/reports/schedina-loading/`. Il test browser usa Edge e i pacchetti del runtime locale senza installarli, blocca simmetricamente i font esterni e confronta DOM, richieste JSON, screenshot e persistenza delle selezioni giocabili.
+
 ## Statistiche arbitrali
 
 I dati restano distinti in tre livelli:

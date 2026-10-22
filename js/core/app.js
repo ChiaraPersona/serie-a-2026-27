@@ -9,7 +9,7 @@ const [utils,{createDataService},{createMatchComponents},{currentPage},{loadPage
 ]);
 
 const page=currentPage();
-const services=createDataService(RELEASE);
+const services=createDataService(RELEASE,{deduplicate:page==='betting'});
 const components=createMatchComponents(utils);
 const dependencies={...utils,...services,...components};
 

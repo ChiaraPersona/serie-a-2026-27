@@ -7,7 +7,7 @@ const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-cat
 const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=${encodeURIComponent(release)}`);
 
 export function createPage(deps){
-  const {esc,dateOnly,hero,load}=deps;
+  const {esc,dateOnly,hero,load,loadGenerated}=deps;
   let compactForecasts=false;
   // Presentation only: keep the underlying family, semantics and IDs intact.
   const cardFamily=leg=>{
@@ -443,28 +443,42 @@ export function createPage(deps){
     return personalStore;
   }
 
+  // Build-time presentation only: reuse the original card renderer and settlement.
+  async function buildArchiveMarkup(){
+    compactForecasts=true;
+    recordedOutcomes=(await load("card-settlement-records.json")).records;
+    const [champions,championsMd02Operational,md1,md2,md3,md4,md5,md6,md7,matches,audit]=await Promise.all([load("schedina-champions-md01.json"),load("schedina-champions-md02.json"),load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("schedina-md04.json"),load("schedina-md05.json"),load("schedina-md06.json"),load("schedina-md07.json"),load("matches.json"),load("champions-md02-audit-display.json")]);
+    const championsMd02=championsAuditDisplay(championsMd02Operational,audit);
+    const matchById=new Map((Array.isArray(matches)?matches:matches.matches||[]).map(match=>[match.id,match]));
+    const {settleMd3}=await import("./champions-md3-approved.mjs");
+    const md3Workspace=await loadChampionsWorkspaceMd3Derived(load,3);
+    const championsMd03={...settleMd3({...md3Workspace.source,slips:[{legs:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).map(leg=>({...leg,fixtureId:leg.matchId}))}]},{fixtures:md3Workspace.fixtures}),availableForecasts:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).length};
+    return hero("Archivio · Stagione 2026/27","Schedina","Le schedine e le MyCombo sono raccolte separatamente giornata per giornata.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>Le card blu raccolgono la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${championsArchiveCard(championsMd02,2)}${championsArchiveCard(championsMd03,3)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}${archiveCard(md5,5,matchById)}${archiveCard(md6,6,matchById)}${archiveCard(md7,7,matchById)}</div></section>`;
+  }
+
   async function render(){
     compactForecasts=true;
     selectionRegistry.clear();slipRegistry.clear();currentContext=null;personalNotice="";
-    recordedOutcomes=(await load("card-settlement-records.json")).records;
-    const [champions,championsMd02Operational,md1,md2,md3,md4,md5,md6,matches,predictionData,teams]=await Promise.all([load("schedina-champions-md01.json"),load("schedina-champions-md02.json"),load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("schedina-md04.json"),load("schedina-md05.json"),load("schedina-md06.json"),load("matches.json"),load("predictions.json"),load("teams.json")]);
-    const championsMd02=championsAuditDisplay(championsMd02Operational,await load("champions-md02-audit-display.json"));
-    const md7=await load("schedina-md07.json");
-    const rounds={1:md1,2:md2,3:md3,4:md4,5:md5,6:md6,7:md7};
-    const matchById=new Map((Array.isArray(matches)?matches:matches.matches||[]).map(match=>[match.id,match]));
-    const teamById=new Map((Array.isArray(teams)?teams:teams.teams||[]).map(team=>[team.id,team]));
-    const matchday=new URLSearchParams(location.search).get("giornata");
-    const competition=new URLSearchParams(location.search).get("competizione");
+    deps.beginView?.();
+    const params=new URLSearchParams(location.search);
+    const matchday=params.get("giornata"),competition=params.get("competizione");
     if(competition==="champions"){
       const number=Number(matchday||1);
       if(![1,2,3].includes(number))throw new Error("Giornata Champions non disponibile");
-      const workspace=await loadChampionsWorkspaceMd3Derived(load,number);
+      const [workspace,outcomes]=await Promise.all([loadChampionsWorkspaceMd3Derived(load,number),load("card-settlement-records.json")]);
+      recordedOutcomes=outcomes.records;
       document.querySelector("#app").innerHTML=hero(`UEFA Champions League · ${number}ª giornata`,"Schedine",number===3?"Pronostici aggiornati con le formazioni probabili e la panchina provvisoria, secondo i criteri condivisi con la Serie A.":"Pronostici e risultati originali archiviati, in sola consultazione.")+`<nav class="betting-round-back"><a href="schedina.html">← Tutte le giornate</a><a href="champions-league.html">Letture Champions →</a></nav>`+championsWorkspaceMarkup(workspace);
       mountChampionsWorkspace(workspace);
       return;
     }
-    if(rounds[matchday]){
-      const number=Number(matchday),data=rounds[number];
+    if(["1","2","3","4","5","6","7"].includes(matchday)){
+      const number=Number(matchday),file=number===1?"schedina.json":`schedina-md${String(number).padStart(2,"0")}.json`;
+      const [data,matches,outcomes]=await Promise.all([load(file),load("matches.json"),load("card-settlement-records.json")]);
+      recordedOutcomes=outcomes.records;
+      const matchById=new Map((Array.isArray(matches)?matches:matches.matches||[]).map(match=>[match.id,match]));
+      const needsPredictions=number===5||(number>=6&&[...matchById.values()].filter(m=>m.id.endsWith(`-md-${String(number).padStart(2,"0")}`)).some(m=>!data.marketCatalog?.matches?.find(c=>c.matchId===m.id)?.selections?.length));
+      const [teams,predictionData]=await Promise.all([number>=5?load("teams.json"):Promise.resolve([]),needsPredictions?load(`predictions-md${String(number).padStart(2,"0")}.json`):Promise.resolve({predictions:[]})]);
+      const teamById=new Map((Array.isArray(teams)?teams:teams.teams||[]).map(team=>[team.id,team]));
       const ordinal=`${number}ª`;
       if(number>=6)currentContext={competition:"serie-a",season:"2026-27",matchday:number,label:`Serie A · ${ordinal} giornata`};
       const description=number>=6?"Mercato, esito, probabilità, quota Sisal ed EV dei pronostici selezionati.":`Tutte le schedine della ${ordinalWord(number)} giornata, con quote, probabilità, quota equa ed EV consultabili.`;
@@ -480,10 +494,7 @@ export function createPage(deps){
       if(number>=6)bindMatchdayInteractions(number);
       return;
     }
-    const {settleMd3}=await import("./champions-md3-approved.mjs");
-    const md3Workspace=await loadChampionsWorkspaceMd3Derived(load,3);
-    const championsMd03={...settleMd3({...md3Workspace.source,slips:[{legs:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).map(leg=>({...leg,fixtureId:leg.matchId}))}]},{fixtures:md3Workspace.fixtures}),availableForecasts:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).length};
-    document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine e le MyCombo sono raccolte separatamente giornata per giornata.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>Le card blu raccolgono la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${championsArchiveCard(championsMd02,2)}${championsArchiveCard(championsMd03,3)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}${archiveCard(md5,5,matchById)}${archiveCard(md6,6,matchById)}${archiveCard(md7,7,matchById)}</div></section>`;
+    document.querySelector("#app").innerHTML=(await loadGenerated("schedina-index-2026-27.json")).html;
     // First touch reveals the existing reverse face; second touch follows its link.
     const cl3Card=document.querySelector('[data-champions-matchday="3"]');
     cl3Card?.addEventListener('click',event=>{
@@ -494,5 +505,5 @@ export function createPage(deps){
     });
 
   }
-  return {render,championsWorkspaceMarkup,mountChampionsWorkspace};
+  return {render,championsWorkspaceMarkup,mountChampionsWorkspace,buildArchiveMarkup};
 }
