@@ -1,7 +1,10 @@
 const fs=require('node:fs'),zlib=require('node:zlib'),crypto=require('node:crypto');
-const root='data/raw/referee-stats/md07-history-2026-10-18/details';fs.mkdirSync(root,{recursive:true});
-const db=JSON.parse(fs.readFileSync('data/normalized/referee-history/md07-2026-27.json'));
-const fixtures=JSON.parse(fs.readFileSync('data/normalized/matches.json')).filter(f=>f.competition==='serie-a'&&f.matchday===7);
+const arg=(k,d)=>{const i=process.argv.indexOf(k);return i<0?d:process.argv[i+1]};
+const matchday=Number(arg('--matchday','7')),asOf=arg('--as-of','2026-10-18'),md=String(matchday).padStart(2,'0');
+if(!Number.isInteger(matchday)||matchday<1||matchday>38||!/^\d{4}-\d{2}-\d{2}$/.test(asOf))throw Error('Invalid scope');
+const root=`data/raw/referee-stats/md${md}-history-${asOf}/details`;fs.mkdirSync(root,{recursive:true});
+const db=JSON.parse(fs.readFileSync(`data/normalized/referee-history/md${md}-2026-27.json`));
+const fixtures=JSON.parse(fs.readFileSync('data/normalized/matches.json')).filter(f=>f.competition==='serie-a'&&f.matchday===matchday);
 const selected=new Map();
 for(const ref of db.referees){
  const cutoff=fixtures.find(f=>f.refereeAssignment.referee.slug===ref.refereeId).date;

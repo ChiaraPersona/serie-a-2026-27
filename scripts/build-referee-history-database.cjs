@@ -4,7 +4,10 @@ const {parseMatches}=require('./referee-stats/import-reading-history');
 const {parseOfstats,parseDatasport,parseDetail}=require('./referee-stats/history-parsers.cjs');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),valid=v=>Number.isInteger(v)&&v>=0,sum=(...v)=>v.every(valid)?v.reduce((a,b)=>a+b,0):null;
 const source=read('data/sources/reading-referee-match-history.json');
-const fixtures=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'&&m.matchday===7);
+const arg=(name,fallback)=>{const i=process.argv.indexOf(name);return i<0?fallback:process.argv[i+1]};
+const matchday=Number(arg('--matchday','7')),asOf=arg('--as-of','2026-10-18');
+if(!Number.isInteger(matchday)||matchday<1||matchday>38||!/^\d{4}-\d{2}-\d{2}$/.test(asOf))throw Error('Invalid matchday/as-of');
+const fixtures=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'&&m.matchday===matchday);
 const refs=new Map(fixtures.map(m=>[m.refereeAssignment.referee.slug,m.refereeAssignment.referee.name]));
 const slug=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const aliases={'ac-milan':'milan','hellas-verona':'verona','palermo-fc':'palermo','calcio-padova':'padova','mantova-1911':'mantova','sudtirol-alto-adige':'sudtirol','fc-sudtirol':'sudtirol','as-roma':'roma','inter-milan':'inter','internazionale':'inter','cesena-fc':'cesena','tobyl':'tobol','fk-tobol-kostanay':'tobol','tobol-kostanay':'tobol','fk-partizan':'partizan','qarabag':'qarabag','hapoel-beer-sheva':'hapoel-beer-sheva','sabah-fa':'sabah','sabah-fk':'sabah','atletico-madrid':'atletico-de-madrid','virtus-entella':'entella','venezia-fc':'venezia','nuova-cosenza':'cosenza'};
@@ -16,7 +19,7 @@ const metricKeys=['yellowCards','directRedCards','secondYellowCards','dismissals
 const validSeasonDate=m=>!m.season||m.date>=m.season.slice(0,4)+'-07-01'&&m.date<(m.season==='2019/20'?'2020-09-01':(Number(m.season.slice(0,4))+1)+'-07-01');
 const groups=new Map(),files=[];
 function add(refereeId,row,provenance,kind='profile'){
- if(!refs.has(refereeId)||!row.date||row.date.slice(0,10)>'2026-10-18')return;
+ if(!refs.has(refereeId)||!row.date||row.date.slice(0,10)>asOf)return;
  const date=row.date.slice(0,10),r={...row,date},k=key(r),id='ref-match-'+crypto.createHash('sha256').update(k).digest('hex').slice(0,24);
  if(!groups.has(refereeId))groups.set(refereeId,new Map());const map=groups.get(refereeId);
  if(!map.has(k))map.set(k,{id,refereeId,date,season:r.season?.replace(/^(\d{4})-(\d{2})$/,'$1/$2')||null,competition:r.competition||null,home:r.home,away:r.away,homeTeamId:teamId(r.home),awayTeamId:teamId(r.away),observations:[]});
@@ -33,13 +36,23 @@ for(const season of fs.readdirSync('data/normalized/referee-matches').filter(s=>
   add(m.referee.slug,{id:m.id,date:m.date,season:m.season,competition:m.competitionName,stage:m.stage,home:m.homeTeam.name,away:m.awayTeam.name,score:m.score,teamStats:m.teamStats,providerYellowCards,yellowCards:secondYellowCards===0?providerYellowCards:null,directRedCards:sum(h.straightRedCards,a.straightRedCards),secondYellowCards,dismissals:sum(h.straightRedCards,a.straightRedCards,h.secondYellowCards,a.secondYellowCards),fouls:sum(h.fouls,a.fouls),penaltiesAwarded:null}, {...m.source,archive,ordinaryYellowLimitation:'When a second-yellow dismissal exists, provider total yellows alone do not establish ordinary yellows; retained only as raw count unless another verified observation resolves it'},'normalized-archive');
  }
 }
+if(process.argv.includes('--include-current-season'))for(const m of read('data/normalized/matches.json')){
+ if(m.competition!=='serie-a'||m.status!=='finished'||!refs.has(m.refereeAssignment?.referee?.slug)||!m.teamStats)continue;
+ const h=m.teamStats.home,a=m.teamStats.away;if(!h||!a)continue;
+ const origin=m.resultSource||m.sources?.find(s=>s.sourceType==='match-report-stats');
+ const url=origin?.url||origin?.sourceUrl;if(!url)continue;
+ const complete=[h,a].every(t=>t.disciplinaryAggregation?.coverage==='COMPLETE');
+ add(m.refereeAssignment.referee.slug,{id:m.id,date:m.date,season:m.season,competition:'Serie A',home:m.homeTeam,away:m.awayTeam,score:m.score,
+  yellowCards:sum(h.yellowCards,a.yellowCards),secondYellowCards:sum(h.secondYellowCards,a.secondYellowCards),directRedCards:sum(h.straightRedCards,a.straightRedCards),dismissals:sum(h.secondYellowCards,a.secondYellowCards,h.straightRedCards,a.straightRedCards),fouls:sum(h.fouls,a.fouls),penaltiesAwarded:null},
+  {url,retrievedAt:origin.retrievedAt||asOf,archive:'data/normalized/matches.json',fixtureId:m.id,disciplineCoverage:complete?'COMPLETE':'PARTIAL'},complete?'curated-verified':'current-season-archive');
+}
 for(const p of source.profiles.filter(p=>refs.has(p.refereeSlug)))for(const m of p.matches)add(p.refereeSlug,m,p.source);
-const manifestPath='data/raw/referee-stats/md07-history-2026-10-18/manifest.json',manifest=read(manifestPath);
+const manifestPath=arg('--manifest','data/raw/referee-stats/md07-history-2026-10-18/manifest.json'),manifest=read(manifestPath);
 for(const p of manifest.filter(p=>!p.error&&['calciotel','ofstats','datasport'].includes(p.provider))){
  const html=zlib.gunzipSync(fs.readFileSync(p.rawPath)).toString('utf8'),rows=p.provider==='calciotel'?parseMatches(html):p.provider==='ofstats'?parseOfstats(html):parseDatasport(html);
  for(const m of rows)add(p.refereeId,m,p);
 }
-const detailManifest='data/raw/referee-stats/md07-history-2026-10-18/details/manifest.json';
+const detailManifest=manifestPath.replace(/manifest\.json$/,'details/manifest.json');
 if(fs.existsSync(detailManifest))for(const p of read(detailManifest).filter(p=>!p.error)){
  const parsed=parseDetail(zlib.gunzipSync(fs.readFileSync(p.rawPath)).toString('utf8'));
  if(parsed.refereeId!==p.refereeId)continue; // Never attach another official's match.
@@ -88,5 +101,6 @@ for(const [id,name] of refs){const matches=[...(groups.get(id)?.values()||[])];
  referees.push({refereeId:id,name,coverage:{status:'PARTIAL',completenessCertified:false,from:accepted.at(-1)?.date||null,to:accepted[0]?.date||null,seasons:[...new Set(accepted.map(m=>m.season).filter(Boolean))].sort(),competitions:[...new Set(accepted.map(m=>m.competition).filter(Boolean))].sort(),unknownCompetition:accepted.filter(m=>!m.competition).length,quarantinedMatches:quarantinedMatches.length,limitations:['Public profile match logs and available domestic archives only; no season completeness certification','Unknown values are null; provider observations and unresolved conflicts remain separate','ESPN penaltyKickShots is not a verified awarded-penalty count; excluded','Profile yellow/red semantics may differ; positive OFStats red totals retained as raw provider counts, not assumed dismissals','Different fixtures attributed on the same date are quarantined, never silently deduplicated by referee/date']},matches:accepted,quarantinedMatches});
 }
 const output={schemaVersion:1,asOf:'2026-10-18',informationalOnly:true,identity:{referee:'Canonical referee slug',match:'SHA256(date | exact normalized home team ID | exact normalized away team ID), stable across providers; explicit team aliases only'},policy:{coverage:'PARTIAL',observations:'All recovered records retained, no five-match or forty-match cap',cutoff:'Reading samples must exclude fixture date and later dates',cards:'Ordinary yellow cards + dismissals once; direct red / second yellow separate',sources:'Internal only'},archiveFiles:files,manifestPath,referees};
-fs.mkdirSync('data/normalized/referee-history',{recursive:true});fs.writeFileSync('data/normalized/referee-history/md07-2026-27.json',JSON.stringify(output,null,2)+'\n');
+output.asOf=asOf;
+fs.mkdirSync('data/normalized/referee-history',{recursive:true});fs.writeFileSync(`data/normalized/referee-history/md${String(matchday).padStart(2,'0')}-2026-27.json`,JSON.stringify(output,null,2)+'\n');
 console.log(JSON.stringify(referees.map(r=>({id:r.refereeId,matches:r.matches.length,quarantined:r.quarantinedMatches.length,unknown:r.coverage.unknownCompetition}))));
