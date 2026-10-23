@@ -1368,14 +1368,36 @@ function combineVolumeMetric(home, away) {
   };
 }
 
-function disciplineBaseline(profile, disciplineProfile) {
+function teamFoulProjection(disciplineProfile, teamMatchupProfile) {
   const rows = disciplineProfile?.rows || [];
   const appearances = sum(rows.map(row => row.appearances || 0));
-  const fouls = appearances
+  let value = appearances
     ? sum(rows.map(row => (row.foulsAwardedAgainstPerAppearance || 0) * (row.appearances || 0))) / appearances
     : null;
+  let basis = null;
+  if (value == null) {
+    const current = teamMatchupProfile?.discipline?.current;
+    const distribution = current?.foulsCommittedDistribution;
+    const cutoff = teamMatchupProfile?.dataCutoff;
+    // Reuse the existing observed mean, only from a complete, pre-fixture sample.
+    // A missing foul count must never become an observed zero.
+    if (cutoff?.completedOnly === true && Number.isInteger(cutoff.asOfMatchdayExclusive)
+      && cutoff.latestMatchdayUsed < cutoff.asOfMatchdayExclusive
+      && current?.matches > 0 && distribution?.sampleSize === current.matches
+      && Number.isFinite(current.foulsCommittedPerGame) && current.foulsCommittedPerGame >= 0) {
+      value = current.foulsCommittedPerGame;
+      basis = { method: "current-season-observed-mean", season: "2026-27", sampleSize: current.matches,
+        asOfMatchdayExclusive: cutoff.asOfMatchdayExclusive, latestMatchIdUsed: cutoff.latestMatchIdUsed,
+        latestMatchdayUsed: cutoff.latestMatchdayUsed, completedOnly: true, limitedSample: true };
+    }
+  }
+  return { fouls: value == null ? null : rangeMetric(value, 2.4, 3), basis };
+}
+
+function disciplineBaseline(profile, disciplineProfile, teamMatchupProfile) {
+  const { fouls, basis } = teamFoulProjection(disciplineProfile, teamMatchupProfile);
   const yellowCards = profile?.modelInputs?.numeric?.yellowCardsPerGame ?? null;
-  return { fouls, yellowCards };
+  return { fouls, yellowCards, basis };
 }
 
 function applyOpponentTeamVolumeInteraction(profile, opponentTeamMatchupProfile, shotsTotal, shotsOnTarget, corners) {
@@ -1501,7 +1523,7 @@ function teamProjection(team, profile, opponentProfile, squad, disciplineProfile
   const opponentMatchupInteraction = applyOpponentTeamVolumeInteraction(profile, opponentTeamMatchupProfile, shotsTotal, shotsOnTarget, corners);
   shotsOnTarget.central = Math.min(shotsOnTarget.central, shotsTotal.central);
   shotsOnTarget.max = Math.min(shotsOnTarget.max, shotsTotal.max);
-  const discipline = disciplineBaseline(profile, disciplineProfile);
+  const discipline = disciplineBaseline(profile, disciplineProfile, ownTeamMatchupProfile);
   return {
     teamId: team.id,
     venue,
@@ -1512,7 +1534,8 @@ function teamProjection(team, profile, opponentProfile, squad, disciplineProfile
     legacyVolumeProjection,
     ownOffensiveInteraction,
     opponentMatchupInteraction,
-    fouls: discipline.fouls == null ? null : rangeMetric(discipline.fouls, 2.4, 3),
+    fouls: discipline.fouls,
+    ...(discipline.basis ? { foulsBasis: discipline.basis } : {}),
     cards: discipline.yellowCards == null ? null : rangeMetric(discipline.yellowCards, 0.85, 0),
     expectedGoals: expectedGoal,
     basis: "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
@@ -2145,4 +2168,4 @@ function predictMatch(input) {
   };
 }
 
-module.exports = { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, OUTCOMES, WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, volumeMetric, applyOwnOffensiveVolumeProfile, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedMinutes, poissonAtLeast, expectedDefensiveExposureFactor, scoreMatrix, sensitivityMatrices, matrixProbability, configuredScorePredicate, conditionForOutcome, predictMatch };
+module.exports = { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, OUTCOMES, WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, volumeMetric, applyOwnOffensiveVolumeProfile, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedMinutes, poissonAtLeast, expectedDefensiveExposureFactor, scoreMatrix, sensitivityMatrices, matrixProbability, configuredScorePredicate, conditionForOutcome, predictMatch, teamFoulProjection };

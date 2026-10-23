@@ -5118,6 +5118,11 @@ body[data-reading-detail-theme] #app{max-width:var(--ds-content-max)!important;w
 .rd-section-heading svg{width:20px;height:20px;color:var(--rd-accent);flex-shrink:0}
 .rd-section-heading h2{font-family:var(--ds-font-display);font-size:var(--ds-title-section);font-weight:400;line-height:var(--ds-leading-title);margin:0!important;letter-spacing:-.035em;color:var(--rd-ink)}
 .rd-section-content{min-width:0}
+.rd-section>summary.rd-section-heading{cursor:pointer;list-style:none}
+.rd-section>summary.rd-section-heading::-webkit-details-marker{display:none}
+.rd-section>summary.rd-section-heading:focus-visible{outline:2px solid var(--rd-accent);outline-offset:5px}
+.rd-forecast-toggle{margin-left:auto;transition:transform .15s}
+.rd-section[open]>summary .rd-forecast-toggle{transform:rotate(180deg)}
 .rd-shell .rd-section-content>.section{margin-top:24px!important}
 .rd-shell .rd-section-content>.section:first-child{margin-top:0!important}
 .rd-shell :is(.section-heading,.champions-reading-section-heading) h2{font-family:Inter,system-ui,sans-serif;font-size:20px;letter-spacing:-.035em;color:var(--rd-ink)}

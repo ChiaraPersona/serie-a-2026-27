@@ -80,8 +80,10 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
   const nav=document.createElement('nav');nav.className='rd-nav';nav.setAttribute('aria-label','Sezioni della lettura');
   const linkStrip=document.createElement('div');linkStrip.className='rd-nav-links';nav.append(linkStrip);
   const groups=new Map(definitions.map(([key,title,number,path])=>{
-    const section=document.createElement('section');section.className='rd-section';section.id='lettura-'+key;
-    section.innerHTML=`<header class="rd-section-heading"><span class="rd-section-number">${number}</span>${icon(path)}<h2>${title}</h2></header><div class="rd-section-content"></div>`;
+    const collapsible=key==='pronostici';
+    const section=document.createElement(collapsible?'details':'section');section.className='rd-section';section.id='lettura-'+key;
+    const heading=collapsible?'summary':'header';
+    section.innerHTML=`<${heading} class="rd-section-heading"><span class="rd-section-number">${number}</span>${icon(path)}<h2>${title}</h2>${collapsible?'<span class="rd-forecast-toggle" aria-hidden="true">⌄</span>':''}</${heading}><div class="rd-section-content"></div>`;
     return [key,section];
   }));
   const placements=[];

@@ -475,7 +475,7 @@ export function createPage(deps){
       let finishReading=null;
       if(isReadingPilot('champions',requestedMatchId,location.search)&&typeof document.createElement==='function'){
         try{
-          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261022-assets-v1')]);
+          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261023-forecasts-collapsed-v1')]);
           const analysis={match:requestedCalendarFixture,matches:data.fixtures,lineups:md2MarketEntry?.lineups,availability:md2MarketEntry?.availability,referee:refereeProfile,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads,teamProfiles:activePilot.profiles};
           const model=adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[],analysis});
           const prepared=await prepareReadingShell(model);

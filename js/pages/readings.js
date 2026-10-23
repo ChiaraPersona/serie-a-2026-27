@@ -225,7 +225,7 @@ function renderTacticalBaselines(match,dataset,teams){
     let finishReading=null;
   if(isReadingPilot('serie-a',activeReadingMatch?.id,location.search)&&typeof document.createElement==='function'){
     try{
-      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261022-assets-v1')]);
+      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261023-forecasts-collapsed-v1')]);
       const analysis={match:activeReadingMatch,matches,teamDirectory,styles:teamStyleProfiles,referees:refereeProfiles,reading:activeReading,history:headToHeadData?.fixtures?.find(f=>f.fixtureId===activeReadingMatch.id),lineups:[activeReadingMatch.homeTeam,activeReadingMatch.awayTeam].map(id=>{const team=teamDirectory.teams.find(t=>t.id===id);return {team,lineup:fixtureLineupForMatch(activeReadingMatch,team,teamDirectory)}})};
       const model=adaptSerieAReading({match:activeReadingMatch,teams,teamDirectory,prediction:activePrediction,marketCatalog:forecastDataset?.marketCatalog,formation:formationPresentation(activeReadingMatch,teamDirectory),analysis});
       const prepared=await prepareReadingShell(model);
