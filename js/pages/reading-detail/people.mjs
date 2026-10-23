@@ -26,6 +26,7 @@ export function formationMarkup(evidence){
   const name=p=>esc(p.currentName||p.sourceName||'Identità N/D')+(p.playerId?'':' (identità N/D)');
   const list=key=>t[key]?.length?t[key].map(p=>`${name(p)}${p.description?` (${esc(p.description)})`:''}`).join('; '):'Nessuna segnalazione nello snapshot; convocazione da confermare.';
   const ballots=t.ballots?.length?t.ballots.map(group=>group.map(p=>`${name(p)}${finite(p.probability)?` ${p.probability}%`:''}`).join(' / ')).join('; '):'Nessun ballottaggio segnalato.';
+  if(l.status==='official')return `<section><h3>${esc(l.side.name)}</h3><p>Formazione ufficiale. Titolari e panchina aggiornati.</p></section>`;
   return `<section><h3>${esc(l.side.name)}</h3><p>Probabili scelte, da riconfermare prima della gara.</p><p><strong>Indisponibili:</strong> ${list('unavailable')}</p><p><strong>Squalificati:</strong> ${list('suspended')}</p><p><strong>In dubbio:</strong> ${list('doubtful')}</p><p><strong>Ballottaggi:</strong> ${ballots}</p></section>`;
  }).join('')}</div>`:'';
  return headings+(field?pitch:'')+evidence.lineups.filter(l=>lineupPositions(l).length!==11).map(l=>`<section><h3>${esc(l.side.name)}</h3><p>Disposizione tattica non disponibile</p><ol>${l.players.map(p=>`<li>${esc(p.name)}</li>`).join('')}</ol></section>`).join('')+availability;
