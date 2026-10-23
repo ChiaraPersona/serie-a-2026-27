@@ -36,7 +36,7 @@ const server = http.createServer((req, res) => {
       const bars = await row.locator('.rd-diverging-half').evaluateAll(nodes => nodes.map(n => ({available: n.dataset.available, width: parseFloat(n.querySelector('em').style.width)})));
       assert(bars.every(b => b.available === 'true' && b.width > 0));
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, fixture + ' overflow');
-      await row.scrollIntoViewIfNeeded();
+      await row.evaluate(node => node.scrollIntoView({block: 'center'}));
       await page.locator('.rd-scenario .rd-diverging').screenshot({path: path.join(output, `${fixture}-${width}.png`)});
       results.push({fixture, width, values, bars, overflow: false});
     }

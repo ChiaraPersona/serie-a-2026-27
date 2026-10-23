@@ -1382,6 +1382,7 @@ function teamFoulProjection(disciplineProfile, teamMatchupProfile) {
     // Reuse the existing observed mean, only from a complete, pre-fixture sample.
     // A missing foul count must never become an observed zero.
     if (cutoff?.completedOnly === true && Number.isInteger(cutoff.asOfMatchdayExclusive)
+      && Number.isInteger(cutoff.latestMatchdayUsed)
       && cutoff.latestMatchdayUsed < cutoff.asOfMatchdayExclusive
       && current?.matches > 0 && distribution?.sampleSize === current.matches
       && Number.isFinite(current.foulsCommittedPerGame) && current.foulsCommittedPerGame >= 0) {
