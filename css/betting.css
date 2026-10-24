@@ -371,7 +371,7 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 .betting-archive-card--champions .team-flip-inner{display:block;height:100%;min-height:0;padding:0;border:0;background:none;box-shadow:none;overflow:visible;transform:none!important}
 .betting-archive-card--champions:hover .team-flip-inner,.betting-archive-card--champions:focus-visible .team-flip-inner{transform:rotateY(180deg)!important}
 .betting-archive-card--champions .team-flip-face{position:absolute;inset:0;min-height:0;overflow:hidden;border:1px solid #00000015;border-radius:26px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.betting-archive-card--champions .team-flip-back{transform:rotateY(180deg);background:radial-gradient(circle at 100% 0,color-mix(in srgb,var(--team-primary) 11%,transparent),transparent 52%),radial-gradient(circle at 0 100%,color-mix(in srgb,var(--team-secondary) 9%,transparent),transparent 48%),linear-gradient(115deg,rgba(255,255,255,.46),transparent 36%),#b5faff31}
+.betting-archive-card--champions .team-flip-back{transform:rotateY(180deg);background:radial-gradient(circle at 70% 18%,rgba(80,196,255,.25),transparent 48%),linear-gradient(145deg,#0966e8,#031b4b);color:#fff}
 @media(max-width:1000px){.betting-archive-card--champions .betting-archive-card-back>strong{font-size:1.18rem}.betting-archive-card--champions .betting-archive-card-back>span{font-size:.7rem}.betting-archive-card--champions .betting-archive-card-back .betting-champions-verification{font-size:.6rem}.betting-archive-card--champions .team-flip-back b{margin-top:4px;padding-top:7px}}
 
 @media(hover:none){.betting-archive-card--champions{height:300px;perspective:1100px}}
@@ -469,7 +469,10 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
  body[data-page="betting"] .betting-archive-card--champions .team-flip-back span{color:#d9ecff}
 }
 
-@media(max-width:760px){body[data-page="betting"] .betting-archive-card--champions .betting-archive-performance>span{background:#ffffffeb}body[data-page="betting"] .betting-archive-card--champions .betting-archive-performance :is(strong,small){color:#123e70;text-shadow:none}}
+body[data-page="betting"] .betting-archive-card--champions .team-flip-back>strong{color:#fff;text-shadow:none}
+body[data-page="betting"] .betting-archive-card--champions .betting-archive-performance>span{border-color:#77b9ff80;background:#062859}
+body[data-page="betting"] .betting-archive-card--champions .betting-archive-performance small{color:#c8e4ff;opacity:1;text-shadow:none}
+body[data-page="betting"] .betting-archive-card--champions .betting-archive-performance strong{color:#fff;text-shadow:none}
 
 /* Keep the same archive layout across standard and larger phones. */
 @media(max-width:480px){body[data-page="betting"] .betting-archive-list.team-directory-grid.team-flip-grid{grid-template-columns:minmax(0,1fr)}}
