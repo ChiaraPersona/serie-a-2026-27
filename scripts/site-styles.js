@@ -22,7 +22,7 @@ function applyStyleLinks(html) {
   html=html.replace(/(<body[^>]*data-page="(?:readings|champions|betting)"[^>]*>)/, `$1<script src="${prefix}js/initial-presentation.js?v=${bootVersion}"></script>`);
   // Invalidate the application entry and its versioned module graph whenever
   // the shared heading renderer changes; preserve each page's base release.
-  const headingHash=createHash('sha256');for(const file of ['js/pages/home.js','js/core/utils.js','js/core/app.js','js/core/router.js','js/services/data-service.js','js/components/match-card.js','js/pages/readings.js','js/pages/champions.js','js/core/image-source.mjs'])headingHash.update(fs.readFileSync(path.join(root,file)));
+  const headingHash=createHash('sha256');for(const file of ['js/pages/home.js','js/pages/betting.js','js/core/utils.js','js/core/app.js','js/core/router.js','js/services/data-service.js','js/components/match-card.js','js/pages/readings.js','js/pages/champions.js','js/core/image-source.mjs'])headingHash.update(fs.readFileSync(path.join(root,file)));
   const headingVersion=headingHash.digest('hex').slice(0,12);
   html=html.replace(/(src="[^"]*js\/app\.js\?v=)([^"&]+)/g,(_,start,version)=>`${start}${version.replace(/-headings-[a-f0-9]{12}$/, '')}-headings-${headingVersion}`);
   const squadVersion=createHash('sha256').update(fs.readFileSync(path.join(root,'js/team-squads.js'))).digest('hex').slice(0,12);
