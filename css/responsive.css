@@ -301,7 +301,8 @@
 @media(max-width:760px){.site-footer{display:none}}
 
 @media(max-width:760px){
-  .home-editorial-readings>strong,.home-editorial-teams>strong{display:none}
+  body[data-page="home"] .home-rail{display:none}
+  body[data-page="home"] .home-dashboard-grid{grid-template-columns:minmax(0,1fr)}
 }
 
 /* One outer width for navigation, content and footer at every breakpoint. */
