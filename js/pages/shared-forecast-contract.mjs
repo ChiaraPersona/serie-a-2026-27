@@ -37,7 +37,7 @@ export function isUnquotedIndividualForecast(leg){
 
 export function isPublishedForecast(leg,{archived=false}={}){
   return leg?.lineupEligibility?.eligible!==false
-    && (archived||!globalThis.officialStarterPolicy||globalThis.officialStarterPolicy.eligible(leg))
+    && (!globalThis.officialStarterPolicy||globalThis.officialStarterPolicy.eligible(leg))
     && leg?.forecastStatus!=="withdrawn"
     && leg?.suggestionAnalysis?.suggested===true
     && (hasVerifiedPlayableQuote(leg)||isUnquotedIndividualForecast(leg)||isCanonicalModelForecast(leg));

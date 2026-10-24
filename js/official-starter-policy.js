@@ -22,6 +22,13 @@
     const id=value.fixtureId||value.matchId||value.id||matchId;
     if(archivedMatchIds.has(id))return value;
     const copy={};for(const [key,item] of Object.entries(value))copy[key]=filter(item,id,archivedMatchIds);
+    if(Array.isArray(value.legs)&&copy.legs.length!==value.legs.length){
+      // The original combined metrics belong to the full technical snapshot.
+      // Do not present them as metrics of the remaining public selections.
+      copy.officialStarterFiltered=true;
+      for(const key of ['combinedOdds','jointModelProbabilityPct','fairOdds','expectedValuePct','weakestLeg','settlement'])if(key in copy)copy[key]=null;
+    }
+    if(Array.isArray(copy.slips))copy.slips=copy.slips.filter(slip=>!slip.officialStarterFiltered||slip.legs.length);
     return copy;
   }
   const api={configure,eligible,filter,token};scope.officialStarterPolicy=api;

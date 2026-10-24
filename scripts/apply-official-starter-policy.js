@@ -18,11 +18,23 @@ function buildRegistry(){
     }
   }
   const integration=read('data/normalized/champions-md02-integration-2026-27.json');
+  // Reuse explicit lineupName -> canonical identity links already published for
+  // MD1. No surname guessing or fuzzy matching against the squad is allowed.
+  const md1=read('data/normalized/champions-player-markets-md01-2026-27.json');
+  const md1Identities=new Map();
+  for(const fixture of md1.fixtures){
+    const rows=[];
+    const visit=value=>{if(!value||typeof value!=='object')return;
+      if(value.lineupName&&value.playerId&&value.name)rows.push({suppliedName:value.lineupName,canonicalName:value.name,canonicalPlayerId:value.playerId});
+      for(const item of Object.values(value))if(item&&typeof item==='object')visit(item);
+    };
+    visit(fixture);md1Identities.set(fixture.fixtureId,rows);
+  }
   for(const file of fs.readdirSync(path.join(root,'data/sources')).filter(f=>/official-formations.*\.json$/.test(f))){
     for(const official of read('data/sources/'+file).fixtures||[]){
       if(official.status!=='official')continue;
       const fixture=integration.fixtures.find(f=>f.fixtureId===official.fixtureId);
-      const known=fixture?[...fixture.lineups.home.players,...fixture.lineups.away.players,...(fixture.editorialLineups?.home?.players||[]),...(fixture.editorialLineups?.away?.players||[])]:[];
+      const known=fixture?[...fixture.lineups.home.players,...fixture.lineups.away.players,...(fixture.editorialLineups?.home?.players||[]),...(fixture.editorialLineups?.away?.players||[])]:md1Identities.get(official.fixtureId)||[];
       const players=[...(official.home?.players||[]),...(official.away?.players||[])].map(name=>{
         if(typeof name==='object')return name;
         const matches=[...new Map(known.filter(p=>[p.suppliedName,p.canonicalName].some(n=>policy.token(n)===policy.token(name))).map(p=>[p.canonicalPlayerId||p.suppliedName,p])).values()];

@@ -1,3 +1,4 @@
+import '../official-starter-policy.js';
 import { MARKET_RULES, playerCardOutcome, teamCardPoints } from './disciplinary.mjs?v=20261022-assets-v1';
 const finite=value=>value!==null&&value!==undefined&&value!==""&&Number.isFinite(Number(value));
 const normalized=value=>String(value??"").trim().toUpperCase().replaceAll("–","-").replaceAll(",",".");
@@ -115,6 +116,7 @@ export const settlementRecordKey=leg=>JSON.stringify([leg?.matchId,leg?.provider
 // verified settlement. The strict current check remains independently available.
 export function settleArchivedLeg(leg,match,records=[]){
   const current=settleLeg(leg,match);
+  if(current.nonStarter)return current;
   const recorded=records.find(r=>r.key===settlementRecordKey(leg));
   if(!recorded||match?.status!=="finished")return current;
   return {status:recorded.status,label:recorded.label,verificationStatus:"LEGACY_RECORDED_OUTCOME",currentCheck:current,
@@ -122,6 +124,7 @@ export function settleArchivedLeg(leg,match,records=[]){
 }
 
 export function settleLeg(leg,match){
+  if(!globalThis.officialStarterPolicy.eligible(leg,match?.id))return {...voided(),nonStarter:true};
   if(match?.status!=="finished"||!finite(match?.score?.home)||!finite(match?.score?.away))return pending();
 
   const home=Number(match.score.home),away=Number(match.score.away),total=home+away;

@@ -14,8 +14,8 @@ try{
   const service=createDataService('test',{deduplicate:true});
   const [matches,day,predictions]=await Promise.all([service.load('matches.json'),service.load('schedina-md07.json'),service.load('predictions-md07.json')]);
   assert.deepEqual(matches,read('matches.json'));
-  assert.deepEqual(day,read('schedina-md07.json'),'Completed archive must retain excluded operational contracts');
-  assert.deepEqual(predictions,read('predictions-md07.json'));
+  assert.deepEqual(day,globalThis.officialStarterPolicy.filter(read('schedina-md07.json')),'Completed public archive must exclude official nonstarters');
+  assert.deepEqual(predictions,globalThis.officialStarterPolicy.filter(read('predictions-md07.json')));
   for(const name of new Set(requests.map(r=>r.name)))assert.equal(requests.filter(r=>r.name===name).length,1,name+' duplicated');
   assert.equal(requests.find(r=>r.name==='official-starter-registry.json').cache,'no-store');
   service.beginView();
@@ -27,7 +27,7 @@ try{
     assert.deepEqual(read(`predictions-md${code}.json`).predictions,read('predictions.json').predictions.filter(p=>p.matchId.endsWith(`-md-${code}`)).map(({matchId,combinations})=>({matchId,combinations})));
   }
   const index=JSON.parse(fs.readFileSync('data/generated/schedina-index-2026-27.json'));
-  assert.equal((index.html.match(/class="betting-archive-card /g)||[]).length,10);
+  assert.equal((index.html.match(/class="betting-archive-card /g)||[]).length,11);
   // Failed requests must be retryable, never permanently cached.
   let attempts=0;
   globalThis.fetch=async()=>{attempts++;if(attempts===1)throw Error('temporary');return {ok:true,json:async()=>({ok:true})};};
@@ -39,5 +39,5 @@ try{
   globalThis.location={search:'?competizione=champions&giornata=99'};
   await assert.rejects(createPage({load:async()=>{loads++;throw Error('unexpected load')}}).render(),/Giornata Champions non disponibile/);
   assert.equal(loads,0,'Invalid Champions round fetched data before validation');
-  console.log('PASS scoped cache: concurrent deduplication, fresh official registry per view, retry, archived contracts, MD5/6/7 projections and 10 index cards');
+  console.log('PASS scoped cache: concurrent deduplication, fresh official registry per view, retry, filtered archived contracts, MD5/6/7 projections and 11 index cards');
 }finally{globalThis.fetch=oldFetch;}
