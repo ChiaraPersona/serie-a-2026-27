@@ -138,6 +138,8 @@ function regressedRatio(rate, baseline, reliability = 0.72) {
 
 function divisionAdjustedRate(profile, type, leagueOverall) {
   const goals = profileGoals(profile, leagueOverall, leagueOverall);
+  // Foreign domestic rates are normalized by the competition adapter.
+  if (profile?.goalRatesOnTargetScale === true) return goals[type];
   const serieB = profile?.competition !== "Serie A";
   const raw = type === "for" ? goals.for : goals.against;
   if (!serieB) return raw;
@@ -2059,7 +2061,7 @@ function matchScenarios(input, final, expected) {
   ];
 }
 
-function predictMatch(input) {
+function predictScenario(input) {
   const market = marketProbabilities(findMainOneXTwo(input.oddsEvent));
   const expected = expectedGoals(input);
   const matrix = scoreMatrix(expected.home, expected.away, 7);
@@ -2069,7 +2071,7 @@ function predictMatch(input) {
     objectives: objectiveProbabilities(input.homeObjective, input.awayObjective)
   };
   const final = parts.historical;
-  const crossCompetition = input.homeProfile?.competition !== "Serie A" || input.awayProfile?.competition !== "Serie A";
+  const crossCompetition = input.crossCompetitionBaseline ?? (input.homeProfile?.competition !== "Serie A" || input.awayProfile?.competition !== "Serie A");
   const completedSections = Object.values(input.reading?.sections || {}).filter(section => section?.content).length;
   const lineupsComplete = input.homeTeam?.probableLineup?.players?.length === 11 && input.awayTeam?.probableLineup?.players?.length === 11;
   const lineupsOfficial = input.homeTeam?.probableLineup?.status === "official" && input.awayTeam?.probableLineup?.status === "official";
@@ -2081,9 +2083,6 @@ function predictMatch(input) {
   const doubleChance = topTwo.has("1") && topTwo.has("X") ? "1X" : topTwo.has("X") && topTwo.has("2") ? "X2" : "12";
   const matrices = sensitivityMatrices(expected, matrix, null);
   const forecast = scoreForecast(matrix, final);
-  const [primaryHome, primaryAway] = forecast.primary.score.split("-").map(Number);
-  const evaluatedMarkets = marketEvaluation(input.oddsEvent, matrices, dataCompleteness, { home: primaryHome, away: primaryAway });
-  const valueCandidates = evaluatedMarkets.rows.filter(row => row.family === "1x2");
   const teamProjections = [
     teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, input.homeDiscipline, input.homeVolume, input.awayVolume, "home", final[0], final[2], expected.home, input.awayTeamMatchupProfile, input.homeTeamMatchupProfile),
     teamProjection(input.awayTeam, input.awayProfile, input.homeProfile, input.awaySquad, input.awayDiscipline, input.awayVolume, input.homeVolume, "away", final[2], final[0], expected.away, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile)
@@ -2094,6 +2093,14 @@ function predictMatch(input) {
     corners: combineVolumeMetric(teamProjections[0].corners, teamProjections[1].corners),
     basis: "Somma delle medie squadra; intervallo p20-p80 del totale con varianze indipendenti."
   };
+  return { market, expected, matrix, parts, final, crossCompetition, lineupsOfficial, dataCompleteness, surprise, confidenceResult, orderedOutcomes, doubleChance, matrices, forecast, teamProjections, matchProjection };
+}
+
+function predictMatch(input) {
+  const { market, expected, matrix, parts, final, crossCompetition, lineupsOfficial, dataCompleteness, surprise, confidenceResult, orderedOutcomes, doubleChance, matrices, forecast, teamProjections, matchProjection } = predictScenario(input);
+  const [primaryHome, primaryAway] = forecast.primary.score.split("-").map(Number);
+  const evaluatedMarkets = marketEvaluation(input.oddsEvent, matrices, dataCompleteness, { home: primaryHome, away: primaryAway });
+  const valueCandidates = evaluatedMarkets.rows.filter(row => row.family === "1x2");
   const exact = exactScores(matrix, expected.total);
   const shooters = shooterCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, teamProjections, input.oddsEvent, input.homeProfile, input.awayProfile, input.homeVolume, input.awayVolume, input.homeCurrentPlayers, input.awayCurrentPlayers, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile);
   const lineupCandidates = [...lineupPlayers(input.homeTeam, input.homeSquad), ...lineupPlayers(input.awayTeam, input.awaySquad)];
@@ -2169,4 +2176,4 @@ function predictMatch(input) {
   };
 }
 
-module.exports = { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, OUTCOMES, WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, volumeMetric, applyOwnOffensiveVolumeProfile, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedMinutes, poissonAtLeast, expectedDefensiveExposureFactor, scoreMatrix, sensitivityMatrices, matrixProbability, configuredScorePredicate, conditionForOutcome, predictMatch, teamFoulProjection };
+module.exports = { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, OUTCOMES, WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, volumeMetric, applyOwnOffensiveVolumeProfile, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedMinutes, poissonAtLeast, expectedDefensiveExposureFactor, scoreMatrix, sensitivityMatrices, matrixProbability, configuredScorePredicate, conditionForOutcome, predictScenario, predictMatch, teamFoulProjection };

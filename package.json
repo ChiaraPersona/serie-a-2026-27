@@ -2,6 +2,8 @@
   "name": "serie-a-2026-27",
   "private": true,
   "scripts": {
+    "build:champions:scenario": "node scripts/build-champions-shared-scenarios.cjs && node scripts/build-site.js --presentation-only --champions-page-only",
+    "test:champions:scenario": "node scripts/test-champions-shared-scenarios.cjs",
     "test:team-calendar-retirement": "node scripts/test-team-calendar-retirement.cjs",
     "test:team-calendar-retirement:browser": "node scripts/check-team-calendar-retirement.cjs",
     "build:assets": "node scripts/build-optimized-images.cjs && node scripts/normalize-browser-imports.cjs && node scripts/refresh-presentation-assets.cjs",

@@ -450,6 +450,15 @@ export function createPage(deps){
     const branding=new Map(data.teamBranding.map(team=>[team.team,team]));
     const motivationByFixture=new Map(motivation.fixtures.map(fixture=>[fixture.matchId,fixture]));
     const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;
+    if(requestedCalendarFixture?.status==='scheduled'&&requestedCalendarFixture.matchday>=4){
+      const shared=await load('../generated/champions-shared-scenarios.json');
+      const prediction=shared.fixtures.find(f=>f.fixtureId===requestedMatchId);
+      if(prediction){
+        const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261024-shared-scenario-v1');
+        await mountChampionsReading({fixture:requestedCalendarFixture,prediction,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:''});
+        return;
+      }
+    }
     if(requestedCalendarFixture?.matchday===3&&requestedCalendarFixture.refereeAssignment?.status==='assigned'){
       const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,officialProbables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261022-assets-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261022-assets-v1'),load('../derived/champions-md03/probable-individuals-v2-2026-10-20.json'),loadDerived('champions-md03/official-individuals-two-v1-2026-10-20.json'),import('./champions-md3-probable.mjs?v=20261022-assets-v1')]);
       const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
@@ -511,7 +520,8 @@ export function createPage(deps){
     const md2Summary=await load("champions-pilot-predictions-md02-2026-27.json");
     // Le Letture MD3 esistono nel calendario e vengono gestite da render()
     // anche se non sono presenti negli archivi pilot MD1/MD2.
-    const pilotByFixture=new Map([...pilot.fixtures,...md2Summary.fixtures].map(fixture=>[fixture.fixtureId,fixture]));
+    const sharedScenarios=await load('../generated/champions-shared-scenarios.json');
+    const pilotByFixture=new Map([...pilot.fixtures,...md2Summary.fixtures,...sharedScenarios.fixtures.filter(p=>data.fixtures.some(f=>f.id===p.fixtureId&&f.status==='scheduled'))].map(fixture=>[fixture.fixtureId,fixture]));
     for(const fixture of data.fixtures){
       if(fixture.matchday===3)pilotByFixture.set(fixture.id,{fixtureId:fixture.id});
     }
