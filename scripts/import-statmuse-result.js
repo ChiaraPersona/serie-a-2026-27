@@ -182,7 +182,13 @@ function importStatmuseResult({ root, config }) {
   for (const [side, rows] of [["home", homePlayers], ["away", awayPlayers]]) {
     const sum = field => rows.reduce((total, row) => total + row[field], 0);
     assert.equal(sum("shots"), resultTeamStats[side].shots, `${config.matchId} ${side}: tiri non riconciliati`);
-    assert.equal(sum("shotsOnTarget"), resultTeamStats[side].shotsOnTarget, `${config.matchId} ${side}: tiri in porta non riconciliati`);
+    const sotException=config.unreconciledPlayerShotsOnTarget?.find(item=>item.side===side);
+    if(sotException){
+      assert.equal(sum('shotsOnTarget'),sotException.playerTotal,'Unexpected individual SOT discrepancy');
+      assert.equal(resultTeamStats[side].shotsOnTarget,sotException.teamTotal,'Unexpected team SOT discrepancy');
+      assert.notEqual(sotException.playerTotal,sotException.teamTotal);
+      for(const row of rows)row.shotsOnTarget=null;
+    }else assert.equal(sum("shotsOnTarget"), resultTeamStats[side].shotsOnTarget, `${config.matchId} ${side}: tiri in porta non riconciliati`);
     assert.equal(sum("foulsCommitted"), resultTeamStats[side].fouls, `${config.matchId} ${side}: falli non riconciliati`);
   }
   const halfScore = team => team.lineScore.periods.find(period => period.period === "firstHalf")?.score ?? null;
@@ -203,11 +209,12 @@ function importStatmuseResult({ root, config }) {
       playerStats: { home: homePlayers, away: awayPlayers },
       coverage: {
         teamStats: "complete",
-        playerStats: "complete",
+        playerStats: config.unreconciledPlayerShotsOnTarget?.length ? "partial" : "complete",
+        ...(config.unreconciledPlayerShotsOnTarget?.length?{unreconciledPlayerShotsOnTarget:config.unreconciledPlayerShotsOnTarget}:{}),
         participation: "available",
         bookings: "complete",
         substitutions: "complete",
-        note: "Referto StatMuse completo: statistiche di squadra e calciatori, impiego, cartellini e sostituzioni disponibili."
+        note: config.unreconciledPlayerShotsOnTarget?.length ? "Referto disponibile; tiri in porta individuali non riconciliati con il totale squadra: valori null, nessuna attribuzione presunta." : "Referto StatMuse completo: statistiche di squadra e calciatori, impiego, cartellini e sostituzioni disponibili."
       },
       mvp: null,
       sourceUrl: config.url
