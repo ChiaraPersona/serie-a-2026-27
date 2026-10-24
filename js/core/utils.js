@@ -14,7 +14,7 @@ export const matchdayChronology=(left,right)=>(Number(left.matchday)||0)-(Number
 export const hero=(eyebrow,title,text,aside="")=>{
   const home=document.body.dataset.page==="home";
   const metadata=home||/^(Serie A|UEFA|Archivio|Organico CAN)/.test(eyebrow);
-  const context=metadata?`<p class="eyebrow">${eyebrow}</p>`:"";
+  const context=metadata&&eyebrow?`<p class="eyebrow">${eyebrow}</p>`:"";
   return `<section class="hero${home?"":" page-heading"}"><div>${home?context:""}<h1>${title}</h1>${home?"":context}</div>${home?"":aside}</section>`;
 };
 export const empty=text=>`<div class="empty">${text}</div>`;
