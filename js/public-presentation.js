@@ -63,7 +63,7 @@
     .replace(/Unione trasparente delle fonti/gi,'Indicazioni di utilizzo')
     .replace(/\bProvider ESPN\s*·?\s*/gi,'')
     .replace(/\bFixture e fonti consultabili nella tabella\.?/gi,'')
-    .replace(/\bCopertura: dettagli nelle fonti\b/gi,'Copertura dei dati')
+    .replace(/\b(?:Copertura: dettagli nelle fonti|Copertura dei dati)\b/gi,'')
     .replace(/\bOrdine fonte\b/gi,'Ordine originale')
     .replace(/\bVerifica fonte aperta\b/gi,'Verifica disponibile')
     .replace(/\bFonte non integrata\b/gi,'Non disponibile')

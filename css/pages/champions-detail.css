@@ -717,7 +717,9 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 }
 
 
+
 @media(max-width:900px){
+
 
 
 
@@ -5303,7 +5305,8 @@ body[data-reading-detail-theme] #app{max-width:var(--ds-content-max)!important;w
 .rd-editorial-note{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:35px;border-bottom:1px solid var(--rd-line);padding-bottom:16px}
 .rd-editorial-note>span{font-size:11px;font-weight:800;letter-spacing:.18em;color:var(--rd-accent)}
 .rd-editorial-note p{margin:0;color:var(--rd-muted);font-size:12px}
-.rd-nav{position:sticky;top:var(--rd-header-height,76px);z-index:15;display:flex;align-items:center;gap:3px;background:var(--rd-page-background,var(--rd-bg));background-attachment:fixed;border:0;box-shadow:none;padding:8px 0;margin-bottom:40px;isolation:isolate;max-width:100%}
+.rd-nav{position:sticky;top:var(--rd-header-height,76px);z-index:15;display:flex;align-items:center;gap:3px;background:transparent;border:0;box-shadow:none;padding:8px 0;margin-bottom:40px;isolation:isolate;max-width:100%}
+.rd-nav::before{content:"";position:absolute;inset:-10px -16px -18px;z-index:-1;pointer-events:none;background:linear-gradient(to bottom,transparent 0%,color-mix(in srgb,var(--rd-bg) 90%,transparent) 14%,color-mix(in srgb,var(--rd-bg) 80%,transparent) 55%,transparent 100%);mask-image:linear-gradient(to right,transparent,#000 16px,#000 calc(100% - 16px),transparent);-webkit-mask-image:linear-gradient(to right,transparent,#000 16px,#000 calc(100% - 16px),transparent)}
 .rd-nav-links{display:flex;gap:3px;overflow-x:auto;scrollbar-width:thin;min-width:0;flex:1}
 .rd-nav a{flex:0 0 auto;display:flex;align-items:center;min-height:44px;padding:0 13px;text-decoration:none;color:var(--rd-muted);font-size:12px;font-weight:650;white-space:nowrap;border-radius:5px}
 .rd-nav a:hover,.rd-nav a[aria-current]{background:var(--rd-soft);color:var(--rd-accent)}
@@ -5774,6 +5777,6 @@ body[data-reading-detail-theme="champions"] .rd-shell .rd-pitch{background:repea
 body[data-reading-detail-theme="champions"] .rd-champions-catalog{margin-top:20px}
 body[data-reading-detail-theme="champions"] .rd-champions-catalog>.betting-round-page{padding:0;margin:16px 0;border:0;background:none}
 body[data-reading-detail-theme="champions"]{background-color:var(--rd-bg)!important;background-attachment:scroll!important}
-body[data-reading-detail-theme="champions"] .rd-nav{background:var(--rd-bg)}
+body[data-reading-detail-theme="champions"] .rd-nav{background:transparent}
 body[data-reading-detail-theme="champions"] .rd-shell .rd-back a{padding:0;border:0;border-radius:0;background:none;box-shadow:none;font-size:12px;text-transform:none;letter-spacing:normal}
 body[data-reading-detail-theme="champions"] .rd-compact-forecast-table [data-publication-status]{display:block;margin-top:4px;font-size:10px;line-height:1.4;color:var(--rd-muted)}

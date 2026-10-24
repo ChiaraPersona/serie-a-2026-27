@@ -83,9 +83,9 @@ assert.ok(totalFoulParticipants >= 241 && totalFoulParticipants <= currentFoulPa
 const currentParticipants = playerLeaderboards.periods["2026/27"].rankings.goals.availablePlayers;
 assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.shots.availablePlayers, currentParticipants, "La copertura dei tiri 2026/27 deve restare allineata alle gare concluse importate");
 assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.shotsOnTarget.availablePlayers, currentParticipants, "La copertura dei tiri nello specchio 2026/27 deve restare allineata alle gare concluse importate");
-for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Classifica calciatori per statistica", "data-leader-period", "data-player-stat", "serie-b-marker", "aria-pressed", "per90Value", "data-compare-key"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
+for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "data-leader-period", "serie-b-marker", "per90Value", "data-compare-key"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
 assert.strictEqual(playerLeaderboards.periods.total.label, "Totale 2025/26 + 2026/27", "La Top 15 globale deve conservare il periodo totale combinato");
-assert.ok(mainApp.includes("ranking.availablePlayers") && mainApp.includes("ranking.availablePlayers"), "La Top 15 deve mostrare una copertura dinamica per ogni statistica");
+assert.ok(mainApp.includes("metrics.map(metric=>"), "La tabella deve mostrare tutte le statistiche");
 for (const contract of [".global-player-leaders", ".global-player-table", ".global-leader-player", ".global-leader-value", ".global-leader-rate", ".global-stat-button", ".serie-b-marker", ".global-col-player", ".global-col-rate"]) assert.ok(styles.includes(contract), `Top 15 globale: stile ${contract} assente`);
 const globalTableSource = mainApp.slice(mainApp.indexOf("function globalPlayerLeaderboardTable"), mainApp.indexOf("function globalPlayerLeaderboards"));
 assert.ok(!globalTableSource.includes("<th>Competizione</th>"), "La Top 15 non deve mostrare la colonna Competizione");

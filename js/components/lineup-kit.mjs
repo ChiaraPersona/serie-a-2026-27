@@ -31,6 +31,10 @@ export function lineupKitStyle(team) {
 }
 
 export function renderLineupKit(team, { goalkeeper = false, shirtNumber = null, competition = null } = {}) {
+  if (goalkeeper) {
+    const number=Number.isInteger(shirtNumber)&&shirtNumber>=1&&shirtNumber<=99?`<text x="24" y="34" text-anchor="middle" fill="#111" style="font:700 15px sans-serif">${shirtNumber}</text>`:'';
+    return `<svg class="reading-kit-shirt" data-kit-pattern="solid" data-goalkeeper-kit viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="${silhouette}" style="fill:#ffdf00;stroke:none"/>${number}</svg>`;
+  }
   const champions = competition === "champions" ? championsKit(team) : null;
   if(champions)return renderChampionsKit(champions,shirtNumber);
   const kit = goalkeeper ? { pattern: "panel" } : lineupKitStyle(team);

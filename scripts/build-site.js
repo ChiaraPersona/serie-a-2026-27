@@ -3,6 +3,7 @@ const path = require("path");
 const {applyStyleLinks} = require('./site-styles');
 const presentationOnly = process.argv.includes('--presentation-only');
 const root = path.resolve(__dirname, "..");
+if (fs.existsSync(path.join(root,'data/analysis/card-prediction-research/tactical-prototype-md08.json'))) require('./build-tactical-duels-page.cjs');
 const writeHtml = (file, html) => {
   if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== html) fs.writeFileSync(file, html);
 };
@@ -71,7 +72,7 @@ if (renderedPages.some(([,id]) => id === 'champions')) require('./build-champion
 if (renderedPages.some(([,id]) => id === 'betting')) require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-schedina-browser-data.mjs'),...(process.argv.includes('--matchday')?['--matchday',process.argv[process.argv.indexOf('--matchday')+1]]:[])],{cwd:root,stdio:'inherit'});
 if (!process.argv.includes('--matchday') && renderedPages.some(([,id]) => id === 'betting')) require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-champions-md3-browser-data.mjs')],{cwd:root,stdio:'inherit'});
 for (const [file,id,label] of renderedPages) {
-  const pageVersion = id === "home" ? homeVersion : id === "betting" ? bettingVersion : id === "readings" ? readingVersion : id === "cup" ? cupVersion : id === "champions" ? championsVersion : ["team-stats","player-stats"].includes(id) ? "20261018-player-stats-v4" : version;
+  const pageVersion = id === "home" ? homeVersion : id === "betting" ? bettingVersion : id === "readings" ? readingVersion : id === "cup" ? cupVersion : id === "champions" ? championsVersion : id === "player-stats" ? "20261024-player-keepers-data-v12" : id === "team-stats" ? "20261018-player-stats-v4" : version;
   const main = `<main id="app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>${label}</h1></section></main>`;
   const scripts = `${id === "home" ? `<script src="scripts/standings.js?v=${pageVersion}"></script>` : ""}<script type="module" src="js/app.js?v=${pageVersion}"></script>`;
   const html = `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Serie A e Coppa Italia 2026/27: ${label}"><title>${label} | Serie A 2026/27</title><link rel="stylesheet" href="css/styles.css?v=${pageVersion}"></head><body data-page="${id}"><header id="site-top" class="site-header"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/images/optimized/serie-a-logo-mark.webp" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation("", id)}</nav></header>${main}${footer()}${scripts}</body></html>`;

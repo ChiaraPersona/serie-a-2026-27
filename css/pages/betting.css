@@ -717,7 +717,9 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 }
 
 
+
 @media(max-width:900px){
+
 
 
 
@@ -2828,6 +2830,17 @@ body[data-page="betting"] main>.hero .lead{font-size:14px}
 [data-champions-workspace] .betting-mycombo-options .betting-leg--lost{background:color-mix(in srgb,#c9323a 18%,var(--ds-color-surface));border-color:#c9323a}
 [data-champions-workspace] .betting-mycombo-pick>b{background:var(--ds-color-surface);color:var(--ds-color-text)}
 [data-champions-workspace] .betting-mycombo-card>summary small{color:var(--ds-color-text-muted)}
+@media(max-width:760px){body[data-page="betting"] .betting-archive-card--champions{height:auto;perspective:none;filter:none}
+body[data-page="betting"] .betting-archive-card--champions .team-flip-inner{display:grid;grid-template-columns:98px minmax(0,1fr);align-items:center;gap:18px;height:auto;min-height:220px;padding:20px;overflow:hidden;border:1px solid #ffffff40;border-radius:26px;background:linear-gradient(145deg,#0966e8,#031b4b);box-shadow:0 8px 4px #00000012,0 24px 28px #0000000d,inset 0 1px 4px #ffffff40;transform:none!important}
+body[data-page="betting"] .betting-archive-card--champions .team-flip-face{position:relative;inset:auto;min-height:0;padding:0;overflow:visible;border:0;border-radius:0;background:none!important;box-shadow:none;backface-visibility:visible;-webkit-backface-visibility:visible;transform:none;visibility:visible}
+body[data-page="betting"] .betting-archive-card--champions .team-flip-back{gap:6px}
+body[data-page="betting"] .betting-archive-card--champions .betting-archive-number{font-size:64px;color:#fff}
+body[data-page="betting"] .betting-archive-card--champions .team-flip-back strong{color:#fff;text-shadow:none}
+body[data-page="betting"] .betting-archive-card--champions .team-flip-back span{color:#d9ecff}}
+@media(max-width:760px){body[data-page="betting"] .betting-archive-card--champions .betting-archive-performance>span{background:#ffffffeb}
+body[data-page="betting"] .betting-archive-card--champions .betting-archive-performance :is(strong,small){color:#123e70;text-shadow:none}}
+@media(max-width:480px){body[data-page="betting"] .betting-archive-list.team-directory-grid.team-flip-grid{grid-template-columns:minmax(0,1fr)}}
+body[data-page="betting"] .betting-archive-card--champions .betting-archive-number{background:none;box-shadow:none;text-shadow:none}
 /* responsive.css: original cascade position */
 @media(max-width:900px){.site-header{align-items:flex-start}
 .menu-button{display:block}

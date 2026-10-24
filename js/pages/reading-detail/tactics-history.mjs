@@ -2,7 +2,7 @@ import {esc,number,finite,recordList,details,missing} from './format.mjs?v=20261
 import {historyMarkup,selectHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
 export function attackMarkup(channels){
  if(!channels)return missing('Ripartizione delle direzioni d’attacco non disponibile.');
- return `<div class="rd-channels">${[['left','Sinistra'],['central','Centro'],['right','Destra']].map(([key,label])=>`<div><span>${label}</span><i aria-hidden="true"><b style="width:${finite(channels[key])?Math.max(0,Math.min(100,channels[key])):0}%"></b></i><strong>${number(channels[key])}${finite(channels[key])?'%':''}</strong></div>`).join('')}</div><p class="rd-footnote">Canali d’attacco della fonte, non coordinate dei tiri.</p>`;
+ return `<div class="rd-channels">${[['left','Sinistra'],['central','Centro'],['right','Destra']].map(([key,label])=>`<div><span>${label}</span><i aria-hidden="true"><b style="width:${finite(channels[key])?Math.max(0,Math.min(100,channels[key])):0}%"></b></i><strong>${number(channels[key])}${finite(channels[key])?'%':''}</strong></div>`).join('')}</div>`;
 }
 function profileFor(model,evidence,i){
  const side=[model.home,model.away][i],id=side.id||model.prediction?.teamProjections?.[i]?.teamId;

@@ -106,7 +106,8 @@ body[data-reading-detail-theme] #app{max-width:var(--ds-content-max)!important;w
 .rd-editorial-note>span{font-size:11px;font-weight:800;letter-spacing:.18em;color:var(--rd-accent)}
 .rd-editorial-note p{margin:0;color:var(--rd-muted);font-size:12px}
 /* Share the viewport-aligned theme canvas, including while sticky. */
-.rd-nav{position:sticky;top:var(--rd-header-height,76px);z-index:15;display:flex;align-items:center;gap:3px;background:var(--rd-page-background,var(--rd-bg));background-attachment:fixed;border:0;box-shadow:none;padding:8px 0;margin-bottom:40px;isolation:isolate;max-width:100%}
+.rd-nav{position:sticky;top:var(--rd-header-height,76px);z-index:15;display:flex;align-items:center;gap:3px;background:transparent;border:0;box-shadow:none;padding:8px 0;margin-bottom:40px;isolation:isolate;max-width:100%}
+.rd-nav::before{content:"";position:absolute;inset:-10px -16px -18px;z-index:-1;pointer-events:none;background:linear-gradient(to bottom,transparent 0%,color-mix(in srgb,var(--rd-bg) 90%,transparent) 14%,color-mix(in srgb,var(--rd-bg) 80%,transparent) 55%,transparent 100%);mask-image:linear-gradient(to right,transparent,#000 16px,#000 calc(100% - 16px),transparent);-webkit-mask-image:linear-gradient(to right,transparent,#000 16px,#000 calc(100% - 16px),transparent)}
 .rd-nav-links{display:flex;gap:3px;overflow-x:auto;scrollbar-width:thin;min-width:0;flex:1}
 .rd-nav a{flex:0 0 auto;display:flex;align-items:center;min-height:44px;padding:0 13px;text-decoration:none;color:var(--rd-muted);font-size:12px;font-weight:650;white-space:nowrap;border-radius:5px}
 .rd-nav a:hover,.rd-nav a[aria-current]{background:var(--rd-soft);color:var(--rd-accent)}
@@ -327,6 +328,9 @@ body[data-reading-detail-theme] #app:has(.rd-slip-trigger){padding-bottom:110px!
 
 /* The remaining booking panel sits directly in the discipline section. */
 .rd-shell #lettura-disciplina .prediction-booked-panel{margin-top:0}
+.prediction-booked-panel>header{flex-wrap:wrap;align-items:center}
+.reading-duels-link{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 12px;border:1px solid currentColor;border-radius:7px;font:500 12px/1.4 var(--ds-font-body,system-ui);color:var(--ds-color-accent,#1557b0);text-decoration:none;white-space:nowrap}
+.reading-duels-link:focus-visible{outline:3px solid currentColor;outline-offset:3px}
 
 /* A theme-aware green keeps the new home foul bar readable on both canvases. */
 body[data-reading-detail-theme]{--rd-fouls-home:#126451}
@@ -458,7 +462,7 @@ body[data-reading-detail-theme="champions"] .rd-champions-catalog{margin-top:20p
 body[data-reading-detail-theme="champions"] .rd-champions-catalog>.betting-round-page{padding:0;margin:16px 0;border:0;background:none}
 
 body[data-reading-detail-theme="champions"]{background-color:var(--rd-bg)!important;background-attachment:scroll!important}
-body[data-reading-detail-theme="champions"] .rd-nav{background:var(--rd-bg)}
+body[data-reading-detail-theme="champions"] .rd-nav{background:transparent}
 body[data-reading-detail-theme="champions"] .rd-shell .rd-back a{padding:0;border:0;border-radius:0;background:none;box-shadow:none;font-size:12px;text-transform:none;letter-spacing:normal}
 /* Champions validation labels remain distinct from the forecast name. */
 body[data-reading-detail-theme="champions"] .rd-compact-forecast-table [data-publication-status]{display:block;margin-top:4px;font-size:10px;line-height:1.4;color:var(--rd-muted)}

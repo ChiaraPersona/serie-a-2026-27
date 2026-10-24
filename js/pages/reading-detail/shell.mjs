@@ -1,9 +1,9 @@
 import {imageSource} from '../../core/image-source.mjs?v=20261022-assets-v1';
 import {installForecasts} from './forecasts.mjs?v=20261022-assets-v1';
-import {installScenario} from './scenario.mjs?v=20261022-assets-v1';
+import {installScenario} from './scenario.mjs?v=20261024-no-coverage-label';
 import {loadEvidence,readArtifact} from './evidence.mjs?v=20261022-assets-v1';
-import {installPeople} from './people.mjs?v=20261022-assets-v1';
-import {installTacticsHistory} from './tactics-history.mjs?v=20261022-assets-v1';
+import {installPeople} from './people.mjs?v=20261024-goalkeepers-first';
+import {installTacticsHistory} from './tactics-history.mjs?v=20261024-no-channels-note';
 import {loadHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
 import {mountRefereeHistory} from './referee-history.mjs?v=20261022-assets-v1';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

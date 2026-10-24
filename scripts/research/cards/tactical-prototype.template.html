@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Duelli e rischio disciplinare · Prototipo interno</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:#172b42;font:15px/1.5 system-ui,sans-serif}main{max-width:1220px;margin:auto;padding:28px 24px 64px}h1,h2,h3,p{margin:0 0 12px}h1{font-size:clamp(28px,4vw,42px);line-height:1.15;letter-spacing:-.035em}h2{font-size:22px}h3{font-size:17px}button,select{font:inherit}button,select{border:1px solid #bdcad9;border-radius:9px;background:white;color:inherit;padding:10px 12px;min-height:44px}button{cursor:pointer}button:hover{border-color:#2363c6}button[aria-pressed="true"],button[aria-selected="true"]{background:#1557b0;color:white;border-color:#1557b0}button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #efb532;outline-offset:3px}.eyebrow{font-size:12px;letter-spacing:.12em;font-weight:750;text-transform:uppercase;color:#1557b0}.intro{max-width:850px}.muted{color:#52667e}.note{background:#e8eef7;padding:12px 16px;border-radius:10px;margin:16px 0}.warn{background:#fff2d7;color:#67480c}.controls,.panel{background:#fff;border:1px solid #d7e1eb;border-radius:14px;padding:20px}.controls{margin-top:22px}.controls-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px}label{display:block;font-size:13px;font-weight:650}select{display:block;width:100%;margin-top:6px}.checks{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px}.checks label{display:flex;gap:7px;align-items:center;min-height:32px}input[type="checkbox"]{width:18px;height:18px;accent-color:#1557b0}.stats{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.stat{background:#e8eef7;border-radius:8px;padding:10px 14px;flex:1;min-width:120px}.stat b{display:block;font-size:20px}.stat span{font-size:12px;color:#52667e}.walkthrough{margin:20px 0}.tabs{display:flex;gap:8px;flex-wrap:wrap}.walkthrough p{margin-top:10px;font-size:14px;color:#52667e}.layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;margin-top:20px;align-items:start}.players{display:grid;gap:7px;max-height:740px;overflow:auto}.players button{text-align:left;width:100%;padding:10px 12px}.players small{display:block;font-size:11px;opacity:.82}.players .legacy{font-size:10px;font-weight:750;letter-spacing:.03em}.position{font-size:14px;color:#52667e}.pill{display:inline-block;padding:4px 8px;border-radius:6px;background:#edf3fb;color:#1b5399;font-size:11px;font-weight:700;margin:0 5px 5px 0}.phase-buttons{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0}.phase-buttons button{font-size:13px}.duel{border-top:1px solid #dce4ed;padding:17px 0}.duel:first-child{border-top:0}.duel-title{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.duel h3{margin-bottom:2px}.duel .role{font-size:12px;color:#52667e}.relation{margin:10px 0 0;font-size:14px}.relation strong{display:block}.relation p{font-size:13px;color:#52667e;margin:3px 0}.duel-metrics{font-size:13px;margin-top:10px;color:#37516c}.limits{margin:12px 0 0;padding:0;list-style:none;font-size:12px;color:#71531c}.limits li{margin:4px 0}.limits li:before{content:'• ';color:#a97e27}details{border-top:1px solid #dce4ed;padding-top:12px;margin-top:18px}summary{cursor:pointer;font-weight:650;min-height:36px}dl{display:grid;grid-template-columns:minmax(150px,1fr) 1fr;gap:7px 18px;font-size:13px}dt{color:#52667e}dd{margin:0;overflow-wrap:anywhere}.empty{padding:18px;background:#f3f6fa;border-radius:10px}.small{font-size:12px}.sample{font-size:12px;color:#52667e;margin-top:12px}.simulation{border:2px solid #d19a20}.bottom{margin-top:30px;color:#52667e;font-size:12px}a{color:#1557b0}.coverage{font-size:13px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@media(max-width:760px){main{padding:20px 14px 44px}.controls-grid{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.players{max-height:240px}.controls,.panel{padding:16px}.stat{min-width:100px}.tabs{display:grid;grid-template-columns:1fr 1fr}.tabs button{font-size:12px}dl{grid-template-columns:1fr}dd{margin-bottom:8px}.phase-buttons{display:grid;grid-template-columns:1fr 1fr}}
+</style></head>
+<body data-page="card-tactical-research"><main>
+<p id="reading-return" hidden></p>
+<p class="eyebrow">Ricerca interna · Prototipo da valutare</p>
+<h1>Chi può incontrare chi?</h1>
+<p class="intro">Esplora i possibili duelli delle formazioni, includendo centrocampisti e attaccanti. La domanda è se ruoli, fasi di gioco e canali permettano di descrivere confronti utili senza forzare un unico avversario.</p>
+<p class="note">Questi sono <strong>abbinamenti tattici stimati</strong>, non marcature osservate né probabilità di cartellino. Il prototipo non modifica le Letture o le selezioni pubblicate.</p>
+<div id="overview" class="stats"></div>
+<section class="controls" aria-label="Esplora il prototipo">
+<div class="controls-grid"><label>Partita<select id="fixture"></select></label><label>Squadra<select id="team"></select></label><label>Ruolo<select id="role"><option value="all">Tutti i ruoli</option><option>Portiere</option><option>Difensore</option><option>Centrocampista</option><option>Attaccante</option><option value="N/D">Ruolo N/D</option></select></label></div>
+<div class="checks"><label><input id="legacy" type="checkbox">Solo i candidati già pubblicati</label><label><input id="missing" type="checkbox">Simula posizioni e canali mancanti</label><button id="reset" type="button">Ripristina</button></div>
+<p class="sample" id="fixture-state"></p></section>
+<section class="walkthrough" aria-label="Casi guidati"><h2>Casi da controllare</h2><div class="tabs" role="tablist" aria-label="Percorsi guidati">
+<button role="tab" data-case="central" aria-selected="false">1 · Duelli centrali</button><button role="tab" data-case="midfield" aria-selected="false">2 · Centrocampista in copertura</button><button role="tab" data-case="forward" aria-selected="false">3 · Attaccante</button><button role="tab" data-case="missing" aria-selected="false">4 · Dati mancanti</button></div><p id="guide">Scegli un caso oppure esplora liberamente partite e giocatori. Nei casi guidati non viene cambiato alcun dato del progetto.</p></section>
+<div class="layout"><section class="panel"><h2>Giocatori</h2><p id="list-caption" class="small muted"></p><div id="players" class="players"></div></section><section id="detail" class="panel" aria-live="polite"></section></div>
+<p class="bottom" id="footer"></p>
+</main>
+<script>/*__MODEL__*/</script>
+<script>/*__DATA__*/</script>
+<script>/*__PUBLIC_POLICY__*/</script>
+<script>
+const $=s=>document.querySelector(s), esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=v=>typeof v==='number'&&Number.isFinite(v)?v.toLocaleString('it-IT',{maximumFractionDigits:2}):'N/D';
+const when=v=>v?new Date(v).toLocaleString('it-IT',{timeZone:'Europe/Rome',dateStyle:'short',timeStyle:'short'}):'N/D';
+const labelSide={left:'sinistra',central:'centro',right:'destra'};
+const requestedFixture=new URLSearchParams(location.search).get('match');
+const matchedFixture=DATA.fixtures.find(f=>f.id===requestedFixture);
+const firstFixture=matchedFixture||DATA.fixtures.find(f=>f.mode==='CURRENT_PREMATCH_RESEARCH_PREVIEW')||DATA.fixtures[0];
+let state={fixture:firstFixture.id,team:0,role:'all',legacy:false,missing:false,player:null,phase:'all',walkthrough:null};
+const initial={...state};
+function fixture(){return DATA.fixtures.find(f=>f.id===state.fixture)}
+function sides(){const f=fixture();return f.teams.map(t=>state.missing?{...t,channel:{status:'UNKNOWN',preferredSides:[],wide:false},players:t.players.map(p=>({...p,detailedRole:null,positionSource:'UNKNOWN',positionAlternatives:[]}))}:t)}
+function channelText(t){const c=t.channel;if(c.status==='UNKNOWN')return 'Canali d’attacco N/D.';const ls=c.preferredSides.map(s=>labelSide[s]);if(c.wide)ls.push('ampiezza');return `Preferenza qualitativa: ${ls.join(', ')} · riferimento ${c.season||'stagione N/D'}. Quote osservate N/D.`}
+function guideCase(kind){
+ state={...initial,walkthrough:kind};
+ if(kind==='missing'){state.missing=true;state.player=firstFixture.teams[0].players.find(p=>p.role==='Centrocampista')?.key||null;state.phase='all';}
+ else{
+  const found=DATA.fixtures.filter(f=>f.mode==='CURRENT_PREMATCH_RESEARCH_PREVIEW').flatMap(f=>f.teams.flatMap((t,i)=>t.players.map(p=>({f,t,i,p})))).find(({p})=>{
+   const pos=TacticalPrototype.position(p);return kind==='central'?pos.group==='centreback'&&pos.side==='central':kind==='midfield'?pos.group==='midfield'&&pos.side&&pos.side!=='central':p.role==='Attaccante'&&pos.group==='forward';
+  });
+  if(found){state.fixture=found.f.id;state.team=found.i;state.player=found.p.key;state.phase=kind==='forward'?'pressing':'defence';}
+ }
+ render();
+}
+function render(){
+ const f=fixture(),teams=sides(),own=teams[state.team],other=teams[1-state.team];
+ const back=$('#reading-return');back.hidden=false;back.innerHTML=`<a href="${DATA.presentation==='public'?'':'../../'}lettura.html?match=${encodeURIComponent(f.id)}#lettura-disciplina">← Torna alla lettura</a>`;
+ $('#fixture').innerHTML=DATA.fixtures.map(f=>`<option value="${esc(f.id)}" ${f.id===state.fixture?'selected':''}>${esc(f.label)}${f.mode==='HISTORICAL_INSPECTION_NOT_PREMATCH'?' · ispezione storica':''}</option>`).join('');
+ $('#team').innerHTML=teams.map((t,i)=>`<option value="${i}" ${i===state.team?'selected':''}>${esc(t.name)}</option>`).join('');
+ $('#role').value=state.role;$('#legacy').checked=state.legacy;$('#missing').checked=state.missing;
+ $('#fixture-state').innerHTML=`${esc(when(f.kickoffAt))} · ${own.lineupStatus==='official'?'Formazione ufficiale':'Formazione probabile'} · ${esc(own.formation||'Modulo N/D')}<br>${f.mode==='HISTORICAL_INSPECTION_NOT_PREMATCH'?'Ispezione storica: non è una previsione prepartita.':DATA.presentation==='public'?'Analisi descrittiva basata sulle formazioni disponibili all’aggiornamento.':'Anteprima interna prima della gara; non è uno snapshot congelato per valutare il modello.'}${state.missing?'<br><strong>SIMULAZIONE: posizioni e canali oscurati solo in questa anteprima.</strong>':''}`;
+ $('#detail').classList.toggle('simulation',state.missing);
+ const guide={central:'Il centrale è ammesso. Osserva le punte e i trequartisti compatibili: nessuna unicità viene imposta.',midfield:'La mezzala può avere confronti centrali e coperture laterali. Il raddoppio resta un compito da confermare.',forward:'L’attaccante può pressare la costruzione. Passa a “Contesa offensiva” per esaminare anche i contatti durante il possesso.',missing:'Senza una posizione interpretabile i nomi degli avversari spariscono. Lo storico individuale resta consultabile e non colma il dato tattico mancante.'};
+ $('#guide').textContent=guide[state.walkthrough]||'Scegli un caso oppure esplora liberamente partite e giocatori.';
+ document.querySelectorAll('[data-case]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.case===state.walkthrough)));
+ const players=own.players.filter(p=>(state.role==='all'||(p.role||'N/D')===state.role)&&(!state.legacy||p.legacyCandidate));
+ if(!players.some(p=>p.key===state.player))state.player=(players.find(p=>p.legacyCandidate&&TacticalPrototype.position(p).group)||players.find(p=>p.detailedRole&&p.role!=='Portiere')||players[0])?.key||null;
+ $('#list-caption').textContent=`${players.length} degli ${own.players.length} giocatori dell’undici. Ordine della formazione; nessun nuovo ranking.`;
+ $('#players').innerHTML=players.map(p=>`<button type="button" data-player="${esc(p.key)}" aria-pressed="${p.key===state.player}"><b>${esc(p.name)}</b><small>${esc(p.detailedRole||p.role||'Ruolo N/D')}</small>${p.legacyCandidate?'<span class="legacy">GIÀ NELLA GRADUATORIA PUBBLICATA</span>':''}</button>`).join('')||'<p class="empty">Nessun giocatore con questo filtro.</p>';
+ const player=players.find(p=>p.key===state.player);
+ if(!player){$('#detail').innerHTML='<p class="empty">Modifica il filtro del ruolo per continuare.</p>';return}
+ const view=TacticalPrototype.inspectPlayer(player,own,other,state.phase);
+ const groups=new Map();for(const edge of view.interactions){if(!groups.has(edge.opponentPlayerId))groups.set(edge.opponentPlayerId,[]);groups.get(edge.opponentPlayerId).push(edge)}
+ $('#detail').innerHTML=`<p class="eyebrow">${esc(own.name)}</p><h2>${esc(player.name)}</h2><p class="position">${esc(player.detailedRole||player.role||'Ruolo N/D')}</p><span class="pill">${player.lineupStatus==='official'?'Titolare ufficiale':'Titolare probabile'}</span><span class="pill">${player.positionSource==='FIXTURE_EXPLICIT'?'Posizione indicata per la fixture':player.positionSource==='ROSTER_HISTORICAL'?'Posizione dal profilo storico':'Posizione N/D'}</span>
+ <p class="note small">${esc(own.positionWarning)}${player.positionAlternatives.length>1?` Ruoli storici alternativi: ${esc(player.positionAlternatives.join(', '))}.`:''}</p>
+ <div class="phase-buttons">${[['all','Tutte le fasi'],...Object.entries(TacticalPrototype.phases)].map(([id,name])=>`<button type="button" data-phase="${id}" aria-pressed="${state.phase===id}">${esc(name)}</button>`).join('')}</div>
+ <h3>Possibili confronti con ${esc(other.name)}</h3><p class="coverage">${groups.size} ${groups.size===1?'avversario compatibile':'avversari compatibili'}. Nessuna prevalenza, frequenza o probabilità assegnata.</p>
+ ${view.unavailable?`<p class="empty">${esc(view.unavailable)}</p>`:''}
+ <div class="duels">${[...groups.values()].map(edges=>{const e=edges[0];return `<article class="duel"><div class="duel-title"><div><h3>${esc(e.opponentName)}</h3><span class="role">${esc(e.opponentRole||'Ruolo N/D')}</span></div><span class="pill">Abbinamento stimato</span></div>${edges.map(x=>`<div class="relation"><strong>${esc(TacticalPrototype.phases[x.phase])} · ${esc(x.kind)}</strong><p>${esc(x.basis)}.</p><p>${esc(x.channel.text)}</p></div>`).join('')}<p class="duel-metrics">Falli subiti/90 dell’avversario: <b>${fmt(e.opponentFoulsWon)}</b> nella stagione corrente · <b>${fmt(e.opponentHistoricalFoulsWon)}</b> nello storico.</p><ul class="limits">${[...new Set(edges.flatMap(e=>e.limits))].map(v=>`<li>${esc(v)}</li>`).join('')}</ul></article>`}).join('')}</div>
+ <details><summary>Statistiche e informazioni mancanti</summary><dl><dt>Presenze correnti utilizzabili</dt><dd>${fmt(player.current.appearances)}</dd><dt>Minuti correnti</dt><dd>${fmt(player.current.minutes)}</dd><dt>Falli commessi/90 correnti</dt><dd>${fmt(player.current.foulsCommittedPer90)}</dd><dt>Falli subiti/90 correnti</dt><dd>${fmt(player.current.foulsWonPer90)}</dd><dt>Gialli ordinari/90 correnti</dt><dd>${fmt(player.current.yellowPer90)}</dd><dt>Minuti attesi già disponibili</dt><dd>${fmt(player.expectedMinutes)} · non usati per inventare frequenze dei duelli</dd><dt>Attacco ${esc(own.name)}</dt><dd>${esc(channelText(own))}</dd><dt>Attacco ${esc(other.name)}</dt><dd>${esc(channelText(other))}</dd><dt>Duelli individuali osservati</dt><dd>N/D</dd><dt>Falli in transizione</dt><dd>N/D</dd><dt>Cause dei cartellini e proteste</dt><dd>N/D</dd><dt>Nuova probabilità di ammonizione</dt><dd>N/D · modello non calibrato</dd></dl><p class="small muted">Storico e statistiche descrivono il campione disponibile. Nessuna causa disciplinare viene dedotta dal totale dei cartellini. Questa compatibilità tattica non ha modificato il punteggio già pubblicato.</p></details>`;
+}
+$('#overview').innerHTML=[[DATA.counts.fixtures,'partite da esplorare'],[DATA.counts.players,'giocatori inclusi'],[DATA.counts.prospectivePreviews,'anteprime prima della gara'],[DATA.counts.historicalInspections,'ispezioni storiche']].map(([n,t])=>`<div class="stat"><b>${n}</b><span>${t}</span></div>`).join('');
+$('#fixture').addEventListener('change',e=>{state.fixture=e.target.value;state.team=0;state.player=null;state.walkthrough=null;render()});
+$('#team').addEventListener('change',e=>{state.team=Number(e.target.value);state.player=null;state.walkthrough=null;render()});
+$('#role').addEventListener('change',e=>{state.role=e.target.value;state.walkthrough=null;render()});
+$('#legacy').addEventListener('change',e=>{state.legacy=e.target.checked;render()});
+$('#missing').addEventListener('change',e=>{state.missing=e.target.checked;state.walkthrough=e.target.checked?'missing':null;render()});
+$('#reset').addEventListener('click',()=>{state={...initial};render()});
+$('#players').addEventListener('click',e=>{const b=e.target.closest('[data-player]');if(b){state.player=b.dataset.player;render()}});
+$('#detail').addEventListener('click',e=>{const b=e.target.closest('[data-phase]');if(b){state.phase=b.dataset.phase;render()}});
+document.querySelectorAll('[data-case]').forEach(b=>b.addEventListener('click',()=>guideCase(b.dataset.case)));
+$('#footer').textContent=`Giornata ${DATA.matchday} · ${DATA.presentation==='public'?'Analisi aggiornata':'Materiale interno generato'} il ${when(DATA.generatedAt)}. Apribile anche offline. Le interazioni restano nel browser e si azzerano al ricaricamento.`;
+render();
+if(requestedFixture&&!matchedFixture){const warning=document.createElement('p');warning.className='note warn';warning.setAttribute('role','status');warning.textContent='Analisi non disponibile per la partita richiesta. Puoi esplorare le gare presenti nell’elenco.';$('#reading-return').after(warning)}
+</script></body></html>

@@ -1,6 +1,6 @@
 import {esc,number,pct,finite,metric,missing} from './format.mjs?v=20261022-assets-v1';
 import {lineupPositions} from '../../components/lineup-field.mjs?v=20261022-assets-v1';
-import {renderLineupKit} from '../../components/lineup-kit.mjs?v=20261022-assets-v1';
+import {renderLineupKit} from '../../components/lineup-kit.mjs?v=20261024-solid-goalkeepers';
 import {individualPlayers} from './evidence.mjs?v=20261022-assets-v1';
 const label=s=>s==='official'?'Ufficiale':s==='probable'?'Probabile':s==='reference'?'Riferimento':'Da confermare';
 function preserve(container,content,title){
@@ -20,16 +20,7 @@ export function formationMarkup(evidence){
  // Internal note: one shared pitch; narrow screens retain horizontal scrolling and lists.
  // Missing shirt numbers are displayed as an em dash.
  const pitch=`<div class="rd-pitch-scroll" tabindex="0" role="region" aria-label="Campo delle formazioni, scorrimento orizzontale"><div class="rd-pitch"><svg viewBox="0 0 1080 600" aria-hidden="true"><g fill="none" stroke="currentColor"><rect x="14" y="14" width="1052" height="572"/><path d="M540 14V586M14 170H165V430H14M1066 170H915V430H1066"/><circle cx="540" cy="300" r="70"/></g></svg>${field}</div></div>`;
- const availability=evidence.availability?`<div class="rd-lineup-head" data-md8-availability>${evidence.lineups.map(l=>{
-  const t=evidence.availability.teams.find(t=>t.teamId===l.side.id);
-  if(!t)return `<section><h3>${esc(l.side.name)}</h3><p>Disponibilità N/D.</p></section>`;
-  const name=p=>esc(p.currentName||p.sourceName||'Identità N/D')+(p.playerId?'':' (identità N/D)');
-  const list=key=>t[key]?.length?t[key].map(p=>`${name(p)}${p.description?` (${esc(p.description)})`:''}`).join('; '):'Nessuna segnalazione nello snapshot; convocazione da confermare.';
-  const ballots=t.ballots?.length?t.ballots.map(group=>group.map(p=>`${name(p)}${finite(p.probability)?` ${p.probability}%`:''}`).join(' / ')).join('; '):'Nessun ballottaggio segnalato.';
-  if(l.status==='official')return `<section><h3>${esc(l.side.name)}</h3><p>Formazione ufficiale. Titolari e panchina aggiornati.</p></section>`;
-  return `<section><h3>${esc(l.side.name)}</h3><p>Probabili scelte, da riconfermare prima della gara.</p><p><strong>Indisponibili:</strong> ${list('unavailable')}</p><p><strong>Squalificati:</strong> ${list('suspended')}</p><p><strong>In dubbio:</strong> ${list('doubtful')}</p><p><strong>Ballottaggi:</strong> ${ballots}</p></section>`;
- }).join('')}</div>`:'';
- return headings+(field?pitch:'')+evidence.lineups.filter(l=>lineupPositions(l).length!==11).map(l=>`<section><h3>${esc(l.side.name)}</h3><p>Disposizione tattica non disponibile</p><ol>${l.players.map(p=>`<li>${esc(p.name)}</li>`).join('')}</ol></section>`).join('')+availability;
+ return headings+(field?pitch:'')+evidence.lineups.filter(l=>lineupPositions(l).length!==11).map(l=>`<section><h3>${esc(l.side.name)}</h3><p>Disposizione tattica non disponibile</p><ol>${l.players.map(p=>`<li>${esc(p.name)}</li>`).join('')}</ol></section>`).join('');
 }
 export function playersMarkup(model,evidence){
  const players=individualPlayers(model,evidence);
@@ -43,7 +34,9 @@ export function playersMarkup(model,evidence){
  });
  const assigned=new Set();
  const columns=[model.home,model.away].map((side,i)=>{
-  const sideRows=rows.filter(({player:p})=>!assigned.has(p)&&(p.team===side.name||p.team===side.id||p.source.teamId===side.id||evidence.lineups[i]?.players.some(q=>q.id&&q.id===p.id)));sideRows.forEach(r=>assigned.add(r.player));
+  const sideRows=rows.filter(({player:p})=>!assigned.has(p)&&(p.team===side.name||p.team===side.id||p.source.teamId===side.id||evidence.lineups[i]?.players.some(q=>q.id&&q.id===p.id)));const goalkeeperIds=new Set(lineupPositions(evidence.lineups[i]||{players:[]}).filter(p=>p.goalkeeper&&p.name.id).map(p=>p.name.id));
+  const isGoalkeeper=p=>goalkeeperIds.has(p.id)||/^(portiere|por|gk|goalkeeper)$/i.test(String(p.role||p.member?.role||p.source.role||'').trim());
+  sideRows.sort((a,b)=>Number(isGoalkeeper(b.player))-Number(isGoalkeeper(a.player)));sideRows.forEach(r=>assigned.add(r.player));
   return `<section class="rd-player-team" data-player-team="${i?'away':'home'}" aria-label="Giocatori ${esc(side.name)}"><h3 class="rd-player-team-name">${esc(side.name)}</h3><div class="rd-player-column-labels" aria-hidden="true"><span>Giocatore</span><span>Tiri</span><span>SOT</span></div>${sideRows.map(r=>r.html).join('')||missing('Proiezioni individuali non disponibili.')}</section>`;
  }).join('');
  const unassigned=rows.filter(r=>!assigned.has(r.player));

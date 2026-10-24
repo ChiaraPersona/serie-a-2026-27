@@ -362,7 +362,7 @@ export function createPage(deps){
     const success=decided?wins/decided*100:null;
     const profit=verified?verified.roiPct:total?stats.archiveProfitPct:null;
     const performance=`<span class="betting-archive-performance"><span><small>Successo</small><strong>${metric(success,pct,"%")}</strong></span><span><small>Guadagno</small><strong>${profit>0?"+":""}${metric(profit,pct,"%")}</strong></span></span>`;
-    return `<a class="betting-archive-card betting-archive-card--champions team-directory-card team-flip-card" data-champions-matchday="${number}" href="schedina.html?competizione=champions&amp;giornata=${number}" aria-label="Apri le schedine Champions League della ${ordinalWord(number)} giornata" style="--team-primary:#0756c9;--team-secondary:#02183f"><span class="team-flip-inner"><span class="team-flip-face team-flip-front betting-archive-card-front betting-champions-front" style="background:radial-gradient(circle at 70% 18%,rgba(80,196,255,.5),transparent 42%),linear-gradient(145deg,#0966e8,#031b4b)!important;color:#fff"><span class="betting-archive-number">CL${number}</span>${number===1?"<small>UEFA</small>":""}</span><span class="team-flip-face team-flip-back betting-archive-card-back"><strong>Champions League · ${number}ª giornata</strong>${performance}</span></span></a>`;
+    return `<a class="betting-archive-card betting-archive-card--champions team-directory-card team-flip-card" data-champions-matchday="${number}" href="schedina.html?competizione=champions&amp;giornata=${number}" aria-label="Apri le schedine Champions League della ${ordinalWord(number)} giornata" style="--team-primary:#0756c9;--team-secondary:#02183f"><span class="team-flip-inner"><span class="team-flip-face team-flip-front betting-archive-card-front betting-champions-front" style="background:radial-gradient(circle at 70% 18%,rgba(80,196,255,.5),transparent 42%),linear-gradient(145deg,#0966e8,#031b4b)!important;color:#fff"><span class="betting-archive-number">CL${number}</span></span><span class="team-flip-face team-flip-back betting-archive-card-back"><strong>${number}ª giornata</strong>${performance}</span></span></a>`;
   }
 
   function championsSlipCard(slip){
@@ -493,11 +493,11 @@ export function createPage(deps){
       if(number>=6)bindMatchdayInteractions(number);
       return;
     }
-    document.querySelector("#app").innerHTML=(await loadGenerated("schedina-index-2026-27.json")).html;
+    document.querySelector("#app").innerHTML=(await loadGenerated("schedina-index-2026-27.json?presentation=20261024-clean-heading")).html;
     // First touch reveals the existing reverse face; second touch follows its link.
     const cl3Card=document.querySelector('[data-champions-matchday="3"]');
     cl3Card?.addEventListener('click',event=>{
-      if(matchMedia('(hover:none)').matches&&!cl3Card.hasAttribute('data-touch-revealed')){
+      if(matchMedia('(min-width:761px) and (hover:none)').matches&&!cl3Card.hasAttribute('data-touch-revealed')){
         event.preventDefault();cl3Card.setAttribute('data-touch-revealed','');
         cl3Card.querySelector('.team-flip-inner').style.setProperty('transform','rotateY(180deg)','important');
       }
