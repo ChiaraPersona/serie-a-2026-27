@@ -42,7 +42,7 @@ const economics=rows=>{
     stakeEuro:decided.length,grossReturnEuro:+gross.toFixed(2),profitLossEuro:+(gross-decided.length).toFixed(2),roiPct:decided.length?+((gross/decided.length-1)*100).toFixed(2):null};
 };
 const selected=records.filter(r=>r.suggested);
-const summary={schemaVersion:1,matchday:3,verifiedAt:'2026-10-22',officiallySettled:false,fixtures:18,
+const summary={schemaVersion:1,matchday:3,verifiedAt:reports.individualMarketVerificationAt||'2026-10-22',officiallySettled:false,fixtures:18,
   counts:tally(records),suggested:tally(selected),filteredEconomics:economics(selected),
   originalPublicationEconomics:economics(workspace.all.filter(l=>l.suggestionAnalysis?.suggested).map(l=>({...l,odds:l.betSelection?.quote?.decimal??l.odds,settlement:l.settlement}))),
   excluded:excluded.length,lineupChanges:changes.length?changes:(fs.existsSync('data/normalized/champions-md03-settlement.json')?read('data/normalized/champions-md03-settlement.json').lineupChanges:[]),unverifiable:records.filter(r=>!['won','lost','void'].includes(r.settlement.status)),records};

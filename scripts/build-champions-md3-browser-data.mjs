@@ -2,9 +2,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {loadChampionsWorkspaceMd3Derived} from '../js/pages/champions-workspace-catalog.mjs';
+import {createRequire} from 'node:module';
+const policy=createRequire(import.meta.url)('../js/official-starter-policy.js');
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-// Compose unfiltered archives using the existing adapter. The browser applies the
-// current official-starter registry when it loads the projection, as before.
+// Keep nonstarter contracts and quotes exclusively in the technical archives.
 const cache=new Map();
 const load=async name=>{
   if(!cache.has(name)){
@@ -14,7 +15,13 @@ const load=async name=>{
   }
   return cache.get(name);
 };
-const workspace=await loadChampionsWorkspaceMd3Derived(load,3);
+policy.configure(await load('official-starter-registry.json'));
+const original=await loadChampionsWorkspaceMd3Derived(load,3);
+const workspace={...original,slips:policy.filter(original.slips),marketCatalog:policy.filter(original.marketCatalog)};
+for(const match of workspace.marketCatalog.matches){
+  const ids=new Set(match.selections.map(l=>l.selectionId));
+  match.suggestions=(match.suggestions||[]).filter(s=>typeof s!=='string'||ids.has(s));
+}
 const {championsWorkspace,lineupManaged,matchday,season,fixtures,slips,oddsRetrievedAt,derivedVersion}=workspace;
 const payload={schemaVersion:1,championsWorkspace,lineupManaged,matchday,season,fixtures,slips,oddsRetrievedAt,derivedVersion,
   marketCatalog:{matches:workspace.marketCatalog.matches}};

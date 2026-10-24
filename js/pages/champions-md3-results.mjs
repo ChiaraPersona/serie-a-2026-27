@@ -35,7 +35,16 @@ export function settleMd3Leg(leg,fixture){
   const duo=semantics.substituteIncluded===true||semantics.duo===true||modifiers.replacementIncluded===true||modifiers.duo===true;
   // Shared engine evaluates the direct substitute only for that contract.
   const actual={...match,substitutions:duo?match.substitutions:[]};
-  const result=settleLeg({...leg,player:primary.player,playerId:primary.playerId},actual);
+  const identified={...leg,player:primary.player,playerId:primary.playerId};
+  let result=settleLeg(identified,actual);
+  // An already reached OVER remains won when posts/crossbars are included.
+  // Use the existing threshold engine on the observed lower bound; never infer
+  // a loss or fill missing woodwork with zero.
+  if(result.status==='unavailable'&&semantics.postsAndCrossbarIncluded===true&&leg.selection==='OVER'){
+    const lowerBound=settleLeg({...identified,betSelection:{...leg.betSelection,market:{...market,
+      bookmakerSemantics:{...semantics,postsAndCrossbarIncluded:false}}}},actual);
+    if(lowerBound.status==='won')result={...lowerBound,reason:'OBSERVED_SHOTS_ON_TARGET_ALREADY_REACH_THRESHOLD'};
+  }
   return {...result,basis:'STATISTICAL_VERIFICATION',officiallySettled:false,
     ...(result.status==='unavailable'?{label:'Da verificare',reason:result.reason||'CONTRACT_OR_STATISTIC_UNAVAILABLE'}:{})};
 }

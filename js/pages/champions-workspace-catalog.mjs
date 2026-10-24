@@ -163,6 +163,8 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday,{upcoming=t
   for(const match of matches){
     const fixture=workspace.fixtures.find(f=>f.id===match.matchId);
     match.selections=match.selections.map(leg=>({...leg,settlement:settleMd3Leg(leg,fixture)}));
+    const availableIds=new Set(match.selections.map(leg=>leg.selectionId));
+    match.suggestions=(match.suggestions||[]).filter(s=>typeof s!=='string'||availableIds.has(s));
   }
   const all=matches.flatMap(match=>match.selections);
   // The official-starter policy may remove selections after a lineup update.

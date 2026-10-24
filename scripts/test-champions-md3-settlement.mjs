@@ -27,6 +27,16 @@ try{
   assert.equal(fixture.matchReport.playerEvidence.filter(p=>p.starter).length,22);
  }
  const excluded=read('data/technical-archive/champions-md03/settlement-excluded.json');
+ assert.equal(summary.unverifiable.length,0,'Every remaining MD3 contract verified');
+ const rawProjection=read('data/normalized/schedina-champions-md03-ui.json');
+ assert(!JSON.stringify(rawProjection.marketCatalog).includes('andy-diouf:shots:1'),'Nonstarter quote absent from public catalog');
+ const mbappe=workspace.all.find(l=>l.selectionId==='forecast:v2:ucl-2026-27-md03-16:kylian-mbappe:sot:2');
+ assert.equal(mbappe.settlement.status,'won');
+ assert.equal(mbappe.settlement.reason,'OBSERVED_SHOTS_ON_TARGET_ALREADY_REACH_THRESHOLD');
+ const mbappeFixture=workspace.fixtures.find(f=>f.id===mbappe.matchId);
+ const missingWoodwork=structuredClone(mbappeFixture);
+ for(const p of missingWoodwork.matchReport.playerEvidence)delete p.statistics.hitWoodwork;
+ assert.equal(settleMd3Leg({...mbappe,label:'Almeno 99 tiri in porta'},missingWoodwork).status,'unavailable','Missing woodwork cannot prove a loss');
  assert(excluded.length);
  for(const leg of excluded)assert(!workspace.all.some(l=>l.selectionId===leg.selectionId));
  // A previously saved starter becomes ineligible after the official update.
