@@ -14,6 +14,11 @@ function totalStat(match,key){
 }
 
 function teamStatFromLabel(leg,match,key){
+  if(match?.resultCoverage?.teamMarketSubjects==='canonical'&&leg?.marketScope==='team'){
+    const teamId=leg?.betSelection?.market?.subject?.teamId||leg?.betSelection?.market?.subject?.id||leg?.teamId;
+    const side=teamId===match.homeTeam?'home':teamId===match.awayTeam?'away':null;
+    return side?match?.teamStats?.[side]?.[key]:null;
+  }
   const [homeLabel,awayLabel]=String(leg?.fixture??"").split(/\s*[–-]\s*/);
   const label=comparableName(leg?.label);
   if(homeLabel&&label.includes(comparableName(homeLabel)))return match?.teamStats?.home?.[key];
@@ -325,7 +330,7 @@ export function settleLeg(leg,match){
     const both=Number(homeCorners)>=minimum&&Number(awayCorners)>=minimum;
     return resultStatus(selection==="SI"?both:!both);
   }
-  if(market.includes("SQUADRA X")){
+  if(market.includes("SQUADRA X")||(match?.resultCoverage?.teamMarketSubjects==='canonical'&&leg?.marketScope==='team')){
     if(market.includes("TIRI IN PORTA"))return settleThreshold(selection,teamStatFromLabel(leg,match,"shotsOnTarget"),threshold);
     if(market.includes("TIRI TOTALI"))return settleThreshold(selection,teamStatFromLabel(leg,match,"shots"),threshold);
     if(market.includes("CORNER"))return settleThreshold(selection,teamStatFromLabel(leg,match,"corners"),threshold);

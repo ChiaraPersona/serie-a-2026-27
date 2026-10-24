@@ -29,10 +29,11 @@ export async function readingResultsDestination(model,read=readArtifact){
   if(model.fixture.status!=='finished')return null;
   try{
     // These are the existing result-capable routes, not an extension of market gates.
-    if(model.competition==='serie-a'&&Number(model.fixture.matchday)===6){
-      const data=await read('data/normalized/schedina-md06.json');
+    if(model.competition==='serie-a'&&[6,8].includes(Number(model.fixture.matchday))){
+      const day=Number(model.fixture.matchday),code=String(day).padStart(2,'0');
+      const data=await read(`data/normalized/schedina-md${code}.json`);
       const fixture=data.marketCatalog?.matches?.find(f=>f.matchId===model.fixture.id);
-      if(Number(data.matchday)===6&&fixture?.selections?.length)return 'schedina.html?giornata=6';
+      if(Number(data.matchday)===day&&fixture?.selections?.length)return `schedina.html?giornata=${day}`;
     }
     if(model.competition==='champions'&&Number(model.fixture.matchday)===2){
       const data=await read('data/normalized/champions-md02-audit-display.json');
