@@ -138,3 +138,79 @@ body[data-page="player-stats"] .comparison-row:last-child{border-bottom:0}
 body[data-page="player-stats"] .comparison-label{color:#526575;font-size:11px}
 body[data-page="player-stats"] .comparison-row>strong{color:#80682e}
 @media(max-width:700px){body[data-page="player-stats"] .comparison-row{padding:10px 7px;font-size:11px}body[data-page="player-stats"] .comparison-label{font-size:10px}}
+
+/* Player statistics share the approved team roster presentation. */
+body[data-page="player-stats"] #app .player-ranking-scroll{border:1px solid #d5dcdf;border-radius:10px;background:#fff;box-shadow:none}
+body[data-page="player-stats"] #app .global-player-table{color:#243a3b;border-collapse:separate;border-spacing:0}
+body[data-page="player-stats"] #app .global-player-table :is(th,td){border:0;border-bottom:1px solid #dce2e3;padding:10px 14px;text-align:right;font-variant-numeric:tabular-nums;box-shadow:none}
+body[data-page="player-stats"] #app .global-player-table thead th{position:sticky;background:#c5bdb6;color:#43595b;font-weight:700;box-sizing:border-box;z-index:6}
+body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th{top:0;height:44px;padding-block:8px;font-size:12px;letter-spacing:.06em}
+body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th[colspan]{text-align:center;background-image:linear-gradient(#b69857,#b69857);background-size:calc(100% - 32px) 2px;background-repeat:no-repeat;background-position:center bottom}
+body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th[colspan]:nth-child(n+6){background-image:linear-gradient(#a8ddeb,#a8ddeb)}
+body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th[rowspan]{height:84px}
+body[data-page="player-stats"] #app .global-player-table thead tr:nth-child(2)>th{top:44px;height:40px;padding-block:8px;font-size:11px;left:auto;min-width:64px;width:auto;max-width:none;z-index:6}
+body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th:nth-child(-n+2){background:#c5bdb6;z-index:10}
+body[data-page="player-stats"] #app .global-player-table :is(th,td):nth-child(2){min-width:220px;width:220px;max-width:220px}
+body[data-page="player-stats"] #app .global-player-table thead tr:nth-child(2)>th:nth-child(2){min-width:64px;width:auto;max-width:none}
+body[data-page="player-stats"] #app .global-player-table tbody tr:nth-child(odd)>td{background:#fff}
+body[data-page="player-stats"] #app .global-player-table tbody tr:nth-child(even)>td{background:#f3f4f4}
+body[data-page="player-stats"] #app .global-player-table tbody tr:is(:hover,:focus-within)>td{background:#eaecea}
+body[data-page="player-stats"] #app .global-player-table tbody td:nth-child(2){text-align:left;box-shadow:1px 0 #dce2e3}
+body[data-page="player-stats"] #app .global-player-table .global-leader-player{display:block;color:#243a3b;text-decoration:none;font-size:14px;cursor:default}
+body[data-page="player-stats"] #app .global-player-table .global-leader-player small{display:block;margin-top:3px;color:#697b7d;font-size:11px;font-weight:400}
+body[data-page="player-stats"] #app .global-player-table .global-leader-value{font-weight:400}
+body[data-page="player-stats"] #app .global-player-table .global-leader-rate{color:#243a3b;font-size:inherit}
+body[data-page="player-stats"] #app .ranking-sort:hover{color:#8b7038;text-decoration:none}
+body[data-page="player-stats"] #app th[aria-sort] .ranking-sort::after{color:#9a8046}
+body[data-page="player-stats"] #app .ranking-sort:focus-visible{outline-color:#9a8046}
+body[data-page="player-stats"] #app .player-ranking-filters :is(input,select){border-color:#cfd7db!important;color:#243a3b!important;border-radius:7px!important;height:44px}
+@media(max-width:700px){body[data-page="player-stats"] #app .global-player-table :is(th,td):nth-child(2){min-width:175px;width:175px;max-width:175px}body[data-page="player-stats"] #app .global-player-table thead tr:nth-child(2)>th:nth-child(2){min-width:64px;width:auto;max-width:none}}
+body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th[colspan]{white-space:nowrap;font-size:11px;line-height:20px}
+
+body[data-page="player-stats"] #app .global-player-table .global-leader-player>span{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+body[data-page="player-stats"] #app .global-player-table .global-leader-value{color:#243a3b}
+
+/* Explicit column geometry keeps grouped headings aligned with their values. */
+body[data-page="player-stats"] #app>.global-player-leaders{background:transparent;border:0;box-shadow:none;backdrop-filter:none}
+body[data-page="player-stats"] #app .player-ranking-filters{background:transparent;padding:0;margin:8px 0 22px}
+body[data-page="player-stats"] #app .global-player-table{table-layout:fixed;width:max-content;min-width:100%;border-spacing:0}
+body[data-page="player-stats"] #app .global-player-table col.ranking-col-rank{width:48px}
+body[data-page="player-stats"] #app .global-player-table col.ranking-col-player{width:220px}
+body[data-page="player-stats"] #app .global-player-table col.ranking-col-team{width:150px}
+body[data-page="player-stats"] #app .global-player-table col.ranking-col-base{width:76px}
+body[data-page="player-stats"] #app .global-player-table col.ranking-col-stat{width:90px}
+body[data-page="player-stats"] #app .global-player-table col.ranking-col-action{width:76px}
+body[data-page="player-stats"] #app .global-player-table :is(th,td){min-width:0;max-width:none;width:auto;box-sizing:border-box}
+body[data-page="player-stats"] #app .global-player-table tbody td:first-child,body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th:first-child{width:48px;min-width:48px;max-width:48px;left:0;text-align:center}
+body[data-page="player-stats"] #app .global-player-table tbody td:nth-child(2),body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th:nth-child(2){width:220px;min-width:220px;max-width:220px;left:48px;text-align:left}
+body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th:nth-child(3),body[data-page="player-stats"] #app .global-player-table tbody td:nth-child(3){text-align:left}
+body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th[colspan]{border-bottom:0;text-align:center}
+body[data-page="player-stats"] #app .global-player-table thead tr:nth-child(2)>th{position:sticky;left:auto;width:auto;min-width:0;max-width:none;text-align:right;box-shadow:none}
+body[data-page="player-stats"] #app .global-player-table .global-leader-player{font-size:13px;line-height:1.4}
+body[data-page="player-stats"] #app .global-player-table .ranking-sort{width:100%;text-align:inherit;white-space:nowrap}
+body[data-page="player-stats"] #app .global-player-table tbody td{height:58px}
+@media(max-width:700px){
+ body[data-page="player-stats"] #app .global-player-table col.ranking-col-player{width:175px}
+ body[data-page="player-stats"] #app .global-player-table tbody td:nth-child(2),body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th:nth-child(2){width:175px;min-width:175px;max-width:175px}
+ body[data-page="player-stats"] #app .player-ranking-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible;gap:12px}
+ body[data-page="player-stats"] #app .player-ranking-filters>label:first-child{grid-column:1/-1}
+}
+
+/* Uniform numeric typography throughout the player ranking. */
+body[data-page="player-stats"] #app .global-player-table tbody td,
+body[data-page="player-stats"] #app .global-player-table :is(.global-leader-value,.global-leader-rate,.global-leader-rank){font-size:12px;line-height:1.45;font-variant-numeric:tabular-nums}
+body[data-page="player-stats"] #app .global-player-table thead th{text-transform:uppercase}
+
+/* Match the full squad table's row hover, including pinned cells. */
+body[data-page="player-stats"] #app .global-player-table tbody tr:is(:hover,:focus-within)>td{background:#eaecea;color:#243a3b}
+
+/* The squad roster highlights the pinned player identity in pale cyan. */
+body[data-page="player-stats"] #app .global-player-table tbody tr:is(:hover,:focus-within)>td:nth-child(2){background:#d5f1f2}
+
+/* Include the rank in the pinned identity hover and uppercase header controls. */
+body[data-page="player-stats"] #app .global-player-table tbody tr:is(:hover,:focus-within)>td:nth-child(-n+2){background:#d5f1f2}
+body[data-page="player-stats"] #app .global-player-table thead :is(th,.ranking-sort){text-transform:uppercase}
+
+/* Separate player statistics from the comparison section. */
+body[data-page="player-stats"] #app>.global-player-leaders+.player-comparator{margin-top:48px;padding-top:36px;border-top:1px solid #c5cdcf}
+@media(max-width:700px){body[data-page="player-stats"] #app>.global-player-leaders+.player-comparator{margin-top:32px;padding-top:28px}}
