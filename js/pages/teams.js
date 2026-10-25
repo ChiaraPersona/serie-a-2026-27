@@ -49,7 +49,7 @@ function comparatorResult(data,periodId,keys,mode="total"){
     if(page==="team-stats"&&["#top-15-calciatori","#comparatore-calciatori"].includes(location.hash)){location.replace("statistiche-giocatori.html"+location.hash);return}
     directory=teamDirectory;
     let html="";
-  if(page==="team-stats")html=hero("Serie A 2026/27","Statistiche squadre","Consulta le rose e le statistiche delle 20 squadre.")+teamDirectoryGrid(teamDirectory);
+  if(page==="team-stats")html=hero("","Statistiche squadre","Consulta le rose e le statistiche delle 20 squadre.")+teamDirectoryGrid(teamDirectory);
   else html=hero("","Statistiche giocatori","Confronta le prestazioni e scopri i protagonisti del campionato.")+globalPlayerLeaderboards(playerLeaderboards)+playerComparator(playerLeaderboards);
     document.querySelector("#app").innerHTML=html;
   if(page==="player-stats"){const target=document.querySelector("#global-player-leaderboard");let periodId="2026/27",metricId="goals",rankingSort={key:"goals",mode:"total",direction:"desc"};
