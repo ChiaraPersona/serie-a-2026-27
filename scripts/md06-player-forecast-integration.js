@@ -158,7 +158,7 @@ function isSupportedDuoMarket(market, metric) {
     && /DUO|SOST|INC TS/.test(descriptor);
   return String(market?.marketCode) === "28506"
     && /TIRI IN PORTA/.test(descriptor) && /DUO|SOST|INC TS/.test(descriptor)
-    && /PALI/.test(descriptor) && /TRAVERSE/.test(descriptor);
+    ;
 }
 
 function compatibleQuote({ odds, prediction, player, metric, threshold, providerPlayerMap }) {
@@ -254,7 +254,7 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
           providerPlayerId: String(quoteRow.market.providerPlayerIds[0]),
           duo: true,
           substituteIncluded: true,
-          postsAndCrossbarIncluded: metric === "sot",
+          postsAndCrossbarIncluded: metric === "sot" && /PALI/.test(`${quoteRow.market.marketName} ${quoteRow.market.variantName}`) && /TRAVERSE/.test(`${quoteRow.market.marketName} ${quoteRow.market.variantName}`),
           extraTimeIncluded: false,
           subjectType: "named-player-and-substitute",
         } : null,
@@ -418,6 +418,9 @@ function integratePlayerForecasts({ catalogMatches, predictions, odds, probableL
 }
 
 module.exports = {
+  buildProviderPlayerMap,
+  compatibleQuote,
+  playerForecastLeg,
   chooseShotsThreshold,
   chooseSotThreshold,
   candidatePool,

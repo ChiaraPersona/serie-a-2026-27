@@ -1,0 +1,24 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {sharedForecastsForMatch} from '../js/pages/shared-forecast-contract.mjs';
+import {createPersonalBetslipStore,PERSONAL_BETSLIP_STORAGE_KEY} from '../js/pages/personal-betslip-store.mjs';
+const require=createRequire(import.meta.url),policy=require('../js/official-starter-policy.js');
+const read=p=>JSON.parse(fs.readFileSync(p)),id='lecce-juventus-2026-27-md-08',dir='output/lecce-juventus-md08-official',before=read(dir+'/before.json');
+const official=read('data/sources/official-lineups-2026-27.json').fixtures.find(f=>f.matchId===id);
+assert.deepEqual(official.teams.map(t=>[t.players.length,t.substitutes.length]),[[11,12],[11,9]]);
+const starters=new Set(official.teams.flatMap(t=>t.players.map(p=>p.playerId)));assert.equal(starters.size,22);assert(starters.has('woltemade'));assert(!starters.has('jeremie-boga'));
+const prediction=read('data/normalized/predictions.json').predictions.find(p=>p.matchId===id);
+for(const p of [...prediction.shooters.allPlayers,...prediction.likelyBooked])assert(starters.has(p.playerId));
+assert.equal(prediction.futureDataDiagnostics.dataCutoff.matchdayExclusive,8);
+for(const [f,key]of [['data/normalized/predictions.json','predictions'],['data/normalized/readings.json',null]])assert.deepEqual((key?read(f)[key]:read(f)).filter(x=>x.matchId!==id),(key?before[f][key]:before[f]).filter(x=>x.matchId!==id));
+const data=read('data/normalized/schedina-md08.json'),catalog=read('data/normalized/reading-md08-market-catalog.json').marketCatalog;assert.deepEqual(data.marketCatalog,catalog);
+assert.deepEqual(data.marketCatalog.matches.filter(m=>m.matchId!==id),before['data/normalized/schedina-md08.json'].marketCatalog.matches.filter(m=>m.matchId!==id));
+policy.configure(read('data/normalized/official-starter-registry.json'));
+const match=catalog.matches.find(m=>m.matchId===id),old=before['data/normalized/schedina-md08.json'].marketCatalog.matches.find(m=>m.matchId===id),shared=sharedForecastsForMatch(catalog,id);
+for(const l of match.selections){assert(policy.eligible(l,id));const prior=old.selections.find(p=>p.selectionId===l.selectionId);if(prior){assert.deepEqual(l.betSelection.quote,prior.betSelection.quote);assert.deepEqual(l.betSelection.market,prior.betSelection.market);assert.equal(l.odds,prior.odds)}if(l.betSelection.evaluation?.probabilitySemantics==='DUO_CONTRACT_UNAVAILABLE'){assert.equal(l.betSelection.evaluation.modelProbabilityPct,null);assert.equal(l.betSelection.evaluation.expectedValuePct,null)}}
+const bench=structuredClone(shared.find(l=>l.marketScope==='player'));bench.playerId='jeremie-boga';bench.playerName='Jérémie Boga';bench.betSelection.market.subject.id='jeremie-boga';bench.betSelection.market.subject.name='Jérémie Boga';
+const context={competition:'serie-a',season:'2026-27',matchday:8},key='serie-a:2026-27:md08',values=new Map([[PERSONAL_BETSLIP_STORAGE_KEY,JSON.stringify({version:1,activeContext:key,contexts:{[key]:{context,selections:[{...bench,context}]}}})]]),storage={getItem:k=>values.get(k)||null,setItem:(k,v)=>values.set(k,v)},store=createPersonalBetslipStore({storage});
+store.setContext(context);store.reconcile(shared);assert.equal(store.getSnapshot().selections.length,0);assert.equal(store.add({...bench,context}).status,'OFFICIAL_NON_STARTER');
+for(const kind of ['catalogs','matches'])assert.equal(sharedForecastsForMatch(read(`data/generated/readings/${kind}/${id}.json`).forecastDataset.marketCatalog,id).length,shared.length);
+const report={status:'PASS',starters:22,bench:21,shared:shared.length,providerContractsUnchanged:true,otherFixturesUnchanged:true,savedNonstarterPurged:true,nonstarterRejected:true,duoProbabilityNotTransferred:true};fs.writeFileSync(dir+'/tests.json',JSON.stringify(report,null,2)+'\n');console.log(report);

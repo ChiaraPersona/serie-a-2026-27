@@ -24,22 +24,7 @@ function build({matchday=7,targetMatchIds=null}={}){
   const excluded=clone(data.marketCatalog.unquotedPublication?.excluded||[]);
   for(const match of data.marketCatalog.matches){
     if(!targets.has(match.matchId))continue;
-    // These rows have already passed evaluateCandidate in the V2 integration.
-    // Publish their individual standard target, never the unpriced DUO target.
-    for(const leg of match.selections){
-      if(leg.catalogOrigin!=='prediction-v2-player-forecast'||leg.suggestionAnalysis.suggested||leg.odds!=null)continue;
-      const reference=leg.betSelection.evaluation.individualReference;
-      assert(Number.isFinite(reference?.modelProbabilityPct));
-      const metric=leg.suggestionAnalysis.family,count=leg.threshold+0.5;
-      const family=metric==='shots'?'Tiri individuali':'Tiri in porta individuali';
-      leg.market=metric==='shots'?'TIRI TOTALI GIOCATORE':'TIRI IN PORTA GIOCATORE';
-      leg.marketFamily=family;leg.label=`${leg.playerName} ${count}+ ${metric==='shots'?'tiri':'tiri in porta'}`;leg.variant=leg.label;
-      leg.modelProbabilityPct=reference.modelProbabilityPct;leg.fairOdds=null;leg.expectedValuePct=null;
-      leg.evidenceLabel='Prediction Engine V2 4.13.0 · singolo giocatore, tempi regolamentari';
-      leg.betSelection.market={...leg.betSelection.market,name:leg.market,family,variant:leg.label,subject:{type:'named-player',id:leg.playerId,name:leg.playerName,teamId:leg.teamId},bookmakerSemantics:null};
-      leg.betSelection.evaluation={...leg.betSelection.evaluation,modelProbabilityPct:reference.modelProbabilityPct,status:'MODEL_FORECAST',kind:'INDIVIDUAL_PLAYER_V2',probabilitySemantics:'INDIVIDUAL_PLAYER_V2',individualReference:reference};
-      markCanonical(leg,{matchId:match.matchId,scope:'player',subjectId:leg.playerId,metric,threshold:leg.threshold,direction:'OVER',period:'REGULATION',duo:false,postsAndCrossbarIncluded:false});
-    }
+    // Individual shots/SOT bookmaker contracts remain DUO, including when unquoted.
     for(const metric of ['shots','sot'])for(const side of ['home','away']){
       const teamId=match[side+'Team'],forecast=stats.currentForecasts[match.matchId]?.[metric],gate=stats.validation.subfamilies[`${metric}-team-over`];
       if(match.selections.some(l=>l.forecastIdentity?.scope==='team'&&l.forecastIdentity.subjectId===teamId&&l.forecastIdentity.metric===metric))continue;
@@ -82,6 +67,7 @@ function build({matchday=7,targetMatchIds=null}={}){
   data.marketCatalog.totals.notModelled=after.size-data.marketCatalog.totals.evaluated;
   data.marketCatalog.totals.suggestionsByFamily=data.marketCatalog.matches.flatMap(m=>m.selections).filter(l=>l.suggestionAnalysis?.suggested).reduce((a,l)=>(a[l.suggestionAnalysis.family]=(a[l.suggestionAnalysis.family]||0)+1,a),{});
   data.marketCatalog.unquotedPublication={version:1,source:'cached forecasts only',excluded};
+  require('./reconcile-player-duo-quotes.cjs').reconcile(data,read('data/normalized/predictions.json').predictions,read('data/normalized/odds/sisal/serie-a.json'));
   const output=`data/normalized/schedina-md${code}.json`;
   fs.writeFileSync(`${output}.tmp`,JSON.stringify(data,null,2)+'\n');
   fs.renameSync(`${output}.tmp`,output);
