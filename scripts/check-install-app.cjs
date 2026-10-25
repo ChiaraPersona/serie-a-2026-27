@@ -34,22 +34,31 @@ const server = http.createServer((req, res) => {
       for (const icon of manifest.icons) {
         assert.equal(await page.evaluate(async src => (await fetch(src)).status,base + icon.src),200);
       }
+      assert.equal(await page.locator('.install-app-area, [data-install-android]').count(),0);
+      await page.goto(base + 'download.html');
+      assert.equal(await page.locator('.download-card').count(),2);
+      assert.equal(await page.locator('.download-icon svg').count(),2);
+      assert.equal(await page.locator('main').evaluate(el => el.scrollWidth <= innerWidth),true);
+      assert.equal(await page.locator('#site-nav a[href="download.html"]').count(),1);
       if (mobile) {
-        await page.getByRole('button',{name:'Installa app',exact:true}).click();
-        assert.equal(await page.locator('dialog').evaluate(el => el.open),true);
-        assert(await page.locator('dialog').evaluate(el => el.getBoundingClientRect().right <= innerWidth));
-        await page.getByRole('button',{name:'Ho capito'}).click();
-      } else {
-        await page.evaluate(() => {
-          window.pwaPrompted = false;
-          const event = new Event('beforeinstallprompt', {cancelable:true});
-          event.prompt = async () => {window.pwaPrompted = true;};
-          event.userChoice = Promise.resolve({outcome:'accepted'});
-          window.dispatchEvent(event);
-        });
-        await page.getByRole('button',{name:'Installa app',exact:true}).click();
-        assert.equal(await page.evaluate(() => window.pwaPrompted),true);
+        await page.getByRole('button',{name:'Menu',exact:true}).click();
+        assert.equal(await page.locator('.menu-button').getAttribute('aria-expanded'),'true');
+        assert(await page.getByText('iPhone e iPad',{exact:true}).isVisible());
+        assert(await page.getByText('Condividi',{exact:true}).isVisible());
+        await page.getByRole('button',{name:'Menu',exact:true}).click();
       }
+      await page.evaluate(() => {
+        window.pwaPrompted = false;
+        const event = new Event('beforeinstallprompt', {cancelable:true});
+        event.prompt = async () => {window.pwaPrompted = true;};
+        event.userChoice = Promise.resolve({outcome:'accepted'});
+        window.dispatchEvent(event);
+      });
+      await page.getByRole('button',{name:'Installa su Android',exact:true}).click();
+      assert.equal(await page.evaluate(() => window.pwaPrompted),true);
+      const out = path.join(root,'output','app-download');
+      fs.mkdirSync(out,{recursive:true});
+      await page.screenshot({path:path.join(out,mobile ? 'mobile.png' : 'desktop.png'),fullPage:true});
       await page.goto(base + 'statistiche-squadra/inter.html');
       assert.equal(await page.locator('link[rel="manifest"]').getAttribute('href'),'../manifest.webmanifest');
       await context.setOffline(true);
