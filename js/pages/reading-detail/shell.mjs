@@ -1,5 +1,5 @@
 import {imageSource} from '../../core/image-source.mjs?v=20261022-assets-v1';
-import {installForecasts} from './forecasts.mjs?v=20261022-assets-v1';
+import {installForecasts} from './forecasts.mjs?v=20261025-clean-copy';
 import {installScenario} from './scenario.mjs?v=20261024-no-coverage-label';
 import {loadEvidence,readArtifact} from './evidence.mjs?v=20261022-assets-v1';
 import {installPeople} from './people.mjs?v=20261024-goalkeepers-first';

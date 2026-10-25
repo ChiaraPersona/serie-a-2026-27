@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const {applyStyleLinks} = require('./site-styles');
+const {iconLinks} = require('./site-icons');
 const presentationOnly = process.argv.includes('--presentation-only');
 const root = path.resolve(__dirname, "..");
 if (fs.existsSync(path.join(root,'data/analysis/card-prediction-research/tactical-prototype-md08.json'))) require('./build-tactical-duels-page.cjs');
@@ -34,14 +35,14 @@ const navigationPages = pages;
 const navigation = (depth = "", activeId = "") => navigationPages.map(([file, id, label]) => `<a class="page-link${id === activeId ? " active" : ""}" data-page-link="${id}" href="${depth}${file}">${id === "team-stats" ? "Squadre" : id === "player-stats" ? "Giocatori" : label}</a>`).join("");
 const footer = (depth = "") => `<footer class="site-footer"><div class="site-footer-inner"><div class="site-footer-top"><div class="site-footer-intro"><a class="footer-brand" href="${depth}index.html"><span class="footer-brand-mark"><img src="${depth}assets/images/optimized/serie-a-logo-mark.webp" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><p>Calendario, rose, statistiche e letture della stagione raccolti in un unico spazio.</p><span class="footer-season">Stagione 2026/27</span></div><nav class="footer-nav" aria-label="Navigazione nel footer"><div><strong>Campionato</strong><a href="${depth}index.html">Home</a><a href="${depth}statistiche-squadre.html">Squadre</a><a href="${depth}statistiche-giocatori.html">Giocatori</a></div><div><strong>Approfondimenti</strong><a href="${depth}lettura.html">Lettura</a><a href="${depth}coppa-italia.html">Coppa Italia</a><a href="${depth}champions-league.html">Champions League</a><a href="${depth}schedina.html">Schedina</a></div></nav></div><div class="site-footer-bottom"><p>Progetto statico indipendente</p><a href="#site-top">Torna su <span aria-hidden="true">↑</span></a></div></div></footer>`;
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
-const withFonts = input => {const html=applyStyleLinks(input);const prefix=(/<body[^>]*data-depth="team"/.test(html)?"../":"");const policyVersion=html.includes('data-page="betting"')?'20261016-schedina-selection-rows-v2':'20261016-public-policy';return html.replace("</title>", `</title>${fontLinks}`).replace("</head>", `<script src="${prefix}js/public-presentation.js?v=${policyVersion}"></script></head>`)};
+const withFonts = input => {const html=applyStyleLinks(input);const prefix=(/<body[^>]*data-depth="team"/.test(html)?"../":"");const policyVersion=html.includes('data-page="betting"')?'20261016-schedina-selection-rows-v2':'20261016-public-policy';return html.replace("</title>", `</title>${iconLinks(prefix)}${fontLinks}`).replace("</head>", `<script src="${prefix}js/public-presentation.js?v=${policyVersion}"></script></head>`)};
 const version = "20260901-coppa-round16-calendar-v1";
 const homeVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const teamVersion = "20261018-no-player-media-v1";
 const leaderboardVersion = "20261013-md06-results-v1";
 const bettingVersion = "20261022-schedina-md3-projection-v1";
 const readingVersion = "20261022-reading-projection-v1";
-const cupVersion = "20260919-coppa-events-v1";
+const cupVersion = "20261025-coppa-round16-disclosure-v1";
 const championsVersion = "20261022-champions-md02-ui-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (!teamPagesOnly && !presentationOnly && fs.existsSync(headToHeadPath)) {
