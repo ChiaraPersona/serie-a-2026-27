@@ -1285,3 +1285,84 @@ body #team-squad-app.team-dashboard-pilot .squad-leader-card:nth-child(even) hea
 
 /* Slightly stronger separator beneath the statistics column headings. */
 #team-squad-app.team-dashboard-pilot .team-statistics-groups thead th{border-bottom-color:#adb8bc}
+
+/* Clean leaderboard headings without decorative brush strokes. */
+body #team-squad-app.team-dashboard-pilot .squad-leader-card:nth-child(n) header::before{content:none;display:none}
+
+/* Stronger divider between leaderboard titles and player data. */
+#team-squad-app.team-dashboard-pilot .squad-leader-card header{border-bottom:1px solid #697b7d}
+
+/* Mobile objective: three clearly separated blocks with a shared left edge. */
+@media(max-width:700px){
+ #team-squad-app.team-dashboard-pilot .team-season-objective{display:flex;flex-direction:column;gap:0;width:100%}
+ #team-squad-app.team-dashboard-pilot .team-season-objective>.team-season-target{width:100%;padding-bottom:20px}
+ #team-squad-app.team-dashboard-pilot .team-season-objective>.team-season-indicators{display:flex;flex-direction:column;gap:0;width:100%}
+ #team-squad-app.team-dashboard-pilot .team-season-indicators>div{width:100%;padding:18px 0;border-top:1px solid #d5dcdf;text-align:left;box-sizing:border-box}
+ #team-squad-app.team-dashboard-pilot .team-season-objective .team-summary-label{font-size:12px;line-height:1.5;color:#43595b}
+ #team-squad-app.team-dashboard-pilot .team-season-objective p{font-size:12px;line-height:1.6;max-width:42ch;margin-top:6px}
+ #team-squad-app.team-dashboard-pilot .team-season-target h3{font-size:20px;margin:6px 0 10px}
+ #team-squad-app.team-dashboard-pilot .team-indicator-value{font-size:28px;margin:6px 0 10px}
+ #team-squad-app.team-dashboard-pilot .team-season-indicators progress{height:7px;margin:12px 0}
+}
+
+/* Center the stacked team-statistics tables on mobile. */
+@media(max-width:760px){
+ #team-squad-app.team-dashboard-pilot .team-statistics-groups{justify-items:center}
+ #team-squad-app.team-dashboard-pilot .team-statistics-groups>section{width:100%;max-width:340px;margin-inline:auto}
+ #team-squad-app.team-dashboard-pilot .team-statistics-groups h3{text-align:center}
+ #team-squad-app.team-dashboard-pilot .team-statistics-groups table{width:100%;max-width:none;margin-inline:auto}
+}
+
+/* Center the individual leaderboards alongside the mobile team statistics. */
+@media(max-width:760px){
+ #team-squad-app.team-dashboard-pilot .team-leaders-compact .squad-leader-grid{grid-template-columns:minmax(0,340px);justify-content:center;justify-items:stretch;gap:24px}
+ #team-squad-app.team-dashboard-pilot .squad-leader-card{width:100%;min-width:0;margin-inline:auto}
+}
+
+/* Compact touch-friendly roster viewport: more statistics beside the pinned name. */
+@media(max-width:760px){
+ body #team-squad-app.team-dashboard-pilot .squad-table--compact{min-width:1270px}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact .squad-col-player{width:140px}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact :is(.squad-col-played,.squad-col-minutes){width:62px}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact .squad-col-stat{width:72px}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact tbody td:first-child,
+ #team-squad-app.team-dashboard-pilot .squad-table--compact thead tr:first-child>th:first-child{width:140px;min-width:140px;max-width:140px}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact :is(th,td){padding-inline:8px;font-size:12px}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact .player-label{font-size:12px;line-height:1.4;overflow-wrap:anywhere}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact .roster-player-role{font-size:10px}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact thead tr:first-child>th[colspan]{font-size:10px;letter-spacing:0;white-space:nowrap}
+ #team-squad-app.team-dashboard-pilot .team-full-roster-section .squad-table-wrap{max-height:65svh;overflow:auto;overscroll-behavior-x:contain;overscroll-behavior-y:auto;-webkit-overflow-scrolling:touch;scrollbar-gutter:stable}
+ #team-squad-app.team-dashboard-pilot .roster-scroll-hint{font-size:11px;line-height:1.5}
+}
+
+/* Seal mobile sticky seams with opaque row colors and whole-pixel geometry. */
+@media(max-width:760px){
+ body #team-squad-app.team-dashboard-pilot .squad-table--compact{border-collapse:separate;border-spacing:0;background:#fff}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact tbody tr{--roster-row-bg:#fff}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact tbody tr:nth-child(even){--roster-row-bg:#f3f4f4}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact tbody tr:is(:hover,:focus-within){--roster-row-bg:#eaecea}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact tbody tr>td{background:var(--roster-row-bg);background-clip:border-box;border:0;border-bottom:1px solid #dce2e3;box-sizing:border-box;height:56px;line-height:18px;box-shadow:none}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact tbody tr>td:first-child{box-shadow:1px 0 0 var(--roster-row-bg),2px 0 0 var(--roster-row-bg)}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact .player-label{line-height:18px}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact .roster-player-role{line-height:14px}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact thead th{background-color:#c5bdb6;background-clip:border-box;border-inline:0;box-shadow:0 1px 0 #c5bdb6}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact thead tr:first-child>th:first-child{box-shadow:1px 0 0 #c5bdb6,2px 0 0 #c5bdb6,0 1px 0 #c5bdb6}
+}
+
+/* Continuous row separators: sticky-cell shadows must not cover their borders. */
+@media(max-width:760px){
+ #team-squad-app.team-dashboard-pilot .squad-table--compact tbody tr>td:first-child{box-shadow:none}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact thead th{box-shadow:none;border-bottom:0}
+ #team-squad-app.team-dashboard-pilot .squad-table--compact thead tr:first-child>th:first-child,
+ #team-squad-app.team-dashboard-pilot .squad-table--compact thead tr:nth-child(2)>th{box-shadow:none;border-bottom:1px solid #dce2e3}
+}
+
+/* Individual leaderboards are static: no lift, hover tint or name underline. */
+#team-squad-app.team-dashboard-pilot .squad-leader-card{transition:none}
+#team-squad-app.team-dashboard-pilot .squad-leader-card:hover{transform:none;border-color:var(--line)}
+#team-squad-app.team-dashboard-pilot .squad-leader-card .leader-player,
+#team-squad-app.team-dashboard-pilot .squad-leader-card .leader-player:is(:hover,:focus-visible){color:var(--text);text-decoration:none;cursor:default;transition:none}
+
+/* Preserve roster row hover independently of the static leaderboard cards. */
+#team-squad-app.team-dashboard-pilot .squad-table--compact tbody tr:is(:hover,:focus-within)>td{background-color:#eaecea}
+#team-squad-app.team-dashboard-pilot .squad-table--compact tbody tr:is(:hover,:focus-within)>td:first-child{background-color:#d5f1f2}

@@ -411,7 +411,7 @@ const leaderboardMetrics = [
   { id: "goals", label: "Gol", field: "goals", hasPer90: true },
   { id: "assists", label: "Assist", field: "assists", hasPer90: true },
   { id: "shots", label: "Tiri totali", field: "shots", hasPer90: true },
-  { id: "shotsOnTarget", label: "Tiri nello specchio", field: "shotsOnTarget", hasPer90: true },
+  { id: "shotsOnTarget", label: "SOT", field: "shotsOnTarget", hasPer90: true },
   { id: "cards", label: "Cartellini", field: "cards", hasPer90: true },
   { id: "foulsCommitted", label: "Falli commessi", field: "foulsCommitted", hasPer90: true },
   { id: "foulsWon", label: "Falli subiti", field: "foulsWon", hasPer90: true }

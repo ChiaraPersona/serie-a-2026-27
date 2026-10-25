@@ -103,11 +103,11 @@
     pointsPerGame: "Punti / partita", goalsFor: "Gol fatti", goalsAgainst: "Gol subiti",
     goalDifference: "Differenza reti", cleanSheets: "Clean sheet", failedToScore: "Gare senza segnare",
     winPercentage: "Vittorie", drawPercentage: "Pareggi", lossPercentage: "Sconfitte",
-    shotsPerGame: "Tiri / partita", shotsOnTargetPerGame: "Tiri nello specchio / partita",
+    shotsPerGame: "Tiri / partita", shotsOnTargetPerGame: "SOT / partita",
     shotAccuracy: "Precisione tiri", shotConversion: "Conversione tiri", bigChancesMissed: "Grandi occasioni fallite",
     expectedGoals: "xG", expectedGoalsPerGame: "xG / partita", goalsVsExpectedGoals: "Gol rispetto agli xG",
     corners: "Corner", cornersPerGame: "Corner / partita", shotsConceded: "Tiri concessi",
-    shotsOnTargetConceded: "Tiri nello specchio concessi", expectedGoalsAgainst: "xG concessi",
+    shotsOnTargetConceded: "SOT concessi", expectedGoalsAgainst: "xG concessi",
     averagePossession: "Possesso medio", passesAttempted: "Passaggi tentati", passesCompleted: "Passaggi riusciti",
     foulsCommitted: "Falli commessi", foulsCommittedPerGame: "Falli / partita", foulsWon: "Falli subiti",
     foulsWonPerGame: "Falli subiti / partita", yellowCards: "Gialli", yellowCardsPerGame: "Gialli / partita",
@@ -116,7 +116,7 @@
     goalsAgainstPerGame: "Gol subiti / partita", appearances: "Presenze", starts: "Da titolare",
     substituteAppearances: "Da subentrato", minutes: "Minuti", minutesPerAppearance: "Minuti / presenza",
     completeMatches: "Gare complete", substitutedOff: "Sostituzioni", goals: "Gol", assists: "Assist",
-    shots: "Tiri totali", shotsOnTarget: "Tiri nello specchio", penaltiesTaken: "Rigori calciati", penaltiesScored: "Rigori segnati",
+    shots: "Tiri totali", shotsOnTarget: "SOT", penaltiesTaken: "Rigori calciati", penaltiesScored: "Rigori segnati",
     offsides: "Fuorigioco", keyPasses: "Passaggi chiave", chancesCreated: "Occasioni create",
     passAccuracy: "Precisione passaggi", crosses: "Cross", tackles: "Contrasti", interceptions: "Intercetti",
     clearances: "Respinte", duels: "Duelli", duelsWon: "Duelli vinti", goalsConceded: "Gol subiti",
@@ -139,13 +139,13 @@
     return response.json();
   }
 
-  const filters = (compact = false) => `<div class="squad-controls"><label>Ricerca<input id="player-search" type="search" placeholder="Nome calciatore"></label><label>Ruolo<select id="role-filter"><option value="">Tutti</option><option>Portiere</option><option>Difensore</option><option>Centrocampista</option><option>Attaccante</option></select></label>${compact ? "" : `<label>Stato<select id="status-filter"><option value="">Tutti</option><option>confermato</option><option>nuovo acquisto</option><option>prestito</option><option>rientro dal prestito</option><option>primavera</option><option>da verificare</option></select></label><label>Ordina<select id="player-sort"><option value="role">Ruolo</option><option value="appearances">Presenze</option><option value="minutes">Minuti</option><option value="goals">Gol totali</option><option value="goalsPer90">Gol / 90</option><option value="assists">Assist totali</option><option value="assistsPer90">Assist / 90</option><option value="shots">Tiri totali</option><option value="shotsPer90">Tiri totali / 90</option><option value="shotsOnTarget">Tiri nello specchio</option><option value="shotsOnTargetPer90">Tiri nello specchio / 90</option><option value="cards">Cartellini totali</option><option value="cardsPer90">Cartellini / 90</option><option value="foulsCommitted">Falli commessi totali</option><option value="foulsCommittedPer90">Falli commessi / 90</option><option value="foulsWon">Falli subiti totali</option><option value="foulsWonPer90">Falli subiti / 90</option><option value="age">Età</option></select></label>`}</div>`;
+  const filters = (compact = false) => `<div class="squad-controls"><label>Ricerca<input id="player-search" type="search" placeholder="Nome calciatore"></label><label>Ruolo<select id="role-filter"><option value="">Tutti</option><option>Portiere</option><option>Difensore</option><option>Centrocampista</option><option>Attaccante</option></select></label>${compact ? "" : `<label>Stato<select id="status-filter"><option value="">Tutti</option><option>confermato</option><option>nuovo acquisto</option><option>prestito</option><option>rientro dal prestito</option><option>primavera</option><option>da verificare</option></select></label><label>Ordina<select id="player-sort"><option value="role">Ruolo</option><option value="appearances">Presenze</option><option value="minutes">Minuti</option><option value="goals">Gol totali</option><option value="goalsPer90">Gol / 90</option><option value="assists">Assist totali</option><option value="assistsPer90">Assist / 90</option><option value="shots">Tiri totali</option><option value="shotsPer90">Tiri totali / 90</option><option value="shotsOnTarget">SOT</option><option value="shotsOnTargetPer90">SOT / 90</option><option value="cards">Cartellini totali</option><option value="cardsPer90">Cartellini / 90</option><option value="foulsCommitted">Falli commessi totali</option><option value="foulsCommittedPer90">Falli commessi / 90</option><option value="foulsWon">Falli subiti totali</option><option value="foulsWonPer90">Falli subiti / 90</option><option value="age">Età</option></select></label>`}</div>`;
 
   const seasonTotals = player => player.previousSeason?.totals || player.previousSeason?.entries?.[0] || {};
   const leaderboardStats = [
     { key: "appearances", label: "Presenze" }, { key: "minutes", label: "Minuti" },
     { key: "goals", label: "Gol", per90: true }, { key: "assists", label: "Assist", per90: true },
-    { key: "shots", label: "Tiri totali", per90: true }, { key: "shotsOnTarget", label: "Tiri nello specchio", per90: true },
+    { key: "shots", label: "Tiri totali", per90: true }, { key: "shotsOnTarget", label: "SOT", per90: true },
     { key: "cards", label: "Cartellini", per90: true }, { key: "foulsCommitted", label: "Falli commessi", per90: true },
     { key: "foulsWon", label: "Falli subiti", per90: true }
   ];
@@ -261,7 +261,7 @@
   function squadLeaderboardSection(rows, teamName, season, stats = leaderboardStats, suffix = "") {
     const cardsHtml = stats.map(stat => {
       const leaders = rankedLeaders(rows, stat);
-      return `<article class="squad-leader-card"><header><h4>${esc(stat.label)}</h4><span>${stat.per90 ? "Totale · /90" : "Totale"}</span></header>${leaders.length ? `<ol>${leaders.map((item, index) => `<li><span class="leader-rank">${index + 1}</span>${item.linked ? `<span class="leader-player">${esc(item.player.name)}</span>` : `<span class="leader-player leader-player-unlinked">${esc(item.player.name)}<small>Scheda N/D</small></span>`}<strong>${value(item.total)}${stat.per90 ? `<small>${value(item.rate)} /90</small>` : ""}</strong></li>`).join("")}</ol>` : `<p class="muted">Dati non disponibili</p>`}</article>`;
+      return `<article class="squad-leader-card"><header><h4>${esc(stat.label)}</h4><span>${stat.per90 ? "Totale · /90" : "Totale"}</span></header>${leaders.length ? `<ol>${leaders.map((item, index) => `<li><span class="leader-rank">${index + 1}</span>${item.linked ? `<span class="leader-player">${esc(item.player.name)}</span>` : `<span class="leader-player leader-player-unlinked">${esc(item.player.name)}</span>`}<strong>${value(item.total)}${stat.per90 ? `<small>${value(item.rate)} /90</small>` : ""}</strong></li>`).join("")}</ol>` : `<p class="muted">Dati non disponibili</p>`}</article>`;
     }).join("");
     const description = "Classifica sulle partite concluse e sui soli campi giocatore disponibili. Le metriche non coperte restano N/D.";
     const titleId = `squad-leaders-title-${season.replace("/", "-")}${suffix}`;
@@ -291,6 +291,10 @@
 
 
   function compactSquadTable(players, statsByPlayer, sorting = {}) {
+    players = players.filter(player => {
+      const stats = statsByPlayer.get(player.id);
+      return stats && ["appearances", "minutes", "goals", "assists", "shots", "shotsOnTarget", "cards", "foulsCommitted", "foulsWon"].some(key => typeof stats[key] === "number" && Number.isFinite(stats[key]));
+    });
     if (!players.length) return '<div class="data-warning"><strong>Nessun calciatore corrisponde ai filtri</strong><p>Modifica ricerca, ruolo o stato per visualizzare di nuovo la rosa.</p></div>';
     const columns = [["Gol", "goals"], ["Assist", "assists"], ["Tiri", "shots"], ["Tiri in porta", "shotsOnTarget"], ["Cartellini", "cards"], ["Falli commessi", "foulsCommitted"], ["Falli subiti", "foulsWon"]];
     const sortHeader = (label, key, description) => `<th scope="col" aria-sort="${sorting.key === key ? (sorting.direction === 1 ? "ascending" : "descending") : "none"}"><button type="button" class="roster-sort" data-roster-sort="${key}" aria-label="Ordina per ${description}">${label}<span aria-hidden="true">${sorting.key === key ? (sorting.direction === 1 ? " ↑" : " ↓") : ""}</span></button></th>`;
@@ -303,7 +307,7 @@
   function squadTable(players, statsByPlayer) {
     if (!players.length) return `<div class="data-warning"><strong>Nessun calciatore corrisponde ai filtri</strong><p>Modifica ricerca, ruolo o stato per visualizzare di nuovo la rosa.</p></div>`;
     const statColumns = Array.from({ length: 14 }, () => '<col class="squad-col-stat">').join("");
-    return `<p class="squad-count" aria-live="polite">${players.length} calciator${players.length === 1 ? "e" : "i"}</p><div class="table-wrap squad-table-wrap" role="region" aria-label="Statistiche calciatori; scorri orizzontalmente e verticalmente" tabindex="0"><table class="squad-table"><colgroup><col class="squad-col-player"><col class="squad-col-number"><col class="squad-col-role"><col class="squad-col-played"><col class="squad-col-minutes">${statColumns}</colgroup><thead><tr><th rowspan="2">Calciatore</th><th rowspan="2">N°</th><th rowspan="2">Ruolo</th><th rowspan="2">PG</th><th rowspan="2">Min</th><th colspan="2">Gol</th><th colspan="2">Assist</th><th colspan="2">Tiri totali</th><th colspan="2">Tiri nello specchio</th><th colspan="2">Cartellini</th><th colspan="2">Falli commessi</th><th colspan="2">Falli subiti</th></tr><tr><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th></tr></thead><tbody>${players.map(player => {
+    return `<p class="squad-count" aria-live="polite">${players.length} calciator${players.length === 1 ? "e" : "i"}</p><div class="table-wrap squad-table-wrap" role="region" aria-label="Statistiche calciatori; scorri orizzontalmente e verticalmente" tabindex="0"><table class="squad-table"><colgroup><col class="squad-col-player"><col class="squad-col-number"><col class="squad-col-role"><col class="squad-col-played"><col class="squad-col-minutes">${statColumns}</colgroup><thead><tr><th rowspan="2">Calciatore</th><th rowspan="2">N°</th><th rowspan="2">Ruolo</th><th rowspan="2">PG</th><th rowspan="2">Min</th><th colspan="2">Gol</th><th colspan="2">Assist</th><th colspan="2">Tiri totali</th><th colspan="2">SOT</th><th colspan="2">Cartellini</th><th colspan="2">Falli commessi</th><th colspan="2">Falli subiti</th></tr><tr><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th></tr></thead><tbody>${players.map(player => {
       const entry = statsByPlayer.get(player.id) || seasonTotals(player);
       return `<tr data-player-id="${esc(player.id)}"><td><div class="roster-player-identity"><span class="player-label"><span><strong>${esc(player.name)}</strong><small>${value(player.nationality)}</small></span></span></div></td><td>${value(player.shirtNumber)}</td><td>${value(displayRole(player))}</td><td>${value(entry.appearances)}</td><td>${value(entry.minutes)}</td><td>${value(entry.goals)}</td><td>${value(entry.per90?.goals)}</td><td>${value(entry.assists)}</td><td>${value(entry.per90?.assists)}</td><td>${value(entry.shots)}</td><td>${value(entry.per90?.shots)}</td><td>${value(entry.shotsOnTarget)}</td><td>${value(entry.per90?.shotsOnTarget)}</td><td>${value(entry.cards ?? cards(entry))}</td><td>${value(entry.per90?.cards)}</td><td>${value(entry.foulsCommitted)}</td><td>${value(entry.per90?.foulsCommitted)}</td><td>${value(entry.foulsWon)}</td><td>${value(entry.per90?.foulsWon)}</td></tr>`;
     }).join("")}</tbody></table></div>`;
@@ -318,7 +322,7 @@
     const chosen = ids.map(id => team.squad.find(player => player.id === id)).filter(Boolean);
     if (dashboardLayout && chosen.length === 2 && chosen[0].id === chosen[1].id) return `<div class="data-warning"><strong>Scegli due calciatori diversi</strong></div>`;
     if (chosen.length < 2) return dashboardLayout ? "" : `<div class="data-warning"><strong>Seleziona due calciatori</strong></div>`;
-    const metrics = [["Minuti giocati","minutes",false],["Gol","goals",true],["Assist","assists",true],["Tiri totali","shots",true],["Tiri nello specchio","shotsOnTarget",true],["Cartellini","cards",true],["Falli commessi","foulsCommitted",true],["Falli subiti","foulsWon",true]];
+    const metrics = [["Minuti giocati","minutes",false],["Gol","goals",true],["Assist","assists",true],["Tiri totali","shots",true],["SOT","shotsOnTarget",true],["Cartellini","cards",true],["Falli commessi","foulsCommitted",true],["Falli subiti","foulsWon",true]];
     const entry = player => statsByPlayer.get(player.id) || (dashboardLayout ? {} : seasonTotals(player));
     if (dashboardLayout) {
       const comparisonMetrics = [["Partite giocate", "appearances", false], ...metrics];
@@ -376,9 +380,7 @@
     const lineupSection = probableLineupSection(team, teams.find(item => item.id === team.id));
     const styleSection = tacticalProfileSection(team, teamStyleProfiles);
     const currentLeaderboardRows = currentSquadLeaderboardRows(team, matches);
-    let pageJumps = `<nav class="team-page-jumps" aria-label="Indice della pagina"><a href="#team-season-summary-title">Stagione</a><a href="#team-tactics-heading">Formazione e stile</a><a href="#team-statistics-title">Statistiche</a><a href="#squad-roster-heading">Protagonisti</a><a href="#team-comparator-disclosure">Comparatore</a></nav>`;
-    if (dashboardLayout) pageJumps = `<nav class="team-page-jumps" aria-label="Indice della pagina"><a href="#team-season-summary-title">Stagione</a><a href="#team-statistics-title">Statistiche</a><a href="#team-tactics-heading">Formazione e stile</a><a href="#squad-roster-heading">Protagonisti</a><a href="#team-full-roster-title">Rosa</a><a href="#team-comparator-disclosure">Comparatore</a></nav>`;
-    const identityHero = dashboardLayout ? `<section class="team-detail-hero team-detail-hero--compact" data-editorial-section="identity"><img src="${imageSource(`${team.logo}`)}" alt="Stemma ${esc(team.name)}"><div class="team-identity-copy"><h1>${esc(team.shortName || team.name)}</h1><p class="team-identity-official">${esc(team.officialName)}</p><dl class="team-identity-facts">${[["Città",team.city],["Stadio",team.stadium],["Allenatore",team.coach],["Modulo preferito",team.preferredFormation]].map(([label,content])=>`<div><dt>${label}</dt><dd>${value(content)}</dd></div>`).join("")}</dl></div>${pageJumps}</section>` : `<section class="team-detail-hero" data-editorial-section="identity"><img src="${imageSource(`${team.logo}`)}" alt="Stemma ${esc(team.name)}"><div><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)}</p><p><strong>Allenatore:</strong> ${value(team.coach)} · <strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>${pageJumps}</div></section>`;
+    const identityHero = dashboardLayout ? `<section class="team-detail-hero team-detail-hero--compact" data-editorial-section="identity"><img src="${imageSource(`${team.logo}`)}" alt="Stemma ${esc(team.name)}"><div class="team-identity-copy"><h1>${esc(team.shortName || team.name)}</h1><p class="team-identity-official">${esc(team.officialName)}</p><dl class="team-identity-facts">${[["Città",team.city],["Stadio",team.stadium],["Allenatore",team.coach],["Modulo preferito",team.preferredFormation]].map(([label,content])=>`<div><dt>${label}</dt><dd>${value(content)}</dd></div>`).join("")}</dl></div></section>` : `<section class="team-detail-hero" data-editorial-section="identity"><img src="${imageSource(`${team.logo}`)}" alt="Stemma ${esc(team.name)}"><div><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)}</p><p><strong>Allenatore:</strong> ${value(team.coach)} · <strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p></div></section>`;
     root.classList.add("team-editorial");
     if (dashboardLayout) root.classList.add("team-dashboard-pilot");
     root.innerHTML = dashboardLayout ? `${teamNavigation(team, teams)}${identityHero}
