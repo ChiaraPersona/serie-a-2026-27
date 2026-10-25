@@ -1,0 +1,36 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {hasVerifiedPlayableQuote} from '../js/pages/shared-forecast-contract.mjs';
+import {createPersonalBetslipStore} from '../js/pages/personal-betslip-store.mjs';
+const require=createRequire(import.meta.url),{link}=require('./link-schedina-quotes.cjs');
+const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
+const data=read('data/normalized/schedina-md08.json'),archive=read('data/technical-archive/md08-individual-forecasts-before-duo-link.json');
+const fixtures=read('data/normalized/matches.json');
+const args={predictions:read('data/normalized/predictions.json').predictions,odds:read('data/normalized/odds/sisal/serie-a.json'),fixtures,probableLineups:read('data/sources/probable-lineups-md8-2026-27.json'),officialLineups:read('data/sources/official-lineups-2026-27.json'),catalogs:[6,7,8].map(n=>read(`data/normalized/schedina-md0${n}.json`).marketCatalog)};
+const old=archive.find(l=>l.playerId==='christian-pulisic');assert(old);
+const sample=structuredClone(data);sample.marketCatalog.matches=sample.marketCatalog.matches.filter(m=>m.matchId===old.matchId);sample.marketCatalog.matches[0].selections=[old];
+assert.equal(hasVerifiedPlayableQuote(old),false,'Reproduces the unlinked forecast');
+const fixed=link({...args,data:sample});assert.equal(fixed.changes.length,1);
+const leg=fixed.data.marketCatalog.matches[0].selections[0];
+assert(hasVerifiedPlayableQuote(leg));assert.notEqual(leg.selectionId,old.selectionId);
+assert.equal(leg.betSelection.market.bookmakerSemantics.duo,true);
+assert.equal(leg.betSelection.evaluation.modelProbabilityPct,null);assert.equal(leg.betSelection.evaluation.expectedValuePct,null);
+assert.deepEqual(fixed.archived,[old]);assert.equal(old.betSelection.quote.decimal,null);
+assert.equal(link({...args,data:fixed.data}).changes.length,0,'Idempotent');
+const finished=args.fixtures.map(f=>f.id===old.matchId?{...f,status:'finished'}:f);
+assert.deepEqual(link({...args,data:sample,fixtures:finished}).data,sample,'Completed fixtures frozen');
+const wrong=structuredClone(sample);wrong.marketCatalog.matches[0].selections[0].threshold=999;
+assert.equal(link({...args,data:wrong}).changes.length,0,'Different thresholds cannot bind');
+assert.deepEqual(data.marketCatalog,read('data/normalized/reading-md08-market-catalog.json').marketCatalog);
+const memory=new Map(),storage={getItem:k=>memory.get(k)||null,setItem:(k,v)=>memory.set(k,v)},context={competition:'serie-a',season:'2026-27',matchday:8};
+const store=createPersonalBetslipStore({storage});store.setContext(context);
+for(const l of [old,leg])store.add({selectionId:l.selectionId,context,fixture:l.fixture,label:l.label,market:l.market,betSelection:l.betSelection});
+assert.equal(store.getSnapshot().selections.length,2,'Saved individual and DUO remain distinct');
+const restored=createPersonalBetslipStore({storage});restored.setContext(context);assert.equal(restored.getSnapshot().selections.length,2);
+for(const m of data.marketCatalog.matches)for(const l of m.selections.filter(l=>l.betSelection.quote?.decimal!=null&&l.forecastIdentity?.scope==='team')){
+ assert(hasVerifiedPlayableQuote(l));assert.equal(l.betSelection.market.threshold,l.forecastIdentity.threshold);
+ assert.equal(l.betSelection.evaluation.expectedValuePct,Number((l.betSelection.evaluation.modelProbabilityPct*l.odds-100).toFixed(2)));
+}
+assert.equal(link({...args,data}).changes.length,0);
+console.log('PASS: real Pulisic quote binding, exact threshold, finished fixtures, DUO semantics, idempotence, Lettura sync and saved contracts.');
