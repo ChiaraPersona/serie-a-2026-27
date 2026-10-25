@@ -13,7 +13,9 @@ const index=read('data/generated/readings/index.json');assert.deepEqual(index.fi
 for(const match of matches){
  const projected=await service.loadReading(match.id),raw=projected.matches.find(m=>m.id===match.id);
  assert.deepEqual(raw,match,'full result/report lost '+match.id);
- assert.deepEqual(projected.predictionDataset,globalThis.officialStarterPolicy.filter({predictions:predictions.predictions.filter(p=>p.matchId===match.id)}));
+ const canonicalProjection=structuredClone(projected.predictionDataset);
+ for(const p of canonicalProjection.predictions||[])for(const c of p.likelyBooked||[])delete c.readingDuels;
+ assert.deepEqual(canonicalProjection,globalThis.officialStarterPolicy.filter({predictions:predictions.predictions.filter(p=>p.matchId===match.id)}));
  const file=Number(match.matchday)===1?'schedina.json':`schedina-md${String(match.matchday).padStart(2,'0')}.json`;
  if(fs.existsSync('data/normalized/'+file)){
   const original=await service.load(file);

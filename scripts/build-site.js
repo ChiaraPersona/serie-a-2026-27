@@ -4,7 +4,6 @@ const {applyStyleLinks} = require('./site-styles');
 const {iconLinks} = require('./site-icons');
 const presentationOnly = process.argv.includes('--presentation-only');
 const root = path.resolve(__dirname, "..");
-if (fs.existsSync(path.join(root,'data/analysis/card-prediction-research/tactical-prototype-md08.json'))) require('./build-tactical-duels-page.cjs');
 const writeHtml = (file, html) => {
   if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== html) fs.writeFileSync(file, html);
 };
@@ -22,7 +21,7 @@ if (!readingsIndexOnly && !presentationOnly && !process.argv.includes('--team-pa
   require('node:child_process').execFileSync(process.execPath, [path.join(root, 'scripts/build-reading-bench-forecasts.mjs'), '--if-needed'], {cwd:root,stdio:'inherit'});
 }
 // Remove retired public shells in every build mode; preserve internal data.
-for (const retired of ['fantacalcio.html', 'fonti.html', 'arbitri.html', 'squadra.html', 'css/pages/team.css']) {
+for (const retired of ['duelli.html', 'js/components/tactical-duels-availability.mjs', 'fantacalcio.html', 'fonti.html', 'arbitri.html', 'squadra.html', 'css/pages/team.css']) {
   const target = path.join(root, retired);
   if (fs.existsSync(target)) fs.unlinkSync(target);
 }

@@ -1,12 +1,14 @@
 // Browser views only: retain canonical archives, contracts and model outputs.
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
+const {withReadingDuels}=require('./reading-duel-presentation.cjs');
 const read=f=>JSON.parse(fs.readFileSync(path.join(root,f),'utf8'));
 const write=(f,data)=>{const file=path.join(root,'data/generated/readings',f),text=JSON.stringify(data)+'\n';fs.mkdirSync(path.dirname(file),{recursive:true});if(!fs.existsSync(file)||fs.readFileSync(file,'utf8')!==text)fs.writeFileSync(file,text);};
 const pick=(o,keys)=>Object.fromEntries(keys.filter(k=>k in o).map(k=>[k,o[k]]));
 function build({matchday=null}={}){
  const matches=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'),teams=read('data/normalized/teams.json');
  const readings=read('data/normalized/readings.json'),predictions=read('data/normalized/predictions.json'),directory=read('data/teams/index.json');
+ const duelSquads=new Map(teams.map(t=>[t.id,read(`data/generated/team-pages/${t.id}-squad.json`)]));
  const objectives=read('data/team-objectives.json'),styles=read('data/normalized/team-style-profiles.json'),h2h=read('data/generated/head-to-head/first-leg-2026-27.json'),referees=read('data/generated/reading-referee-profiles-2025-26.json');
  write('index.json',{teams:teams.map(t=>pick(t,['id','name','shortName','logo','colors'])),matches:matches.map(m=>pick(m,['id','competition','homeTeam','awayTeam','matchday','date','matchdayDate','dateStatus','kickoff','status','score'])),fixtureIds:matches.map(m=>m.id)});
  const finishedIds=matches.filter(m=>m.status==='finished'&&m.score).map(m=>m.id),catalogs=new Map(),cache=new Map();
@@ -34,7 +36,7 @@ function build({matchday=null}={}){
   add('data/normalized/card-settlement-records.json',d=>({...d,records:d.records.filter(r=>r.matchId===id||r.fixtureId===id||r.key?.includes(id))}));
   if(day===6&&source)artifacts['data/normalized/schedina-md06.json']={matchday:day,marketCatalog:{matches:(catalog?.matches||[]).filter(m=>m.matchId===id)}};
   const history=matches.filter(m=>m.id===id||m.status==='finished'&&m.score&&m.date<match.date&&ids.some(t=>m.homeTeam===t||m.awayTeam===t));
-  write(`matches/${id}.json`,{teams,matches:history,readings:readings.filter(r=>r.matchId===id),objectiveProfiles:objectives,teamDirectory:{...directory,officialLineups:Object.fromEntries(Object.entries(directory.officialLineups||{}).filter(([key])=>key.startsWith(id+':')))},teamStyleProfiles:{...styles,profiles:styles.profiles.filter(p=>ids.includes(p.teamId))},predictionDataset:{predictions:predictions.predictions.filter(p=>p.matchId===id)},headToHeadData:{fixtures:h2h.fixtures.filter(f=>f.fixtureId===id||[f.homeTeamId,f.awayTeamId].sort().join('|')===ids.slice().sort().join('|'))},refereeProfiles:{...referees,profiles:referees.profiles.filter(p=>p.refereeSlug===match.refereeAssignment?.referee?.slug)},forecastDataset,finishedIds,artifacts});
+  write(`matches/${id}.json`,{teams,matches:history,readings:readings.filter(r=>r.matchId===id),objectiveProfiles:objectives,teamDirectory:{...directory,officialLineups:Object.fromEntries(Object.entries(directory.officialLineups||{}).filter(([key])=>key.startsWith(id+':')))},teamStyleProfiles:{...styles,profiles:styles.profiles.filter(p=>ids.includes(p.teamId))},predictionDataset:{predictions:predictions.predictions.filter(p=>p.matchId===id).map(p=>withReadingDuels(p,duelSquads))},headToHeadData:{fixtures:h2h.fixtures.filter(f=>f.fixtureId===id||[f.homeTeamId,f.awayTeamId].sort().join('|')===ids.slice().sort().join('|'))},refereeProfiles:{...referees,profiles:referees.profiles.filter(p=>p.refereeSlug===match.refereeAssignment?.referee?.slug)},forecastDataset,finishedIds,artifacts});
  }
  console.log(`Lettura: indice e ${matches.filter(m=>matchday===null||m.matchday===matchday).length} dettagli generati senza ricalcoli.`);
 }

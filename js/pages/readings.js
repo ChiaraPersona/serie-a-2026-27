@@ -1,5 +1,4 @@
 import {renderLineupField} from "../components/lineup-field.mjs?v=20261022-assets-v1";
-import {tacticalDuelsHref} from '../components/tactical-duels-availability.mjs?v=20261024-duels-v1';
 import {setReadingArtifacts} from './reading-detail/projected-artifacts.mjs?v=20261022-assets-v1';
 import {isReadingPilot} from './reading-detail/view-model.mjs?v=20261022-assets-v1';
 import {cardType} from './disciplinary.mjs?v=20261022-assets-v1';
@@ -69,9 +68,18 @@ export function renderPredictionV2Sections({prediction,teams=[],esc=value=>Strin
   const outsiderPanel=`<section class="section prediction-v2-outsiders" aria-labelledby="prediction-v2-outsiders-title"><header class="section-heading"><div><p class="eyebrow">Classificazione statistica</p><h2 id="prediction-v2-outsiders-title">Outsider del modello</h2></div><p>Zero outsider e un risultato valido: la pagina visualizza soltanto le qualificazioni prodotte dal detector V2.</p></header><div class="prediction-v2-outsider-grid">${outsiderGroup("shots","Outsider tiri",shooters?.outsiders,hasShots)}${outsiderGroup("sot","Outsider SOT",shooters?.sotOutsiders,hasSot)}</div></section>`;
 
   const booked=Array.isArray(prediction?.likelyBooked)?prediction.likelyBooked:[];
-  const bookingRows=booked.map(candidate=>{const duel=candidate.directOpponent?`Duello diretto con ${esc(candidate.directOpponent)}`:"Duello diretto N/D",refereeMissing=candidate.refereeFactorSource==="NO_DESIGNATION_AVAILABLE"||candidate.refereeEvidence?.some(item=>/N\/D|non disponibile/i.test(item)),referee=candidate.refereeFactorSource==="NO_DESIGNATION_AVAILABLE"?"Arbitro non designato: fallback 1":refereeMissing?"Influenza arbitrale N/D":isFiniteNumber(candidate.refereeFactor)&&candidate.refereeFactor>1?"Arbitro sopra la baseline disciplinare":isFiniteNumber(candidate.refereeFactor)?"Influenza arbitrale neutra":"Influenza arbitrale N/D";return `<li class="${candidate.possibleFirstBooked?"possible-first-booked":""}"><span>${candidate.rank??"—"}</span><div><strong>${esc(candidate.name||"N/D")}</strong><small>${esc(teamFor(candidate.teamId).name)} · ${esc(candidate.role||"Ruolo N/D")}${candidate.possibleFirstBooked?" · possibile primo ammonito (euristica)":""}</small><em>${duel}${candidate.directOpponent&&isFiniteNumber(candidate.opponentFoulsWonPer90)?` · ${metric(candidate.opponentFoulsWonPer90)} falli subiti/90 dall’avversario`:""}</em><small>${[...(Array.isArray(candidate.evidence)?candidate.evidence:[]).filter(item=>typeof item==="string"&&/\/90|duelli sul canale/i.test(item)).map(esc),referee].join(" · ")}</small></div><b>${isFiniteNumber(candidate.riskScore)?`${metric(candidate.riskScore,0)}/100`:"N/D"}</b></li>`}).join("");
-  const duelsHref=tacticalDuelsHref(prediction?.matchId);
-  const discipline=`<section class="prediction-booked-panel"><header><div><h3>Probabili ammoniti</h3></div>${duelsHref?`<a class="reading-duels-link" href="${esc(duelsHref)}">Esplora i duelli <span aria-hidden="true">↗</span></a>`:''}</header>${booked.length?`<ol>${bookingRows}</ol>`:'<p class="prediction-v2-empty">Candidati ammonizione N/D</p>'}</section>`;
+  const bookingRows=booked.map(candidate=>{
+    const evidence=Array.isArray(candidate.evidence)?candidate.evidence:[];
+    const foulEvidence=evidence.find(item=>typeof item==='string'&&/^\d+(?:[.,]\d+)? falli\/90(?: stimati)?$/.test(item));
+    const fouls=foulEvidence?Number(foulEvidence.match(/^[\d.,]+/)[0].replace(',','.')):null;
+    const own=isFiniteNumber(fouls)?'Commette '+metric(fouls)+' falli/90'+(foulEvidence.endsWith('stimati')?' stimati':'')+'.':'Falli commessi/90 N/D.';
+    const duels=Array.isArray(candidate.readingDuels)&&candidate.readingDuels.length?candidate.readingDuels:candidate.directOpponent?[{name:candidate.directOpponent,foulsWonPer90:candidate.opponentFoulsWonPer90}]:[];
+    const duel=duels.length?(duels.length>1?'Possibili duelli con ':'Possibile duello con ')+duels.map(d=>d.name).join(', '):'Duello diretto N/D';
+    const refereeMissing=candidate.refereeFactorSource==='INSUFFICIENT_REFEREE_EVIDENCE'||candidate.refereeEvidence?.some(item=>/N\/D|non disponibile/i.test(item));
+    const referee=candidate.refereeFactorSource==='NO_DESIGNATION_AVAILABLE'?'arbitro non designato':refereeMissing?'influenza arbitrale N/D':isFiniteNumber(candidate.refereeFactor)?candidate.refereeFactor>1?'arbitro severo':candidate.refereeFactor<1?'arbitro permissivo':'arbitro nella media':'influenza arbitrale N/D';
+    return `<li class="${candidate.possibleFirstBooked?"possible-first-booked":""}"><span>${candidate.rank??"—"}</span><div><strong>${esc(candidate.name||"N/D")}</strong><small>${esc(teamFor(candidate.teamId).name)} · ${esc(candidate.role||"Ruolo N/D")}${candidate.possibleFirstBooked?" · possibile primo ammonito (euristica)":""}</small><em>${esc(own+" "+duel+"; "+referee+".")}</em></div><b>${isFiniteNumber(candidate.riskScore)?`${metric(candidate.riskScore,0)}/100`:"N/D"}</b></li>`;
+  }).join('');
+  const discipline=`<section class="prediction-booked-panel"><header><div><h3>Probabili ammoniti</h3></div></header>${booked.length?`<ol>${bookingRows}</ol>`:'<p class="prediction-v2-empty">Candidati ammonizione N/D</p>'}</section>`;
   return {numbers,why,shooters:shooterPanel,outsiders:outsiderPanel,discipline};
 }
 
@@ -227,7 +235,7 @@ function renderTacticalBaselines(match,dataset,teams){
     let finishReading=null;
   if(isReadingPilot('serie-a',activeReadingMatch?.id,location.search)&&typeof document.createElement==='function'){
     try{
-      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261024-goalkeepers-first')]);
+      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261025-static-recent-form')]);
       const analysis={match:activeReadingMatch,matches,teamDirectory,styles:teamStyleProfiles,referees:refereeProfiles,reading:activeReading,history:headToHeadData?.fixtures?.find(f=>f.fixtureId===activeReadingMatch.id),lineups:[activeReadingMatch.homeTeam,activeReadingMatch.awayTeam].map(id=>{const team=teamDirectory.teams.find(t=>t.id===id);return {team,lineup:fixtureLineupForMatch(activeReadingMatch,team,teamDirectory)}})};
       const model=adaptSerieAReading({match:activeReadingMatch,teams,teamDirectory,prediction:activePrediction,marketCatalog:forecastDataset?.marketCatalog,formation:formationPresentation(activeReadingMatch,teamDirectory),analysis});
       const prepared=await prepareReadingShell(model);

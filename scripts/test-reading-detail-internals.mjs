@@ -13,6 +13,8 @@ const before=JSON.stringify(model),scenario=scenarioMarkup(model);
 assert(scenario.includes('Gol attesi · modello'));assert(scenario.includes('0'));assert(!scenario.includes('NaN'));
 assert(formationMarkup(empty).includes('Disposizione tattica non disponibile'));
 assert(playersMarkup(model,empty).includes('Tiri previsti</dt><dd>—'));
+assert(!playersMarkup(model,empty).includes('Proiezione del singolo:'));
+assert(!playersMarkup(model,empty).includes('Rischio sostituzione:'));
 assert(attackMarkup(null).includes('non disponibile'));assert(attackMarkup({left:0}).includes('0%'));
 const tactics=tacticsMarkup(model,empty);
 assert(tactics.includes('Ripartizione delle direzioni d’attacco non disponibile.'));
@@ -54,3 +56,5 @@ const form=recentFormMarkup(model,{...chronology,analysis:{matches:[{id:'PRIOR',
 
 const {publishedReadingForecasts,compactForecastMarkup}=await import('../js/pages/reading-detail/forecasts.mjs');
 const all=publishedReadingForecasts(catalog,'fiorentina-como-2026-27-md-07');assert.equal(all.length,21);const provider=all.find(l=>!isCanonicalModelForecast(l));const available={...model,fixture:{status:'scheduled',matchday:7},forecasts:all};assert(canPickReading(available,provider));assert(!canPickReading({...available,fixture:{status:'finished'}},provider));const compact=compactForecastMarkup(available);assert.equal((compact.match(/data-forecast-id=/g)||[]).length,21);assert(!/rd-filters|<small|<details|rd-row-family|<select|>EV</.test(compact));assert(compact.includes('aria-label="Aggiungi '));
+
+assert(!/<details|<summary|<a\b|<button/.test(form),'Andamento recente deve essere statico');

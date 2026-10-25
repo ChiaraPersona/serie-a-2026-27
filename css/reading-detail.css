@@ -260,14 +260,14 @@ body[data-reading-detail-theme] #app:has(.rd-slip-trigger){padding-bottom:110px!
 .rd-shell .rd-player-kpis,.rd-shell .rd-ref-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}.rd-shell .rd-ref-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
 .rd-shell .rd-player-probabilities{display:flex;justify-content:space-between;gap:12px;font-size:11px;line-height:1.5;border-top:1px solid var(--rd-line);padding-top:12px;color:var(--rd-muted)}.rd-shell .rd-player-probabilities b{color:var(--rd-ink);margin-left:6px}
 .rd-shell [data-metric-mode=sot] .rd-player-kpis>.rd-metric:nth-child(2){color:var(--rd-accent)}.rd-shell [data-metric-mode=shots] .rd-player-kpis>.rd-metric:first-child{color:var(--rd-accent)}
-.rd-shell .rd-mini-log{list-style:none;padding:0;margin:12px 0}.rd-shell .rd-mini-log li{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;border-bottom:1px solid var(--rd-line);padding:11px 0}.rd-shell .rd-mini-log time{color:var(--rd-muted)}.rd-shell .rd-mini-log b{font-weight:500}
+.rd-shell .rd-mini-log{list-style:none;padding:0;margin:12px 0}.rd-shell .rd-mini-log li{display:grid;grid-template-columns:max-content minmax(max-content,1fr) max-content max-content;align-items:baseline;column-gap:clamp(6px,2vw,16px);font-size:12px;border-bottom:1px solid var(--rd-line);padding:11px 0;font-variant-numeric:tabular-nums}.rd-shell .rd-mini-log{overflow-x:auto}.rd-shell .rd-mini-log time,.rd-shell .rd-mini-log .rd-player-opponent{white-space:nowrap;overflow-wrap:normal}.rd-shell .rd-mini-log li>span:not(.rd-player-opponent){text-align:right;white-space:nowrap}.rd-shell .rd-mini-log li>b{text-align:right;white-space:nowrap}.rd-shell .rd-mini-log time{color:var(--rd-muted)}.rd-shell .rd-mini-log b{font-weight:500}
 .rd-shell .rd-player-links{display:grid;gap:6px;margin-top:14px}.rd-shell .rd-player-links button{text-align:left;line-height:1.5;color:var(--rd-accent)}
 .rd-shell h4{font-size:12px;margin:18px 0 8px}.rd-shell .rd-player-card .rd-record{font-size:11px}
 @media(max-width:767px){.rd-shell .rd-two-col,.rd-shell .rd-player-grid{grid-template-columns:1fr}.rd-shell .rd-player-toolbar{align-items:start;flex-direction:column;gap:12px}.rd-shell .rd-player-toolbar label{width:100%}.rd-shell .rd-ref-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.rd-shell .rd-lineup-head h3{font-size:17px}.rd-shell .rd-lineup-head b,.rd-shell .rd-lineup-head span{font-size:11px}.rd-shell .rd-player-card{padding:16px}}
 .rd-shell .rd-tactical-summary{padding:0 0 20px;margin-bottom:15px;border-bottom:1px solid var(--rd-line)}.rd-shell .rd-tactical-summary h3{font-size:19px;margin:0 0 15px}.rd-shell .rd-tactical-summary p{font-size:13px;line-height:1.75}.rd-shell .rd-tactical-summary small{font-size:11px;color:var(--rd-muted)}
 .rd-shell .rd-channels{display:grid;gap:13px;margin:22px 0}.rd-shell .rd-channels>div{display:grid;grid-template-columns:75px minmax(0,1fr) 55px;gap:12px;align-items:center;font-size:12px}.rd-shell .rd-channels i{height:7px;background:var(--rd-soft);border-radius:4px;overflow:hidden}.rd-shell .rd-channels i b{display:block;height:100%;background:var(--rd-accent)}.rd-shell .rd-channels strong{text-align:right;font-weight:600}
 .rd-shell .rd-traits{font-size:13px;padding-left:18px;line-height:1.9}.rd-shell .rd-duel{border-bottom:1px solid var(--rd-line);padding:15px 0}.rd-shell .rd-duel h3{font-size:16px}.rd-shell .rd-duel p{font-size:13px;line-height:1.6}
-.rd-shell .rd-match-log{border-top:1px solid var(--rd-line);padding:13px 0}.rd-shell .rd-match-log>summary{display:grid;grid-template-columns:82px minmax(0,1fr) auto;gap:10px;align-items:center;list-style:none;cursor:pointer;font-size:12px;min-height:35px}.rd-shell .rd-match-log time{color:var(--rd-muted);font-size:10px}.rd-shell .rd-match-log b{white-space:nowrap}.rd-shell .rd-match-log>div{padding-top:12px;font-size:12px}
+.rd-shell .rd-match-log{border-top:1px solid var(--rd-line);padding:13px 0}.rd-shell .rd-match-log>.rd-match-log-row{display:grid;grid-template-columns:82px minmax(0,1fr) auto;gap:10px;align-items:center;list-style:none;font-size:12px;min-height:35px}.rd-shell .rd-match-log time{color:var(--rd-muted);font-size:10px}.rd-shell .rd-match-log b{white-space:nowrap}
 .rd-shell .rd-final-score{display:flex;justify-content:center;align-items:center;gap:25px;text-align:center;font-size:18px;border-block:1px solid var(--rd-line);padding:22px 0}.rd-shell .rd-final-score strong{font-family:Anton,Inter,sans-serif;font-size:38px;font-weight:400;white-space:nowrap}
 .rd-shell .rd-event-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin:25px 0}.rd-shell .rd-event-grid h3{font-size:15px}
 .rd-shell .rd-event-list{list-style:none;padding:0;margin:0}.rd-shell .rd-event-list li{display:flex;align-items:baseline;gap:10px;padding:10px 0;border-top:1px solid var(--rd-line);font-size:12px}.rd-shell .rd-event-list time{min-width:28px;color:var(--rd-muted)}.rd-shell .rd-event-list span,.rd-shell .rd-event-list small{display:block;line-height:1.7;font-size:11px;color:var(--rd-muted)}
@@ -306,16 +306,16 @@ body[data-reading-detail-theme] #app:has(.rd-slip-trigger){padding-bottom:110px!
 .rd-shell .rd-player-expanded .rd-record>div{grid-template-columns:1fr;gap:2px}
 .rd-shell .rd-player-expanded .rd-record{font-size:11px}
 @media(max-width:767px){
- .rd-shell .rd-player-columns{gap:14px}
+ .rd-shell .rd-player-columns{grid-template-columns:minmax(0,1fr);gap:24px}
  .rd-shell #lettura-giocatori .rd-player-toolbar{gap:8px}
  .rd-shell .rd-player-team-name{font-size:14px;padding:7px 0 10px;min-height:36px}
- .rd-shell .rd-player-column-labels{grid-template-columns:minmax(0,1fr) 24px 24px;gap:4px;padding-right:13px;font-size:9px}
- .rd-shell .rd-player-row>summary{grid-template-columns:17px minmax(0,1fr) 24px 24px 9px;gap:4px;min-height:38px;padding:6px 0}
- .rd-shell .rd-row-identity h3{font-size:11px;line-height:1.4}
- .rd-shell .rd-row-number{font-size:9px}
- .rd-shell :is(.rd-row-shot,.rd-row-sot){font-size:12px}
- .rd-shell .rd-row-chevron{font-size:11px}
- .rd-shell .rd-compact-outsider{font-size:8px}
+ .rd-shell .rd-player-column-labels{grid-template-columns:minmax(0,1fr) 36px 36px;gap:8px;padding-right:22px;font-size:11px}
+ .rd-shell .rd-player-row>summary{grid-template-columns:20px minmax(0,1fr) 36px 36px 14px;gap:8px;min-height:48px;padding:9px 0}
+ .rd-shell .rd-row-identity h3{font-size:13px;line-height:1.4}
+ .rd-shell .rd-row-number{font-size:11px}
+ .rd-shell :is(.rd-row-shot,.rd-row-sot){font-size:14px}
+ .rd-shell .rd-row-chevron{font-size:14px}
+ .rd-shell .rd-compact-outsider{font-size:10px}
  .rd-shell .rd-player-expanded .rd-player-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
  .rd-shell .rd-player-expanded .rd-metric dd{font-size:15px}
  .rd-shell .rd-player-expanded :is(.rd-footnote,.rd-empty){font-size:11px}
@@ -466,3 +466,46 @@ body[data-reading-detail-theme="champions"] .rd-nav{background:transparent}
 body[data-reading-detail-theme="champions"] .rd-shell .rd-back a{padding:0;border:0;border-radius:0;background:none;box-shadow:none;font-size:12px;text-transform:none;letter-spacing:normal}
 /* Champions validation labels remain distinct from the forecast name. */
 body[data-reading-detail-theme="champions"] .rd-compact-forecast-table [data-publication-status]{display:block;margin-top:4px;font-size:10px;line-height:1.4;color:var(--rd-muted)}
+
+@media(max-width:767px){.rd-shell .rd-diverging-top b{font-size:16px}}
+
+.rd-shell .rd-recent-form>h3{font-family:Inter,system-ui,sans-serif;font-size:10px;line-height:1.35;font-weight:900;text-transform:uppercase;letter-spacing:.16em;color:#967126}@media(max-width:767px){.rd-shell .rd-recent-form>h3{font-size:9px}}
+
+@media(max-width:767px){.rd-shell .rd-match-meta>span:nth-of-type(2){flex-basis:100%;text-align:left;justify-self:start}.rd-shell .rd-match-meta>span:nth-of-type(2)::before{content:none}}
+
+@media(max-width:767px){
+ .rd-shell .rd-tactical-comparison{grid-template-columns:minmax(0,1fr);gap:24px}
+ .rd-shell .rd-tactical-column{grid-row:auto;grid-template-rows:auto;gap:12px}
+ .rd-shell .rd-tactical-column+.rd-tactical-column{border-top:1px solid var(--rd-line);padding-top:20px}
+ .rd-shell .rd-tactical-team h3{font-size:18px}
+ .rd-shell .rd-tactical-column .rd-tactical-baseline{font-size:11px}
+ .rd-shell .rd-tactical-metrics dt{font-size:12px}
+ .rd-shell .rd-tactical-metrics dd{font-size:16px}
+ .rd-shell .rd-tactical-metrics>div{padding:10px 0}
+ .rd-shell .rd-tactical-directions .rd-channels>div{grid-template-columns:52px minmax(0,1fr) 46px;gap:10px;font-size:12px}
+ .rd-shell .rd-tactical-directions .rd-channels i{grid-column:2;grid-row:1;height:6px}
+ .rd-shell .rd-tactical-directions .rd-channels strong{grid-column:3;grid-row:1;text-align:right}
+}
+
+/* Shared mobile layout for every Serie A and Champions reading. */
+@media(max-width:767px){
+ .rd-shell .rd-two-col,.rd-shell .rd-event-grid{grid-template-columns:minmax(0,1fr);gap:24px}
+ .rd-shell .rd-recent-form .rd-two-col>article+article{border-top:1px solid var(--rd-line);padding-top:18px}
+ .rd-shell .rd-match-log>.rd-match-log-row{grid-template-columns:max-content minmax(0,1fr) max-content;gap:10px;min-height:40px}
+ .rd-shell .rd-match-log time{font-size:11px;white-space:nowrap}
+ .rd-shell .rd-match-log-row>span{font-size:12px;line-height:1.5}
+ .rd-shell .rd-lineup-head{gap:16px}
+ .rd-shell .rd-lineup-head h3{font-size:16px}
+ .rd-shell .rd-lineup-head b,.rd-shell .rd-lineup-head span{font-size:11px;line-height:1.6}
+ .rd-shell .rd-pitch-scroll{overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+ .rd-shell .rd-forecast-tools,.rd-shell .rd-row-actions{flex-wrap:wrap;align-items:flex-start}
+ .rd-shell .rd-filters{grid-template-columns:minmax(0,1fr)}
+ .rd-shell .rd-forecast-row summary{grid-template-columns:minmax(0,1fr);gap:12px}
+ .rd-shell .rd-forecast-row summary strong{font-size:14px}
+ .rd-shell .prediction-booked-panel li{column-gap:10px}
+ .rd-shell .prediction-booked-panel li>div{min-width:0}
+ .rd-shell .prediction-booked-panel li em{font-size:12px;line-height:1.6;overflow-wrap:break-word}
+ .rd-shell .rd-slip{padding:18px 14px}
+ .rd-forecasts .rd-compact-forecast-table :is(th,td):last-child{width:48px}
+ .rd-forecasts .rd-compact-forecast-table button{min-width:44px;min-height:44px}
+}

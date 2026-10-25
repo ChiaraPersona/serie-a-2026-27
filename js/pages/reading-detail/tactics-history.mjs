@@ -1,4 +1,4 @@
-import {esc,number,finite,recordList,details,missing} from './format.mjs?v=20261022-assets-v1';
+import {esc,number,finite,missing} from './format.mjs?v=20261022-assets-v1';
 import {historyMarkup,selectHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
 export function attackMarkup(channels){
  if(!channels)return missing('Ripartizione delle direzioni d’attacco non disponibile.');
@@ -22,7 +22,7 @@ export function priorMatches(model,evidence,side){
 function timeline(model,evidence,side){
  const name=id=>evidence.directory?.teams.find(t=>t.id===id)?.name||id;
  const rows=priorMatches(model,evidence,side).slice(0,5);
- return `<h3>${esc(side.name)}</h3>${rows.length?rows.map(m=>`<details class="rd-match-log"><summary><time>${esc(m.date)}</time><span>${esc(name(m.homeTeam))} – ${esc(name(m.awayTeam))}</span><b>${esc(m.score.home)}–${esc(m.score.away)}</b></summary><div><p class="rd-footnote">Solo gare concluse del calendario disponibile, antecedenti alla fixture.</p><a href="${model.competition==='champions'?'champions-league':'lettura'}.html?match=${encodeURIComponent(m.id)}">Apri la lettura ↗</a>${details('Tabellino e dati osservati disponibili',recordList({risultato:m.score,statistiche:m.teamStats||m.matchReport?.statistics,fonti:m.resultSource||m.matchReport?.sourceUrl||m.sources}))}</div></details>`).join(''):missing('Gare precedenti con risultato verificato non disponibili nel calendario caricato.')}`;
+ return `<h3>${esc(side.name)}</h3>${rows.length?rows.map(m=>`<div class="rd-match-log"><div class="rd-match-log-row"><time>${esc(m.date)}</time><span>${esc(name(m.homeTeam))} – ${esc(name(m.awayTeam))}</span><b>${esc(m.score.home)}–${esc(m.score.away)}</b></div></div>`).join(''):missing('Gare precedenti con risultato verificato non disponibili nel calendario caricato.')}`;
 }
 export function installTacticsHistory(model,evidence,containers){
  const oldTactics=[...containers.tattica.childNodes],oldHistory=[...containers.storico.childNodes];
