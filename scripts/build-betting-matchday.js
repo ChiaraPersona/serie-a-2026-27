@@ -64,7 +64,12 @@ if (refreshOdds) {
 run("scripts/validate-sisal-odds.js");
 
 if (!validateOnly) {
-  if (matchday === 7) {
+  if (matchday === 9) {
+    run("scripts/build-reading-md09.cjs");
+    run("scripts/generate-mycombo-md01.js", ["--matchday", String(matchday)]);
+    run("scripts/build-reading-md09.cjs");
+    run("scripts/build-schedina-md09.cjs");
+  } else if (matchday === 7) {
     run("scripts/build-betting-md07.js");
   } else {
     if (matchday === 6) {
