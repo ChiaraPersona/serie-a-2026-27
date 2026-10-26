@@ -1,0 +1,3 @@
+const fs=require('fs');
+const f='js/pages/betting.js';let s=fs.readFileSync(f,'utf8');s=s.replace('md7,md8,matches,audit','md7,md8,md9,matches,audit').replace('load("schedina-md08.json"),load("matches.json")','load("schedina-md08.json"),load("schedina-md09.json"),load("matches.json")').replace('${archiveCard(md8,8,matchById)}','${archiveCard(md8,8,matchById)}${archiveCard(md9,9,matchById)}').replace('["1","2","3","4","5","6","7","8"].includes(matchday)','["1","2","3","4","5","6","7","8","9"].includes(matchday)');fs.writeFileSync(f,s);
+const b='scripts/build-schedina-browser-data.mjs';fs.writeFileSync(b,fs.readFileSync(b,'utf8').replace('[5,6,7,8].filter','[5,6,7,8,9].filter'));

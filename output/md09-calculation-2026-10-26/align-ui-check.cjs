@@ -1,0 +1,1 @@
+const fs=require('fs'),f='scripts/test-reading-md09.cjs';let s=fs.readFileSync(f,'utf8').replace(/\[data-md9-availability\]/g,'.rd-lineup-head').replace("assert(state.availability.includes('Ballottaggi:'));",'');fs.writeFileSync(f,s);

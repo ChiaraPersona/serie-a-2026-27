@@ -1,0 +1,24 @@
+const fs=require('fs');
+const {stringifySisalDataset}=require('../../scripts/sisal/identifiers');
+const dir=__dirname;
+const file='data/normalized/odds/sisal/serie-a.json';
+const old=JSON.parse(fs.readFileSync(dir+'/before.json','utf8'));
+const fresh=JSON.parse(fs.readFileSync(file,'utf8'));
+if(fresh.rawFile===old.rawFile) throw Error('Nessuna nuova acquisizione');
+const fixtures=require('../../data/normalized/matches.json').filter(m=>m.competition==='serie-a'&&m.matchday===9);
+const ids=new Set(fixtures.map(m=>m.id));
+const updated=fresh.events.filter(e=>ids.has(e.canonicalMatchId));
+if(!updated.length) throw Error('Nessun evento MD9: dataset precedente da ripristinare');
+fs.writeFileSync(dir+'/acquired.json',stringifySisalDataset(fresh));
+const updatedIds=new Set(updated.map(e=>e.canonicalMatchId));
+const retained=old.events.filter(e=>!updatedIds.has(e.canonicalMatchId));
+const events=[...updated,...retained].sort((a,b)=>String(a.startsAt).localeCompare(String(b.startsAt))||a.name.localeCompare(b.name,'it'));
+const markets=events.flatMap(e=>e.markets);
+const match=events.filter(e=>e.eventType==='MATCH');
+const output={...fresh,rawFiles:[...new Set(events.map(e=>e.rawFile||old.rawFile).filter(Boolean))],events,summary:{events:events.length,matchEvents:match.length,antepostEvents:events.filter(e=>e.eventType==='ANTEPOST').length,matchedEvents:match.filter(e=>e.canonicalMatchId).length,unmatchedEvents:match.filter(e=>!e.canonicalMatchId).length,markets:markets.length,playerMarkets:markets.filter(m=>m.marketScope==='player').length,selections:markets.reduce((s,m)=>s+m.selections.length,0)}};
+fs.writeFileSync(dir+'/merged.json',stringifySisalDataset(output));
+const coverage=fixtures.map(f=>{const e=updated.find(e=>e.canonicalMatchId===f.id);return {id:f.id,acquired:!!e,markets:e?.markets.length||0,playerMarkets:e?.markets.filter(m=>m.marketScope==='player').length||0,selections:e?.markets.reduce((s,m)=>s+m.selections.length,0)||0};});
+const report={retrievedAt:fresh.retrievedAt,rawFile:fresh.rawFile,coverage,retainedEvents:retained.length,retainedUnchanged:retained.every(e=>JSON.stringify(e)===JSON.stringify(output.events.find(x=>x.providerEventId===e.providerEventId)))};
+fs.writeFileSync(dir+'/coverage.json',JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify(report,null,2));
+
