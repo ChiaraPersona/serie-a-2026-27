@@ -11,7 +11,7 @@
     if(!individual)return true;
     const fixture=registry[row.matchId||row.fixtureId||row.betSelection?.identity?.matchId||matchId];
     if(!fixture)return !['official-bench','official-non-starter','official-nonstarter'].includes(player.lineupStatus);
-    const id=player.canonicalPlayerId||row.playerId||subject.id;
+    const id=player.canonicalPlayerId||row.playerId||subject.id||row.lineupEligibility?.playerId;
     if(id&&fixture.ids.includes(String(id)))return true;
     const name=player.canonicalName||player.name||row.playerName||subject.name||(typeof row.player==='string'?row.player:null);
     return Boolean(name&&fixture.names.includes(token(name)));
