@@ -1,4 +1,5 @@
 import {imageSource} from '../core/image-source.mjs?v=20261022-assets-v1';
+import {championsStandingsDiscipline} from './champions-standings-discipline.mjs';
 import {championsShirtNumber} from '../components/champions-shirt-numbers.mjs?v=20261022-assets-v1';
 import {renderLineupField} from '../components/lineup-field.mjs?v=20261022-assets-v1';
 import {isReadingPilot} from './reading-detail/view-model.mjs?v=20261022-assets-v1';
@@ -70,13 +71,16 @@ export function createPage(deps){
     if(stats?.note)cards+=`<p>${esc(stats.note)}</p>`;
     return `<section class="champions-match-report champions-strength-panel"><header><p class="eyebrow">${esc(fixture.matchday||2)}ª giornata · Finale</p><h1>${esc(fixture.homeTeam)} ${fixture.score.home}–${fixture.score.away} ${esc(fixture.awayTeam)}</h1></header><h2>Marcatori</h2><p><strong>${esc(fixture.homeTeam)}:</strong> ${scorers("home")}</p><p><strong>${esc(fixture.awayTeam)}:</strong> ${scorers("away")}</p><p>Minuti, assist e sostituzioni completi: da verificare. I nomi sono raggruppati per squadra.</p><a href="${esc(report.scorersSourceUrl||report.sourceUrl)}" target="_blank" rel="noreferrer">Fonte marcatori ↗</a>${statsPanel}${cards}<p>Le sezioni seguenti conservano le proiezioni prepartita.</p></section>`;
   }
-  function roundTable(data){
-    const rows=new Map(data.teams.map(team=>[team,{team,played:0,points:0,gf:0,ga:0}]));
+  function roundTable(data,branding){
+    const discipline=championsStandingsDiscipline(data.fixtures);
+    const disciplineCells=team=>['penaltiesFor','penaltiesAgainst','cardsFor','cardsAgainst'].map(key=>`<td>${discipline.get(team)?.[key]??'N/D'}</td>`).join('');
+    const rows=new Map(data.teams.map(team=>[team,{team,played:0,points:0,won:0,drawn:0,lost:0,gf:0,ga:0}]));
     for(const f of data.fixtures.filter(f=>f.status==="finished"))for(const [side,other] of [["home","away"],["away","home"]]){
-      const row=rows.get(f[`${side}Team`]);row.played++;row.gf+=f.score[side];row.ga+=f.score[other];row.points+=f.score[side]>f.score[other]?3:f.score[side]===f.score[other]?1:0;
+      const row=rows.get(f[`${side}Team`]);row.played++;row.gf+=f.score[side];row.ga+=f.score[other];if(f.score[side]>f.score[other]){row.won++;row.points+=3}else if(f.score[side]===f.score[other]){row.drawn++;row.points++}else{row.lost++}
     }
+    for(const row of rows.values())row.goalDifferenceLabel=(row.gf>row.ga?'+':'')+(row.gf-row.ga);
     const sorted=[...rows.values()].sort((a,b)=>b.points-a.points||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf||a.team.localeCompare(b.team));
-    return `<details class="champions-strength-panel champions-round-summary"><summary><strong>Riepilogo punti · fase campionato</strong><span>${data.summary.finished}/${data.fixtures.length} partite concluse</span></summary><p>Ordine per punti, differenza reti e gol segnati; a parità, ordine alfabetico. Non applica tutti gli spareggi della classifica UEFA.</p><div class="champions-strength-table-wrap"><table><thead><tr><th>Squadra</th><th>G</th><th>Punti</th><th>GF</th><th>GS</th><th>DR</th></tr></thead><tbody>${sorted.map(r=>`<tr><th>${esc(r.team)}</th><td>${r.played}</td><td>${r.points}</td><td>${r.gf}</td><td>${r.ga}</td><td>${r.gf-r.ga}</td></tr>`).join("")}</tbody></table></div></details>`;
+    return `<details open class="champions-strength-panel champions-round-summary"><summary><strong>Classifica · fase campionato</strong><span>${data.summary.finished}/${data.fixtures.length} partite concluse</span></summary><p>Ordine per punti, differenza reti e gol segnati; a parità, ordine alfabetico. Non applica tutti gli spareggi della classifica UEFA.</p><div class="champions-strength-table-wrap table-wrap"><table class="standings-table champions-standings-table"><thead><tr><th scope="col">#</th><th scope="col">Squadra</th><th scope="col">PT</th><th scope="col" title="Partite giocate">PG</th><th scope="col" title="Vittorie">V</th><th scope="col" title="Pareggi">N</th><th scope="col" title="Sconfitte">P</th><th scope="col" title="Gol fatti">GF</th><th scope="col" title="Gol subiti">GS</th><th scope="col" title="Differenza reti">DR</th><th scope="col" title="Rigori calciati a favore, inclusi gli errori">R+</th><th scope="col" title="Rigori calciati dagli avversari, inclusi gli errori">R-</th><th scope="col" title="Cartellini assegnati agli avversari">C+</th><th scope="col" title="Cartellini ricevuti dalla squadra">C-</th></tr></thead><tbody>${sorted.map((r,index)=>`<tr><td>${index+1}</td><td>${teamBadge(r.team,branding)}</td><td><strong>${r.points}</strong></td><td>${r.played}</td><td>${r.won}</td><td>${r.drawn}</td><td>${r.lost}</td><td>${r.gf}</td><td>${r.ga}</td><td>${r.goalDifferenceLabel}</td>${disciplineCells(r.team)}</tr>`).join("")}</tbody></table></div></details>`;
   }
 
   function fixtureCard(fixture,branding,pilotByFixture){
@@ -537,9 +541,9 @@ export function createPage(deps){
     const teamOptions=data.teams.map(team=>`<option value="${esc(team)}">${esc(team)}</option>`).join("");
     document.querySelector("#app").innerHTML=`<div class="champions-overview">
       <section class="champions-hero champions-home-banner" aria-label="UEFA Champions League 2026/27"><img src="assets/images/optimized/champions-home-2026-27-1600.webp" srcset="assets/images/optimized/champions-home-2026-27-800.webp 800w, assets/images/optimized/champions-home-2026-27-1600.webp 1600w" sizes="(max-width: 760px) calc(100vw - 24px), 1050px" alt="UEFA Champions League, stadio illuminato in blu e viola" width="1920" height="1080" fetchpriority="high"><div class="champions-banner-title"><h2>CHAMPIONS LEAGUE</h2><p>Stagione 2026/27</p></div></section>
-      ${teamLogoDirectory(data.teamBranding,squads)}${roundTable(data)}
+      ${teamLogoDirectory(data.teamBranding,squads)}${roundTable(data,branding)}
       <section class="champions-calendar" aria-labelledby="champions-calendar-title">
-        <header class="champions-calendar-heading"><div><p class="eyebrow">UEFA Champions League 2026/27 · Fase campionato</p><h1 id="champions-calendar-title">Calendario</h1><p>144 partite · 36 squadre · 8 giornate. Seleziona una giornata per consultare partite e risultati.</p></div></header>
+        <header class="champions-calendar-heading"><div><p class="eyebrow">UEFA Champions League 2026/27 · Fase campionato</p><h1 id="champions-calendar-title">Calendario</h1></div></header>
         <nav class="champions-days" aria-label="Giornate della fase campionato">
           ${matchdays.map(dayButton).join('')}
         </nav>
@@ -547,19 +551,16 @@ export function createPage(deps){
           <label><span>Squadra</span><select id="champions-team"><option value="all">Tutte le squadre</option>${teamOptions}</select></label>
           <button id="champions-reset" type="button">Azzera filtri</button>
         </div>
-        <div class="champions-results-head"><p id="champions-results-label" aria-live="polite"></p><span>Snapshot calendario del ${esc(shortDate(data.generatedAt.slice(0,10)))}</span></div>
         <div id="champions-fixtures" role="region" aria-labelledby="champions-calendar-title"></div>
       </section></div>`;
 
     const teamSelect=document.querySelector("#champions-team");
     const results=document.querySelector("#champions-fixtures");
-    const resultsLabel=document.querySelector("#champions-results-label");
     const applyFilters=()=>{
       const team=teamSelect.value;
       const filtered=data.fixtures.filter(fixture=>fixture.matchday===selectedMatchday&&(team==="all"||fixture.homeTeam===team||fixture.awayTeam===team));
       results.innerHTML=selectedMatchday==null?'':fixtureGroups(filtered,branding,pilotByFixture);
       results.hidden=selectedMatchday==null;
-      resultsLabel.textContent=selectedMatchday==null?'Seleziona una giornata.':`${filtered.length} ${filtered.length===1?'partita':'partite'} · ${roundRange(selectedMatchday)} · ${roundStatus(selectedMatchday)}`;
       document.querySelector('#champions-calendar-title').textContent=selectedMatchday==null?'Calendario':`Calendario · ${matchdayLabel(selectedMatchday)}`;
       document.querySelectorAll('[data-champions-day]').forEach(button=>button.setAttribute('aria-expanded',String(Number(button.dataset.championsDay)===selectedMatchday)));
     };

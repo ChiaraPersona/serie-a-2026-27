@@ -1334,3 +1334,18 @@ body[data-page="champions"] .champions-overview>.champions-calendar{margin-top:v
 .champions-banner-title h2{margin:0;color:#fff;font:400 clamp(28px,4.4vw,62px)/1.1 var(--font-display);letter-spacing:.025em;text-shadow:0 2px 14px #020b2d80}
 .champions-banner-title p{margin:12px 0 0;color:#e0eaff;font:500 clamp(12px,1.4vw,17px)/1.4 var(--font-body);letter-spacing:.08em}
 @media(max-width:600px){.champions-overview .champions-home-banner{height:210px;border-radius:18px}.champions-home-banner>img{object-position:81% 49%}.champions-days{display:flex;flex-wrap:nowrap;gap:10px;overflow-x:auto;padding:7px 6px 12px;overscroll-behavior-x:contain}.champions-day{flex:0 0 78px}.champions-banner-title{left:18px;top:26px;transform:none;max-width:48%;padding:0}.champions-banner-title h2{font-size:clamp(23px,6vw,35px);line-height:1.15}.champions-banner-title p{margin-top:8px;font-size:11px;letter-spacing:.03em}.champions-overview .champions-controls{grid-template-columns:minmax(0,1fr)}.champions-overview .champions-results-head{flex-wrap:wrap;gap:8px}}
+.champions-overview .champions-round-summary{--muted:var(--ds-color-text-muted);background:var(--ds-color-surface);border:1px solid var(--ds-color-border);border-radius:18px;overflow:hidden}
+body[data-page="champions"] .champions-overview .champions-round-summary>summary{background:var(--ds-color-surface-soft);color:var(--ds-color-text);padding:20px}
+body[data-page="champions"] .champions-overview .champions-round-summary>summary :is(strong,span){color:inherit}
+body[data-page="champions"] .champions-overview .champions-round-summary>p{color:var(--muted);font-size:12px;line-height:1.5}
+body[data-page="champions"] .champions-overview .champions-round-summary .table-wrap{margin:16px;border-radius:14px;border:1px solid var(--ds-color-border);background:var(--ds-color-surface)}
+body[data-page="champions"] .champions-overview .champions-standings-table{width:100%;min-width:1088px;table-layout:auto;border-collapse:separate;border-spacing:0}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td){padding:12px;text-align:center;border:0;border-bottom:1px solid var(--ds-color-border);background:transparent!important;color:var(--ds-color-text)!important;font-variant-numeric:tabular-nums;width:auto}
+body[data-page="champions"] .champions-overview .champions-standings-table thead th{background:var(--ds-color-surface-soft)!important;color:var(--muted)!important;font-size:11px;font-weight:800}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):first-child{width:50px;color:var(--muted)!important}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(2){text-align:left;min-width:190px}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(3){color:var(--champions-sky)!important;font-weight:800}
+body[data-page="champions"] .champions-overview .champions-standings-table td:nth-child(3),body[data-page="champions"] .champions-overview .champions-standings-table td:nth-child(3) strong{color:#fff!important}
+body[data-page="champions"] .champions-overview .champions-standings-table tbody tr:hover>td{background:color-mix(in srgb,var(--ds-color-accent) 8%,var(--ds-color-surface))!important}
+.champions-standings-table .team-with-logo{gap:10px;font-weight:700;white-space:nowrap}
+.champions-standings-table .team-logo{width:30px;height:30px;flex:0 0 30px}

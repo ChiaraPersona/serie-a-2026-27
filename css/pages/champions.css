@@ -313,7 +313,7 @@ main > .loading{
 .button:hover{border-color:var(--accent)}
 .selector{display:flex;gap:10px;align-items:center;margin-bottom:18px}
 select{padding:10px 36px 10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text)}
-
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
 table{width:100%;border-collapse:collapse;background:var(--surface)}
 th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
 th{color:var(--muted);font-size:11px;text-transform:uppercase}
@@ -409,7 +409,7 @@ tbody tr:hover{background:rgba(23,79,165,.18)}
 
 :root{--bg:#020b22;--surface:#071a40;--surface2:#0d285d;--surface3:#123676;--line:rgba(105,145,207,.34);--line-strong:rgba(143,177,228,.55);--text:#fffdf7;--muted:#aebfda;--gold:#f4cb69;--accent:#f4cb69;--radius-sm:12px;--radius-md:18px;--radius-lg:28px;--shadow-sm:0 10px 28px rgba(0,7,28,.2);--shadow-lg:0 28px 80px rgba(0,5,25,.38)}
 
-
+.table-wrap{border-color:var(--line);border-radius:18px;box-shadow:var(--shadow-sm)}
 th{padding-block:13px;background:rgba(5,20,49,.64);letter-spacing:.06em}
 td{padding-block:13px}
 
@@ -441,7 +441,7 @@ td{padding-block:13px}
 .button{padding:8px 13px;border-color:rgba(255,255,255,.14);border-radius:999px;background:rgba(255,255,255,.055);font-weight:600}
 .button:hover{border-color:rgba(255,255,255,.26);background:rgba(255,255,255,.1);color:#fff}
 select,input{border-color:rgba(255,255,255,.13)!important;border-radius:12px!important;background:rgba(255,255,255,.075)!important;box-shadow:inset 0 1px rgba(255,255,255,.04)}
-
+.table-wrap{border-color:rgba(255,255,255,.1);border-radius:22px;background:rgba(255,255,255,.035);box-shadow:inset 0 1px rgba(255,255,255,.045),0 18px 50px rgba(0,0,0,.16)}
 table{background:transparent}
 th{background:rgba(255,255,255,.04);color:#9fa9ba;font-weight:650}
 th,td{border-color:rgba(255,255,255,.075)}
@@ -451,7 +451,7 @@ tbody tr:hover{background:rgba(255,255,255,.045)}
 
 footer{margin-top:32px;border-color:rgba(255,255,255,.08);color:#7f899b}
 :root{--bg:#031a3d;--surface:rgba(7,39,87,.86);--surface2:rgba(12,55,119,.88);--surface3:#123f84;--line:rgba(104,164,238,.3);--line-strong:rgba(129,186,255,.52);--text:#f6f9ff;--muted:#adbfda;--shadow-sm:0 12px 34px rgba(0,20,62,.24);--shadow-lg:0 34px 90px rgba(0,14,51,.42)}
-
+.table-wrap{border-color:rgba(109,170,242,.25);background:rgba(7,38,85,.74);box-shadow:inset 0 1px rgba(155,200,255,.08),0 20px 52px rgba(0,17,57,.24)}
 table{background:rgba(5,34,77,.62)}
 th{background:rgba(30,88,169,.3);color:#b8cbea}
 th,td{border-color:rgba(104,164,238,.17)}
@@ -474,7 +474,11 @@ tbody tr:hover{background:rgba(40,107,199,.18)}
   --shadow-sm:0 12px 34px rgba(24,42,69,.1);
   --shadow-lg:0 32px 80px rgba(24,42,69,.16);
 }
-
+.table-wrap{
+  border-color:rgba(255,255,255,.9);
+  background:rgba(255,255,255,.68);
+  box-shadow:inset 0 1px #fff,0 18px 44px rgba(30,47,70,.09);
+}
 table{background:rgba(255,255,255,.5)}
 th{background:rgba(20,89,166,.07);color:#55657b}
 th,td{border-color:rgba(18,64,119,.1)}
@@ -566,11 +570,11 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
-
-
-
-
-
+.standings-table{min-width:800px;table-layout:fixed}
+.standings-table th:first-child,.standings-table td:first-child{width:54px}
+.standings-table th:nth-child(3),.standings-table td:nth-child(3){text-align:left}
+.standings-table th:nth-child(n+4),.standings-table td:nth-child(n+4){width:72px;padding-right:12px;padding-left:12px;text-align:center}
+.standings-table th:nth-child(4),.standings-table td:nth-child(4){color:var(--gold)}
 
 
 .hero{position:relative;isolation:isolate;min-height:390px;align-items:center;overflow:hidden;padding:clamp(30px,5vw,58px);border-color:rgba(111,153,218,.42);border-radius:var(--radius-lg);background:linear-gradient(100deg,rgba(3,12,34,.97) 0,rgba(5,18,43,.88) 43%,rgba(8,29,72,.28) 72%),url("../../assets/images/optimized/home-hero-1600.webp") center/cover;box-shadow:var(--shadow-lg)}
@@ -604,10 +608,10 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
-
-
-
-
+.standings-table tbody tr:nth-child(-n+4) td:first-child{box-shadow:inset 3px 0 #4e9cff}
+.standings-table tbody tr:nth-last-child(-n+3) td:first-child{box-shadow:inset 3px 0 #ff7c7c}
+.standings-table tbody tr{transition:background .16s ease}
+.standings-table tbody tr:hover td{background:rgba(29,79,164,.3)}
 .card{border-radius:22px}
 
 
@@ -621,10 +625,10 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+.standings-table{width:calc(100% + 288px);min-width:1088px}
 
 
-
-
+.standings-table tbody tr:nth-child(-n+4) td:first-child,.standings-table tbody tr:nth-last-child(-n+3) td:first-child{box-shadow:none}
 
 
 
@@ -2513,7 +2517,13 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 .card p{color:var(--glass-muted)}
-
+.table-wrap{
+  border-color:var(--glass-border);
+  background:rgba(255,255,255,.48);
+  box-shadow:0 8px 4px #0000000d,0 22px 28px #0000000a,inset 0 1px 4px #ffffff8a;
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
 
 
 
@@ -2535,7 +2545,10 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
-
+#global-player-leaderboard .table-wrap{
+  border-radius:0 0 18px 18px;
+  box-shadow:0 14px 28px rgba(32,49,73,.07),inset 0 1px 3px #ffffff8a;
+}
 
 
 
@@ -5061,6 +5074,21 @@ body[data-page="champions"] .champions-team-detail .champions-team-identity h1{o
 .champions-banner-title p{margin-top:8px;font-size:11px;letter-spacing:.03em}
 .champions-overview .champions-controls{grid-template-columns:minmax(0,1fr)}
 .champions-overview .champions-results-head{flex-wrap:wrap;gap:8px}}
+.champions-overview .champions-round-summary{--muted:var(--ds-color-text-muted);background:var(--ds-color-surface);border:1px solid var(--ds-color-border);border-radius:18px;overflow:hidden}
+body[data-page="champions"] .champions-overview .champions-round-summary>summary{background:var(--ds-color-surface-soft);color:var(--ds-color-text);padding:20px}
+body[data-page="champions"] .champions-overview .champions-round-summary>summary :is(strong,span){color:inherit}
+body[data-page="champions"] .champions-overview .champions-round-summary>p{color:var(--muted);font-size:12px;line-height:1.5}
+body[data-page="champions"] .champions-overview .champions-round-summary .table-wrap{margin:16px;border-radius:14px;border:1px solid var(--ds-color-border);background:var(--ds-color-surface)}
+body[data-page="champions"] .champions-overview .champions-standings-table{width:100%;min-width:1088px;table-layout:auto;border-collapse:separate;border-spacing:0}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td){padding:12px;text-align:center;border:0;border-bottom:1px solid var(--ds-color-border);background:transparent!important;color:var(--ds-color-text)!important;font-variant-numeric:tabular-nums;width:auto}
+body[data-page="champions"] .champions-overview .champions-standings-table thead th{background:var(--ds-color-surface-soft)!important;color:var(--muted)!important;font-size:11px;font-weight:800}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):first-child{width:50px;color:var(--muted)!important}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(2){text-align:left;min-width:190px}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(3){color:var(--champions-sky)!important;font-weight:800}
+body[data-page="champions"] .champions-overview .champions-standings-table td:nth-child(3),body[data-page="champions"] .champions-overview .champions-standings-table td:nth-child(3) strong{color:#fff!important}
+body[data-page="champions"] .champions-overview .champions-standings-table tbody tr:hover>td{background:color-mix(in srgb,var(--ds-color-accent) 8%,var(--ds-color-surface))!important}
+.champions-standings-table .team-with-logo{gap:10px;font-weight:700;white-space:nowrap}
+.champions-standings-table .team-logo{width:30px;height:30px;flex:0 0 30px}
 /* site-layout.css: original cascade position */
 body :is(.site-header,main,#team-squad-app,.site-footer-inner){
   width:var(--container-width);
@@ -5077,7 +5105,7 @@ body:not([data-page="home"]) :is(.detail-section,.subpage-header){padding-block:
 body[data-page="champions"] .champions-team-summary{padding-block:22px;margin-bottom:24px}
 @media(min-width:761px){body[data-page="champions"] .champions-team-hero{padding-block:35px}
 body[data-page="champions"] .champions-team-detail .champions-player-overview{padding-block:22px}}
-
+main>.table-wrap,main .table-wrap{max-width:100%;min-width:0;overflow-x:auto}
 @media(max-width:760px){body:not([data-page="home"]) main{padding-top:24px}
 body:not([data-page="home"]) main>.section{margin-top:52px}
 }
@@ -5492,7 +5520,9 @@ body :is(.standings-table,.squad-table) thead th{
   font-size:calc(var(--ds-text-meta) - 1px);
   border-bottom-color:var(--ds-color-border);
 }
-
+body .standings-table thead th:not(.standings-column-active){
+  background:var(--ds-color-surface-soft);
+}
 body .rd-shell .rd-stat-table :is(th,td){
   padding-block:var(--ds-space-3);
   padding-inline:var(--ds-space-2);
