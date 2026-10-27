@@ -5083,12 +5083,14 @@ body[data-page="champions"] .champions-overview .champions-standings-table{width
 body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td){padding:12px;text-align:center;border:0;border-bottom:1px solid var(--ds-color-border);background:transparent!important;color:var(--ds-color-text)!important;font-variant-numeric:tabular-nums;width:auto}
 body[data-page="champions"] .champions-overview .champions-standings-table thead th{background:var(--ds-color-surface-soft)!important;color:var(--muted)!important;font-size:11px;font-weight:800}
 body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):first-child{width:50px;color:var(--muted)!important}
-body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(2){text-align:left;min-width:190px}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(2){text-align:left;width:1%;min-width:0;white-space:nowrap}
 body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(3){color:var(--champions-sky)!important;font-weight:800}
 body[data-page="champions"] .champions-overview .champions-standings-table td:nth-child(3),body[data-page="champions"] .champions-overview .champions-standings-table td:nth-child(3) strong{color:#fff!important}
 body[data-page="champions"] .champions-overview .champions-standings-table tbody tr:hover>td{background:color-mix(in srgb,var(--ds-color-accent) 8%,var(--ds-color-surface))!important}
 .champions-standings-table .team-with-logo{gap:10px;font-weight:700;white-space:nowrap}
 .champions-standings-table .team-logo{width:30px;height:30px;flex:0 0 30px}
+body[data-page="champions"] .champions-overview .champions-standings-table tbody tr:nth-child(-n+8)>td:first-child{box-shadow:inset 3px 0 #27d17f}
+body[data-page="champions"] .champions-overview .champions-standings-table tbody tr:nth-child(n+9):nth-child(-n+16)>td:first-child{box-shadow:inset 3px 0 #facc15}
 /* site-layout.css: original cascade position */
 body :is(.site-header,main,#team-squad-app,.site-footer-inner){
   width:var(--container-width);
