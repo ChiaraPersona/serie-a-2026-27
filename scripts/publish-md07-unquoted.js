@@ -68,6 +68,7 @@ function build({matchday=7,targetMatchIds=null}={}){
   data.marketCatalog.totals.suggestionsByFamily=data.marketCatalog.matches.flatMap(m=>m.selections).filter(l=>l.suggestionAnalysis?.suggested).reduce((a,l)=>(a[l.suggestionAnalysis.family]=(a[l.suggestionAnalysis.family]||0)+1,a),{});
   data.marketCatalog.unquotedPublication={version:1,source:'cached forecasts only',excluded};
   require('./reconcile-player-duo-quotes.cjs').reconcile(data,read('data/normalized/predictions.json').predictions,read('data/normalized/odds/sisal/serie-a.json'));
+  require('./reconcile-team-forecast-quotes.cjs').reconcile(data,read('data/normalized/odds/sisal/serie-a.json'));
   const output=`data/normalized/schedina-md${code}.json`;
   fs.writeFileSync(`${output}.tmp`,JSON.stringify(data,null,2)+'\n');
   fs.renameSync(`${output}.tmp`,output);
