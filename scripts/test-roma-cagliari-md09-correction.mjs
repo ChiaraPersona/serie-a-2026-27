@@ -1,0 +1,30 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {sharedForecastsForMatch} from '../js/pages/shared-forecast-contract.mjs';
+import {createPersonalBetslipStore,PERSONAL_BETSLIP_STORAGE_KEY} from '../js/pages/personal-betslip-store.mjs';
+const require=createRequire(import.meta.url),policy=require('../js/official-starter-policy.js');
+const read=p=>JSON.parse(fs.readFileSync(p)),id='roma-cagliari-2026-27-md-09',dir='output/roma-cagliari-md09-correction',before=read(dir+'/before.json');
+const official=read('data/sources/official-lineups-2026-27.json').fixtures.find(f=>f.matchId===id);
+assert.deepEqual(official.teams.map(t=>[t.players.length,t.substitutes.length]),[[11,11],[11,14]]);
+const starters=new Set(official.teams.flatMap(t=>t.players.map(p=>p.playerId)));assert.equal(starters.size,22);assert(starters.has('pierluigi-gollini'));assert(!starters.has('paul-mendy'));
+assert.deepEqual(official.teams.map(t=>t.formation),['3-5-2','3-5-1-1']);
+for(const pid of ['ze-pedro','alieu-fadera','nzola'])assert(starters.has(pid));
+for(const pid of ['jacopo-fazzini','daniel-maldini','paul-mendy'])assert(!starters.has(pid));
+const prediction=read('data/normalized/predictions.json').predictions.find(p=>p.matchId===id);
+for(const p of [...prediction.shooters.allPlayers,...prediction.likelyBooked])assert(starters.has(p.playerId));
+assert.equal(prediction.futureDataDiagnostics.dataCutoff.matchdayExclusive,9);
+for(const [f,key]of [['data/normalized/predictions.json','predictions'],['data/normalized/readings.json',null]])assert.deepEqual((key?read(f)[key]:read(f)).filter(x=>x.matchId!==id),(key?before[f][key]:before[f]).filter(x=>x.matchId!==id));
+const data=read('data/normalized/schedina-md09.json'),catalog=read('data/normalized/reading-md09-market-catalog.json').marketCatalog;assert.deepEqual(data.marketCatalog,catalog);
+assert.deepEqual(data.marketCatalog.matches.filter(m=>m.matchId!==id),before['data/normalized/schedina-md09.json'].marketCatalog.matches.filter(m=>m.matchId!==id));
+policy.configure(read('data/normalized/official-starter-registry.json'));
+const match=catalog.matches.find(m=>m.matchId===id),old=before['data/normalized/schedina-md09.json'].marketCatalog.matches.find(m=>m.matchId===id),shared=sharedForecastsForMatch(catalog,id);
+for(const l of match.selections){assert(policy.eligible(l,id));const prior=old.selections.find(p=>p.selectionId===l.selectionId);if(prior){assert.deepEqual(l.betSelection.quote,prior.betSelection.quote);assert.deepEqual(l.betSelection.market,prior.betSelection.market);assert.equal(l.odds,prior.odds)}if(l.betSelection.evaluation?.probabilitySemantics==='DUO_CONTRACT_UNAVAILABLE'){assert.equal(l.betSelection.evaluation.modelProbabilityPct,null);assert.equal(l.betSelection.evaluation.expectedValuePct,null)}}
+const bench=structuredClone(shared.find(l=>l.marketScope==='player'));bench.playerId='paul-mendy';bench.playerName='Paul Mendy';bench.betSelection.market.subject.id='paul-mendy';bench.betSelection.market.subject.name='Paul Mendy';
+const context={competition:'serie-a',season:'2026-27',matchday:9},key='serie-a:2026-27:md09',values=new Map([[PERSONAL_BETSLIP_STORAGE_KEY,JSON.stringify({version:1,activeContext:key,contexts:{[key]:{context,selections:[{...bench,context}]}}})]]),storage={getItem:k=>values.get(k)||null,setItem:(k,v)=>values.set(k,v)},store=createPersonalBetslipStore({storage});
+store.setContext(context);store.reconcile(shared);assert.equal(store.getSnapshot().selections.length,0);assert.equal(store.add({...bench,context}).status,'OFFICIAL_NON_STARTER');
+for(const kind of ['catalogs','matches'])assert.equal(read(`data/generated/readings/${kind}/${id}.json`).forecastDataset.marketCatalog.matches[0].selections.length,shared.length);
+const filteredSaved=policy.filter({matchId:id,favorites:[bench],slips:[{legs:[bench],combinedOdds:2}]});
+assert.equal(filteredSaved.favorites.length,0);assert.equal(filteredSaved.slips.length,0);
+for(const leg of match.selections.filter(l=>!old.selections.some(p=>p.selectionId===l.selectionId))){assert.equal(leg.betSelection.quote.availability,'AVAILABLE_AT_SNAPSHOT');assert(Number.isFinite(leg.odds));assert(leg.suggestionAnalysis.suggested);}
+const report={status:'PASS',starters:22,bench:25,shared:shared.length,providerContractsUnchanged:true,otherFixturesUnchanged:true,favoritesAndMyComboFiltered:true,savedNonstarterPurged:true,nonstarterRejected:true,duoProbabilityNotTransferred:true};fs.writeFileSync(dir+'/tests.json',JSON.stringify(report,null,2)+'\n');console.log(report);
