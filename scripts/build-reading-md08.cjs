@@ -1,8 +1,9 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Fixture-scoped orchestration. All forecasts and admission gates belong to the existing engines.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {execFileSync}=require('node:child_process');
-const root=path.resolve(__dirname,'..'),read=f=>JSON.parse(fs.readFileSync(path.join(root,f),'utf8'));
+const root=path.resolve(__dirname,'..'),read=f=>storageReadJson(path.join(root,f));
 const write=(f,d)=>{fs.mkdirSync(path.dirname(path.join(root,f)),{recursive:true});fs.writeFileSync(path.join(root,f),JSON.stringify(d,null,2)+'\n')};
 const fixtures=read('data/normalized/matches.json'),round=fixtures.filter(m=>m.competition==='serie-a'&&m.matchday===8),ids=new Set(round.map(m=>m.id));
 assert.equal(round.length,10);assert(round.every(m=>m.status==='scheduled'),'MD8 già iniziata: rigenerazione bloccata');

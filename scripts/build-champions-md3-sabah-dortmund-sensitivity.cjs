@@ -1,4 +1,5 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Fixture-only replay of the existing collective builder. Canonical and frozen
 // prediction sources are read-only; only the target fixture is persisted.
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict');
@@ -7,7 +8,7 @@ const relative=p=>path.join(root,p);
 const sourcePath='data/sources/champions-pilot-match-stats-2025-27.json';
 const evidencePath='data/sources/champions-md03-sabah-dortmund-volume-evidence-2026-10-20.json';
 const outputPath='data/derived/champions-md03/sabah-dortmund-sensitivity-v1-2026-10-20.json';
-const read=p=>JSON.parse(fs.readFileSync(relative(p),'utf8'));
+const read=p=>storageReadJson(relative(p));
 const digest=p=>crypto.createHash('sha256').update(fs.readFileSync(relative(p))).digest('hex');
 const evidence=read(evidencePath),original=read(sourcePath),target='ucl-2026-27-md03-02';
 assert.equal(evidence.scope,target);

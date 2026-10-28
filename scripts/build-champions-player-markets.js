@@ -1,9 +1,10 @@
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 const { scaleShotProjections } = require("./champions/player-volume-utils");
 
 const root = path.resolve(__dirname, "..");
-const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
+const read = file => storageReadJson(path.join(root, file));
 const write = (file, value) => fs.writeFileSync(path.join(root, file), `${JSON.stringify(value, null, 2)}\n`);
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const round = (value, digits = 1) => Number(Number(value).toFixed(digits));

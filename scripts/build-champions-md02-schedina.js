@@ -1,3 +1,4 @@
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs=require("fs");
 const path=require("path");
 const crypto=require("crypto");
@@ -16,7 +17,7 @@ const paths={
   calendar:"data/normalized/champions-league-2026-27.json",
   output:"data/normalized/schedina-champions-md02.json"
 };
-const read=relative=>JSON.parse(fs.readFileSync(path.join(root,relative),"utf8"));
+const read=relative=>storageReadJson(path.join(root,relative));
 const hash=relative=>crypto.createHash("sha256").update(fs.readFileSync(path.join(root,relative))).digest("hex").toUpperCase();
 const round=(value,digits=2)=>Number(Number(value).toFixed(digits));
 const finite=value=>value!==null&&value!==""&&Number.isFinite(Number(value));

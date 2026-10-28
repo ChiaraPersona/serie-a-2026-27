@@ -1,4 +1,5 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Observed reports only: preserve every published forecast and provider quote.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
@@ -6,7 +7,7 @@ const {parseStatmuseGame}=require('./parse-statmuse-game');
 const {importStatmuseResult}=require('./import-statmuse-result');
 const {loadPlayerIdentities,normalizePlayerName}=require('./player-identity');
 const root=path.resolve(__dirname,'..'),dir='output/md08-postmatch-2026-10-25';process.chdir(root);
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),write=(p,d)=>{fs.writeFileSync(p+'.tmp',JSON.stringify(d,null,2)+'\n');fs.renameSync(p+'.tmp',p);};
+const read=p=>storageReadJson(p),write=(p,d)=>{fs.writeFileSync(p+'.tmp',JSON.stringify(d,null,2)+'\n');fs.renameSync(p+'.tmp',p);};
 const run=(p,args=[])=>execFileSync(process.execPath,['--experimental-require-module',p,...args],{stdio:'inherit'});
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const games=[['napoli','NAP','roma','ROM',112147,3,3],['inter','INT','fiorentina','FIO',112148,2,1],['lazio','LAZ','parma','PAR',112149,2,1],['atalanta','ATA','frosinone','FRO',112151,4,4],['genoa','GEN','venezia','VEN',112154,1,0]];

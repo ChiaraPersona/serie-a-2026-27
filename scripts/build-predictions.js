@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 const { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, WEIGHTS, predictMatch } = require("./predictions/engine");
@@ -10,7 +11,7 @@ const { buildProfiles } = require("./build-team-matchup-profiles");
 const { compareCanonicalMatches } = require("./predictions/future-readiness");
 
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const matches = read("data/normalized/matches.json");
 const readings = read("data/normalized/readings.json");
 const standings = read("data/normalized/standings-2025-26.json");
@@ -59,11 +60,11 @@ for (const filename of selectionAssessmentFiles) {
   }
 }
 const backtestPath = path.join(root, "data/generated/prediction-backtest-2025-26.json");
-const backtest = fs.existsSync(backtestPath) ? JSON.parse(fs.readFileSync(backtestPath, "utf8")) : null;
+const backtest = fs.existsSync(backtestPath) ? storageReadJson(backtestPath) : null;
 const multiSeasonBacktestPath = path.join(root, "data/generated/prediction-backtest-multiseason.json");
-const multiSeasonBacktest = fs.existsSync(multiSeasonBacktestPath) ? JSON.parse(fs.readFileSync(multiSeasonBacktestPath, "utf8")) : null;
+const multiSeasonBacktest = fs.existsSync(multiSeasonBacktestPath) ? storageReadJson(multiSeasonBacktestPath) : null;
 const openingBacktestPath = path.join(root, "data/generated/prediction-backtest-opening-rounds.json");
-const openingBacktest = fs.existsSync(openingBacktestPath) ? JSON.parse(fs.readFileSync(openingBacktestPath, "utf8")) : null;
+const openingBacktest = fs.existsSync(openingBacktestPath) ? storageReadJson(openingBacktestPath) : null;
 const generatedAt = new Date().toISOString();
 const previewMatchday = Number(process.env.SERIE_A_PREDICTION_PREVIEW_MATCHDAY);
 const previewMode = Number.isInteger(previewMatchday) && previewMatchday > 0;

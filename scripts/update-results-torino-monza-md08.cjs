@@ -1,4 +1,5 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Observed results only. Never regenerate historical forecasts or provider quotes.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
@@ -6,7 +7,7 @@ const {parseStatmuseGame}=require('./parse-statmuse-game');
 const {importStatmuseResult}=require('./import-statmuse-result');
 const {loadPlayerIdentities,normalizePlayerName}=require('./player-identity');
 const root=path.resolve(__dirname,'..'),id='torino-monza-2026-27-md-08',dir='output/torino-monza-md08-postmatch';
-const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const read=p=>storageReadJson(path.join(root,p));
 const write=(p,d)=>{fs.writeFileSync(path.join(root,p+'.tmp'),JSON.stringify(d,null,2)+'\n');fs.renameSync(path.join(root,p+'.tmp'),path.join(root,p));};
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
 const config={matchId:id,file:'md08-112153.html',url:'https://www.statmuse.com/fc/match/-112153',home:{slug:'torino',abbr:'TOR'},away:{slug:'monza',abbr:'MON'}};

@@ -1,7 +1,8 @@
 "use strict";
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Serialize frozen forecasts and evaluate current selection requirements only.
 const fs=require('fs'),path=require('path'),crypto=require('crypto'),assert=require('assert/strict');
-const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const root=path.resolve(__dirname,'..'),read=p=>storageReadJson(path.join(root,p));
 function write(file,body){
  const temporary=file+'.md3.tmp';fs.writeFileSync(temporary,body);
  for(let attempt=0;;attempt++)try{fs.renameSync(temporary,file);return;}catch(error){if(attempt>=5)throw error;Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,250);}

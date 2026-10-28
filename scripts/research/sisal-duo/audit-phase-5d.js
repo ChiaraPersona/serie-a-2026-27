@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('../../sisal/dataset-store.cjs');
 const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
 const fs = require("node:fs");
@@ -26,7 +27,7 @@ const sourcePaths = {
 };
 
 function absolute(relative) { return path.join(root, relative); }
-function readJson(relative) { return JSON.parse(fs.readFileSync(absolute(relative), "utf8")); }
+function readJson(relative) { return storageReadJson(absolute(relative)); }
 function sha256Buffer(buffer) { return crypto.createHash("sha256").update(buffer).digest("hex"); }
 function sha256File(relative) { return sha256Buffer(fs.readFileSync(absolute(relative))); }
 function sha256Value(value) { return sha256Buffer(Buffer.from(value)); }
@@ -117,7 +118,7 @@ function previousSeasonAudit() {
   const files = fs.readdirSync(directory).filter(file => file.endsWith(".json")).sort();
   let rosterRows = 0, starters = 0, shotRows = 0, sotRows = 0, directLinks = 0, timedLinks = 0, woodworkRows = 0;
   for (const file of files) {
-    const raw = JSON.parse(fs.readFileSync(path.join(directory, file), "utf8"));
+    const raw = storageReadJson(path.join(directory, file));
     for (const team of raw.bundle?.summary?.rosters || []) for (const player of team.roster || []) {
       rosterRows++;
       if (player.starter === true) starters++;

@@ -1,9 +1,10 @@
 "use strict";
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs=require('node:fs');
 const assert=require('node:assert/strict');
 const {overProbability}=require('./md06-statistical-models');
 const {compareThresholdBalance,minimumSportsSupportPct}=require('./md06-suggested-forecasts');
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const read=p=>storageReadJson(p);
 const clone=x=>structuredClone(x);
 const targets=new Set(['fiorentina-como','milan-atalanta','juventus-lazio','monza-cagliari','parma-torino'].map(p=>`${p}-2026-27-md-07`));
 function markCanonical(leg,target){

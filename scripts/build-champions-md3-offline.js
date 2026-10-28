@@ -1,11 +1,12 @@
 "use strict";
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs=require('fs'),path=require('path'),assert=require('assert/strict'),zlib=require('zlib');
 const {evaluate,verifyAekBuilderCompatibility}=require('./champions/offline-collective');
 const {canonicalTeam,TEAM_ONLY,exactPlayer,rateCandidate,projectDocumentedTeam}=require('./champions/current-season-offline');
 const {collectEspnRows}=require('./build-champions-player-stats');
 const context=require('./champions/context-adjusted-player-baseline');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'data/analysis/champions/md3-offline-engine-2026-10-19');
-const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const read=p=>storageReadJson(path.join(root,p));
 const write=(name,data)=>fs.writeFileSync(path.join(out,name),JSON.stringify(data,null,2)+'\n');
 fs.mkdirSync(out,{recursive:true});
 const code=fs.readFileSync(path.join(root,'scripts/build-champions-pilot-predictions.js'),'utf8');
@@ -46,7 +47,7 @@ function opponent(row){
  const m=matchIndex.get(row.matchId);
  if(m){const s=m.home.providerTeamId===row.teamId?m.away:m.away.providerTeamId===row.teamId?m.home:null;if(s)return {team:s.name,providerTeamId:s.providerTeamId};}
  const file=path.join(root,'data/analysis/champions/package1-2026-10-19/evidence',row.matchId+'.json');
- if(fs.existsSync(file)){const d=JSON.parse(fs.readFileSync(file,'utf8'));const other=d.payload.header.competitions[0].competitors.find(t=>String(t.id)!==row.teamId);if(other)return {team:other.team.displayName,providerTeamId:String(other.id)};}
+ if(fs.existsSync(file)){const d=storageReadJson(file);const other=d.payload.header.competitions[0].competitors.find(t=>String(t.id)!==row.teamId);if(other)return {team:other.team.displayName,providerTeamId:String(other.id)};}
  return null;
 }
 const forecasts=[],identityMappings=[];let excludedFuture=0,excludedOutsideCurrent=0;

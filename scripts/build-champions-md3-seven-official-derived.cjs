@@ -1,8 +1,9 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');
 const {buildSharedIndividualCatalog}=require('./champions/md3-shared-forecast-integration.cjs');
 const {buildPublication}=require('./champions/md3-publication-policy.cjs');
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const read=p=>storageReadJson(p);
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const individualPath='data/derived/champions-md03/official-individuals-seven-v2-2026-10-20.json';
 const outputPath='data/derived/champions-md03/market-catalog-official-seven-v2-2026-10-20.json';

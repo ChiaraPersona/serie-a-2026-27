@@ -1,9 +1,10 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),Module=require('node:module');
 const {execFileSync}=require('node:child_process');
 const {buildSharedScenarios}=require('./champions/shared-scenario.cjs');
 const {predictMatch}=require('./predictions/engine');
-const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const root=path.resolve(__dirname,'..'),read=p=>storageReadJson(path.join(root,p));
 // Compare the complete public Serie A prediction with the pre-refactor engine.
 const previous=new Module(path.join(__dirname,'predictions/engine-before.cjs'),module);
 previous.filename=path.join(__dirname,'predictions/engine-before.cjs');previous.paths=module.paths;

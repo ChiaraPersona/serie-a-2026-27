@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -23,7 +24,7 @@ const MARKET_MODELS = Object.freeze({
   "9905": { family: "corners", subfamily: "corners-1x2-fulltime", kind: "one-x-two" },
 });
 
-const read = relative => JSON.parse(fs.readFileSync(path.join(ROOT, relative), "utf8"));
+const read = relative => storageReadJson(path.join(ROOT, relative));
 const mean = values => values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : null;
 const variance = values => {
   const center = mean(values);

@@ -1,6 +1,7 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const read=p=>storageReadJson(p);
 const raw=read('data/sources/champions-official-seven-transcription-2026-10-20.json');
 const db=read('data/normalized/champions-md03-player-database-2026-27.json');
 require('./champions/md3-identity-corrections.cjs').applyIdentityCorrections(process.cwd(),db);

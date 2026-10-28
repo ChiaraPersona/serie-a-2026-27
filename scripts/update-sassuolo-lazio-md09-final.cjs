@@ -1,7 +1,8 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs=require('fs'),path=require('path'),assert=require('assert/strict'),crypto=require('crypto'),zlib=require('zlib'),{execFileSync}=require('child_process');
 const root=path.resolve(__dirname,'..'),dir='output/sassuolo-lazio-md09-final',id='sassuolo-lazio-2026-27-md-09';process.chdir(root);
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),write=(p,d)=>fs.writeFileSync(p,JSON.stringify(d,null,2)+'\n'),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+const read=p=>storageReadJson(p),write=(p,d)=>fs.writeFileSync(p,JSON.stringify(d,null,2)+'\n'),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const run=(p,args=[])=>execFileSync(process.execPath,['--experimental-require-module',p,...args],{stdio:'inherit'});
 const {parseStatmuseGame}=require('./parse-statmuse-game'),{importStatmuseResult}=require('./import-statmuse-result'),{loadPlayerIdentities,normalizePlayerName}=require('./player-identity');
 const raw=parseStatmuseGame(dir+'/statmuse.html');assert.equal(raw.gameData.gameStatus,'played');

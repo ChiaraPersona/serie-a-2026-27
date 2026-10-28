@@ -1,7 +1,8 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const {execFileSync}=require('node:child_process');
-const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const root=path.resolve(__dirname,'..'),read=p=>storageReadJson(path.join(root,p));
 const digest=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
 const target='ucl-2026-27-md03-02';
 const artifact=read('data/derived/champions-md03/sabah-dortmund-volumes-v1-2026-10-20.json');

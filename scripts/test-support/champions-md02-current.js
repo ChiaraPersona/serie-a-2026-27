@@ -1,11 +1,12 @@
 "use strict";
+const { readJsonFile: storageReadJson } = require('../sisal/dataset-store.cjs');
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const { sha256, assertHistoricalFile, gitSnapshotReader } = require("./historical-files");
 
 function assertCurrentIntegration(root) {
-  const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
+  const read = file => storageReadJson(path.join(root, file));
   const data = read("data/normalized/champions-md02-integration-2026-27.json");
   const official = read("data/sources/champions-official-formations-md02-2026-27.json");
   const probable = read("data/sources/champions-probable-formations-md02-2026-27.json");

@@ -1,9 +1,10 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('../sisal/dataset-store.cjs');
 const zlib=require('zlib');
 const fs=require('fs'),path=require('path'),crypto=require('crypto'),{execFileSync}=require('child_process');
 const {freezeCandidate,zonedLocalToUtc}=require('./complete-forecast-snapshots');
 const {targetForLeg,eventKey}=require('./event-validation.cjs');
-const ROOT=path.resolve(__dirname,'../..'),read=p=>JSON.parse(fs.readFileSync(path.join(ROOT,p),'utf8'));
+const ROOT=path.resolve(__dirname,'../..'),read=p=>storageReadJson(path.join(ROOT,p));
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT,p))).digest('hex');
 const digest=v=>crypto.createHash('sha256').update(JSON.stringify(v)).digest('hex');
 const finite=v=>typeof v==='number'&&Number.isFinite(v);
@@ -96,7 +97,7 @@ function readFrozen(directory){
  if(!fs.existsSync(directory))return {observations:[],exclusions:[],snapshots:[]};
  const files=fs.readdirSync(directory,{recursive:true}).filter(f=>f.endsWith('.json')).map(f=>path.join(directory,f));
  const latest=new Map(),exclusions=[];
- for(const file of files){const doc=JSON.parse(fs.readFileSync(file,'utf8')),{contentHash,...payload}=doc;if(contentHash!==digest(payload)){exclusions.push({file,reason:'SNAPSHOT_HASH_MISMATCH'});continue;}
+ for(const file of files){const doc=storageReadJson(file),{contentHash,...payload}=doc;if(contentHash!==digest(payload)){exclusions.push({file,reason:'SNAPSHOT_HASH_MISMATCH'});continue;}
   if(!(Date.parse(doc.createdAt)<Date.parse(doc.kickoffAt))){exclusions.push({file,reason:'SNAPSHOT_NOT_PREMATCH'});continue;}
   const prior=latest.get(doc.fixtureId);if(!prior||doc.createdAt>prior.createdAt)latest.set(doc.fixtureId,{...doc,file});
  }

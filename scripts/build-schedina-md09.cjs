@@ -1,7 +1,8 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Publish the existing MD9 reading forecasts using the MD7 shared-catalog structure.
 const fs=require('node:fs'),assert=require('node:assert/strict');
-const read=f=>JSON.parse(fs.readFileSync(f,'utf8')),write=(f,d)=>{const temp=f+'.md09.tmp';fs.writeFileSync(temp,JSON.stringify(d,null,2)+'\n');for(let i=0;;i++){try{fs.renameSync(temp,f);return}catch(e){if(i===5)throw e;Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,300)}}};
+const read=f=>storageReadJson(f),write=(f,d)=>{const temp=f+'.md09.tmp';fs.writeFileSync(temp,JSON.stringify(d,null,2)+'\n');for(let i=0;;i++){try{fs.renameSync(temp,f);return}catch(e){if(i===5)throw e;Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,300)}}};
 const fixtures=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'&&m.matchday===9);
 assert.equal(fixtures.length,10);assert(fixtures.every(m=>m.status==='scheduled'),'Non rigenerare gare iniziate');
 const source=read('data/normalized/reading-md09-market-catalog.json'),odds=read('data/normalized/odds/sisal/serie-a.json');

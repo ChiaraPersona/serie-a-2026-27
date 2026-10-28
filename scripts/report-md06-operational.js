@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Read-only reuse of the production builder. Its single output is captured in
 // memory, and its bookmaker dataset is replaced BEFORE it can be read.
 // This report never calls snapshot writers, evaluators, site builders or research.
@@ -10,7 +11,7 @@ const crypto = require("node:crypto");
 const { createRequire } = require("node:module");
 const assert = require("node:assert/strict");
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const hash = file => crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
 const rel = file => path.relative(root, file).replaceAll("\\", "/");
 const walk = directory => !fs.existsSync(directory) ? [] : fs.readdirSync(directory, { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? walk(path.join(directory, entry.name)) : [path.join(directory, entry.name)]);

@@ -1,3 +1,4 @@
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
@@ -26,7 +27,7 @@ const protectedTargets = {
 };
 
 function readJson(filePath) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8"));
+  return storageReadJson(filePath);
 }
 
 function readFromHead(repositoryPath) {

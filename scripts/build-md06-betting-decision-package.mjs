@@ -1,3 +1,4 @@
+import { readJsonFile as storageReadJson } from './sisal/dataset-store.cjs';
 import assert from "node:assert/strict";
 import crypto from "node:crypto";
 import fs from "node:fs";
@@ -13,7 +14,7 @@ const { attachBetSelection, selectionIdFor, normalizeReliability } = bettingSele
 const { buildMd06MarketCatalog } = md06MarketCatalog;
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const write = (relative, value) => {
   const target = path.join(root, relative);
   fs.mkdirSync(path.dirname(target), { recursive: true });
@@ -100,7 +101,7 @@ assert.equal(approvedSuggestionIds.length, approvedSuggestionBaseline.selectionC
 assert.equal(crypto.createHash("sha256").update(JSON.stringify(approvedSuggestionIds)).digest("hex"), approvedSuggestionBaseline.selectionIdHash, "Hash della baseline approvata MD6 incoerente");
 const approvedSuggestionRankById = new Map(approvedSuggestionBaseline.selections.map(row => [row.selectionId, Number(row.rank) || Number.MAX_SAFE_INTEGER]));
 const md5ReportPath = path.join(root, "output/reports/serie-a-md05-betting-decision-review-2026-10-09.json");
-const preservedMd5GeneratedAt = fs.existsSync(md5ReportPath) ? JSON.parse(fs.readFileSync(md5ReportPath, "utf8")).generatedAt : null;
+const preservedMd5GeneratedAt = fs.existsSync(md5ReportPath) ? storageReadJson(md5ReportPath).generatedAt : null;
 const matchById = new Map(matches.map(match => [match.id, match]));
 const predictionById = new Map(predictionsData.predictions.map(prediction => [prediction.matchId, prediction]));
 const eventById = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
@@ -577,7 +578,7 @@ function classifyMyComboLeg(leg) {
 }
 
 const md6MyComboPath = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-06.json");
-const md6MyCombo = fs.existsSync(md6MyComboPath) ? JSON.parse(fs.readFileSync(md6MyComboPath, "utf8")) : null;
+const md6MyCombo = fs.existsSync(md6MyComboPath) ? storageReadJson(md6MyComboPath) : null;
 const myComboFixtureReviews = md6MyCombo ? Object.entries(md6MyCombo.matches).map(([matchId, portfolios]) => {
   const safe = portfolios.find(portfolio => portfolio.tier === "Safe");
   const legs = (safe?.legs || []).map(leg => ({ ...leg, ...classifyMyComboLeg(leg) }));

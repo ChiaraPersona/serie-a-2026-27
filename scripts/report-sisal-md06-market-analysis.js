@@ -1,3 +1,4 @@
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
@@ -35,7 +36,7 @@ const refereeAssignments = {
 };
 
 function readJson(file) {
-  return JSON.parse(fs.readFileSync(file, "utf8"));
+  return storageReadJson(file);
 }
 
 function sha256(value) {

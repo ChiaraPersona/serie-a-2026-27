@@ -1,3 +1,4 @@
+import { readJsonFile as storageReadJson } from './sisal/dataset-store.cjs';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import assert from 'node:assert/strict';
@@ -6,7 +7,7 @@ import {sharedForecastsForMatch,hasVerifiedPlayableQuote} from '../js/pages/shar
 import {createPersonalBetslipStore} from '../js/pages/personal-betslip-store.mjs';
 import {md3ProbableMarkup} from '../js/pages/champions-md3-probable.mjs';
 import {createPage} from '../js/pages/betting.js';
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+const read=p=>storageReadJson(p),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const folder='data/analysis/champions/official-seven-2026-10-20',before=read(folder+'/before.json');
 const source=read('data/sources/champions-official-formations-md03-2026-27.json'),individual=read('data/derived/champions-md03/official-individuals-seven-v2-2026-10-20.json'),artifact=read('data/derived/champions-md03/market-catalog-official-seven-v2-2026-10-20.json');
 const registry=read('data/normalized/official-starter-registry.json'),ids=new Set(artifact.matches.map(m=>m.matchId));globalThis.officialStarterPolicy.configure(registry);

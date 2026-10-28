@@ -1,3 +1,4 @@
+const { readJsonFile: storageReadJson } = require('./dataset-store.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -14,7 +15,7 @@ const normalize = (rawFile, competitionKey) => normalizeSisalCapture({
 });
 
 for (const competition of ['serie-a', 'champions-league']) {
-  const dataset = JSON.parse(fs.readFileSync(path.join(root, 'data/normalized/odds/sisal', `${competition}.json`)));
+  const dataset = storageReadJson(path.join(root, 'data/normalized/odds/sisal', `${competition}.json`));
   const files = [...new Set([dataset.rawFile, ...(dataset.rawFiles || []), ...dataset.events.map(event => event.rawFile)].filter(Boolean))];
   const captures = files.map(file => normalize(file, competition));
   const enriched = enrichIdentifiers(dataset, captures);
@@ -32,7 +33,7 @@ for (const competition of ['serie-a', 'champions-league']) {
 
 // Immutable real evidence: do not require current odds to match a shared ticket.
 const evidence = normalize('data/raw/odds/sisal/serie-a/2026-10-15T17-42-11-541Z.json.gz', 'serie-a');
-const saved = JSON.parse(fs.readFileSync(path.join(root, 'data/normalized/odds/sisal/serie-a.json')));
+const saved = storageReadJson(path.join(root, 'data/normalized/odds/sisal/serie-a.json'));
 const examples = [
   ['4902590', 3, 0, 2, 400, 3, '5374643143'],
   ['4902588', 3, 0, 1, 250, 3, '5374622790'],

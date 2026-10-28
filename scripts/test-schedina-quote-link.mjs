@@ -1,10 +1,11 @@
+import { readJsonFile as storageReadJson } from './sisal/dataset-store.cjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import {hasVerifiedPlayableQuote} from '../js/pages/shared-forecast-contract.mjs';
 import {createPersonalBetslipStore} from '../js/pages/personal-betslip-store.mjs';
 const require=createRequire(import.meta.url),{link}=require('./link-schedina-quotes.cjs');
-const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
+const read=f=>storageReadJson(f);
 const data=read('data/normalized/schedina-md08.json'),archive=read('data/technical-archive/md08-individual-forecasts-before-duo-link.json');
 const fixtures=read('data/normalized/matches.json');
 const args={predictions:read('data/normalized/predictions.json').predictions,odds:read('data/normalized/odds/sisal/serie-a.json'),fixtures,probableLineups:read('data/sources/probable-lineups-md8-2026-27.json'),officialLineups:read('data/sources/official-lineups-2026-27.json'),catalogs:[6,7,8].map(n=>read(`data/normalized/schedina-md0${n}.json`).marketCatalog)};

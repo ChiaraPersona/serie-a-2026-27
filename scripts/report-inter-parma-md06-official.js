@@ -1,12 +1,13 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const { poissonAtLeast } = require("./predictions/engine");
 
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const write = (relative, value) => {
   const target = path.join(root, relative);
   fs.mkdirSync(path.dirname(target), { recursive: true });

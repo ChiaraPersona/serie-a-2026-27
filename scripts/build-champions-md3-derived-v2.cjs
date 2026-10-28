@@ -1,10 +1,11 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Versioned MD3 derivation. Frozen pre-match forecasts, historical slips,
 // MyCombo and original Sisal odds are read-only inputs.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const {buildSharedIndividualCatalog}=require('./champions/md3-shared-forecast-integration.cjs');
 const {selectPreliminaryFixture}=require('./champions/md3-preliminary-pilot.cjs');
-const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const root=path.resolve(__dirname,'..'),read=p=>storageReadJson(path.join(root,p));
 const digest=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
 const individualPath='data/derived/champions-md03/probable-individuals-v2-2026-10-20.json';
 const outputPath='data/derived/champions-md03/market-catalog-v2-2026-10-20.json';

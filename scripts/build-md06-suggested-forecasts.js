@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
 const fs = require("node:fs");
@@ -9,7 +10,7 @@ const { reconstructStatisticalCoverage, STATES } = require("./md06-statistical-c
 const { canonicalThresholdIdentity, conservativeExpectedValuePct, verifiedQuote } = require("./md06-suggested-forecasts");
 
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const write = (relative, value) => { const target = path.join(root, relative); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, typeof value === "string" ? value : `${JSON.stringify(value, null, 2)}\n`); };
 const hash = value => crypto.createHash("sha256").update(JSON.stringify(value)).digest("hex");
 const countBy = (rows, getter) => rows.reduce((counts, row) => { const key = getter(row); counts[key] = (counts[key] || 0) + 1; return counts; }, {});

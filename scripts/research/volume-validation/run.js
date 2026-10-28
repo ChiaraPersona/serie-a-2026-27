@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('../../sisal/dataset-store.cjs');
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
@@ -25,7 +26,7 @@ const protectedPaths = [
 ].filter(relative => fs.existsSync(path.join(root, relative)));
 
 function readJson(relative) {
-  return JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+  return storageReadJson(path.join(root, relative));
 }
 
 function sha256File(relative) {

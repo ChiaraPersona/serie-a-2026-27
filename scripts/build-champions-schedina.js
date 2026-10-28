@@ -1,7 +1,8 @@
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs=require("fs"),path=require("path"),root=path.resolve(__dirname,"..");
 // Completed rounds are settled from the archived selections, never reselected after results.
 if(fs.existsSync(path.join(root,"data/sources/schedina-champions-md01-snapshot.json"))){require("./settle-champions-schedina.js").build();return;}
-const read=f=>JSON.parse(fs.readFileSync(path.join(root,f),"utf8")),write=(f,v)=>fs.writeFileSync(path.join(root,f),`${JSON.stringify(v,null,2)}\n`);
+const read=f=>storageReadJson(path.join(root,f)),write=(f,v)=>fs.writeFileSync(path.join(root,f),`${JSON.stringify(v,null,2)}\n`);
 const round=(v,d=2)=>Number(Number(v).toFixed(d)),clean=v=>String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
 function poissonRange(lambda,min,max){let t=Math.exp(-lambda),sum=min===0?t:0;for(let n=1;n<=max;n++){t*=lambda/n;if(n>=min)sum+=t}return sum}
 function poissonPoint(lambda,n){let p=Math.exp(-lambda);for(let i=1;i<=n;i++)p*=lambda/i;return p}

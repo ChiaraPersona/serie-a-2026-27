@@ -1,10 +1,11 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Target-only presentation overlay. Frozen probabilities and provider quotes are read-only.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const selector=require('./md06-suggested-forecasts');
 const {selectorView,assessPreliminary}=require('./champions/md3-preliminary-pilot.cjs');
 const root=path.resolve(__dirname,'..'),target='ucl-2026-27-md03-02';
-const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const read=p=>storageReadJson(path.join(root,p));
 const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
 const originalPath='data/derived/champions-md03/market-catalog-official-two-v1-2026-10-20.json';
 const oddsPath='data/normalized/odds/sisal/champions-league.json';

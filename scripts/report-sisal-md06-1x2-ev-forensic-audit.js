@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
@@ -31,7 +32,7 @@ const matchesPath = path.join(root, "data", "normalized", "matches.json");
 const sisalRulesUrl = "https://www.sisal.it/content/dam/new-dam/italy/canali/sisal-it/doc-pdf/scommesse/info-scommesse/calcio.pdf";
 
 const relative = file => path.relative(root, file).replace(/\\/g, "/");
-const readJson = file => JSON.parse(fs.readFileSync(file, "utf8"));
+const readJson = file => storageReadJson(file);
 const sha256 = value => crypto.createHash("sha256").update(value).digest("hex");
 const fileHash = file => sha256(fs.readFileSync(file));
 const sum = values => values.reduce((total, value) => total + value, 0);

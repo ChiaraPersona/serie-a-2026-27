@@ -1,6 +1,7 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const read=p=>storageReadJson(p);
 const folder='data/analysis/champions/official-2026-10-21';fs.mkdirSync(folder,{recursive:true});
 const file='data/sources/champions-official-formations-md03-2026-27.json',previous=read(file);
 assert(!fs.existsSync(folder+'/before.json'),'Snapshot already exists');

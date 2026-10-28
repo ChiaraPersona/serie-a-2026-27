@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -12,7 +13,7 @@ const {
 } = require("./md06-statistical-models");
 
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const artifact = read("data/analysis/serie-a-md06-statistical-models-2026-10-10.json");
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 

@@ -1,3 +1,4 @@
+import { readJsonFile as storageReadJson } from './sisal/dataset-store.cjs';
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import crypto from "node:crypto";
@@ -7,7 +8,7 @@ import {fileURLToPath} from "node:url";
 import {createPersonalBetslipStore} from "../js/pages/personal-betslip-store.mjs";
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
-const read=relative=>JSON.parse(fs.readFileSync(path.join(root,relative),"utf8"));
+const read=relative=>storageReadJson(path.join(root,relative));
 const data=read("data/normalized/schedina-champions-md02.json");
 const integration=read("data/normalized/champions-md02-integration-2026-27.json");
 const odds=read("data/normalized/odds/sisal/champions-league.json");

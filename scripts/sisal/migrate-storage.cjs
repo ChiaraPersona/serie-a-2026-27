@@ -1,0 +1,11 @@
+'use strict';
+const path = require('node:path');
+const assert = require('node:assert/strict');
+const { readJsonFile, writeSisalDataset } = require('./dataset-store.cjs');
+const competition = process.argv[2] || 'serie-a';
+if (!['serie-a', 'champions-league'].includes(competition)) throw Error('Unknown Sisal competition');
+const file = path.resolve(__dirname, '../../data/normalized/odds/sisal', competition + '.json');
+const before = readJsonFile(file);
+const report = writeSisalDataset(file, before);
+assert.deepEqual(readJsonFile(file), before, 'Storage migration changed provider data');
+console.log(JSON.stringify({ competition, ...report, lossless: true }));

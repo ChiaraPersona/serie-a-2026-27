@@ -1,4 +1,5 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Fixture-only official refresh; existing engines and admission rules remain unchanged.
 const fs=require('node:fs'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
 const config={
@@ -201,7 +202,7 @@ const config={
   ]
 };
 const id=config.id,dir='output/roma-cagliari-md09-correction';
-const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
+const read=f=>storageReadJson(f);
 const write=(f,d)=>{fs.writeFileSync(f+'.tmp',JSON.stringify(d,null,2)+'\n');fs.renameSync(f+'.tmp',f)};
 const run=(f,args=[],env={})=>execFileSync(process.execPath,['--experimental-require-module',f,...args],{stdio:'inherit',env:{...process.env,...env}});
 fs.mkdirSync(dir,{recursive:true});

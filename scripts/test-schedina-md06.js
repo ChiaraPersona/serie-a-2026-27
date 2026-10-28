@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const assert = require("assert");
 const crypto = require("crypto");
 const fs = require("fs");
@@ -9,7 +10,7 @@ const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isCornerPeriodMa
 const { resolveLineupEligibility } = require("./md06-market-catalog");
 
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const normalized = read("data/normalized/schedina-md06.json");
 const source = read("data/sources/schedina-serie-a-2026-27-md-06.json");
 const myCombo = read("data/sources/mycombo-serie-a-2026-27-md-06.json");

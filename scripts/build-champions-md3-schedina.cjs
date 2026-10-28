@@ -1,4 +1,5 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // MD3 orchestration: existing Champions projections -> shared Serie A admission,
 // exact provider contract -> one catalog for Schedina, Lettura and MyCombo.
 const fs=require('node:fs'),assert=require('node:assert/strict'),crypto=require('node:crypto');
@@ -7,7 +8,7 @@ const {buildSharedIndividualCatalog}=require('./champions/md3-shared-forecast-in
 const {currentModels,loadRegistry}=require('./champions/validation-data.cjs');
 const {buildPublication}=require('./champions/md3-publication-policy.cjs');
 const {playablePolicyFor}=require('./betting-market-policy');
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const read=p=>storageReadJson(p);
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 async function build(){
   if(!process.argv.includes('--catalog-only')){

@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
 const fs = require("node:fs");
@@ -25,7 +26,7 @@ const protectedPaths = [
 
 const hash = file => crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
 const snapshot = () => Object.fromEntries(protectedPaths.map(relative => [relative, hash(path.join(root, relative))]));
-const read = file => JSON.parse(fs.readFileSync(file, "utf8"));
+const read = file => storageReadJson(file);
 const count = (rows, predicate) => rows.filter(predicate).length;
 
 const before = snapshot();

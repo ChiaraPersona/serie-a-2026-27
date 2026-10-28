@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const crypto=require("crypto");
 const fs=require("fs");
 const path=require("path");
@@ -17,7 +18,7 @@ const paths={
   markdown:"output/reports/champions-md02-phase12d-market-expansion-2026-10-13.md"
 };
 const absolute=relative=>path.join(root,relative);
-const read=relative=>JSON.parse(fs.readFileSync(absolute(relative),"utf8"));
+const read=relative=>storageReadJson(absolute(relative));
 const hash=relative=>crypto.createHash("sha256").update(fs.readFileSync(absolute(relative))).digest("hex").toUpperCase();
 const write=(relative,value)=>{fs.mkdirSync(path.dirname(absolute(relative)),{recursive:true});fs.writeFileSync(absolute(relative),typeof value==="string"?value:`${JSON.stringify(value,null,2)}\n`)};
 const round=(value,digits=1)=>Number(Number(value).toFixed(digits));

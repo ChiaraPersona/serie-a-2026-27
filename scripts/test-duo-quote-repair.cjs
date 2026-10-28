@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict');
 const {reconcile}=require('./reconcile-player-duo-quotes.cjs');
 const data=structuredClone(require('../data/normalized/schedina-md08.json'));
-const predictions=require('../data/normalized/predictions.json').predictions,odds=require('../data/normalized/odds/sisal/serie-a.json');
+const predictions=require('../data/normalized/predictions.json').predictions,odds=require('./sisal/dataset-store.cjs').readJsonFile(require('path').resolve(__dirname,'../data/normalized/odds/sisal/serie-a.json'));
 const fatah=data.marketCatalog.matches.flatMap(m=>m.selections).find(s=>s.playerId==='amar-fatah'&&s.suggestionAnalysis.family==='sot');
 // Reproduce a previously published individual forecast whose DUO quote was lost.
 const e=fatah.betSelection.evaluation;fatah.individualModelProbabilityPct=e.individualReference.modelProbabilityPct;fatah.odds=null;fatah.betSelection.market.bookmakerSemantics=null;fatah.betSelection.quote={decimal:null,availability:'UNAVAILABLE'};

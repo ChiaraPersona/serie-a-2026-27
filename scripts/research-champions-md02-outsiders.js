@@ -1,10 +1,11 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs=require("fs");
 const path=require("path");
 
 const root=path.resolve(__dirname,"..");
-const read=relative=>JSON.parse(fs.readFileSync(path.join(root,relative),"utf8"));
+const read=relative=>storageReadJson(path.join(root,relative));
 const integration=read("data/normalized/champions-md02-integration-2026-27.json");
 const schedina=read("data/normalized/schedina-champions-md02.json");
 const odds=read("data/normalized/odds/sisal/champions-league.json");

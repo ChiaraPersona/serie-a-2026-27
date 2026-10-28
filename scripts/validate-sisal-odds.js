@@ -1,3 +1,4 @@
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
@@ -9,7 +10,7 @@ const competitionIndex = process.argv.indexOf("--competition");
 const competition = competitionIndex >= 0 ? process.argv[competitionIndex + 1] : "serie-a";
 const normalizedFile = path.join(root, "data", "normalized", "odds", "sisal", `${competition}.json`);
 assert(fs.existsSync(normalizedFile), `Dataset Sisal mancante: ${normalizedFile}`);
-const dataset = JSON.parse(fs.readFileSync(normalizedFile, "utf8"));
+const dataset = storageReadJson(normalizedFile);
 assert(dataset.provider === "sisal" && dataset.competition === competition, "Provider o competizione Sisal non validi");
 assert(/^\d{4}-\d{2}-\d{2}T/.test(dataset.retrievedAt), "Timestamp Sisal non valido");
 assert(dataset.sourceUrl?.startsWith("https://www.sisal.it/"), "URL sorgente Sisal non valido");

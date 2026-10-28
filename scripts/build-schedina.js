@@ -1,9 +1,10 @@
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 const { isUnderPlayableSelection } = require("./betting-market-policy");
 
 const root = path.resolve(__dirname, "..");
-const read = relativePath => JSON.parse(fs.readFileSync(path.join(root, relativePath), "utf8"));
+const read = relativePath => storageReadJson(path.join(root, relativePath));
 const matchdayIndex = process.argv.indexOf("--matchday");
 const matchday = matchdayIndex >= 0 ? Number(process.argv[matchdayIndex + 1]) : 1;
 if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("--matchday deve essere compreso tra 1 e 38.");
@@ -24,7 +25,7 @@ const archivePath = path.join(root, "data/sources/schedina-archive-md1-2026-27.j
 const roundMatches = matches.filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.matchday === matchday);
 if (roundMatches.length === 10 && roundMatches.every(match => match.status === "finished" && match.score)) {
   if (matchday === 1 && fs.existsSync(archivePath)) {
-    const archive = JSON.parse(fs.readFileSync(archivePath, "utf8"));
+    const archive = storageReadJson(archivePath);
     const serialized = JSON.stringify(archive, null, 2).replaceAll("MVP previsto", "Titolare previsto");
     fs.writeFileSync(outputPath, `${serialized}\n`);
   } else if (!fs.existsSync(outputPath)) {

@@ -1,8 +1,9 @@
+import { readJsonFile as storageReadJson } from './sisal/dataset-store.cjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createChampionsSelection} from '../js/pages/champions-market-ui.mjs';
 import {createPersonalBetslipStore,assessSelections} from '../js/pages/personal-betslip-store.mjs';
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const read=p=>storageReadJson(p);
 const preview=read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json');
 const catalog=read('data/normalized/champions-md03-preliminary-2026-27.json');
 const odds=read('data/normalized/odds/sisal/champions-league.json');

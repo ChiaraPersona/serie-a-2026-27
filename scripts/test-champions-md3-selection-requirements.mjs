@@ -1,3 +1,4 @@
+import { readJsonFile as storageReadJson } from './sisal/dataset-store.cjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
@@ -6,7 +7,7 @@ import {loadChampionsWorkspace} from '../js/pages/champions-workspace-catalog.mj
 import {createPage} from '../js/pages/betting.js';
 const require=createRequire(import.meta.url);
 const {evaluateRequirements,selectRequirements}=require('./champions/md3-selection-requirements.cjs');
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const read=p=>storageReadJson(p);
 const directory='output/champions-selection';
 const catalog=read(directory+'/stage/champions-md03-preliminary-2026-27.json');
 const before=read(directory+'/before.json');

@@ -1,4 +1,5 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Additive publication overlay. Historical catalogs and all statistical inputs are read-only.
 const fs=require('node:fs'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const {buildSharedIndividualCatalog}=require('./champions/md3-shared-forecast-integration.cjs');
@@ -6,7 +7,7 @@ const {poissonAtLeast}=require('./champions/md3-lineup-policy');
 const {evaluateRequirements}=require('./champions/md3-selection-requirements.cjs');
 const selector=require('./md06-suggested-forecasts');
 const {zonedLocalToUtc}=require('./champions/complete-forecast-snapshots');
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const read=p=>storageReadJson(p);
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const OUTPUT='data/derived/champions-md03/upcoming-forecasts.json';
 const inputIndex=process.argv.indexOf('--individuals');

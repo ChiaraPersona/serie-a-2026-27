@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
 const fs = require("node:fs");
@@ -14,7 +15,7 @@ const {
 const { chooseShotsThreshold, chooseSotThreshold, isCompatibleIndividualMarket, isSupportedDuoMarket } = require("./md06-player-forecast-integration");
 
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const sha256 = relative => crypto.createHash("sha256").update(fs.readFileSync(path.join(root, relative))).digest("hex");
 const clone = value => JSON.parse(JSON.stringify(value));
 const schedina = read("data/normalized/schedina-md06.json");

@@ -1,3 +1,4 @@
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 
@@ -7,13 +8,13 @@ const scopedMatchday = matchdayIndex < 0 ? null : Number(process.argv[matchdayIn
 if (scopedMatchday !== null && (!Number.isInteger(scopedMatchday) || scopedMatchday < 1 || scopedMatchday > 38)) throw Error('Giornata non valida');
 const sourceDir = path.join(root, "data", "sources", "readings");
 const outputFile = path.join(root, "data", "normalized", "readings.json");
-const matches = JSON.parse(fs.readFileSync(path.join(root, "data", "normalized", "matches.json"), "utf8"));
-const cup = JSON.parse(fs.readFileSync(path.join(root, "data", "normalized", "coppa-italia-2026-27.json"), "utf8"));
-const cupOpponents = JSON.parse(fs.readFileSync(path.join(root, "data", "sources", "coppa-opponents-2026-27.json"), "utf8"));
+const matches = storageReadJson(path.join(root, "data", "normalized", "matches.json"));
+const cup = storageReadJson(path.join(root, "data", "normalized", "coppa-italia-2026-27.json"));
+const cupOpponents = storageReadJson(path.join(root, "data", "sources", "coppa-opponents-2026-27.json"));
 const cupOpponentsOutputFile = path.join(root, "data", "normalized", "coppa-opponents-2026-27.json");
-const teams = JSON.parse(fs.readFileSync(path.join(root, "data", "teams", "index.json"), "utf8")).teams;
-const injuries = JSON.parse(fs.readFileSync(path.join(root, "data", "sources", "fantacalcio-injuries-2026-27.json"), "utf8"));
-const odds = JSON.parse(fs.readFileSync(path.join(root, "data", "normalized", "odds", "sisal", "serie-a.json"), "utf8"));
+const teams = storageReadJson(path.join(root, "data", "teams", "index.json")).teams;
+const injuries = storageReadJson(path.join(root, "data", "sources", "fantacalcio-injuries-2026-27.json"));
+const odds = storageReadJson(path.join(root, "data", "normalized", "odds", "sisal", "serie-a.json"));
 const allTeams = [...teams, ...cupOpponents.teams];
 const teamIdByName = new Map(allTeams.flatMap(team => [team.name, team.shortName, team.officialName].filter(Boolean).map(name => [name, team.id])));
 const cupMatches = cup.matches.filter(match => match.stage === "round-16").map(match => ({
@@ -43,7 +44,7 @@ const availabilityLine = teamId => {
   return `${teamName}: ${reports.map(report => `${report.currentName || report.sourceName} - ${report.description}`).join("; ")}`;
 };
 let readings = files.flatMap(file => {
-  const source = JSON.parse(fs.readFileSync(path.join(sourceDir, file), "utf8"));
+  const source = storageReadJson(path.join(sourceDir, file));
   if (source.type !== "prototype-batch") return [source];
   return source.matchIds.map(matchId => ({
     id: `lettura-${matchId}`,
@@ -122,7 +123,7 @@ for (const team of cupOpponents.teams) {
 }
 
 if (scopedMatchday !== null) {
-  const previous = JSON.parse(fs.readFileSync(outputFile, 'utf8'));
+  const previous = storageReadJson(outputFile);
   const replacements = new Map(readings.map(r => [r.matchId, r]));
   readings = [...previous.map(r => replacements.get(r.matchId) || r), ...readings.filter(r => !previous.some(p => p.matchId === r.matchId))];
 }

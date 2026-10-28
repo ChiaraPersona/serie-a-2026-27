@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -8,7 +9,7 @@ const { evaluateDerivedScoreMarket, validateCanonicalDnb } = require("./score-ma
 const { buildMd06MarketCatalog } = require("./md06-market-catalog");
 
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const predictionsData = read("data/normalized/predictions.json");
 const predictions = predictionsData.predictions.filter(row => row.matchId.endsWith("-md-06"));
 const odds = read("data/normalized/odds/sisal/serie-a.json");

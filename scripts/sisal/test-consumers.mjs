@@ -1,3 +1,4 @@
+import { readJsonFile as storageReadJson } from './dataset-store.cjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import zlib from 'node:zlib';
@@ -7,7 +8,7 @@ import { createBetSelection } from '../betting-selection-contract.js';
 import { createPersonalBetslipStore } from '../../js/pages/personal-betslip-store.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
-const read = file => JSON.parse(fs.readFileSync(new URL(`../../${file}`, import.meta.url)));
+const read = file => storageReadJson(new URL(`../../${file}`, import.meta.url));
 const rawFile = 'data/raw/odds/sisal/serie-a/2026-10-15T17-42-11-541Z.json.gz';
 const dataset = normalizeSisalCapture({
   capture: JSON.parse(zlib.gunzipSync(fs.readFileSync(new URL(`../../${rawFile}`, import.meta.url)))),

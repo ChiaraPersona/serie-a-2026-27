@@ -1,12 +1,12 @@
+const { readJsonFile: storageReadJson, writeSisalDataset } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
 const { captureSisalPage } = require("./sisal/browser-capture");
 const { normalizeSisalCapture } = require("./sisal/normalize");
-const { stringifySisalDataset } = require("./sisal/identifiers");
 
 const root = path.resolve(__dirname, "..");
-const sourceConfig = JSON.parse(fs.readFileSync(path.join(root, "data", "sources", "sisal-odds.json"), "utf8"));
+const sourceConfig = storageReadJson(path.join(root, "data", "sources", "sisal-odds.json"));
 
 function readArguments(argv) {
   const options = { competition: "serie-a", waitMs: 15000, headed: true, details: true };
@@ -34,7 +34,7 @@ function fixturePageUrls(competition, options) {
   if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) {
     throw new Error("--matchday deve essere un numero intero compreso tra 1 e 38.");
   }
-  const matches = JSON.parse(fs.readFileSync(path.join(root, competition.matchSource), "utf8"));
+  const matches = storageReadJson(path.join(root, competition.matchSource));
   const fixtures = matches.filter((match) =>
     match.competition === competition.canonicalCompetition &&
     (!competition.season || match.season === competition.season) &&
@@ -105,7 +105,7 @@ async function main() {
   const normalizedDirectory = path.join(root, "data", "normalized", "odds", "sisal");
   const normalizedFile = path.join(normalizedDirectory, `${options.competition}.json`);
   const previous = fs.existsSync(normalizedFile)
-    ? JSON.parse(fs.readFileSync(normalizedFile, "utf8"))
+    ? storageReadJson(normalizedFile)
     : null;
   const previousRegulatorIds = new Map((previous?.events || [])
     .filter((event) => event.canonicalMatchId && event.regulatorEventId)
@@ -166,7 +166,7 @@ async function main() {
       events,
     };
   }
-  fs.writeFileSync(normalizedFile, stringifySisalDataset(output));
+  writeSisalDataset(normalizedFile, output);
   console.log(`Sisal: ${artifact.responses.length} risposte API, ${updatedEvents.length} eventi aggiornati; dataset ${output.summary.events} eventi, ${output.summary.markets} mercati, ${output.summary.selections} quote, ${output.summary.playerMarkets} mercati giocatore.`);
   console.log(path.relative(root, outputFile));
   console.log(path.relative(root, normalizedFile));

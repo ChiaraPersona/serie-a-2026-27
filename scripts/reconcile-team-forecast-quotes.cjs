@@ -1,4 +1,5 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Join cached team forecasts to exact, verified pre-match contracts. Never choose another line.
 function reconcile(data,odds){
  const changes=[];
@@ -31,7 +32,7 @@ function reconcile(data,odds){
 }
 module.exports={reconcile};
 if(require.main===module){
- const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));const day=process.argv[2];assert(/^\d+$/.test(day),'Specify matchday');const code=String(Number(day)).padStart(2,'0'),file=`data/normalized/schedina-md${code}.json`,sharedFile=`data/normalized/reading-md${code}-market-catalog.json`,data=read(file),shared=read(sharedFile),odds=read('data/normalized/odds/sisal/serie-a.json');
+ const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');const read=f=>storageReadJson(f);const day=process.argv[2];assert(/^\d+$/.test(day),'Specify matchday');const code=String(Number(day)).padStart(2,'0'),file=`data/normalized/schedina-md${code}.json`,sharedFile=`data/normalized/reading-md${code}-market-catalog.json`,data=read(file),shared=read(sharedFile),odds=read('data/normalized/odds/sisal/serie-a.json');
  const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex'),protectedFiles=['data/normalized/predictions.json','data/normalized/matches.json','data/normalized/odds/sisal/serie-a.json'];const hashes=Object.fromEntries(protectedFiles.map(f=>[f,hash(f)]));
  const before=structuredClone(data),changes=reconcile(data,odds),dir=`output/team-quote-link-md${code}`;fs.mkdirSync(dir,{recursive:true});
  if(changes.length){fs.writeFileSync(dir+'/before.json.gz',require('zlib').gzipSync(JSON.stringify(before)));fs.writeFileSync(file,JSON.stringify(data,null,2)+'\n');shared.marketCatalog=data.marketCatalog;fs.writeFileSync(sharedFile,JSON.stringify(shared,null,2)+'\n');}

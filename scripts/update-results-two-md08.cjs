@@ -1,4 +1,5 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Observed results only. Never regenerate historical forecasts or provider quotes.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
@@ -6,7 +7,7 @@ const {parseStatmuseGame}=require('./parse-statmuse-game');
 const {importStatmuseResult}=require('./import-statmuse-result');
 const {loadPlayerIdentities,normalizePlayerName}=require('./player-identity');
 const cfg={cagliari:{id:'cagliari-bologna-2026-27-md-08',n:'112152',home:'cagliari',away:'bologna',ha:'CAG',aa:'BOL',score:{home:0,away:2}},como:{id:'como-sassuolo-2026-27-md-08',n:'112155',home:'como',away:'sassuolo',ha:'COM',aa:'SAS',score:{home:2,away:0}}}[process.argv[2]];assert(cfg);const root=path.resolve(__dirname,'..'),id=cfg.id,dir='output/md08-two-postmatch/'+id;
-const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const read=p=>storageReadJson(path.join(root,p));
 const write=(p,d)=>{fs.writeFileSync(path.join(root,p+'.tmp'),JSON.stringify(d,null,2)+'\n');fs.renameSync(path.join(root,p+'.tmp'),path.join(root,p));};
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
 const config={matchId:id,file:'md08-'+cfg.n+'.html',url:'https://www.statmuse.com/fc/match/-'+cfg.n,home:{slug:cfg.home,abbr:cfg.ha},away:{slug:cfg.away,abbr:cfg.aa}};

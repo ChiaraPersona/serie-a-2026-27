@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // MD7 orchestration only: all probabilities and admission rules remain in the
 // existing builders. Historical forecasts are retained verbatim.
 const fs = require("node:fs");
@@ -10,7 +11,7 @@ const { createHash } = require("node:crypto");
 const { buildMd06MarketCatalog } = require("./md06-market-catalog");
 const statistical = require("./md06-statistical-models");
 const root = path.resolve(__dirname, "..");
-const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
+const read = file => storageReadJson(path.join(root, file));
 const write = (file, data) => {
   const target = path.join(root, file), temporary = `${target}.md07.tmp`;
   fs.writeFileSync(temporary, JSON.stringify(data, null, 2) + "\n");

@@ -1,4 +1,5 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('../../sisal/dataset-store.cjs');
 // Internal research preview only. No production builders or network requests.
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const {execFileSync} = require('node:child_process');
@@ -20,7 +21,7 @@ const protectedFiles = execFileSync('git', ['ls-files', '-z'], {cwd:root,maxBuff
   .filter(f => fs.existsSync(path.join(root, f)));
 const before = Object.fromEntries(protectedFiles.map(f => [f,digest(f)]));
 const inputs = {};
-function read(file) { inputs[file] = {sha256:digest(file)}; return JSON.parse(fs.readFileSync(path.join(root,file),'utf8')); }
+function read(file) { inputs[file] = {sha256:digest(file)}; return storageReadJson(path.join(root,file)); }
 const matches = read('data/normalized/matches.json');
 const predictions = read('data/normalized/predictions.json').predictions;
 const probablePath = `data/sources/probable-lineups-md${matchday}-2026-27.json`;

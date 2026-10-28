@@ -1,8 +1,9 @@
+const { readJsonFile: storageReadJson, writeSisalDataset } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
 const { normalizeSisalCapture } = require("./sisal/normalize");
-const { enrichIdentifiers, stringifySisalDataset } = require("./sisal/identifiers");
+const { enrichIdentifiers } = require("./sisal/identifiers");
 
 const root = path.resolve(__dirname, "..");
 const args = process.argv.slice(2);
@@ -12,7 +13,7 @@ const valueAfter = (name) => {
 };
 const competitionKey = valueAfter("--competition") || "serie-a";
 const merge = args.includes("--merge");
-const config = JSON.parse(fs.readFileSync(path.join(root, "data", "sources", "sisal-odds.json"), "utf8"));
+const config = storageReadJson(path.join(root, "data", "sources", "sisal-odds.json"));
 const competition = config.competitions[competitionKey];
 if (!competition) throw new Error(`Competizione Sisal non configurata: ${competitionKey}`);
 const rawDirectory = path.join(root, "data", "raw", "odds", "sisal", competitionKey);
@@ -29,7 +30,7 @@ fs.mkdirSync(outputDirectory, { recursive: true });
 const outputFile = path.join(outputDirectory, `${competitionKey}.json`);
 let output = normalized;
 if (args.includes("--identifiers-only")) {
-  const previous = JSON.parse(fs.readFileSync(outputFile, "utf8"));
+  const previous = storageReadJson(outputFile);
   const files = [...new Set([previous.rawFile, ...(previous.rawFiles || []), ...previous.events.map(event => event.rawFile)].filter(Boolean))];
   const captures = files.map(file => normalizeSisalCapture({
     capture: JSON.parse(zlib.gunzipSync(fs.readFileSync(path.resolve(root, file))).toString("utf8")),
@@ -37,7 +38,7 @@ if (args.includes("--identifiers-only")) {
   }));
   output = enrichIdentifiers(previous, captures);
 } else if (merge && fs.existsSync(outputFile)) {
-  const previous = JSON.parse(fs.readFileSync(outputFile, "utf8"));
+  const previous = storageReadJson(outputFile);
   const updatedIds = new Set(normalized.events.map((event) => event.canonicalMatchId));
   const events = [
     ...normalized.events.map((event) => ({ ...event, retrievedAt: normalized.retrievedAt, rawFile: relativeRawFile })),
@@ -61,6 +62,6 @@ if (args.includes("--identifiers-only")) {
     events,
   };
 }
-fs.writeFileSync(outputFile, stringifySisalDataset(output));
+writeSisalDataset(outputFile, output);
 console.log(`Normalizzato Sisal ${competitionKey}: ${output.summary.events} eventi, ${output.summary.markets} mercati, ${output.summary.selections} quote.`);
 console.log(path.relative(root, outputFile));

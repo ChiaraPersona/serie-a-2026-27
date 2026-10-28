@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 const { isSisalMyComboMarketName, sisalMyComboMarketNames } = require("./mycombo-market-policy");
@@ -7,7 +8,7 @@ const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isCornerPeriodMa
 const { attachBetSelection, selectionIdFor } = require("./betting-selection-contract");
 
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 const predictionData = read("data/normalized/predictions.json");
 const matches = read("data/normalized/matches.json");
@@ -21,9 +22,9 @@ if (requestedMatchIndex >= 0 && !requestedMatchId) throw new Error("--match rich
 const outputFilename = `mycombo-serie-a-2026-27-md-${String(matchday).padStart(2, "0")}.json`;
 const outputPath = path.join(root, "data", "sources", outputFilename);
 const assessmentPath = path.join(root, "data", "sources", `betting-selection-assessments-md${String(matchday).padStart(2, "0")}.json`);
-const assessmentSource = fs.existsSync(assessmentPath) ? JSON.parse(fs.readFileSync(assessmentPath, "utf8")) : null;
+const assessmentSource = fs.existsSync(assessmentPath) ? storageReadJson(assessmentPath) : null;
 const assessmentBySelectionId = new Map((assessmentSource?.assessments || []).map(item => [item.selectionId, item]));
-const previousOutput = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, "utf8")) : null;
+const previousOutput = fs.existsSync(outputPath) ? storageReadJson(outputPath) : null;
 const previousUnderLegOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isUnderPlayableSelection).length;
 const previousIndividualFoulOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isIndividualPlayerFoulMarket).length;
 const previousCornerPeriodOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isCornerPeriodMarket).length;

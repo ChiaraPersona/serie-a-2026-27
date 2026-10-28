@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('../../sisal/dataset-store.cjs');
 const assert = require("assert");
 const crypto = require("crypto");
 const fs = require("fs");
@@ -74,7 +75,7 @@ const RULES = Object.freeze({
 });
 
 function readJson(file) {
-  return JSON.parse(fs.readFileSync(file, "utf8"));
+  return storageReadJson(file);
 }
 
 function writeJson(file, value) {

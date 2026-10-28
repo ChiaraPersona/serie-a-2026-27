@@ -1,5 +1,6 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const http = require("node:http");
@@ -10,7 +11,7 @@ const { evaluateDerivedScoreMarket, validateCanonicalDnb } = require("./score-ma
 const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isCornerPeriodMarket, isDoubleChance12Selection } = require("./betting-market-policy");
 
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const finite = value => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
 const close = (left, right, tolerance) => Number.isFinite(Number(left)) && Number.isFinite(Number(right)) && Math.abs(Number(left) - Number(right)) <= tolerance;
 const median = values => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];

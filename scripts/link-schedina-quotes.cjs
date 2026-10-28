@@ -1,9 +1,10 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Reconcile already admitted forecasts with existing verified provider contracts.
 // A DUO is a distinct selection: never overwrite the saved individual contract.
 const fs=require('node:fs');
 const {integratePlayerForecasts}=require('./md06-player-forecast-integration');
-const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
+const read=f=>storageReadJson(f);
 function providerIdentities(catalogs,matchIds){
   const ids=new Map();
   for(const catalog of catalogs)for(const match of catalog.matches||[])for(const leg of match.selections||[]){

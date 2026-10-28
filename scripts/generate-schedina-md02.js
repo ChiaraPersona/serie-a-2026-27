@@ -1,11 +1,12 @@
 "use strict";
 
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 const { isUnderPlayableSelection } = require("./betting-market-policy");
 
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const read = relative => storageReadJson(path.join(root, relative));
 const matchdayIndex = process.argv.indexOf("--matchday");
 const matchday = matchdayIndex >= 0 ? Number(process.argv[matchdayIndex + 1]) : 2;
 if (!Number.isInteger(matchday) || matchday < 2 || matchday > 38) throw new Error("--matchday deve essere compreso tra 2 e 38.");

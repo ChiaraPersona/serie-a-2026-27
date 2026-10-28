@@ -1,3 +1,4 @@
+import { readJsonFile as storageReadJson } from './sisal/dataset-store.cjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
@@ -5,7 +6,7 @@ import {sharedForecastsForMatch,hasVerifiedPlayableQuote,isCanonicalModelForecas
 import sync from './forecast-sync.js';
 import {createPersonalBetslipStore} from '../js/pages/personal-betslip-store.mjs';
 
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const read=p=>storageReadJson(p);
 const data=read('data/normalized/schedina-md07.json');
 const source=read('data/sources/probable-lineups-md7-2026-27.json');
 const predictions=read('data/normalized/predictions.json');

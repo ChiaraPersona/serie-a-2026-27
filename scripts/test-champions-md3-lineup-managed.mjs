@@ -1,3 +1,4 @@
+import { readJsonFile as storageReadJson } from './sisal/dataset-store.cjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
@@ -8,7 +9,7 @@ import {createPersonalBetslipStore} from '../js/pages/personal-betslip-store.mjs
 const require=createRequire(import.meta.url);
 const {buildSharedIndividualCatalog,predictionRows}=require('./champions/md3-shared-forecast-integration.cjs');
 const {evaluateCandidate,candidatePool}=require('./md06-player-forecast-integration');
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const read=p=>storageReadJson(p);
 const data=read('data/normalized/schedina-champions-md03.json'),individuals=read('data/normalized/champions-md03-probable-individuals-2026-27.json');
 const source=read(data.lineupInput.path),raw=read(source.source.rawFile),db=read('data/normalized/champions-md03-player-database-2026-27.json');
 const odds=read('data/normalized/odds/sisal/champions-league.json');

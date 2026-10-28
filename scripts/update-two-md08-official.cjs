@@ -1,4 +1,5 @@
 'use strict';
+const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Fixture orchestration only: retain existing engines, admission gates and provider contracts.
 const fs=require('node:fs'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
 const config=[
@@ -374,7 +375,7 @@ const config=[
     ]
   }
 ].find(c=>c.id===process.argv[2]);assert(config,'Unknown target');const id=config.id,dir='output/md08-two-official/'+id;
-const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
+const read=f=>storageReadJson(f);
 const write=(f,d)=>{fs.writeFileSync(f+'.tmp',JSON.stringify(d,null,2)+'\n');fs.renameSync(f+'.tmp',f)};
 const run=(f,args=[],env={})=>execFileSync(process.execPath,['--experimental-require-module',f,...args],{stdio:'inherit',env:{...process.env,...env}});
 fs.mkdirSync(dir,{recursive:true});
