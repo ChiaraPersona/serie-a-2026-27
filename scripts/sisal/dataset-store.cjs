@@ -24,14 +24,14 @@ function readJsonFile(file) {
     const markets = [];
     for (const reference of entry.marketFiles) {
       // Only relative children of the dataset directory may be loaded.
-      if (typeof reference.file !== 'string' || reference.file.includes('\\')) throw Error('Invalid Sisal shard path');
+      if (typeof reference.file !== 'string' || path.isAbsolute(reference.file) || reference.file.includes('\\')) throw Error('Invalid Sisal shard path');
       const resolved = path.resolve(directory, reference.file);
       if (!resolved.startsWith(directory + path.sep)) throw Error('Invalid Sisal shard path');
       const text = fs.readFileSync(resolved, 'utf8');
       if (Buffer.byteLength(text) !== reference.bytes || digest(text) !== reference.sha256) throw Error(`Corrupt Sisal shard: ${reference.file}`);
       const rows = JSON.parse(text);
       if (!Array.isArray(rows)) throw Error('Invalid Sisal markets shard');
-      markets.push(...rows);
+      for (const market of rows) markets.push(market);
     }
     return { ...entry.event, markets };
   });
