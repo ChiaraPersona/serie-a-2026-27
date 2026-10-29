@@ -14,6 +14,10 @@ const files=['data/normalized/matches.json','data/normalized/predictions.json','
 const realBytes=Object.fromEntries([...files,BASE+'/protocol.json',BASE+'/manifest.json'].map(f=>[f,fs.readFileSync(path.join(root,f))]));
 const temp=()=>{const r=path.join(base,'test-'+crypto.randomUUID());fs.mkdirSync(r,{recursive:true});
  for(const f of [...files,...METHOD_FILES]){fs.mkdirSync(path.dirname(path.join(r,f)),{recursive:true});fs.copyFileSync(path.join(root,f),path.join(r,f));}
+ // This scenario starts before the official XI, independently of live fixture updates.
+ const lineups=read(r,files[4]);lineups.fixtures=lineups.fixtures.filter(f=>f.matchId!==target);write(r,files[4],lineups);
+ const predictions=read(r,files[1]);const prediction=predictions.predictions.find(p=>p.matchId===target);
+ if(prediction)prediction.generatedAt=new Date(now.getTime()-60000).toISOString();write(r,files[1],predictions);
  const p=read(root,BASE+'/protocol.json');p.activatedAt='2026-10-29T17:00:00Z';p.integrity.sha256=canonicalMatchHash(p);write(r,BASE+'/protocol.json',p);return r;};
 const remove=r=>{const resolved=path.resolve(r);assert(resolved.startsWith(base+path.sep)&&path.basename(resolved).startsWith('test-'));fs.rmSync(resolved,{recursive:true,force:true});};
 const fixture=read(root,files[0]).find(f=>f.id===target);
