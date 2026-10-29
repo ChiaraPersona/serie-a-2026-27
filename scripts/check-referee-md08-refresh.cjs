@@ -1,7 +1,10 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const root=path.resolve(__dirname,'..'),dest=path.join(root,'reports/referee-md08-refresh');fs.mkdirSync(dest,{recursive:true});
-const entries=JSON.parse(fs.readFileSync('data/generated/reading-referee-history.json')).fixtures.filter(f=>f.competition==='serie-a'&&f.fixtureId.endsWith('md-08'));
+const mdArg=process.argv.indexOf('--matchday'),matchday=mdArg<0?8:Number(process.argv[mdArg+1]);
+if(!Number.isInteger(matchday)||matchday<1||matchday>38)throw Error('Invalid matchday');
+const root=path.resolve(__dirname,'..'),dest=path.join(root,`reports/referee-md${String(matchday).padStart(2,'0')}-refresh`);fs.mkdirSync(dest,{recursive:true});
+const entries=JSON.parse(fs.readFileSync('data/generated/reading-referee-history.json')).fixtures.filter(f=>f.competition==='serie-a'&&f.fixtureId.endsWith(`md-${String(matchday).padStart(2,'0')}`));
+assert.equal(entries.length,10);
 const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.svg':'image/svg+xml'};
 const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!p.startsWith(root+path.sep))return res.writeHead(403).end();fs.readFile(p,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':types[path.extname(p)]||'application/octet-stream'});res.end(e?'Missing':b);});});
 (async()=>{
@@ -23,6 +26,6 @@ const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL
    if(entry.fixtureId.startsWith('torino-')||entry.fixtureId.startsWith('napoli-'))await panel.screenshot({path:path.join(dest,`${entry.fixtureId}-${width}.png`)});
    checks.push({id:entry.fixtureId,width,rows:entry.rows.length,averages:'MATCH',overflow:false});
   }
-  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(dest,'browser.json'),JSON.stringify({checks,errors},null,2));console.log(`PASS: ${checks.length} MD8 desktop/mobile checks.`);
+  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(dest,'browser.json'),JSON.stringify({checks,errors},null,2));console.log(`PASS: ${checks.length} MD${matchday} desktop/mobile checks.`);
  }finally{await browser?.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;server.close();});

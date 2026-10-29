@@ -15,7 +15,7 @@ async function main(){
   const ref=f.refereeAssignment.referee,profile=source.profiles.find(p=>p.refereeSlug===ref.slug);
   // Explicit, verified identity for the official absent from the existing registry.
   const url=profile?.source.url||({'andrea-zanotti':'https://www.calciotel.it/arbitro/2644/zanotti-andrea'})[ref.slug];
-  if(!url)throw Error('No exact profile URL: '+ref.slug);
+  if(!url)return {refereeId:ref.slug,provider:'calciotel',error:'No exact profile URL in verified registry',matches:[]};
   const response=await fetch(url,{signal:AbortSignal.timeout(30000)});if(!response.ok)throw Error(`${response.status}: ${url}`);
   const html=await response.text(),heading=clean(html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1]).replace(/^Scheda Arbitro:\s*/i,'').replace(/\s*\(Sezione.*$/i,'');
   if(identity(heading)!==identity(ref.name))throw Error('Profile identity mismatch: '+ref.slug);
@@ -38,7 +38,7 @@ async function main(){
  }));
  fs.writeFileSync(`${dir}/manifest.json`,JSON.stringify([...results.map(({matches,...r})=>({...r,rows:matches.length})),...secondary],null,2)+'\n');
  // Keep existing profiles unchanged: the full refresh enters through the new manifest.
- for(const r of results)if(!source.profiles.some(p=>p.refereeSlug===r.refereeId)){
+ for(const r of results)if(!r.error&&!source.profiles.some(p=>p.refereeSlug===r.refereeId)){
   const {matches,refereeId,...provenance}=r;
   source.profiles.push({refereeSlug:refereeId,name:fixtures.find(f=>f.refereeAssignment.referee.slug===refereeId).refereeAssignment.referee.name,matches,source:provenance});
  }
