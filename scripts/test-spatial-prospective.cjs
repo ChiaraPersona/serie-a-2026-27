@@ -19,7 +19,7 @@ const temp=()=>{const r=path.join(base,'test-'+crypto.randomUUID());fs.mkdirSync
  const predictions=read(r,files[1]);const prediction=predictions.predictions.find(p=>p.matchId===target);
  if(prediction)prediction.generatedAt=new Date(now.getTime()-60000).toISOString();write(r,files[1],predictions);
  const p=read(root,BASE+'/protocol.json');p.activatedAt='2026-10-29T17:00:00Z';p.integrity.sha256=canonicalMatchHash(p);write(r,BASE+'/protocol.json',p);return r;};
-const remove=r=>{const resolved=path.resolve(r);assert(resolved.startsWith(base+path.sep)&&path.basename(resolved).startsWith('test-'));fs.rmSync(resolved,{recursive:true,force:true});};
+const remove=r=>{const resolved=path.resolve(r);assert(resolved.startsWith(base+path.sep)&&path.basename(resolved).startsWith('test-'));fs.rmSync(resolved,{recursive:true,force:true,maxRetries:5,retryDelay:100});};
 const fixture=read(root,files[0]).find(f=>f.id===target);
 assert.equal(canCapture(fixture,now),null);
 assert.equal(canCapture(fixture,new Date(toKickoffUtc(fixture))),'KICKOFF_ALREADY_PASSED');

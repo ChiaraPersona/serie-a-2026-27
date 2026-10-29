@@ -1,0 +1,11 @@
+const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const fs=require('fs'),http=require('http'),path=require('path'),assert=require('assert/strict');
+const root=path.resolve(__dirname,'..'),squads=require('../data/normalized/champions-registered-squads-2026-27.json');
+const out=path.join(root,'output/champions-squads-audit');fs.mkdirSync(out,{recursive:true});
+const mime={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css'};
+const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!p.startsWith(root+path.sep))return res.writeHead(403).end();fs.readFile(p,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':mime[path.extname(p)]||'application/octet-stream'});res.end(e?'Missing':b)});});
+(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;const results=[];
+try{browser=await chromium.launch({channel:'msedge',headless:true});const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+for(const width of [1440,390]){await page.setViewportSize({width,height:1000});for(const team of squads.teams){await page.goto(`http://127.0.0.1:${server.address().port}/champions-league.html?team=${team.id}`,{waitUntil:'networkidle'});await page.waitForSelector('.champions-player-stats-table');const ids=await page.locator('[data-champions-player]').evaluateAll(rows=>rows.map(r=>r.dataset.championsPlayer));assert.deepEqual([...ids].sort(),team.players.map(p=>p.id).sort(),team.team);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${team.team}/${width}: overflow`);assert((await page.locator('.champions-team-hero-facts').innerText()).includes(String(team.counts.total)));results.push({team:team.team,width,players:ids.length,status:'PASS'});if(team.team==='Inter')await page.screenshot({path:path.join(out,`inter-${width}.png`),fullPage:true});}}
+assert.deepEqual(errors,[]);fs.writeFileSync(path.join(out,'browser.json'),JSON.stringify(results,null,2));console.log(`${results.length} verifiche rose desktop/mobile superate`);
+}finally{await browser?.close();server.close();}})().catch(e=>{console.error(e);process.exitCode=1;server.close();});

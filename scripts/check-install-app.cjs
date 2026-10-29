@@ -4,7 +4,7 @@ const http = require('node:http');
 const assert = require('node:assert/strict');
 const {chromium} = require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const root = path.resolve(__dirname, '..');
-const types = {'.html':'text/html', '.js':'text/javascript', '.mjs':'text/javascript', '.css':'text/css', '.json':'application/json', '.webmanifest':'application/manifest+json', '.png':'image/png'};
+const types = {'.html':'text/html', '.js':'text/javascript', '.mjs':'text/javascript', '.mjs':'text/javascript', '.css':'text/css', '.json':'application/json', '.webmanifest':'application/manifest+json', '.png':'image/png'};
 // Mount below a subpath too, as on repository-based static hosting.
 const server = http.createServer((req, res) => {
   const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
@@ -35,11 +35,15 @@ const server = http.createServer((req, res) => {
         assert.equal(await page.evaluate(async src => (await fetch(src)).status,base + icon.src),200);
       }
       assert.equal(await page.locator('.install-app-area, [data-install-android]').count(),0);
-      await page.goto(base + 'download.html');
+      assert.equal(await page.locator('#site-nav a[href="download.html"]').count(),0);
+      await page.locator('.home-rail a[href="download.html"]').waitFor();
+      assert.equal(await page.locator('main').evaluate(el => el.scrollWidth <= innerWidth),true);
+      await page.locator('.home-rail a[href="download.html"]').click();
+      await page.waitForURL(base + 'download.html');
       assert.equal(await page.locator('.download-card').count(),2);
       assert.equal(await page.locator('.download-icon svg').count(),2);
       assert.equal(await page.locator('main').evaluate(el => el.scrollWidth <= innerWidth),true);
-      assert.equal(await page.locator('#site-nav a[href="download.html"]').count(),1);
+      assert.equal(await page.locator('#site-nav a[href="download.html"]').count(),0);
       if (mobile) {
         await page.getByRole('button',{name:'Menu',exact:true}).click();
         assert.equal(await page.locator('.menu-button').getAttribute('aria-expanded'),'true');

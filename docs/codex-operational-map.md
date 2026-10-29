@@ -17,6 +17,8 @@ Consultazione interna, verificata il 23 ottobre 2026. Percorsi relativi alla rad
 
 ## Consultazione economica
 
+Per la ricerca sulle coordinate nei calcoli individuali consultare [pipeline e limiti v2](player-spatial-validation.md): `scripts/research/player-spatial-v2/`, risultati `data/analysis/player-spatial-v2-2026-10-29/`, congelamenti `data/predictions/player-spatial-v2-prospective/`. Il builder Lettura acquisisce anche il confronto v2 soltanto con protocollo già attivo; non modifica previsioni operative o contratti DUO.
+
 Prima localizzare con `rg --files scripts js docs`, poi usare `rg -n -m 8 --max-columns 240 'simbolo' percorso`. Per trovare solo file usare `rg -l`. Un risultato troncato richiede una ricerca più precisa o un'estrazione con parser, non ripetere lo stesso dump.
 
 Nei JSON filtrare per ID canonici e selezionare campi, conteggi e pochi esempi; dichiarare eventuali omissioni rilevanti. Per orientarsi sulla UI usare `data/normalized/champions-md02-ui-2026-27.json`, i file per fixture in `data/generated/readings/` e `data/generated/head-to-head/first-leg-2026-27-summary.json`. Aprire gli archivi completi per i dettagli mancanti. Nessun limite rigido all'approfondimento.

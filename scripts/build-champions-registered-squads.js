@@ -25,18 +25,26 @@ if (missingTeams.length || extraTeams.length) throw new Error(`Copertura squadre
 const validPositions = new Set(["goalkeeper", "defender", "midfielder", "forward", null]);
 const slug = value => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 const statsByPlayer = new Map(playerStats.teams.flatMap(team => team.players.map(player => [`${team.team}|${player.id}`, player])));
+const verifiedRegistry = JSON.parse(fs.readFileSync(path.join(root, 'data/normalized/champions-md03-player-database-2026-27.json'), 'utf8'));
 
 const teams = calendar.teams.map(teamName => teamByName.get(teamName)).map(team => {
   const players = team.players.map(entry => {
     if (!Array.isArray(entry) || entry.length !== 3) throw new Error(`${team.team}: formato giocatore non valido`);
     const [name, position, registrationList] = entry;
+    const identity = team.playerIdentities?.find(player => player.name === name);
     if (!name || typeof name !== "string") throw new Error(`${team.team}: nome giocatore mancante`);
     if (!validPositions.has(position)) throw new Error(`${team.team}: ruolo non valido per ${name}`);
     if (![null, "B"].includes(registrationList)) throw new Error(`${team.team}: lista non valida per ${name}`);
-    const historical = statsByPlayer.get(`${team.team}|${slug(name)}`) || null;
-    const numberRecord = shirtNumbers.records.find(r => r.status === "accepted" && r.teamId === slug(team.team) && (r.playerId === slug(name) || r.playerIdAliases?.includes(slug(name))));
+    const playerId = identity?.playerId || slug(name);
+    const verified = identity && verifiedRegistry.teams.find(t => t.team === team.team)?.players.find(p => String(p.uefaPlayerId) === String(identity.uefaPlayerId));
+    const localPath = path.join(root, `data/teams/${slug(team.team)}.json`);
+    const local = ['Inter','Napoli','Roma','Como'].includes(team.team) && fs.existsSync(localPath) ? JSON.parse(fs.readFileSync(localPath, 'utf8')).squad.find(p => p.id === playerId) : null;
+    const canonicalHistory = local?.previousSeason ? local : verified?.previousSeason ? verified : null;
+    const historical = canonicalHistory ? {previousSeason: canonicalHistory.previousSeason, providerPlayerId: canonicalHistory.providerPlayerId || canonicalHistory.providerIds?.espn, dataQuality: 'complete', sourceMode: canonicalHistory.historicalSource || 'canonical-serie-a-profile'} : statsByPlayer.get(`${team.team}|${playerId}`) || null;
+    const numberRecord = shirtNumbers.records.find(r => r.status === "accepted" && r.teamId === slug(team.team) && (r.playerId === playerId || r.playerIdAliases?.includes(playerId)));
     return {
-      id: slug(name),
+      id: playerId,
+      ...(identity ? { uefaPlayerId: identity.uefaPlayerId } : {}),
       ...(numberRecord ? {shirtNumber: numberRecord.shirtNumber} : {}),
       name,
       position,
@@ -51,7 +59,7 @@ const teams = calendar.teams.map(teamName => teamByName.get(teamName)).map(team 
       previousSeason: historical?.previousSeason || null,
       historicalDataQuality: historical?.dataQuality || "unavailable",
       historicalSourceMode: historical?.sourceMode || null,
-      historicalUnmatchedReason: historical?.unmatchedReason || null
+      historicalUnmatchedReason: historical?.unmatchedReason || (historical?.previousSeason ? null : "Nessuna associazione statistica verificata")
     };
   });
   const duplicatePlayers = players.filter((player, index) => players.findIndex(candidate => candidate.id === player.id) !== index);
@@ -95,5 +103,7 @@ const output = {
   shirtNumbers
 };
 
-fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
+const temporaryPath = `${outputPath}.tmp`;
+fs.writeFileSync(temporaryPath, `${JSON.stringify(output)}\n`);
+fs.renameSync(temporaryPath, outputPath);
 console.log(`Rose Champions: ${output.summary.teams} squadre, ${output.summary.players} giocatori.`);

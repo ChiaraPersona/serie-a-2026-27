@@ -9,12 +9,14 @@ const expected = calendar.teams;
 
 assert.deepStrictEqual(data.teams.map(team => team.team), expected);
 assert.strictEqual(data.summary.teams, 36);
-assert.strictEqual(data.summary.players, 970);
-assert(data.summary.playersWithHistoricalStats >= 794);
-assert(data.summary.playersWithoutHistoricalStats <= 176);
+const audit = JSON.parse(fs.readFileSync(path.join(root, 'data/raw/champions-squads-2026-10-29/audit.json'), 'utf8'));
+assert.strictEqual(data.summary.players, audit.teams.reduce((sum, team) => sum + team.newCount, 0));
+assert.strictEqual(data.summary.playersWithHistoricalStats + data.summary.playersWithoutHistoricalStats, data.summary.players);
 assert.strictEqual(data.playerStatistics.season, "2025/26");
 for (const team of data.teams) {
   assert(team.players.length >= 18, `${team.team}: rosa incompleta`);
+  const official = audit.teams.find(t => t.team === team.team);
+  assert.deepStrictEqual(team.players.map(p=>[p.uefaPlayerId,p.position,p.registrationList]), official.players.map(p=>[p.uefaPlayerId,p.position,p.registrationList]));
   assert(team.id);
   assert.strictEqual(team.registration.status, "registered");
   assert.strictEqual(team.availability.status, null);

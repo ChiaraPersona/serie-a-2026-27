@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "activatedAt": "2026-10-29T19:20:02.171Z",
+  "policy": {
+    "version": "player-spatial-opportunity-v1",
+    "historyVariant": "coach-cycle",
+    "halfLifeMatches": 3,
+    "minimumTeamMatches": 5,
+    "minimumPlayerMatches": 3,
+    "minimumPlayerShots": 10,
+    "minimumPlayerCoverage": 0.8,
+    "playerPriorShots": 10,
+    "defencePriorShots": 20,
+    "maximumLogSignal": 0.22314355131420976,
+    "maximumIndividualChange": 0.1,
+    "coefficientMinimum": -1,
+    "coefficientMaximum": 1,
+    "coefficientSteps": 80,
+    "ridge": 0.05,
+    "developmentMatchdays": [
+      6,
+      7
+    ],
+    "testMatchdays": [
+      8,
+      9
+    ]
+  },
+  "methodHash": "4128d4af77a40c204429132c98317648efde75bccba14bf3fe3256a536d034e3",
+  "production": false,
+  "state": "SHADOW_RESEARCH_ONLY",
+  "fitted": {
+    "beta": 0,
+    "objective": 1.3436022474529394,
+    "trainingFixtureIds": [
+      "napoli-frosinone-2026-27-md-06",
+      "atalanta-venezia-2026-27-md-06",
+      "frosinone-sassuolo-2026-27-md-07",
+      "juventus-lazio-2026-27-md-07",
+      "milan-atalanta-2026-27-md-07",
+      "monza-cagliari-2026-27-md-07"
+    ],
+    "trainingMatchdays": [
+      6,
+      7
+    ],
+    "policyVersion": "player-spatial-opportunity-v1"
+  },
+  "hypothesisBeta": 1,
+  "hypothesisStatus": "FIXED_THEORETICAL_BENCHMARK_NOT_SELECTED_FROM_HOLDOUT",
+  "rationale": "Fitted beta is recorded unchanged, including zero. The unit exposure hypothesis is a separate prospective experiment, not a validated replacement.",
+  "primaryRule": "FIRST_PREMATCH_CAPTURE_PER_CANONICAL_FIXTURE",
+  "confirmatoryMatchdayMinimum": 10,
+  "integrity": {
+    "sha256": "08ea491fb15501ba53b51f69d98c93ff725fbd19d9f24af87d6f521287d8d8db",
+    "algorithm": "SHA-256"
+  }
+}

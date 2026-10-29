@@ -1,0 +1,339 @@
+{
+  "schemaVersion": 1,
+  "activatedAt": "2026-10-29T19:30:21.426Z",
+  "policy": {
+    "version": "player-spatial-context-v2",
+    "halfLifeMatches": 3,
+    "minimumTeamMatches": 3,
+    "minimumEffectiveTeamMatches": 2,
+    "minimumPlayerMatches": 2,
+    "minimumPlayerShots": 5,
+    "minimumPlayerCoverage": 0.8,
+    "playerPriorShots": 20,
+    "defencePriorShots": 30,
+    "oldCoachWeight": 0.35,
+    "minimumContextWeight": 0.25,
+    "roleMismatchWeight": 0.5,
+    "sideMismatchWeight": 0.75,
+    "unknownRoleWeight": 0.75,
+    "maximumSignal": 0.22314355131420976,
+    "maximumIndividualChange": 0.1,
+    "maximumVolumeChange": 0.05,
+    "ridge": 0.05,
+    "minimumTrainingFixtures": 5,
+    "minimumTrainingMatchdays": 2,
+    "coefficientSteps": 80,
+    "firstEvaluationMatchday": 6
+  },
+  "methodHash": "0773e7cfd2269bf6f23f162a86e10a896c9334b8d150fcaf486ca0c7d8db69b3",
+  "production": false,
+  "state": "SHADOW_RESEARCH_ONLY",
+  "fitted": {
+    "allocation": {
+      "beta": 0,
+      "objective": 1.3397513469854982,
+      "status": "FITTED_PRIOR_MATCHDAYS_ONLY",
+      "trainingFixtures": 38,
+      "trainingFixtureIds": [
+        "genoa-fiorentina-2026-27-md-06",
+        "inter-parma-2026-27-md-06",
+        "napoli-frosinone-2026-27-md-06",
+        "cagliari-juventus-2026-27-md-06",
+        "como-roma-2026-27-md-06",
+        "lazio-monza-2026-27-md-06",
+        "lecce-bologna-2026-27-md-06",
+        "sassuolo-milan-2026-27-md-06",
+        "atalanta-venezia-2026-27-md-06",
+        "torino-udinese-2026-27-md-06",
+        "frosinone-sassuolo-2026-27-md-07",
+        "bologna-inter-2026-27-md-07",
+        "roma-genoa-2026-27-md-07",
+        "venezia-napoli-2026-27-md-07",
+        "fiorentina-como-2026-27-md-07",
+        "juventus-lazio-2026-27-md-07",
+        "milan-atalanta-2026-27-md-07",
+        "udinese-lecce-2026-27-md-07",
+        "monza-cagliari-2026-27-md-07",
+        "parma-torino-2026-27-md-07",
+        "torino-monza-2026-27-md-08",
+        "cagliari-bologna-2026-27-md-08",
+        "como-sassuolo-2026-27-md-08",
+        "lazio-parma-2026-27-md-08",
+        "napoli-roma-2026-27-md-08",
+        "atalanta-frosinone-2026-27-md-08",
+        "genoa-venezia-2026-27-md-08",
+        "inter-fiorentina-2026-27-md-08",
+        "lecce-juventus-2026-27-md-08",
+        "udinese-milan-2026-27-md-08",
+        "roma-cagliari-2026-27-md-09",
+        "sassuolo-lazio-2026-27-md-09",
+        "torino-como-2026-27-md-09",
+        "genoa-juventus-2026-27-md-09",
+        "milan-bologna-2026-27-md-09",
+        "monza-napoli-2026-27-md-09",
+        "parma-udinese-2026-27-md-09",
+        "venezia-inter-2026-27-md-09"
+      ],
+      "trainingMatchdays": [
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    "volume": {
+      "beta": -0.025000000000000022,
+      "objective": 1.339741063630245,
+      "status": "FITTED_PRIOR_MATCHDAYS_ONLY",
+      "trainingFixtures": 38,
+      "trainingFixtureIds": [
+        "genoa-fiorentina-2026-27-md-06",
+        "inter-parma-2026-27-md-06",
+        "napoli-frosinone-2026-27-md-06",
+        "cagliari-juventus-2026-27-md-06",
+        "como-roma-2026-27-md-06",
+        "lazio-monza-2026-27-md-06",
+        "lecce-bologna-2026-27-md-06",
+        "sassuolo-milan-2026-27-md-06",
+        "atalanta-venezia-2026-27-md-06",
+        "torino-udinese-2026-27-md-06",
+        "frosinone-sassuolo-2026-27-md-07",
+        "bologna-inter-2026-27-md-07",
+        "roma-genoa-2026-27-md-07",
+        "venezia-napoli-2026-27-md-07",
+        "fiorentina-como-2026-27-md-07",
+        "juventus-lazio-2026-27-md-07",
+        "milan-atalanta-2026-27-md-07",
+        "udinese-lecce-2026-27-md-07",
+        "monza-cagliari-2026-27-md-07",
+        "parma-torino-2026-27-md-07",
+        "torino-monza-2026-27-md-08",
+        "cagliari-bologna-2026-27-md-08",
+        "como-sassuolo-2026-27-md-08",
+        "lazio-parma-2026-27-md-08",
+        "napoli-roma-2026-27-md-08",
+        "atalanta-frosinone-2026-27-md-08",
+        "genoa-venezia-2026-27-md-08",
+        "inter-fiorentina-2026-27-md-08",
+        "lecce-juventus-2026-27-md-08",
+        "udinese-milan-2026-27-md-08",
+        "roma-cagliari-2026-27-md-09",
+        "sassuolo-lazio-2026-27-md-09",
+        "torino-como-2026-27-md-09",
+        "genoa-juventus-2026-27-md-09",
+        "milan-bologna-2026-27-md-09",
+        "monza-napoli-2026-27-md-09",
+        "parma-udinese-2026-27-md-09",
+        "venezia-inter-2026-27-md-09"
+      ],
+      "trainingMatchdays": [
+        6,
+        7,
+        8,
+        9
+      ]
+    }
+  },
+  "foldParameters": [
+    {
+      "matchday": 6,
+      "parameters": {
+        "allocation": {
+          "beta": 0,
+          "status": "INSUFFICIENT_PRIOR_TRAINING",
+          "trainingFixtures": 0
+        },
+        "volume": {
+          "beta": 0,
+          "status": "INSUFFICIENT_PRIOR_TRAINING",
+          "trainingFixtures": 0
+        }
+      }
+    },
+    {
+      "matchday": 7,
+      "parameters": {
+        "allocation": {
+          "beta": 0,
+          "status": "INSUFFICIENT_PRIOR_TRAINING",
+          "trainingFixtures": 10
+        },
+        "volume": {
+          "beta": 0,
+          "status": "INSUFFICIENT_PRIOR_TRAINING",
+          "trainingFixtures": 10
+        }
+      }
+    },
+    {
+      "matchday": 8,
+      "parameters": {
+        "allocation": {
+          "beta": 0,
+          "objective": 1.3177482987447209,
+          "status": "FITTED_PRIOR_MATCHDAYS_ONLY",
+          "trainingFixtures": 20,
+          "trainingFixtureIds": [
+            "genoa-fiorentina-2026-27-md-06",
+            "inter-parma-2026-27-md-06",
+            "napoli-frosinone-2026-27-md-06",
+            "cagliari-juventus-2026-27-md-06",
+            "como-roma-2026-27-md-06",
+            "lazio-monza-2026-27-md-06",
+            "lecce-bologna-2026-27-md-06",
+            "sassuolo-milan-2026-27-md-06",
+            "atalanta-venezia-2026-27-md-06",
+            "torino-udinese-2026-27-md-06",
+            "frosinone-sassuolo-2026-27-md-07",
+            "bologna-inter-2026-27-md-07",
+            "roma-genoa-2026-27-md-07",
+            "venezia-napoli-2026-27-md-07",
+            "fiorentina-como-2026-27-md-07",
+            "juventus-lazio-2026-27-md-07",
+            "milan-atalanta-2026-27-md-07",
+            "udinese-lecce-2026-27-md-07",
+            "monza-cagliari-2026-27-md-07",
+            "parma-torino-2026-27-md-07"
+          ],
+          "trainingMatchdays": [
+            6,
+            7
+          ]
+        },
+        "volume": {
+          "beta": -0.025000000000000022,
+          "objective": 1.3177237596862736,
+          "status": "FITTED_PRIOR_MATCHDAYS_ONLY",
+          "trainingFixtures": 20,
+          "trainingFixtureIds": [
+            "genoa-fiorentina-2026-27-md-06",
+            "inter-parma-2026-27-md-06",
+            "napoli-frosinone-2026-27-md-06",
+            "cagliari-juventus-2026-27-md-06",
+            "como-roma-2026-27-md-06",
+            "lazio-monza-2026-27-md-06",
+            "lecce-bologna-2026-27-md-06",
+            "sassuolo-milan-2026-27-md-06",
+            "atalanta-venezia-2026-27-md-06",
+            "torino-udinese-2026-27-md-06",
+            "frosinone-sassuolo-2026-27-md-07",
+            "bologna-inter-2026-27-md-07",
+            "roma-genoa-2026-27-md-07",
+            "venezia-napoli-2026-27-md-07",
+            "fiorentina-como-2026-27-md-07",
+            "juventus-lazio-2026-27-md-07",
+            "milan-atalanta-2026-27-md-07",
+            "udinese-lecce-2026-27-md-07",
+            "monza-cagliari-2026-27-md-07",
+            "parma-torino-2026-27-md-07"
+          ],
+          "trainingMatchdays": [
+            6,
+            7
+          ]
+        }
+      }
+    },
+    {
+      "matchday": 9,
+      "parameters": {
+        "allocation": {
+          "beta": 0,
+          "objective": 1.3324199495447506,
+          "status": "FITTED_PRIOR_MATCHDAYS_ONLY",
+          "trainingFixtures": 30,
+          "trainingFixtureIds": [
+            "genoa-fiorentina-2026-27-md-06",
+            "inter-parma-2026-27-md-06",
+            "napoli-frosinone-2026-27-md-06",
+            "cagliari-juventus-2026-27-md-06",
+            "como-roma-2026-27-md-06",
+            "lazio-monza-2026-27-md-06",
+            "lecce-bologna-2026-27-md-06",
+            "sassuolo-milan-2026-27-md-06",
+            "atalanta-venezia-2026-27-md-06",
+            "torino-udinese-2026-27-md-06",
+            "frosinone-sassuolo-2026-27-md-07",
+            "bologna-inter-2026-27-md-07",
+            "roma-genoa-2026-27-md-07",
+            "venezia-napoli-2026-27-md-07",
+            "fiorentina-como-2026-27-md-07",
+            "juventus-lazio-2026-27-md-07",
+            "milan-atalanta-2026-27-md-07",
+            "udinese-lecce-2026-27-md-07",
+            "monza-cagliari-2026-27-md-07",
+            "parma-torino-2026-27-md-07",
+            "torino-monza-2026-27-md-08",
+            "cagliari-bologna-2026-27-md-08",
+            "como-sassuolo-2026-27-md-08",
+            "lazio-parma-2026-27-md-08",
+            "napoli-roma-2026-27-md-08",
+            "atalanta-frosinone-2026-27-md-08",
+            "genoa-venezia-2026-27-md-08",
+            "inter-fiorentina-2026-27-md-08",
+            "lecce-juventus-2026-27-md-08",
+            "udinese-milan-2026-27-md-08"
+          ],
+          "trainingMatchdays": [
+            6,
+            7,
+            8
+          ]
+        },
+        "volume": {
+          "beta": -0.025000000000000022,
+          "objective": 1.332417525426868,
+          "status": "FITTED_PRIOR_MATCHDAYS_ONLY",
+          "trainingFixtures": 30,
+          "trainingFixtureIds": [
+            "genoa-fiorentina-2026-27-md-06",
+            "inter-parma-2026-27-md-06",
+            "napoli-frosinone-2026-27-md-06",
+            "cagliari-juventus-2026-27-md-06",
+            "como-roma-2026-27-md-06",
+            "lazio-monza-2026-27-md-06",
+            "lecce-bologna-2026-27-md-06",
+            "sassuolo-milan-2026-27-md-06",
+            "atalanta-venezia-2026-27-md-06",
+            "torino-udinese-2026-27-md-06",
+            "frosinone-sassuolo-2026-27-md-07",
+            "bologna-inter-2026-27-md-07",
+            "roma-genoa-2026-27-md-07",
+            "venezia-napoli-2026-27-md-07",
+            "fiorentina-como-2026-27-md-07",
+            "juventus-lazio-2026-27-md-07",
+            "milan-atalanta-2026-27-md-07",
+            "udinese-lecce-2026-27-md-07",
+            "monza-cagliari-2026-27-md-07",
+            "parma-torino-2026-27-md-07",
+            "torino-monza-2026-27-md-08",
+            "cagliari-bologna-2026-27-md-08",
+            "como-sassuolo-2026-27-md-08",
+            "lazio-parma-2026-27-md-08",
+            "napoli-roma-2026-27-md-08",
+            "atalanta-frosinone-2026-27-md-08",
+            "genoa-venezia-2026-27-md-08",
+            "inter-fiorentina-2026-27-md-08",
+            "lecce-juventus-2026-27-md-08",
+            "udinese-milan-2026-27-md-08"
+          ],
+          "trainingMatchdays": [
+            6,
+            7,
+            8
+          ]
+        }
+      }
+    }
+  ],
+  "maximumTrainingMatchday": 9,
+  "studyFile": "data/analysis/player-spatial-v2-2026-10-29/results.json",
+  "studyHash": "89decc88f3d84ef943ac82894be6f782f3c67b10d3abc8702b73ade27c3099e6",
+  "rationale": "Allocation and volume are separate predeclared branches, never stacked or selected using target outcomes. Historical exploration is not confirmation. Coefficients stay frozen under this protocol.",
+  "primaryRule": "FIRST_PREMATCH_CAPTURE_PER_CANONICAL_FIXTURE",
+  "confirmatoryMatchdayMinimum": 10,
+  "integrity": {
+    "sha256": "eed1c4e2db3fd9bdb30eb7e1de781418982cebf705830ab09f8c7ce46f131db8",
+    "algorithm": "SHA-256"
+  }
+}

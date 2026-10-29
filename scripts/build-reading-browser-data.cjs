@@ -46,6 +46,8 @@ function build({matchday=null}={}){
   write(`matches/${id}.json`,{teams,matches:history,readings:readings.filter(r=>r.matchId===id),objectiveProfiles:objectives,teamDirectory:{...directory,officialLineups:Object.fromEntries(Object.entries(directory.officialLineups||{}).filter(([key])=>key.startsWith(id+':')))},teamStyleProfiles:{...styles,profiles:styles.profiles.filter(p=>ids.includes(p.teamId))},predictionDataset:{predictions:predictions.predictions.filter(p=>p.matchId===id).map(p=>withReadingDuels(p,duelSquads))},headToHeadData:{fixtures:h2h.fixtures.filter(f=>f.fixtureId===id||[f.homeTeamId,f.awayTeamId].sort().join('|')===ids.slice().sort().join('|'))},refereeProfiles:{...referees,profiles:referees.profiles.filter(p=>p.refereeSlug===match.refereeAssignment?.referee?.slug)},forecastDataset,finishedIds,artifacts});
  }
  require('./spatial-prospective/auto-capture.cjs').autoCapture(root);
+ require('./research/player-spatial/auto-capture.cjs').autoCapture(root);
+ require('./research/player-spatial-v2/auto-capture.cjs').autoCapture(root);
  console.log(`Lettura: indice e ${matches.filter(m=>matchday===null||m.matchday===matchday).length} dettagli generati senza ricalcoli.`);
 }
 module.exports={build};if(require.main===module){const i=process.argv.indexOf('--matchday');const matchday=i<0?null:Number(process.argv[i+1]);if(matchday!==null&&(!Number.isInteger(matchday)||matchday<1||matchday>38))throw Error('Giornata non valida');build({matchday});}
