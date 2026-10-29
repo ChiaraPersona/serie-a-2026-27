@@ -29,7 +29,7 @@ const archive='seria-a-2026-27-raw-archive-2026-08-24';if(fs.existsSync(path.joi
 const walk=p=>fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.isSymbolicLink()?[]:e.isDirectory()?walk(path.join(p,e.name)):[path.join(p,e.name)]);
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const before=Object.fromEntries(walk(path.join(target,'data')).map(p=>[path.relative(target,p),hash(p)]));
-let failure=null;try{for(const [file,...options] of plan)execFileSync(process.execPath,[file,...options],{cwd:target,stdio:'inherit'});}catch(e){failure=e.message;}
+let failure=null;try{for(const [file,...options] of plan)execFileSync(process.execPath,[file,...options],{cwd:target,stdio:'inherit',env:{...process.env,SPATIAL_CAPTURE_DISABLED:'1'}});}catch(e){failure=e.message;}
 const changed=walk(path.join(target,'data')).filter(p=>before[path.relative(target,p)]!==hash(p)).map(p=>path.relative(target,p));
 fs.writeFileSync(path.join(target,'generation-report.json'),JSON.stringify({competition,matchday:day,plan,changed,failure,promoted:false},null,2)+'\n');
 console.log('Candidati isolati: confrontare generation-report.json; nessuna promozione automatica.');if(failure)process.exitCode=1;

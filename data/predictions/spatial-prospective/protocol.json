@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "protocolId": "serie-a-spatial-prospective-v1",
+  "activatedAt": "2026-10-29T18:17:41.780Z",
+  "competition": "serie-a",
+  "season": "2026-27",
+  "state": "RESEARCH_ONLY",
+  "production": false,
+  "confirmatoryMatchdayMinimum": 10,
+  "primaryRule": "FIRST_VALID_BASELINE_CAPTURE_PER_FIXTURE; later revisions retained but never selected using actuals",
+  "clockPolicy": "LOCAL_SYSTEM_UTC_NO_EXTERNAL_TIMESTAMP_AUTHORITY; reject if started by time or status",
+  "featureConfig": {
+    "version": "spatial-shape-pilot-v1",
+    "developmentMatchdays": [
+      6,
+      7
+    ],
+    "holdoutMatchdays": [
+      8,
+      9
+    ],
+    "minimumHistoryMatches": 5,
+    "sharePriorShots": 20,
+    "conversionPriorShots": 20,
+    "maximumSignal": 0.22314355131420976,
+    "ridgeAlpha": 1,
+    "ridgeBeta": 1,
+    "maximumAlpha": 0.25,
+    "maximumBeta": 1,
+    "minimumTrainingMatches": 8,
+    "bootstrapIterations": 5000,
+    "minimumBootstrapMatchdays": 6,
+    "seed": 20261029
+  },
+  "continuityPolicy": {
+    "version": "technical-continuity-v1",
+    "recentMatches": 5,
+    "halfLifeMatches": 3,
+    "transitionCoachMatches": 3,
+    "lowStarterOverlap": 0.5454545454545454,
+    "minimumLowOverlapPairs": 2,
+    "maximumContextAgeDays": 30
+  },
+  "variants": [
+    "recent",
+    "decay",
+    "coach-cycle"
+  ],
+  "training": {
+    "fixtureIds": [
+      "napoli-frosinone-2026-27-md-06",
+      "lazio-monza-2026-27-md-06",
+      "atalanta-venezia-2026-27-md-06",
+      "torino-udinese-2026-27-md-06",
+      "frosinone-sassuolo-2026-27-md-07",
+      "roma-genoa-2026-27-md-07",
+      "juventus-lazio-2026-27-md-07",
+      "milan-atalanta-2026-27-md-07",
+      "udinese-lecce-2026-27-md-07",
+      "monza-cagliari-2026-27-md-07"
+    ],
+    "matchdays": [
+      6,
+      7
+    ],
+    "source": "data/analysis/spatial-continuity-backtest-2026-10-29/results.json",
+    "sourceHash": "421fdd94648dd9b6ce5079ab0e3976a0f2bec0598c2da0af259b80cd6d592ca5"
+  },
+  "coefficients": {
+    "calibration": {
+      "alpha": 0.25,
+      "beta": 0,
+      "iterations": 2,
+      "trainingFixtureIds": [
+        "napoli-frosinone-2026-27-md-06",
+        "lazio-monza-2026-27-md-06",
+        "atalanta-venezia-2026-27-md-06",
+        "torino-udinese-2026-27-md-06",
+        "frosinone-sassuolo-2026-27-md-07",
+        "roma-genoa-2026-27-md-07",
+        "juventus-lazio-2026-27-md-07",
+        "milan-atalanta-2026-27-md-07",
+        "udinese-lecce-2026-27-md-07",
+        "monza-cagliari-2026-27-md-07"
+      ],
+      "trainingMatchdays": [
+        6,
+        7
+      ],
+      "latestTrainingDate": "2026-10-19",
+      "spatial": false
+    },
+    "recent": {
+      "alpha": 0.25,
+      "beta": -0.3889526251902968,
+      "iterations": 6,
+      "trainingFixtureIds": [
+        "napoli-frosinone-2026-27-md-06",
+        "lazio-monza-2026-27-md-06",
+        "atalanta-venezia-2026-27-md-06",
+        "torino-udinese-2026-27-md-06",
+        "frosinone-sassuolo-2026-27-md-07",
+        "roma-genoa-2026-27-md-07",
+        "juventus-lazio-2026-27-md-07",
+        "milan-atalanta-2026-27-md-07",
+        "udinese-lecce-2026-27-md-07",
+        "monza-cagliari-2026-27-md-07"
+      ],
+      "trainingMatchdays": [
+        6,
+        7
+      ],
+      "latestTrainingDate": "2026-10-19",
+      "spatial": true
+    },
+    "decay": {
+      "alpha": 0.25,
+      "beta": -0.3936302889602324,
+      "iterations": 6,
+      "trainingFixtureIds": [
+        "napoli-frosinone-2026-27-md-06",
+        "lazio-monza-2026-27-md-06",
+        "atalanta-venezia-2026-27-md-06",
+        "torino-udinese-2026-27-md-06",
+        "frosinone-sassuolo-2026-27-md-07",
+        "roma-genoa-2026-27-md-07",
+        "juventus-lazio-2026-27-md-07",
+        "milan-atalanta-2026-27-md-07",
+        "udinese-lecce-2026-27-md-07",
+        "monza-cagliari-2026-27-md-07"
+      ],
+      "trainingMatchdays": [
+        6,
+        7
+      ],
+      "latestTrainingDate": "2026-10-19",
+      "spatial": true
+    },
+    "coach-cycle": {
+      "alpha": 0.25,
+      "beta": -0.46521216859258124,
+      "iterations": 6,
+      "trainingFixtureIds": [
+        "napoli-frosinone-2026-27-md-06",
+        "lazio-monza-2026-27-md-06",
+        "atalanta-venezia-2026-27-md-06",
+        "torino-udinese-2026-27-md-06",
+        "frosinone-sassuolo-2026-27-md-07",
+        "roma-genoa-2026-27-md-07",
+        "juventus-lazio-2026-27-md-07",
+        "milan-atalanta-2026-27-md-07",
+        "udinese-lecce-2026-27-md-07",
+        "monza-cagliari-2026-27-md-07"
+      ],
+      "trainingMatchdays": [
+        6,
+        7
+      ],
+      "latestTrainingDate": "2026-10-19",
+      "spatial": true
+    }
+  },
+  "methodHashes": {
+    "scripts/research/spatial-backtest/model.cjs": "a5620f73d3c13727e4fe6d8c1896c392e3532238baef2e924dbaa02855ed80f7",
+    "scripts/shot-events/technical-context.cjs": "cbe8b5b14d419042eee0d42dcd290fefd0dbc3b43b518836312d7a0a75253d90",
+    "scripts/shot-events/matchup.cjs": "a4c8910f5adcbace3f225945f44792f28adb59e3ce6a7127a243a4811d43bf62",
+    "scripts/predictions/engine.js": "4a757f8ff8c09dd42d1b49b2b463bf9e9bea8668a5eb7ac433bb23e6b552612d"
+  },
+  "evaluation": {
+    "primaryMetric": "JOINT_POISSON_GOAL_LOG_LOSS",
+    "roi": null,
+    "certifiedProviderSettlement": false,
+    "include": "PRIMARY snapshots with canonical finished result only; pilot MD9 separate; compare identical eligible fixtures and report abstentions",
+    "minimumIndependentMatchdays": 6,
+    "bootstrapIterations": 5000,
+    "seed": 20261029
+  },
+  "integrity": {
+    "sha256": "b13b3f73a60ee06dd4da60f1a2a49282c427e1dfd3baf7db82fd95cbf9c75edb",
+    "algorithm": "SHA-256"
+  }
+}

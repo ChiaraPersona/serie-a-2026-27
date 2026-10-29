@@ -1,5 +1,6 @@
 import {esc,number,finite,missing} from './format.mjs?v=20261022-assets-v1';
 import {historyMarkup,selectHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
+import {installSpatialMatchup} from './spatial-matchup.mjs?v=20261029-continuity-v1';
 export function attackMarkup(channels){
  if(!channels)return missing('Ripartizione delle direzioni d’attacco non disponibile.');
  return `<div class="rd-channels">${[['left','Sinistra'],['central','Centro'],['right','Destra']].map(([key,label])=>`<div><span>${label}</span><i aria-hidden="true"><b style="width:${finite(channels[key])?Math.max(0,Math.min(100,channels[key])):0}%"></b></i><strong>${number(channels[key])}${finite(channels[key])?'%':''}</strong></div>`).join('')}</div>`;
@@ -29,10 +30,11 @@ export function installTacticsHistory(model,evidence,containers){
  const tactical=document.createElement('div');tactical.innerHTML=tacticsMarkup(model,evidence);
  const recent=document.createElement('div');recent.className='rd-recent-form';recent.innerHTML='<h3>Andamento recente</h3><div class="rd-two-col">'+[model.home,model.away].map(side=>recentFormMarkup(model,evidence,side)).join('')+'</div>';
  containers.tattica.replaceChildren(tactical,recent);
+ const undoSpatial=installSpatialMatchup(model,evidence.spatial,containers);
  const history=document.createElement('div');
  history.innerHTML=historyMarkup(evidence.historyRows||selectHistoryRows(model,evidence.analysis.history));
  containers.storico.replaceChildren(history);
- return ()=>{containers.tattica.replaceChildren(...oldTactics);containers.storico.replaceChildren(...oldHistory)};
+ return ()=>{undoSpatial();containers.tattica.replaceChildren(...oldTactics);containers.storico.replaceChildren(...oldHistory)};
 }
 
 export function recentFormMarkup(model,evidence,side){

@@ -2,11 +2,17 @@
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const {withReadingDuels}=require('./reading-duel-presentation.cjs');
+const {spatialMatchup}=require('./shot-events/matchup.cjs');
 const read=f=>JSON.parse(fs.readFileSync(path.join(root,f),'utf8'));
 const write=(f,data)=>{const file=path.join(root,'data/generated/readings',f),text=JSON.stringify(data)+'\n';fs.mkdirSync(path.dirname(file),{recursive:true});if(!fs.existsSync(file)||fs.readFileSync(file,'utf8')!==text)fs.writeFileSync(file,text);};
 const pick=(o,keys)=>Object.fromEntries(keys.filter(k=>k in o).map(k=>[k,o[k]]));
 function build({matchday=null}={}){
  const matches=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'),teams=read('data/normalized/teams.json');
+ const spatialFile='data/normalized/serie-a-shot-events-2026-27.json';
+ const spatial=fs.existsSync(path.join(root,spatialFile))?read(spatialFile):null;
+ const technicalFile='data/normalized/serie-a-technical-context-2026-27.json';
+ const technical=fs.existsSync(path.join(root,technicalFile))?read(technicalFile):null;
+ if(spatial&&!technical)throw Error('Contesto tecnico mancante: eseguire scripts/build-serie-a-technical-context.cjs prima delle proiezioni Lettura.');
  const readings=read('data/normalized/readings.json'),predictions=read('data/normalized/predictions.json'),directory=read('data/teams/index.json');
  const duelSquads=new Map(teams.map(t=>[t.id,read(`data/generated/team-pages/${t.id}-squad.json`)]));
  const objectives=read('data/team-objectives.json'),styles=read('data/normalized/team-style-profiles.json'),h2h=read('data/generated/head-to-head/first-leg-2026-27.json'),referees=read('data/generated/reading-referee-profiles-2025-26.json');
@@ -21,6 +27,7 @@ function build({matchday=null}={}){
   const forecastDataset=source?{matchday:day,marketCatalog:{matches:(catalog?.matches||[]).filter(m=>m.matchId===id).map(m=>({matchId:m.matchId,selections:m.selections.filter(l=>l.suggestionAnalysis?.suggested===true)}))}}:null;
   write(`catalogs/${id}.json`,{forecastDataset,finishedIds});
   const artifacts={};
+  if(spatial)artifacts['data/generated/reading-spatial-matchup.json']=spatialMatchup(match,matches,spatial,technical);
   const add=(f,project=x=>x)=>{const d=artifact(f);if(d!==null)artifacts[f]=project(d)};
   for(const team of ids)add(`data/teams/${team}.json`,d=>pick(d,['id','coach','squad']));
   add('data/sources/official-lineups-2026-27.json',d=>({...d,fixtures:d.fixtures.filter(f=>f.matchId===id)}));
@@ -38,6 +45,7 @@ function build({matchday=null}={}){
   const history=matches.filter(m=>m.id===id||m.status==='finished'&&m.score&&m.date<match.date&&ids.some(t=>m.homeTeam===t||m.awayTeam===t));
   write(`matches/${id}.json`,{teams,matches:history,readings:readings.filter(r=>r.matchId===id),objectiveProfiles:objectives,teamDirectory:{...directory,officialLineups:Object.fromEntries(Object.entries(directory.officialLineups||{}).filter(([key])=>key.startsWith(id+':')))},teamStyleProfiles:{...styles,profiles:styles.profiles.filter(p=>ids.includes(p.teamId))},predictionDataset:{predictions:predictions.predictions.filter(p=>p.matchId===id).map(p=>withReadingDuels(p,duelSquads))},headToHeadData:{fixtures:h2h.fixtures.filter(f=>f.fixtureId===id||[f.homeTeamId,f.awayTeamId].sort().join('|')===ids.slice().sort().join('|'))},refereeProfiles:{...referees,profiles:referees.profiles.filter(p=>p.refereeSlug===match.refereeAssignment?.referee?.slug)},forecastDataset,finishedIds,artifacts});
  }
+ require('./spatial-prospective/auto-capture.cjs').autoCapture(root);
  console.log(`Lettura: indice e ${matches.filter(m=>matchday===null||m.matchday===matchday).length} dettagli generati senza ricalcoli.`);
 }
 module.exports={build};if(require.main===module){const i=process.argv.indexOf('--matchday');const matchday=i<0?null:Number(process.argv[i+1]);if(matchday!==null&&(!Number.isInteger(matchday)||matchday<1||matchday>38))throw Error('Giornata non valida');build({matchday});}

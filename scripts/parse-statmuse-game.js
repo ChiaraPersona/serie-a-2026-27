@@ -21,8 +21,7 @@ const decode = value => {
   return payload;
 };
 
-const parseStatmuseGame = filePath => {
-  const html = fs.readFileSync(filePath, "utf8");
+const parseStatmuseHtml = html => {
   const match = html.match(/<astro-island[^>]+game-state[^>]+props="([^"]+)"/);
   if (!match) throw new Error("GameState props non trovate");
   const encoded = match[1]
@@ -33,8 +32,9 @@ const parseStatmuseGame = filePath => {
     .replace(/&gt;/g, ">");
   return decode(JSON.parse(encoded));
 };
+const parseStatmuseGame = filePath => parseStatmuseHtml(fs.readFileSync(filePath, "utf8"));
 
-module.exports = { parseStatmuseGame };
+module.exports = { parseStatmuseGame, parseStatmuseHtml };
 
 if (require.main === module) {
   process.stdout.write(`${JSON.stringify(parseStatmuseGame(process.argv[2]), null, 2)}\n`);
