@@ -80,7 +80,7 @@ export function createPage(deps){
     }
     for(const row of rows.values())row.goalDifferenceLabel=(row.gf>row.ga?'+':'')+(row.gf-row.ga);
     const sorted=[...rows.values()].sort((a,b)=>b.points-a.points||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf||a.team.localeCompare(b.team));
-    return `<details open class="champions-strength-panel champions-round-summary"><summary><strong>Classifica · fase campionato</strong><span>${data.summary.finished}/${data.fixtures.length} partite concluse</span></summary><p>Ordine per punti, differenza reti e gol segnati; a parità, ordine alfabetico. Non applica tutti gli spareggi della classifica UEFA.</p><div class="champions-strength-table-wrap table-wrap"><table class="standings-table champions-standings-table"><thead><tr><th scope="col">#</th><th scope="col">Squadra</th><th scope="col">PT</th><th scope="col" title="Partite giocate">PG</th><th scope="col" title="Vittorie">V</th><th scope="col" title="Pareggi">N</th><th scope="col" title="Sconfitte">P</th><th scope="col" title="Gol fatti">GF</th><th scope="col" title="Gol subiti">GS</th><th scope="col" title="Differenza reti">DR</th><th scope="col" title="Rigori calciati a favore, inclusi gli errori">R+</th><th scope="col" title="Rigori calciati dagli avversari, inclusi gli errori">R-</th><th scope="col" title="Cartellini assegnati agli avversari">C+</th><th scope="col" title="Cartellini ricevuti dalla squadra">C-</th></tr></thead><tbody>${sorted.map((r,index)=>`<tr><td>${index+1}</td><td>${teamBadge(r.team,branding)}</td><td><strong>${r.points}</strong></td><td>${r.played}</td><td>${r.won}</td><td>${r.drawn}</td><td>${r.lost}</td><td>${r.gf}</td><td>${r.ga}</td><td>${r.goalDifferenceLabel}</td>${disciplineCells(r.team)}</tr>`).join("")}</tbody></table></div></details>`;
+    return `<details open class="champions-strength-panel champions-round-summary"><summary><strong>Classifica</strong></summary><div class="champions-strength-table-wrap table-wrap"><table class="standings-table champions-standings-table"><thead><tr><th scope="col">#</th><th scope="col">Squadra</th><th scope="col">PT</th><th scope="col" title="Partite giocate">PG</th><th scope="col" title="Vittorie">V</th><th scope="col" title="Pareggi">N</th><th scope="col" title="Sconfitte">P</th><th scope="col" title="Gol fatti">GF</th><th scope="col" title="Gol subiti">GS</th><th scope="col" title="Differenza reti">DR</th><th scope="col" title="Rigori calciati a favore, inclusi gli errori">R+</th><th scope="col" title="Rigori calciati dagli avversari, inclusi gli errori">R-</th><th scope="col" title="Cartellini assegnati agli avversari">C+</th><th scope="col" title="Cartellini ricevuti dalla squadra">C-</th></tr></thead><tbody>${sorted.map((r,index)=>`<tr><td>${index+1}</td><td>${teamBadge(r.team,branding)}</td><td><strong>${r.points}</strong></td><td>${r.played}</td><td>${r.won}</td><td>${r.drawn}</td><td>${r.lost}</td><td>${r.gf}</td><td>${r.ga}</td><td>${r.goalDifferenceLabel}</td>${disciplineCells(r.team)}</tr>`).join("")}</tbody></table></div></details>`;
   }
 
   function fixtureCard(fixture,branding,pilotByFixture){
@@ -90,9 +90,9 @@ export function createPage(deps){
     const away=branding.get(fixture.awayTeam).colors;
     const palette=`--home-color-1:${home[0]};--home-color-2:${home[1]};--away-color-1:${away[0]};--away-color-2:${away[1]}`;
     if(analysis){
-      return `<a class="reading-fixture match fixture-card fixture-card-link champions-fixture champions-pilot-card" href="champions-league.html?match=${esc(analysis.fixtureId)}" aria-label="Apri la lettura di ${esc(fixture.homeTeam)} - ${esc(fixture.awayTeam)}" data-team-home="${esc(fixture.homeTeam)}" data-team-away="${esc(fixture.awayTeam)}" style="${esc(palette)}"><header class="match-head"><div class="match-badges"><span class="matchday-chip">Giornata ${fixture.matchday}</span></div><span class="match-date">${esc(shortDate(fixture.date))} · ${esc(fixture.kickoff)}</span></header><span class="reading-fixture-teams">${teamBadge(fixture.homeTeam,branding)}<b>${finalScore}</b>${teamBadge(fixture.awayTeam,branding)}</span></a>`;
+      return `<a class="reading-fixture match fixture-card fixture-card-link champions-fixture champions-pilot-card" href="champions-league.html?match=${esc(analysis.fixtureId)}" aria-label="Apri la lettura di ${esc(fixture.homeTeam)} - ${esc(fixture.awayTeam)}" data-team-home="${esc(fixture.homeTeam)}" data-team-away="${esc(fixture.awayTeam)}" style="${esc(palette)}"><header class="match-head"><span class="match-date">${esc(fixture.kickoff)}</span></header><span class="reading-fixture-teams">${teamBadge(fixture.homeTeam,branding)}<b>${finalScore}</b>${teamBadge(fixture.awayTeam,branding)}</span></a>`;
     }
-    return `<article class="reading-fixture match fixture-card champions-fixture" data-team-home="${esc(fixture.homeTeam)}" data-team-away="${esc(fixture.awayTeam)}" style="${esc(palette)}"><header class="match-head"><div class="match-badges"><span class="matchday-chip">Giornata ${fixture.matchday}</span></div><time class="match-date" datetime="${esc(`${fixture.date}T${fixture.kickoff}`)}">${esc(shortDate(fixture.date))} · ${esc(fixture.kickoff)}</time></header><span class="reading-fixture-teams">${teamBadge(fixture.homeTeam,branding)}<b>${finalScore}</b>${teamBadge(fixture.awayTeam,branding)}</span></article>`;
+    return `<article class="reading-fixture match fixture-card champions-fixture" data-team-home="${esc(fixture.homeTeam)}" data-team-away="${esc(fixture.awayTeam)}" style="${esc(palette)}"><header class="match-head"><time class="match-date" datetime="${esc(`${fixture.date}T${fixture.kickoff}`)}">${esc(fixture.kickoff)}</time></header><span class="reading-fixture-teams">${teamBadge(fixture.homeTeam,branding)}<b>${finalScore}</b>${teamBadge(fixture.awayTeam,branding)}</span></article>`;
   }
 
   function fixtureGroups(fixtures,branding,pilotByFixture){
@@ -538,7 +538,6 @@ export function createPage(deps){
     const roundRange=number=>{const dates=roundRows(number).map(f=>f.date).filter(Boolean).sort();return dates.length?shortDate(dates[0])+(dates[0]!==dates.at(-1)?' – '+shortDate(dates.at(-1)):''):'Date da definire'};
     const roundStatus=number=>completedMatchdays.includes(number)?'Conclusa':roundRows(number).some(hasResult)?'In corso':'Da giocare';
     const dayButton=number=>`<button type="button" class="champions-day ${completedMatchdays.includes(number)?'is-completed':number===defaultMatchday?'is-current':'is-future'}" data-champions-day="${number}" aria-expanded="${number===defaultMatchday}" aria-controls="champions-fixtures" aria-label="${matchdayLabel(number)} · ${roundStatus(number)} · ${esc(roundRange(number))}"><span>Giornata</span><strong>${number}</strong><small>${roundStatus(number)}</small></button>`;
-    const teamOptions=data.teams.map(team=>`<option value="${esc(team)}">${esc(team)}</option>`).join("");
     document.querySelector("#app").innerHTML=`<div class="champions-overview">
       <section class="champions-hero champions-home-banner" aria-label="UEFA Champions League 2026/27"><img src="assets/images/optimized/champions-home-2026-27-1600.webp" srcset="assets/images/optimized/champions-home-2026-27-800.webp 800w, assets/images/optimized/champions-home-2026-27-1600.webp 1600w" sizes="(max-width: 760px) calc(100vw - 24px), 1050px" alt="UEFA Champions League, stadio illuminato in blu e viola" width="1920" height="1080" fetchpriority="high"><div class="champions-banner-title"><h2>CHAMPIONS LEAGUE</h2><p>Stagione 2026/27</p></div></section>
       ${teamLogoDirectory(data.teamBranding,squads)}${roundTable(data,branding)}
@@ -547,26 +546,18 @@ export function createPage(deps){
         <nav class="champions-days" aria-label="Giornate della fase campionato">
           ${matchdays.map(dayButton).join('')}
         </nav>
-        <div class="champions-controls">
-          <label><span>Squadra</span><select id="champions-team"><option value="all">Tutte le squadre</option>${teamOptions}</select></label>
-          <button id="champions-reset" type="button">Azzera filtri</button>
-        </div>
         <div id="champions-fixtures" role="region" aria-labelledby="champions-calendar-title"></div>
       </section></div>`;
 
-    const teamSelect=document.querySelector("#champions-team");
     const results=document.querySelector("#champions-fixtures");
     const applyFilters=()=>{
-      const team=teamSelect.value;
-      const filtered=data.fixtures.filter(fixture=>fixture.matchday===selectedMatchday&&(team==="all"||fixture.homeTeam===team||fixture.awayTeam===team));
+      const filtered=data.fixtures.filter(fixture=>fixture.matchday===selectedMatchday);
       results.innerHTML=selectedMatchday==null?'':fixtureGroups(filtered,branding,pilotByFixture);
       results.hidden=selectedMatchday==null;
       document.querySelector('#champions-calendar-title').textContent=selectedMatchday==null?'Calendario':`Calendario · ${matchdayLabel(selectedMatchday)}`;
       document.querySelectorAll('[data-champions-day]').forEach(button=>button.setAttribute('aria-expanded',String(Number(button.dataset.championsDay)===selectedMatchday)));
     };
     document.querySelectorAll('[data-champions-day]').forEach(button=>button.addEventListener('click',()=>{const day=Number(button.dataset.championsDay);selectedMatchday=selectedMatchday===day?null:day;applyFilters()}));
-    teamSelect.addEventListener("change",applyFilters);
-    document.querySelector("#champions-reset").addEventListener("click",()=>{selectedMatchday=defaultMatchday;teamSelect.value="all";applyFilters()});
     applyFilters();
   }
   return {render};
