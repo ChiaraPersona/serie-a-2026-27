@@ -14,7 +14,7 @@ async function main(){
  const results=await Promise.all(fixtures.map(async f=>{
   const ref=f.refereeAssignment.referee,profile=source.profiles.find(p=>p.refereeSlug===ref.slug);
   // Explicit, verified identity for the official absent from the existing registry.
-  const url=profile?.source.url||({'andrea-zanotti':'https://www.calciotel.it/arbitro/2644/zanotti-andrea'})[ref.slug];
+  const url=profile?.source.url||({'andrea-zanotti':'https://www.calciotel.it/arbitro/2644/zanotti-andrea','maria-sole-ferrieri-caputi':'https://www.calciotel.it/arbitro/2333/ferrieri-caputi-maria-sole'})[ref.slug];
   if(!url)return {refereeId:ref.slug,provider:'calciotel',error:'No exact profile URL in verified registry',matches:[]};
   const response=await fetch(url,{signal:AbortSignal.timeout(30000)});if(!response.ok)throw Error(`${response.status}: ${url}`);
   const html=await response.text(),heading=clean(html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1]).replace(/^Scheda Arbitro:\s*/i,'').replace(/\s*\(Sezione.*$/i,'');
