@@ -84,11 +84,32 @@ export function publicForecastLabel(leg){
   return match?`${match[1]} over ${Number(threshold)} ${suffix}`:label;
 }
 
+function teamShotEventKey(leg,fixture){
+  const bet=leg.betSelection,market=bet?.market||{},target=bet?.forecastIdentity;
+  if(isCanonicalModelForecast(leg)&&target.scope==='team'&&target.period==='REGULATION'
+    &&target.duo===false&&target.postsAndCrossbarIncluded===false){
+    return JSON.stringify([target.matchId,target.subjectId,target.metric,target.threshold,target.direction]);
+  }
+  const metric=String(bet?.compatibility?.modelTarget||'').match(/^statistical:(shots|sot)-team-over$/)?.[1];
+  const semantics=market.bookmakerSemantics;
+  if(!hasVerifiedPlayableQuote(leg)||!metric||!semantics||semantics.duo!==false
+    ||semantics.substituteIncluded!==false||semantics.postsAndCrossbarIncluded!==false
+    ||semantics.extraTimeIncluded!==false||market.selection!=='OVER'||!finite(market.threshold))return null;
+  const side=String(semantics.variantName||market.variant||'').match(/^SQUADRA ([12]): U\/O /)?.[1];
+  const teamId=side==='1'?fixture?.homeTeam:side==='2'?fixture?.awayTeam:null;
+  return teamId?JSON.stringify([bet.identity.matchId,teamId,metric,Number(market.threshold),'OVER']):null;
+}
+
 export function sharedForecastsForMatch(marketCatalog,matchId,match=null){
   const fixture=(marketCatalog?.matches||[]).find(match=>match.matchId===matchId);
-  return uniqueForecastContracts((fixture?.selections||[])
+  const published=uniqueForecastContracts((fixture?.selections||[])
     .filter(leg=>isPublishedForecast(leg,{archived:match?.id===matchId&&match?.status==='finished'}))
-    .sort((left,right)=>Number(left.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)-Number(right.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)||String(left.selectionId).localeCompare(String(right.selectionId),"it")))
+    .sort((left,right)=>Number(left.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)-Number(right.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)||String(left.selectionId).localeCompare(String(right.selectionId),"it")));
+  const teams={homeTeam:match?.homeTeam||fixture?.homeTeam,awayTeam:match?.awayTeam||fixture?.awayTeam};
+  const quotedEvents=new Set(published.filter(hasVerifiedPlayableQuote).map(leg=>teamShotEventKey(leg,teams)).filter(Boolean));
+  // Keep the quoted row when an unquoted team model describes the same event.
+  // Never transfer its probability/price or collapse individual and DUO contracts.
+  return published.filter(leg=>hasVerifiedPlayableQuote(leg)||!quotedEvents.has(teamShotEventKey(leg,teams)))
     .map(leg=>publicForecastLabel(leg)===leg.label?leg:{...leg,label:publicForecastLabel(leg)});
 }
 

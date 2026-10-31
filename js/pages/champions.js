@@ -424,7 +424,7 @@ export function createPage(deps){
 
   async function appendSharedSchedina(matchday,fixtureId,host){
     if(!host||typeof host.insertAdjacentHTML!=="function")return;
-    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261022-assets-v1'),import('./betting.js?v=20261031-md10-min-odds-108')]);
+    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261022-assets-v1'),import('./betting.js?v=20261031-team-event-dedup')]);
     const workspace=await loadChampionsWorkspaceMd3Derived(load,matchday);
     const controller=createBettingPage({...deps,dateOnly:deps.dateOnly||(value=>String(value||"").slice(0,10))});
     const section=host.querySelector('#lettura-pronostici .rd-section-content');
@@ -436,7 +436,7 @@ export function createPage(deps){
     }else target.insertAdjacentHTML('beforeend',markup);
     const store=controller.mountChampionsWorkspace(workspace);
     if(section){
-      const [{createReadingView},{installForecasts},{sharedForecastsForMatch}]=await Promise.all([import('./reading-detail/view-model.mjs?v=20261022-assets-v1'),import('./reading-detail/forecasts.mjs?v=20261031-md10-min-odds-108'),import('./shared-forecast-contract.mjs?v=20261031-md10-min-odds-108-v5')]);
+      const [{createReadingView},{installForecasts},{sharedForecastsForMatch}]=await Promise.all([import('./reading-detail/view-model.mjs?v=20261022-assets-v1'),import('./reading-detail/forecasts.mjs?v=20261031-team-event-dedup'),import('./shared-forecast-contract.mjs?v=20261031-team-event-dedup-v6')]);
       const fixture=workspace.fixtures.find(f=>f.id===fixtureId);
       const model=createReadingView({competition:'champions',fixture,home:{name:fixture.homeTeam},away:{name:fixture.awayTeam},forecasts:sharedForecastsForMatch(workspace.marketCatalog,fixtureId,fixture)});
       const table=document.createElement('div');section.prepend(table);

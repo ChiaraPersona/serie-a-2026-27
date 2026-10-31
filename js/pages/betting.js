@@ -1,13 +1,13 @@
 const release=new URL(import.meta.url).searchParams.get("v")||"development";
 const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=20261022-assets-v1`);
-const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261031-md10-min-odds-108`);
-const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts,publicForecastLabel,meetsMinimumPublicOdds}=await import(`./shared-forecast-contract.mjs?v=20261031-md10-min-odds-108-v5`);
+const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261031-team-event-dedup`);
+const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts,publicForecastLabel,meetsMinimumPublicOdds}=await import(`./shared-forecast-contract.mjs?v=20261031-team-event-dedup-v6`);
 
 const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=20261022-assets-v1`);
 const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=20261022-assets-v1`);
 const {settleMd3Leg}=await import(`./champions-md3-results.mjs?v=20261022-assets-v1`);
 
-const {archiveContractStats}=await import('./archive-contract-stats.mjs?v=20261031-md10-min-odds-108');
+const {archiveContractStats}=await import('./archive-contract-stats.mjs?v=20261031-team-event-dedup');
 
 export function createPage(deps){
   const {esc,dateOnly,hero,load,loadGenerated}=deps;

@@ -2,9 +2,9 @@ import {renderLineupField} from "../components/lineup-field.mjs?v=20261022-asset
 import {setReadingArtifacts} from './reading-detail/projected-artifacts.mjs?v=20261022-assets-v1';
 import {isReadingPilot} from './reading-detail/view-model.mjs?v=20261022-assets-v1';
 import {cardType} from './disciplinary.mjs?v=20261022-assets-v1';
-import {sharedForecastsForMatch} from './shared-forecast-contract.mjs?v=20261031-md10-min-odds-108-v5';
-import {compactForecastMarkup,publishedReadingForecasts,installForecasts} from './reading-detail/forecasts.mjs?v=20261031-md10-min-odds-108';
-import {createPersonalBetslipStore} from './personal-betslip-store.mjs?v=20261031-md10-min-odds-108';
+import {sharedForecastsForMatch} from './shared-forecast-contract.mjs?v=20261031-team-event-dedup-v6';
+import {compactForecastMarkup,publishedReadingForecasts,installForecasts} from './reading-detail/forecasts.mjs?v=20261031-team-event-dedup';
+import {createPersonalBetslipStore} from './personal-betslip-store.mjs?v=20261031-team-event-dedup';
 const isFiniteNumber=value=>typeof value==="number"&&Number.isFinite(value);
 const decimal=(value,digits=1)=>isFiniteNumber(value)?value.toLocaleString("it-IT",{minimumFractionDigits:digits,maximumFractionDigits:digits}):"N/D";
 const probability=value=>isFiniteNumber(value)?`${(value*100).toLocaleString("it-IT",{minimumFractionDigits:0,maximumFractionDigits:1})}%`:"N/D";
@@ -265,7 +265,7 @@ function renderTacticalBaselines(match,dataset,teams){
       // Reconcile saved selections from other fixtures only when that bucket needs them.
       const savedIds=[...new Set(store.getSnapshot().selections.map(l=>l.matchId||l.betSelection?.identity?.matchId).filter(id=>id&&id!==activeReadingMatch.id&&index.fixtureIds.includes(id)))];
       const savedCatalogs=await Promise.all(savedIds.map(id=>loadReadingCatalog(id)));
-      const latest=[forecastDataset,...savedCatalogs].flatMap(dataset=>(dataset?.marketCatalog?.matches||[]).flatMap(m=>sharedForecastsForMatch(dataset.marketCatalog,m.matchId))).map(leg=>({...leg,context}));
+      const latest=[forecastDataset,...savedCatalogs].flatMap(dataset=>(dataset?.marketCatalog?.matches||[]).flatMap(m=>sharedForecastsForMatch(dataset.marketCatalog,m.matchId,index.matches.find(f=>f.id===m.matchId)))).map(leg=>({...leg,context}));
       store.reconcile(latest);
       if(!finishReading){const content=document.querySelector('[data-reading-forecast-content]');if(content)installForecasts({competition:'serie-a',fixture:activeReadingMatch,forecasts:publishedReadingForecasts(forecastDataset.marketCatalog,activeReadingMatch.id,activeReadingMatch)},content,document.querySelector('#app'),store);}
     }

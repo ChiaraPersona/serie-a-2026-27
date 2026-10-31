@@ -53,10 +53,18 @@ const server=http.createServer((req,res)=>{
         }
         const duplicates=await page.locator('[data-match-panel]').evaluateAll(panels=>panels.flatMap(panel=>{
           const ids=[...panel.querySelectorAll('[data-selection-row]')].map(row=>row.dataset.personalPick||row.dataset.selectionId).filter(Boolean);
-          return ids.length===new Set(ids).size?[]:[panel.dataset.matchId];
+          const labels=[...panel.querySelectorAll('[data-selection-row]')].map(row=>(row.dataset.selectionLabel||'').trim().toLowerCase()).filter(Boolean);
+          return ids.length===new Set(ids).size&&labels.length===new Set(labels).size?[]:[panel.dataset.matchId];
         }));
         assert.deepEqual(duplicates,[],`${competition} ${day}: repeated visible selection`);
         results.push({competition,day,width});
+      }
+      for(const matchId of ['fiorentina-como-2026-27-md-07','torino-monza-2026-27-md-08']){
+        await page.goto(`http://127.0.0.1:${server.address().port}/lettura.html?match=${matchId}`);
+        await page.waitForSelector('[data-forecast-id]',{state:'attached'});
+        const labels=(await page.locator('[data-forecast-id] .rd-forecast-name').allTextContents()).map(text=>text.trim().toLowerCase());
+        assert(labels.length>0);
+        assert.equal(labels.length,new Set(labels).size,`${matchId} ${width}: repeated reading forecast`);
       }
       await page.close();
     }

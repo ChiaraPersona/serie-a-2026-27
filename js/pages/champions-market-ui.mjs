@@ -1,5 +1,5 @@
-import {meetsMinimumPublicOdds} from "./shared-forecast-contract.mjs?v=20261031-md10-min-odds-108-v5";
-import {createPersonalBetslipStore} from "./personal-betslip-store.mjs?v=20261031-md10-min-odds-108";
+import {meetsMinimumPublicOdds} from "./shared-forecast-contract.mjs?v=20261031-team-event-dedup-v6";
+import {createPersonalBetslipStore} from "./personal-betslip-store.mjs?v=20261031-team-event-dedup";
 
 const esc=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
 const formatOdds=value=>Number.isFinite(Number(value))?Number(value).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}):"N/D";

@@ -1,5 +1,5 @@
 import '../official-starter-policy.js';
-import {isCanonicalModelForecast,usesCurrentForecastPolicy,meetsMinimumPublicOdds} from './shared-forecast-contract.mjs?v=20261031-md10-min-odds-108-v5';
+import {isCanonicalModelForecast,usesCurrentForecastPolicy,meetsMinimumPublicOdds} from './shared-forecast-contract.mjs?v=20261031-team-event-dedup-v6';
 export const PERSONAL_BETSLIP_VERSION=1;
 export const PERSONAL_BETSLIP_STORAGE_KEY="serie-a-2026-27:personal-betslip:v1";
 

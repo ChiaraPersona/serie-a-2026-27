@@ -1,4 +1,4 @@
-import {uniqueForecastContracts,meetsMinimumPublicOdds} from './shared-forecast-contract.mjs?v=20261031-md10-min-odds-108-v5';
+import {uniqueForecastContracts,meetsMinimumPublicOdds} from './shared-forecast-contract.mjs?v=20261031-team-event-dedup-v6';
 
 // Presentation economics: original selections and settlements remain immutable.
 export function archiveContractStats(legs,resolve){
