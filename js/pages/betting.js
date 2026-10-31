@@ -1,11 +1,13 @@
 const release=new URL(import.meta.url).searchParams.get("v")||"development";
 const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=20261022-assets-v1`);
 const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261022-assets-v1`);
-const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast}=await import(`./shared-forecast-contract.mjs?v=20261022-assets-v1`);
+const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts}=await import(`./shared-forecast-contract.mjs?v=20261031-unique-contracts-v2`);
 
 const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=20261022-assets-v1`);
 const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=20261022-assets-v1`);
 const {settleMd3Leg}=await import(`./champions-md3-results.mjs?v=20261022-assets-v1`);
+
+const {archiveContractStats}=await import('./archive-contract-stats.mjs?v=20261031-unique-contracts-v2');
 
 export function createPage(deps){
   const {esc,dateOnly,hero,load,loadGenerated}=deps;
@@ -136,11 +138,14 @@ export function createPage(deps){
     const panels=matches.map(match=>{
       const home=teamById.get(match.homeTeam)?.name||match.homeTeam,away=teamById.get(match.awayTeam)?.name||match.awayTeam,prediction=predictionsByMatch.get(match.id),combo=prediction?.combinations?.find(item=>item.tier==="Safe"),comboLegs=combo?.legs||[],seen=new Set(),markets=[];
       const catalog=catalogByMatch.get(match.id),shared=sharedForecastsForMatch(data.marketCatalog,match.id,match),entries=data.lineupManaged?shared.map(leg=>({leg,sourceSection:leg.catalogOrigin||"catalogo-mercati"})):data.championsWorkspace?(catalog?.selections||[]).filter(leg=>leg.suggestionAnalysis?.suggested&&(!data.matchday||data.matchday!==3||leg.approvedPreliminary||leg.qualifiedSelection||leg.catalogOrigin==="champions-md03-individual-model")).map(leg=>({leg,sourceSection:leg.catalogOrigin||"archivio-champions"})):catalog?.selections?.length?shared.map(leg=>({leg,sourceSection:leg.catalogOrigin||"catalogo-mercati"})):[...(modelByMatch.get(match.id)||[]),...comboLegs.filter(hasVerifiedPlayableQuote).map(leg=>({leg,sourceSection:"mycombo-partita"}))];
-      entries.forEach(entry=>{if(entry.leg.selectionId&&!seen.has(entry.leg.selectionId)){seen.add(entry.leg.selectionId);markets.push(entry)}});markets.sort((left,right)=>Number(left.leg.suggestionAnalysis.rank)-Number(right.leg.suggestionAnalysis.rank));
-      const selectedCount=markets.length;
+      uniqueForecastContracts(entries,entry=>entry.leg).forEach(entry=>{if(entry.leg.selectionId&&!seen.has(entry.leg.selectionId)){seen.add(entry.leg.selectionId);markets.push(entry)}});markets.sort((left,right)=>Number(left.leg.suggestionAnalysis.rank)-Number(right.leg.suggestionAnalysis.rank));
+      let selectedCount=markets.length;
       if(compactForecasts&&data.championsWorkspace&&data.matchday!==3)for(const leg of manualChampionsLegs(catalog?.selections||[],match)){
         if(!seen.has(leg.selectionId)){seen.add(leg.selectionId);markets.push({leg,sourceSection:'catalogo-manuale-champions'});}
       }
+      const uniqueMarkets=uniqueForecastContracts(markets,entry=>entry.leg);
+      markets.splice(0,markets.length,...uniqueMarkets);
+      selectedCount=markets.filter(entry=>entries.includes(entry)).length;
       if(compactForecasts)markets.sort((a,b)=>presentationRank(a.leg)-presentationRank(b.leg));
       const fixture=`${home} - ${away}`,marketList=markets.length?`<div class="betting-market-columns" aria-hidden="true"><span>Mercato</span><span>Probabilità</span><span>Quota Sisal</span><span>EV</span><span></span></div><ol class="betting-market-list">${data.championsWorkspace?championsGroupedRows(markets,fixture,match):markets.map((entry,index)=>isUnquotedIndividualForecast(entry.leg)?unquotedForecastRow(entry,index):selectableMarketRow(entry,index,fixture,match)).join("")}</ol>`:`<p class="betting-market-empty">Nessun pronostico selezionato per questa partita.</p>`;
       return `<details class="betting-match-panel" data-match-panel data-match-id="${esc(match.id)}"><summary><span><small>${esc(dateOnly(match.date))} · ${esc(match.kickoff||"Orario N/D")}</small><strong>${esc(home)} - ${esc(away)}</strong></span><span class="betting-match-count">${selectedCount} pronostici selezionati</span><span class="betting-match-toggle" aria-hidden="true">＋</span></summary><div class="betting-match-body">${marketList}${data.championsWorkspace?championsForecastCoverage(catalog):""}${data.championsWorkspace&&data.matchday!==3?championsManualMarkets(catalog?.selections||[],fixture,match):""}${data.championsWorkspace?`<a class="betting-match-reading-link" href="${esc(match.readingUrl)}">Apri la lettura della partita →</a>`:""}</div></details>`;
@@ -327,21 +332,11 @@ export function createPage(deps){
   }
 
   function archiveStats(data,matchById,resolve=leg=>settleLeg(leg,matchById.get(leg.matchId))){
-    const unique=new Map();
-    const legs=data.matchday>=6?(data.marketCatalog?.matches||[]).flatMap(match=>match.selections||[]).filter(leg=>hasVerifiedPlayableQuote(leg)&&leg.suggestionAnalysis?.suggested):data.slips.flatMap(slip=>slip.legs);
-    for(const leg of legs){const key=data.matchday>=6?leg.selectionId:Symbol();if(!unique.has(key))unique.set(key,leg)}
-    const archiveLegResults=[...unique.values()].map(leg=>({leg,settlement:resolve(leg)}));
-    const archiveWins=archiveLegResults.filter(({settlement})=>settlement.status==="won").length;
-    const archiveLosses=archiveLegResults.filter(({settlement})=>settlement.status==="lost").length;
-    const archiveVoids=archiveLegResults.filter(({settlement})=>settlement.status==="void").length;
-    const archiveStake=archiveWins+archiveLosses;
-    const archiveGrossReturn=archiveLegResults.reduce((total,{leg,settlement})=>settlement.status==="won"?total+Number(leg.odds):total,0);
-    const archiveDecided=archiveWins+archiveLosses;
-    const archiveSuccessPct=archiveDecided?archiveWins/archiveDecided*100:0;
-    const archiveProfitPct=archiveStake?(archiveGrossReturn-archiveStake)/archiveStake*100:0;
-    return {archiveWins,archiveVoids,archiveStake,archiveSuccessPct,archiveProfitPct,archiveGrossReturn,archiveNetProfit:archiveGrossReturn-archiveStake,archivePending:archiveLegResults.length-archiveStake-archiveVoids};
+    const legs=data.matchday>=6
+      ?(data.marketCatalog?.matches||[]).flatMap(match=>sharedForecastsForMatch(data.marketCatalog,match.matchId,matchById?.get(match.matchId))).filter(hasVerifiedPlayableQuote)
+      :data.slips.flatMap(slip=>slip.legs);
+    return archiveContractStats(legs,resolve);
   }
-
   const ordinalWord=number=>number===1?"prima":number===2?"seconda":number===3?"terza":number===4?"quarta":`${number}ª`;
   function archiveCard(data,number,matchById){
     const stats=archiveStats(data,matchById);
@@ -451,7 +446,18 @@ export function createPage(deps){
     const {settleMd3}=await import("./champions-md3-approved.mjs?v=20261022-assets-v1");
     const md3Workspace=await loadChampionsWorkspaceMd3Derived(load,3);
     const championsMd03={...settleMd3({...md3Workspace.source,slips:[{legs:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).map(leg=>({...leg,fixtureId:leg.matchId}))}]},{fixtures:md3Workspace.fixtures}),availableForecasts:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).length};
-    return hero("","Schedina","Le schedine e le MyCombo sono raccolte separatamente giornata per giornata.")+`<section class="betting-archive" aria-label="Giornate Schedina"><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${championsArchiveCard(championsMd02,2)}${championsArchiveCard(championsMd03,3)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}${archiveCard(md5,5,matchById)}${archiveCard(md6,6,matchById)}${archiveCard(md7,7,matchById)}${archiveCard(md8,8,matchById)}${archiveCard(md9,9,matchById)}${archiveCard(md10,10,matchById)}</div></section>`;
+    const championsCalendar=await load('champions-league-2026-27.json');
+    const firstDate=fixtures=>fixtures.map(f=>f.date).filter(Boolean).sort()[0]||'';
+    const cards=[md1,md2,md3,md4,md5,md6,md7,md8,md9,md10].map((data,index)=>{
+      const number=index+1;
+      return {date:firstDate([...matchById.values()].filter(m=>m.matchday===number)),html:archiveCard(data,number,matchById)};
+    });
+    for(const [index,data] of [champions,championsMd02,championsMd03].entries()){
+      const number=index+1;
+      cards.push({date:firstDate(championsCalendar.fixtures.filter(f=>f.matchday===number)),html:championsArchiveCard(data,number)});
+    }
+    cards.sort((a,b)=>b.date.localeCompare(a.date));
+    return hero("","Schedina","Le schedine e le MyCombo sono raccolte separatamente giornata per giornata.")+`<section class="betting-archive" aria-label="Giornate Schedina"><div class="betting-archive-list team-directory-grid team-flip-grid">${cards.map(card=>card.html).join("")}</div></section>`;
   }
 
   async function render(){

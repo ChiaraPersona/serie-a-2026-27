@@ -43,22 +43,29 @@ export function isPublishedForecast(leg,{archived=false}={}){
     && (hasVerifiedPlayableQuote(leg)||isUnquotedIndividualForecast(leg)||isCanonicalModelForecast(leg));
 }
 
-export function sharedForecastsForMatch(marketCatalog,matchId,match=null){
-  const fixture=(marketCatalog?.matches||[]).find(match=>match.matchId===matchId);
+export function uniqueForecastContracts(rows,getLeg=row=>row){
   const seen=new Set();
-  return (fixture?.selections||[])
-    .filter(leg=>isPublishedForecast(leg,{archived:match?.id===matchId&&match?.status==='finished'}))
-    .sort((left,right)=>Number(left.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)-Number(right.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)||String(left.selectionId).localeCompare(String(right.selectionId),"it"))
-    .filter(leg=>{
+  return rows.filter(row=>{
+      const leg=getLeg(row);
       const identity=leg.betSelection?.identity,provider=leg.betSelection?.quote?.source?.provider;
       // A quoted model forecast can alias an existing bookmaker selection.
       // Provider IDs identify the contract; labels and internal IDs do not.
       const key=hasVerifiedPlayableQuote(leg)&&provider&&identity.providerMarketId&&identity.providerSelectionId
         ?JSON.stringify([provider,identity.matchId,identity.providerMarketId,identity.providerSelectionId])
-        :leg.selectionId;
+        :leg.providerSelectionId&&(leg.matchId||leg.fixtureId)
+          ?JSON.stringify(['legacy',leg.matchId||leg.fixtureId,leg.providerSelectionId])
+          :leg.selectionId;
+      if(!key)return true;
       if(seen.has(key))return false;
       seen.add(key);return true;
     });
+}
+
+export function sharedForecastsForMatch(marketCatalog,matchId,match=null){
+  const fixture=(marketCatalog?.matches||[]).find(match=>match.matchId===matchId);
+  return uniqueForecastContracts((fixture?.selections||[])
+    .filter(leg=>isPublishedForecast(leg,{archived:match?.id===matchId&&match?.status==='finished'}))
+    .sort((left,right)=>Number(left.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)-Number(right.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)||String(left.selectionId).localeCompare(String(right.selectionId),"it")));
 }
 
 export function forecastView(leg,matchday=null){
