@@ -1,11 +1,11 @@
 import {esc,number,pct,finite,missing} from './format.mjs?v=20261022-assets-v1';
-import {isCanonicalModelForecast,isPublishedForecast,hasVerifiedPlayableQuote,sharedForecastsForMatch} from '../shared-forecast-contract.mjs?v=20261022-assets-v1';
+import {isCanonicalModelForecast,isPublishedForecast,hasVerifiedPlayableQuote,sharedForecastsForMatch,publicForecastLabel} from '../shared-forecast-contract.mjs?v=20261031-over-labels-v3';
 import {createPersonalBetslipStore} from '../personal-betslip-store.mjs?v=20261022-assets-v1';
 
 export function forecastPresentation(leg){
  const contract=leg.betSelection||{},market=contract.market||{},subject=market.subject||{},player=leg.player&&typeof leg.player==='object'?leg.player:{};
  const modifiers=market.modifiers||leg.modifiers||{};
- return {id:leg.selectionId,label:leg.label||leg.selection||market.selection||'Selezione',family:leg.marketFamily||leg.suggestionAnalysis?.familyLabel||market.family||market.name||leg.market||'Mercato',
+ return {id:leg.selectionId,label:publicForecastLabel(leg)||leg.selection||market.selection||'Selezione',family:leg.marketFamily||leg.suggestionAnalysis?.familyLabel||market.family||market.name||leg.market||'Mercato',
   playerId:leg.playerId||player.canonicalPlayerId||(['player','player-plus-substitute'].includes(subject.type)?subject.id:null),
   playerName:player.canonicalName||leg.playerName||subject.name||'',team:leg.teamId||player.team||subject.teamId||'',
   probability:contract.evaluation?.modelProbabilityPct,odds:contract.quote?.decimal,ev:contract.evaluation?.expectedValuePct,

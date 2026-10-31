@@ -61,11 +61,25 @@ export function uniqueForecastContracts(rows,getLeg=row=>row){
     });
 }
 
+export function publicForecastLabel(leg){
+  const label=leg?.label||'',market=leg?.betSelection?.market||{};
+  const scope=market.subject?.type||leg?.marketScope||'';
+  if(/player/.test(scope)||leg?.marketScope==='player')return label;
+  const threshold=market.threshold??leg?.threshold;
+  if(threshold===null||threshold===undefined||!Number.isFinite(Number(threshold)))return label;
+  // Display the existing threshold; never change the underlying contract.
+  const suffix=/ tiri in porta$/.test(label)?'tiri in porta':/ tiri(?: totali)?$/.test(label)?'tiri totali':null;
+  if(!suffix)return label;
+  const match=label.match(/^(.*?) (?:\d+\+|over \d+(?:[.,]\d+)?) tiri(?: totali| in porta)?$/i);
+  return match?`${match[1]} over ${Number(threshold)} ${suffix}`:label;
+}
+
 export function sharedForecastsForMatch(marketCatalog,matchId,match=null){
   const fixture=(marketCatalog?.matches||[]).find(match=>match.matchId===matchId);
   return uniqueForecastContracts((fixture?.selections||[])
     .filter(leg=>isPublishedForecast(leg,{archived:match?.id===matchId&&match?.status==='finished'}))
-    .sort((left,right)=>Number(left.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)-Number(right.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)||String(left.selectionId).localeCompare(String(right.selectionId),"it")));
+    .sort((left,right)=>Number(left.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)-Number(right.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)||String(left.selectionId).localeCompare(String(right.selectionId),"it")))
+    .map(leg=>publicForecastLabel(leg)===leg.label?leg:{...leg,label:publicForecastLabel(leg)});
 }
 
 export function forecastView(leg,matchday=null){
@@ -76,7 +90,7 @@ export function forecastView(leg,matchday=null){
     matchday,
     market:market.name||leg?.market||null,
     marketFamily:leg?.suggestionAnalysis?.familyLabel||market.family||leg?.marketFamily||null,
-    selection:leg?.label||market.selection||leg?.selection||null,
+    selection:publicForecastLabel(leg)||market.selection||leg?.selection||null,
     player:subject.type?.includes("player")?{id:subject.id??leg?.playerId??null,name:subject.name??leg?.playerName??null,teamId:subject.teamId??leg?.teamId??null}:null,
     threshold:market.threshold??leg?.threshold??null,
     modifier:market.selection||leg?.selection||null,
