@@ -4,6 +4,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {plan} = require('./package-pages.cjs');
 const result = plan(), files = new Set(result.files);
+assert(result.totalBytes < result.sourceBytes, 'Deploy JSON should be compacted');
+assert.equal(result.savedBytes, result.sourceBytes - result.totalBytes);
 assert(result.totalBytes < 1_000_000_000, 'Published site must fit the Pages limit');
 for (const file of result.files) {
   assert(!/^(output|reports|docs|data\/raw|data\/analysis)\//.test(file), 'Internal artifact published: ' + file);
@@ -27,4 +29,17 @@ for (const file of result.files.filter(f => f.endsWith('.html'))) {
     if (fs.existsSync(target) && fs.statSync(target).isFile()) assert(files.has(target), 'Missing HTML dependency: ' + target);
   }
 }
-console.log(`PASS Pages package: ${result.files.length} files, ${result.totalBytes} bytes; runtime dependencies retained, internal archives excluded`);
+// Optional full-package audit checks the actual output against every canonical input.
+const siteIndex = process.argv.indexOf('--site');
+if (siteIndex >= 0) {
+  const site = path.resolve(process.argv[siteIndex + 1]);
+  let bytes = 0;
+  for (const file of result.files) {
+    const source = fs.readFileSync(file), published = fs.readFileSync(path.join(site, file));
+    bytes += published.length;
+    if (file.endsWith('.json')) assert.deepEqual(JSON.parse(published), JSON.parse(source), 'JSON data changed: ' + file);
+    else assert(source.equals(published), 'Static asset changed: ' + file);
+  }
+  assert.equal(bytes, result.totalBytes, 'Planned and actual package sizes differ');
+}
+console.log(`PASS Pages package: ${result.files.length} files, ${result.totalBytes} bytes (${result.savedBytes} saved); runtime dependencies retained, internal archives excluded`);

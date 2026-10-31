@@ -16,6 +16,14 @@ const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-h
   'data/predictions/player-spatial-prospective/', 'data/predictions/player-spatial-v2-prospective/',
   'data/predictions/spatial-prospective/'];
 
+// Compact only the deploy copy. Canonical files and parsed JSON values stay intact.
+function publicContent(file) {
+  const source = fs.readFileSync(path.join(root, file));
+  return file.endsWith('.json')
+    ? Buffer.from(JSON.stringify(JSON.parse(source.toString('utf8'))) + '\n')
+    : source;
+}
+
 function plan() {
   const tracked = execFileSync('git', ['ls-files', '-z'], {cwd: root, maxBuffer: 32 * 1024 * 1024})
     .toString().split('\0').filter(Boolean);
@@ -32,10 +40,12 @@ function plan() {
   for (const file of files) {
     if (!fs.lstatSync(path.join(root, file)).isFile()) throw new Error('Unsupported Pages entry: ' + file);
   }
-  const totalBytes = files.reduce((sum, file) => sum + fs.statSync(path.join(root, file)).size, 0);
+  const sourceBytes = files.reduce((sum, file) => sum + fs.statSync(path.join(root, file)).size, 0);
+  const totalBytes = files.reduce((sum, file) => sum + (file.endsWith('.json')
+    ? publicContent(file).length : fs.statSync(path.join(root, file)).size), 0);
   if (totalBytes > maximumBytes) throw new Error(`Pages package is ${totalBytes} bytes; budget is ${maximumBytes}`);
   for (const file of browserScripts) if (!files.includes(file)) throw new Error('Missing browser script: ' + file);
-  return {files, totalBytes, maximumBytes};
+  return {files, totalBytes, sourceBytes, savedBytes: sourceBytes - totalBytes, maximumBytes};
 }
 
 function build(destination = path.join(root, 'output', 'pages-site')) {
@@ -48,13 +58,14 @@ function build(destination = path.join(root, 'output', 'pages-site')) {
   for (const file of result.files) {
     const output = path.join(target, file);
     fs.mkdirSync(path.dirname(output), {recursive: true});
-    fs.copyFileSync(path.join(root, file), output);
+    if (file.endsWith('.json')) fs.writeFileSync(output, publicContent(file));
+    else fs.copyFileSync(path.join(root, file), output);
   }
   return {...result, destination: target};
 }
 
 if (require.main === module) {
   const result = process.argv.includes('--check') ? plan() : build(process.argv[2]);
-  console.log(JSON.stringify({files: result.files.length, totalBytes: result.totalBytes, maximumBytes, destination: result.destination}, null, 2));
+  console.log(JSON.stringify({files: result.files.length, totalBytes: result.totalBytes, sourceBytes: result.sourceBytes, savedBytes: result.savedBytes, remainingBytes: maximumBytes - result.totalBytes, maximumBytes, destination: result.destination}, null, 2));
 }
 module.exports = {plan, build};

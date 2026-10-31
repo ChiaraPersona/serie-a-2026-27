@@ -6,6 +6,10 @@ Pushes to `main` package the already committed site; the workflow does not regen
 `node scripts/package-pages.cjs --check` computes the package size without writing files.
 `node scripts/test-package-pages.cjs` checks the size budget, runtime data and local HTML dependencies.
 `node scripts/package-pages.cjs` copies the public site into a new `output/pages-site/` directory.
+JSON is compacted in that deploy copy only; canonical repository files remain untouched.
+The size plan measures the actual compact representation and reports source size, saved
+bytes and remaining budget. `node scripts/test-package-pages.cjs --site output/pages-site`
+compares every published JSON value with its original and checks every other file byte for byte.
 It refuses to overwrite an existing destination. This generated directory is ignored by Git.
 `node scripts/check-pages-package-browser.cjs` tests this isolated package on desktop and mobile with the local Edge/Playwright runtime.
 
@@ -43,3 +47,12 @@ those internal paths. No sports data, forecast, settlement or source archive is 
 `node scripts/check-pages-package-browser.cjs output/<new-package-directory>` can verify
 a newly built package without replacing the existing local package. The browser checks
 include the MD10 Schedina and an MD10 reading on desktop and mobile.
+
+### Additional headroom
+
+Compacting JSON in the deployment copy reduces the same 2,111-file package from
+898,294,350 to 641,638,059 bytes (256,656,291 saved), leaving 308,361,941 bytes
+under the existing budget. This removes formatting whitespace without removing data,
+changing forecast contracts or rewriting archived source files. Snapshot integrity uses
+canonical JSON values and remains independent of file indentation.
+Future matchdays still grow the package: the existing CI size check remains mandatory.
