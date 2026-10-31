@@ -406,6 +406,7 @@ const index = { schemaVersion: 1, season: "2026/27", previousSeason: "2025/26", 
 ]))) };
 for (const team of builtTeams) write(`data/teams/${team.id}.json`, team);
 write("data/teams/index.json", index);
+require('./sync-coaches.cjs').sync();
 
 const leaderboardMetrics = [
   { id: "goals", label: "Gol", field: "goals", hasPer90: true },
