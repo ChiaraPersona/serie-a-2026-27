@@ -426,7 +426,7 @@ function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips,
     return { matchId: match.id, date: match.date, kickoff: match.kickoff, homeTeam: match.homeTeam, awayTeam: match.awayTeam, selections: rows, total: rows.length, evaluated: rows.filter(leg => finite(leg.betSelection?.evaluation?.expectedValuePct)).length, notModelled: rows.filter(leg => !finite(leg.betSelection?.evaluation?.expectedValuePct)).length };
   });
   const scenarioCatalogMatches = annotateCatalogMatches({ catalogMatches: baseCatalogMatches, predictions });
-  const suggested = annotateSuggestedForecasts(scenarioCatalogMatches);
+  const suggested = annotateSuggestedForecasts(scenarioCatalogMatches, {resultChoice: matchday >= 10 ? "verified-price-prudent-probability" : "legacy"});
   const integrated = integratePlayerForecasts({
     catalogMatches: suggested.matches,
     predictions,

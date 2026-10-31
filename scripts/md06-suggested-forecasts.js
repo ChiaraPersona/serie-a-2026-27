@@ -178,7 +178,7 @@ function minimumMarginalSportsSupportScore(leg) {
   return ["shots", "sot", "corners"].includes(suggestedFamily(leg)) ? 45 : 48;
 }
 
-function chooseSuggestions(match, rankingMode = "probability-first", { assessment = assessSuggestion, probabilityKey = "prudentProbabilityPct" } = {}) {
+function chooseSuggestions(match, rankingMode = "probability-first", { assessment = assessSuggestion, probabilityKey = "prudentProbabilityPct", resultChoice = "legacy" } = {}) {
   const assessments = new Map(match.selections.map(leg => [leg.selectionId, assessment(leg)]));
   const admitted = match.selections.filter(leg => assessments.get(leg.selectionId).eligible);
   const thresholdGroups = new Map();
@@ -191,6 +191,26 @@ function chooseSuggestions(match, rankingMode = "probability-first", { assessmen
   }
   const thresholdWinners = new Map();
   const rejected = new Map();
+  const resultWinners = new Map();
+  if (resultChoice === "verified-price-prudent-probability") {
+    const groups = new Map();
+    for (const leg of admitted) {
+      const key = resultThesisIdentity(leg);
+      if (!key) continue;
+      const group = groups.get(key) || [];
+      group.push(leg); groups.set(key, group);
+    }
+    for (const [key, group] of groups) {
+      // Compare alternative contracts for the same sporting thesis only.
+      // Admission gates and general portfolio ordering remain unchanged.
+      const ranked = group.slice().sort((a,b) =>
+        (conservativeExpectedValuePct(b) ?? -Infinity) - (conservativeExpectedValuePct(a) ?? -Infinity)
+        || Number(b.betSelection.evaluation[probabilityKey]) - Number(a.betSelection.evaluation[probabilityKey])
+        || compareInterest(a,b,rankingMode,probabilityKey));
+      resultWinners.set(key, ranked[0].selectionId);
+      for (const leg of ranked.slice(1)) rejected.set(leg.selectionId, "RESULT_ALTERNATIVE_LOWER_PRUDENT_PRICE_VALUE");
+    }
+  }
   for (const [key, group] of thresholdGroups) {
     const ranked = group.slice().sort((a, b) => compareThresholdBalance(a, b, probabilityKey));
     thresholdWinners.set(key, ranked[0].selectionId);
@@ -198,6 +218,8 @@ function chooseSuggestions(match, rankingMode = "probability-first", { assessmen
   }
   const candidates = admitted
     .filter(leg => {
+      const thesis = resultThesisIdentity(leg);
+      if (resultWinners.has(thesis) && resultWinners.get(thesis) !== leg.selectionId) return false;
       const key = canonicalThresholdIdentity(leg);
       return !key || thresholdWinners.get(key) === leg.selectionId;
     })
@@ -226,8 +248,8 @@ function chooseSuggestions(match, rankingMode = "probability-first", { assessmen
   return { accepted, assessments, rejected };
 }
 
-function selectMatchSuggestions(match, { rankingMode = "probability-first" } = {}) {
-  const { accepted, assessments, rejected } = chooseSuggestions(match, rankingMode);
+function selectMatchSuggestions(match, { rankingMode = "probability-first", resultChoice = "legacy" } = {}) {
+  const { accepted, assessments, rejected } = chooseSuggestions(match, rankingMode, {resultChoice});
   const acceptedIds = new Set(accepted.map(leg => leg.selectionId));
   const rankById = new Map(accepted.map((leg, index) => [leg.selectionId, index + 1]));
   const annotated = match.selections.map(leg => {
@@ -240,12 +262,15 @@ function selectMatchSuggestions(match, { rankingMode = "probability-first" } = {
       rank: rankById.get(leg.selectionId) || null,
       family: suggestedFamily(leg),
       familyLabel: FAMILY_LABELS[suggestedFamily(leg)],
-      criteria: "SPORTS_COHERENCE_VALIDATED_MODEL_RELIABILITY_AND_BALANCED_CANONICAL_THRESHOLD_WITH_EV_INFORMATION_ONLY",
+      criteria: resultChoice === "verified-price-prudent-probability" && resultThesisIdentity(leg)
+        ? "EXISTING_ADMISSION_WITH_RESULT_ALTERNATIVES_COMPARED_BY_PRUDENT_PRICE_VALUE"
+        : "SPORTS_COHERENCE_VALIDATED_MODEL_RELIABILITY_AND_BALANCED_CANONICAL_THRESHOLD_WITH_EV_INFORMATION_ONLY",
       reasons,
       conservativeExpectedValuePct: assessment.conservativeExpectedValuePct,
       canonicalThresholdIdentity: canonicalThresholdIdentity(leg),
       resultThesisIdentity: resultThesisIdentity(leg),
       rankingMode,
+      resultChoice,
       rankingTuple: suggested ? interestTuple(leg, rankingMode) : null,
       heuristicDisclosure: validatedStatisticalModel
         ? "Discrete count probability validated on a temporal holdout; final portfolio selection remains an operational rule."

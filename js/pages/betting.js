@@ -21,11 +21,14 @@ export function createPage(deps){
     return family;
   };
   const presentationRank=leg=>{
+    const scope=leg.betSelection?.market?.subject?.type||leg.betSelection?.forecastIdentity?.scope||leg.marketScope||'';
+    const individual=/player/.test(scope)||leg.marketScope==='player'||Boolean(leg.playerId||leg.player);
+    const base=individual?10:0;
     const text=[leg.suggestionAnalysis?.family,leg.marketFamily,leg.betSelection?.market?.name,leg.market].filter(Boolean).join(' ').toUpperCase();
-    if(/\bSOT\b|TIRI IN PORTA|ON.TARGET/.test(text))return 2;
-    if(/\bTIRI\b|\bSHOTS\b/.test(text))return 1;
-    if(/\bRESULT\b|\b1X2\b|\bESITO\b|\bRISULTATO\b|DOPPIA CHANCE|DOUBLE.CHANCE/.test(text))return 0;
-    return 3;
+    if(/\bSOT\b|TIRI IN PORTA|ON.TARGET/.test(text))return base+2;
+    if(/\bTIRI\b|\bSHOTS\b/.test(text))return base+1;
+    if(/\bRESULT\b|\b1X2\b|\bESITO\b|\bRISULTATO\b|DOPPIA CHANCE|DOUBLE.CHANCE/.test(text))return base;
+    return base+3;
   };
   const visualOrder=(rows,getLeg=row=>row)=>compactForecasts?[...rows].sort((a,b)=>presentationRank(getLeg(a))-presentationRank(getLeg(b))):rows;
   const manualChampionsLegs=(legs,match)=>legs.filter(leg=>!leg.suggestionAnalysis?.suggested&&(leg.context?.matchday!==3||Number.isFinite(leg.betSelection?.evaluation?.modelProbabilityPct)));

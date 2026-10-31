@@ -34,10 +34,19 @@ const server=http.createServer((req,res)=>{
             const {createDataService}=await import('./js/services/data-service.js');
             const {sharedForecastsForMatch}=await import('./js/pages/shared-forecast-contract.mjs');
             const data=await createDataService('dedup-check').load(`schedina-md${String(day).padStart(2,'0')}.json`);
-            return data.marketCatalog.matches.map(match=>({matchId:match.matchId,expected:sharedForecastsForMatch(data.marketCatalog,match.matchId).length}));
+            return data.marketCatalog.matches.map(match=>{
+              const legs=sharedForecastsForMatch(data.marketCatalog,match.matchId);
+              return {matchId:match.matchId,expected:legs.length,individualLabels:legs.filter(leg=>leg.marketScope==='player'||/player/.test(leg.betSelection?.market?.subject?.type||'')).map(leg=>leg.label)};
+            });
           },day);
-          for(const {matchId,expected} of counts){
+          for(const {matchId,expected,individualLabels} of counts){
             assert.equal(await page.locator(`[data-match-id="${matchId}"] [data-selection-row]`).count(),expected,`${competition} ${day} ${width} ${matchId}`);
+            const labels=await page.locator(`[data-match-id="${matchId}"] [data-selection-row]`).evaluateAll(rows=>rows.map(row=>row.dataset.selectionLabel));
+            let individualSeen=false;
+            for(const label of labels){
+              if(individualLabels.includes(label))individualSeen=true;
+              else assert(!individualSeen,`${matchId}: team market after individual market`);
+            }
           }
         }
         const duplicates=await page.locator('[data-match-panel]').evaluateAll(panels=>panels.flatMap(panel=>{
