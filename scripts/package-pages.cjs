@@ -9,6 +9,12 @@ const directories = ['assets/', 'css/', 'js/', 'statistiche-squadra/', 'fantacha
   'data/generated/', 'data/normalized/', 'data/sources/', 'data/teams/', 'data/derived/',
   'data/predictions/', 'data/players/', 'data/champions-2026-27/'];
 const rootFiles = new Set(['.nojekyll', 'sw.js', 'manifest.webmanifest', 'CNAME', 'robots.txt', 'sitemap.xml', 'data/team-objectives.json']);
+// Research freezes and full referee archives have no browser consumers.
+// Public verification snapshots and generated referee projections remain included.
+const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-history/',
+  'data/predictions/champions-event-snapshots/', 'data/predictions/exact-score-research/',
+  'data/predictions/player-spatial-prospective/', 'data/predictions/player-spatial-v2-prospective/',
+  'data/predictions/spatial-prospective/'];
 
 function plan() {
   const tracked = execFileSync('git', ['ls-files', '-z'], {cwd: root, maxBuffer: 32 * 1024 * 1024})
@@ -20,7 +26,7 @@ function plan() {
       if (target.startsWith('scripts/')) browserScripts.add(target);
     }
   }
-  const files = tracked.filter(file => !file.startsWith('data/normalized/odds/') &&
+  const files = tracked.filter(file => !internalDirectories.some(dir => file.startsWith(dir)) &&
     (rootFiles.has(file) || (!file.includes('/') && file.endsWith('.html')) ||
       browserScripts.has(file) || directories.some(dir => file.startsWith(dir))));
   for (const file of files) {

@@ -12,6 +12,10 @@ It refuses to overwrite an existing destination. This generated directory is ign
 The package retains HTML, assets, browser scripts, team data, normalized public datasets,
 generated projections, source datasets consumed by the browser, Champions derived data and forecast snapshots.
 It excludes reports, operational output, raw archives, analysis datasets and bookmaker ingestion files.
+It also excludes `data/normalized/referee-history/` and research-only prediction directories
+(`champions-event-snapshots`, `exact-score-research`, `player-spatial-prospective`,
+`player-spatial-v2-prospective`, `spatial-prospective`). Browser verification snapshots
+under `data/predictions/snapshots/` and generated referee projections remain included.
 Those files remain versioned in the repository. Nothing in the publication step changes their contents.
 The package budget is 950,000,000 bytes, below the 1 GB published-site limit.
 
@@ -25,3 +29,17 @@ The tracked tree measured 6,282,410,143 bytes; the dedicated package measured 90
 
 Reference: https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits
 Workflow configuration: https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
+
+## Incident, 31 October 2026
+
+Run https://github.com/ChiaraPersona/serie-a-2026-27/actions/runs/41192689314 failed
+in the build size check: 1,003,135,485 bytes exceeded the 950,000,000-byte budget.
+The MD10 update added research freezes that the broad prediction-directory inclusion
+also packaged for Pages. Research freezes and the full referee archive have no browser
+consumers; excluding them reduces the local package to 898,294,350 bytes while retaining
+all published forecasts and runtime verification snapshots. The package test now rejects
+those internal paths. No sports data, forecast, settlement or source archive is deleted.
+
+`node scripts/check-pages-package-browser.cjs output/<new-package-directory>` can verify
+a newly built package without replacing the existing local package. The browser checks
+include the MD10 Schedina and an MD10 reading on desktop and mobile.

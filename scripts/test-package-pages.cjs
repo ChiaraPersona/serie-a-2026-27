@@ -7,6 +7,8 @@ const result = plan(), files = new Set(result.files);
 assert(result.totalBytes < 1_000_000_000, 'Published site must fit the Pages limit');
 for (const file of result.files) {
   assert(!/^(output|reports|docs|data\/raw|data\/analysis)\//.test(file), 'Internal artifact published: ' + file);
+  assert(!/^data\/predictions\/(?:champions-event-snapshots|exact-score-research|player-spatial-prospective|player-spatial-v2-prospective|spatial-prospective)\//.test(file), 'Research snapshot published: ' + file);
+  assert(!file.startsWith('data/normalized/referee-history/'), 'Internal referee archive published: ' + file);
 }
 for (const file of ['index.html', 'offline.html', 'download.html', 'manifest.webmanifest', 'sw.js',
   'scripts/standings.js', 'scripts/objective-metrics.js', 'js/services/data-service.js',
