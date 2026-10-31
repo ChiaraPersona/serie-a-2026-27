@@ -45,9 +45,20 @@ export function isPublishedForecast(leg,{archived=false}={}){
 
 export function sharedForecastsForMatch(marketCatalog,matchId,match=null){
   const fixture=(marketCatalog?.matches||[]).find(match=>match.matchId===matchId);
+  const seen=new Set();
   return (fixture?.selections||[])
     .filter(leg=>isPublishedForecast(leg,{archived:match?.id===matchId&&match?.status==='finished'}))
-    .sort((left,right)=>Number(left.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)-Number(right.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)||String(left.selectionId).localeCompare(String(right.selectionId),"it"));
+    .sort((left,right)=>Number(left.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)-Number(right.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)||String(left.selectionId).localeCompare(String(right.selectionId),"it"))
+    .filter(leg=>{
+      const identity=leg.betSelection?.identity,provider=leg.betSelection?.quote?.source?.provider;
+      // A quoted model forecast can alias an existing bookmaker selection.
+      // Provider IDs identify the contract; labels and internal IDs do not.
+      const key=hasVerifiedPlayableQuote(leg)&&provider&&identity.providerMarketId&&identity.providerSelectionId
+        ?JSON.stringify([provider,identity.matchId,identity.providerMarketId,identity.providerSelectionId])
+        :leg.selectionId;
+      if(seen.has(key))return false;
+      seen.add(key);return true;
+    });
 }
 
 export function forecastView(leg,matchday=null){
