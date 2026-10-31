@@ -64,11 +64,12 @@ if (refreshOdds) {
 run("scripts/validate-sisal-odds.js");
 
 if (!validateOnly) {
-  if (matchday === 9) {
-    run("scripts/build-reading-md09.cjs");
+  if (matchday === 9 || matchday === 10) {
+    const code = String(matchday).padStart(2, "0");
+    run(`scripts/build-reading-md${code}.cjs`);
     run("scripts/generate-mycombo-md01.js", ["--matchday", String(matchday)]);
-    run("scripts/build-reading-md09.cjs");
-    run("scripts/build-schedina-md09.cjs");
+    run(`scripts/build-reading-md${code}.cjs`);
+    run(`scripts/build-schedina-md${code}.cjs`);
   } else if (matchday === 7) {
     run("scripts/build-betting-md07.js");
   } else {

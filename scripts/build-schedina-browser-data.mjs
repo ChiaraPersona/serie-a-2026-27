@@ -26,7 +26,7 @@ try{
   const html=await createPage({esc,dateOnly,hero,...service}).buildArchiveMarkup();
   write('data/generated/schedina-index-2026-27.json',{schemaVersion:1,html});
   const {predictions}=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/predictions.json'),'utf8'));
-  for(const number of [5,6,7,8,9].filter(n=>!process.argv.includes('--matchday')||n===Number(process.argv[process.argv.indexOf('--matchday')+1]))){
+  for(const number of [5,6,7,8,9,10].filter(n=>!process.argv.includes('--matchday')||n===Number(process.argv[process.argv.indexOf('--matchday')+1]))){
     const code=String(number).padStart(2,'0');
     write(`data/normalized/predictions-md${code}.json`,{predictions:predictions.filter(p=>p.matchId.endsWith(`-md-${code}`)).map(({matchId,combinations})=>({matchId,combinations}))});
   }

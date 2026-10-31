@@ -7,7 +7,7 @@ const command=(file,...options)=>[file,...options];
 let plan;
 if(competition==='serie-a'){
  const concluded=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/matches.json'),'utf8')).some(m=>m.competition==='serie-a'&&m.matchday===day&&m.status==='finished');
- plan=[command('scripts/build-readings.js'),command('scripts/team-pages/build.js'),command('scripts/build-team-matchup-profiles.js'),command('scripts/build-betting-matchday.js','--matchday',String(day),...(concluded||day<6?['--validate-only']:[]))];
+ plan=[command('scripts/build-readings.js','--matchday',String(day)),command('scripts/team-pages/build.js'),command('scripts/build-team-matchup-profiles.js'),command('scripts/build-betting-matchday.js','--matchday',String(day),...(concluded||day<6?['--validate-only']:[]))];
 }else if(day===3){
  plan=['build-champions-md3-player-database.cjs','build-champions-md3-probable.cjs','build-champions-md3-offline.js','build-champions-md3-preliminary.js','build-champions-md3-approved.cjs'].map(f=>command('scripts/'+f)).concat([command('scripts/build-champions-event-validation.cjs'),command('scripts/build-champions-md3-schedina.cjs','--catalog-only'),command('scripts/build-champions-event-validation.cjs','--capture-current')]);
 }else if(day===2){

@@ -5001,6 +5001,29 @@ button:disabled{
 
 
 
+.champions-team-detail .champions-team-calendar{padding:20px}
+.champions-team-detail .champions-team-calendar>header{margin-bottom:12px}
+.champions-team-detail .champions-calendar-list{gap:0;margin:0;padding:0;list-style:none}
+.champions-team-detail .champions-calendar-list li{border:0;border-radius:0;background:transparent;box-shadow:none}
+.champions-team-detail .champions-calendar-list li+li{border-top:1px solid rgba(126,205,255,.16)}
+
+
+.champions-team-detail .champions-calendar-list li>a,.champions-team-detail .champions-calendar-list li>div{grid-template-columns:42px 100px minmax(0,1fr) 68px 84px;gap:10px;min-height:48px;padding:7px 10px}
+.champions-team-detail .champions-calendar-list li>a:hover,.champions-team-detail .champions-calendar-list li>a:focus-visible{transform:none}
+.champions-team-detail .champions-calendar-list li>a:focus-visible{outline:2px solid #8edfff;outline-offset:-2px}
+.champions-team-detail .champions-calendar-round{font-size:14px}
+.champions-team-detail .champions-calendar-opponent{gap:0}
+.champions-team-detail .champions-calendar-opponent .team-with-logo{gap:7px;font-size:12px}
+.champions-team-detail .champions-calendar-opponent .team-logo{width:23px;height:23px;min-width:23px;flex-basis:23px}
+.champions-team-detail .champions-calendar-opponent>small{margin-top:2px;font-size:8px}
+.champions-team-detail .champions-calendar-venue{padding:0;border:0;border-radius:0;font-weight:600}
+.champions-team-detail .champions-calendar-result b{font-size:16px}
+@media(max-width:600px){.champions-team-detail .champions-team-calendar{padding:16px 12px}
+.champions-team-detail .champions-calendar-list li>a,.champions-team-detail .champions-calendar-list li>div{grid-template-columns:28px minmax(0,1fr) 65px;gap:4px 7px;padding:8px 6px}
+.champions-team-detail .champions-calendar-round span{font-size:6px}
+.champions-team-detail .champions-calendar-date{display:flex;align-items:baseline;gap:6px;font-size:10px}
+.champions-team-detail .champions-calendar-date small{margin:0}
+.champions-team-detail .champions-calendar-opponent .team-name{white-space:normal;overflow-wrap:anywhere;font-size:11px}}
 /* site-layout.css: original cascade position */
 body :is(.site-header,main,#team-squad-app,.site-footer-inner){
   width:var(--container-width);
