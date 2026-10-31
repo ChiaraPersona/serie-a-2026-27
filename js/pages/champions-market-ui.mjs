@@ -1,4 +1,5 @@
-import {createPersonalBetslipStore} from "./personal-betslip-store.mjs?v=20261022-assets-v1";
+import {meetsMinimumPublicOdds} from "./shared-forecast-contract.mjs?v=20261031-md10-min-odds-108-v5";
+import {createPersonalBetslipStore} from "./personal-betslip-store.mjs?v=20261031-md10-min-odds-108";
 
 const esc=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
 const formatOdds=value=>Number.isFinite(Number(value))?Number(value).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}):"N/D";
@@ -66,7 +67,7 @@ export function mountChampionsMarketUi(fixture,{storage=globalThis.localStorage,
   const scope=root?.closest(".champions-sisal-catalog")||publishedRoot;
   const store=providedStore||createPersonalBetslipStore({storage});
   store.setContext({competition:"champions",season:"2026-27",matchday:fixture.matchday||2});
-  const catalogContracts=fixture.oddsEvent.playerMarkets.flatMap(market=>market.selections.filter(selection=>selection.interfaceSelectable).map(selection=>createChampionsSelection(fixture,market,selection)));
+  const catalogContracts=fixture.oddsEvent.playerMarkets.flatMap(market=>market.selections.filter(selection=>selection.interfaceSelectable&&meetsMinimumPublicOdds(selection)).map(selection=>createChampionsSelection(fixture,market,selection)));
   const contracts=[...new Map([...catalogContracts,...publishedSelections].map(selection=>[selection.selectionId,selection])).values()];
   const retainedOtherFixtures=store.getSnapshot().selections.filter(row=>row.betSelection?.identity?.matchId!==fixture.fixtureId);
   store.reconcile([...retainedOtherFixtures,...contracts]);
@@ -101,7 +102,7 @@ export function mountChampionsMarketUi(fixture,{storage=globalThis.localStorage,
     count.textContent=`${shown.length.toLocaleString("it-IT")} di ${rows.length.toLocaleString("it-IT")} mercati`;
     list.innerHTML=shown.map(market=>{
       const tags=modifierLabels(market).map(label=>`<span>${esc(label)}</span>`).join("");
-      const selections=market.selections.map(selection=>`<li><div><strong>${esc(selection.name)}</strong><small>ID ${esc(selection.providerSelectionId)} · Prob. N/D · EV N/D</small></div><b>${formatOdds(selection.odds)}</b><button type="button" data-add-selection="${esc(selection.selectionId)}" ${selection.interfaceSelectable?"":"disabled"}>${selection.interfaceSelectable?"Aggiungi":"N/D"}</button></li>`).join("");
+      const selections=market.selections.filter(meetsMinimumPublicOdds).map(selection=>`<li><div><strong>${esc(selection.name)}</strong><small>ID ${esc(selection.providerSelectionId)} · Prob. N/D · EV N/D</small></div><b>${formatOdds(selection.odds)}</b><button type="button" data-add-selection="${esc(selection.selectionId)}" ${selection.interfaceSelectable?"":"disabled"}>${selection.interfaceSelectable?"Aggiungi":"N/D"}</button></li>`).join("");
       return `<details class="champions-market-card"><summary><span><small>${esc(market.marketCode)} · ID ${esc(market.providerMarketId)}</small><strong>${esc(market.variantName||market.marketName)}</strong></span><span class="champions-market-tags">${tags}</span></summary><ul>${selections}</ul></details>`;
     }).join("")||`<p class="reading-panel-empty">Nessun mercato corrisponde ai filtri.</p>`;
     more.hidden=shown.length>=rows.length;

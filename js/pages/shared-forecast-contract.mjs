@@ -1,4 +1,14 @@
 const finite=value=>value!==null&&value!==undefined&&value!==""&&Number.isFinite(Number(value));
+export const MINIMUM_PUBLIC_ODDS=1.08;
+export function meetsMinimumPublicOdds(leg){
+  const matchId=leg?.betSelection?.identity?.matchId||leg?.matchId||leg?.fixtureId||leg?.forecastIdentity?.matchId;
+  const context=leg?.context;
+  const applies=matchId?/-2026-27-md-10$/.test(matchId)
+    :context?.competition==='serie-a'&&context?.season==='2026-27'&&Number(context?.matchday)===10;
+  if(!applies)return true;
+  const decimal=leg?.betSelection?.quote?.decimal??leg?.quote?.decimal??leg?.linkedSisalQuote?.decimal??leg?.odds;
+  return !finite(decimal)||Number(decimal)>=MINIMUM_PUBLIC_ODDS;
+}
 export const usesCurrentForecastPolicy=leg=>Number(leg?.context?.matchday)>=6||leg?.context?.forecastPolicy==='SERIE_A_CURRENT';
 
 export function isCanonicalModelForecast(leg){
@@ -36,7 +46,7 @@ export function isUnquotedIndividualForecast(leg){
 }
 
 export function isPublishedForecast(leg,{archived=false}={}){
-  return leg?.lineupEligibility?.eligible!==false
+  return meetsMinimumPublicOdds(leg)&&leg?.lineupEligibility?.eligible!==false
     && (!globalThis.officialStarterPolicy||globalThis.officialStarterPolicy.eligible(leg))
     && leg?.forecastStatus!=="withdrawn"
     && leg?.suggestionAnalysis?.suggested===true

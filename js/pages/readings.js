@@ -2,9 +2,9 @@ import {renderLineupField} from "../components/lineup-field.mjs?v=20261022-asset
 import {setReadingArtifacts} from './reading-detail/projected-artifacts.mjs?v=20261022-assets-v1';
 import {isReadingPilot} from './reading-detail/view-model.mjs?v=20261022-assets-v1';
 import {cardType} from './disciplinary.mjs?v=20261022-assets-v1';
-import {sharedForecastsForMatch} from './shared-forecast-contract.mjs?v=20261031-over-labels-v3';
-import {compactForecastMarkup,publishedReadingForecasts,installForecasts} from './reading-detail/forecasts.mjs?v=20261031-over-labels-v3';
-import {createPersonalBetslipStore} from './personal-betslip-store.mjs?v=20261022-assets-v1';
+import {sharedForecastsForMatch} from './shared-forecast-contract.mjs?v=20261031-md10-min-odds-108-v5';
+import {compactForecastMarkup,publishedReadingForecasts,installForecasts} from './reading-detail/forecasts.mjs?v=20261031-md10-min-odds-108';
+import {createPersonalBetslipStore} from './personal-betslip-store.mjs?v=20261031-md10-min-odds-108';
 const isFiniteNumber=value=>typeof value==="number"&&Number.isFinite(value);
 const decimal=(value,digits=1)=>isFiniteNumber(value)?value.toLocaleString("it-IT",{minimumFractionDigits:digits,maximumFractionDigits:digits}):"N/D";
 const probability=value=>isFiniteNumber(value)?`${(value*100).toLocaleString("it-IT",{minimumFractionDigits:0,maximumFractionDigits:1})}%`:"N/D";

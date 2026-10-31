@@ -1,6 +1,6 @@
 import {esc,number,pct,finite,missing} from './format.mjs?v=20261022-assets-v1';
-import {isCanonicalModelForecast,isPublishedForecast,hasVerifiedPlayableQuote,sharedForecastsForMatch,publicForecastLabel} from '../shared-forecast-contract.mjs?v=20261031-over-labels-v3';
-import {createPersonalBetslipStore} from '../personal-betslip-store.mjs?v=20261022-assets-v1';
+import {isCanonicalModelForecast,isPublishedForecast,hasVerifiedPlayableQuote,sharedForecastsForMatch,publicForecastLabel,meetsMinimumPublicOdds} from '../shared-forecast-contract.mjs?v=20261031-md10-min-odds-108-v5';
+import {createPersonalBetslipStore} from '../personal-betslip-store.mjs?v=20261031-md10-min-odds-108';
 
 export function forecastPresentation(leg){
  const contract=leg.betSelection||{},market=contract.market||{},subject=market.subject||{},player=leg.player&&typeof leg.player==='object'?leg.player:{};
@@ -20,7 +20,7 @@ export function canPickReading(model,leg){
  return model.fixture.status!=='finished'&&['serie-a','champions'].includes(model.competition)&&isPublishedForecast(leg)&&(isCanonicalModelForecast(leg)||hasVerifiedPlayableQuote(leg));
 }
 export function compactForecastMarkup(model){
- const rows=model.forecasts.map(leg=>{const v=forecastPresentation(leg),enabled=canPickReading(model,leg);return `<tr data-forecast-id="${esc(v.id)}" data-shared-forecast-id="${esc(v.id)}"><td class="rd-forecast-name">${esc(v.label)}${leg.publication?`<small class="rd-footnote" data-publication-status="${esc(leg.publication.status)}">${leg.publication.status==='APPROVED'?'Approvata':'Preliminare'}</small>`:''}</td><td>${pct(v.probability)}</td><td>${v.quoted?number(v.odds,2):'—'}</td><td><button type="button" data-rd-pick="${esc(v.id)}" aria-label="${esc(enabled?'Aggiungi '+v.label:model.fixture.status==='finished'?'Partita conclusa: '+v.label:'Solo consultazione: '+v.label)}" aria-pressed="false" ${enabled?'':'disabled'}>+</button></td></tr>`}).join('');
+ const rows=model.forecasts.filter(meetsMinimumPublicOdds).map(leg=>{const v=forecastPresentation(leg),enabled=canPickReading(model,leg);return `<tr data-forecast-id="${esc(v.id)}" data-shared-forecast-id="${esc(v.id)}"><td class="rd-forecast-name">${esc(v.label)}${leg.publication?`<small class="rd-footnote" data-publication-status="${esc(leg.publication.status)}">${leg.publication.status==='APPROVED'?'Approvata':'Preliminare'}</small>`:''}</td><td>${pct(v.probability)}</td><td>${v.quoted?number(v.odds,2):'—'}</td><td><button type="button" data-rd-pick="${esc(v.id)}" aria-label="${esc(enabled?'Aggiungi '+v.label:model.fixture.status==='finished'?'Partita conclusa: '+v.label:'Solo consultazione: '+v.label)}" aria-pressed="false" ${enabled?'':'disabled'}>+</button></td></tr>`}).join('');
  return `<table class="rd-compact-forecast-table"><thead><tr><th scope="col">Nome pronostico</th><th scope="col">Probabilità</th><th scope="col">Quota</th><th scope="col" aria-label="Selezione">+</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 

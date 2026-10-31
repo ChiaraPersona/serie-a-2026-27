@@ -1,8 +1,8 @@
-import {uniqueForecastContracts} from './shared-forecast-contract.mjs?v=20261031-unique-contracts-v2';
+import {uniqueForecastContracts,meetsMinimumPublicOdds} from './shared-forecast-contract.mjs?v=20261031-md10-min-odds-108-v5';
 
 // Presentation economics: original selections and settlements remain immutable.
 export function archiveContractStats(legs,resolve){
-  const results=uniqueForecastContracts(legs).map(leg=>({leg,settlement:resolve(leg)}));
+  const results=uniqueForecastContracts(legs.filter(meetsMinimumPublicOdds)).map(leg=>({leg,settlement:resolve(leg)}));
   const archiveWins=results.filter(r=>r.settlement.status==='won').length;
   const archiveLosses=results.filter(r=>r.settlement.status==='lost').length;
   const archiveVoids=results.filter(r=>r.settlement.status==='void').length;

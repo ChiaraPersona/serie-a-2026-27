@@ -29,6 +29,8 @@ const server=http.createServer((req,res)=>{
       for(const competition of ['serie-a','champions'])for(let day=1;day<=(competition==='serie-a'?10:3);day++){
         await page.goto(`http://127.0.0.1:${server.address().port}/schedina.html?competizione=${competition}&giornata=${day}`);
         await page.waitForSelector('.betting-round-page');
+        const lowPrices=await page.locator('[data-selection-row][data-odds],.betting-slip > ol > li > b,.betting-mycombo-pick > b').evaluateAll(nodes=>nodes.map(node=>Number((node.dataset.odds||node.textContent).trim().replace(',','.'))).filter(value=>Number.isFinite(value)&&value>0&&value<1.08));
+        if(competition==='serie-a'&&day===10)assert.deepEqual(lowPrices,[],`${competition} ${day} ${width}: public price below 1.08`);
         if(competition==='serie-a'&&day>=6){
           const counts=await page.evaluate(async day=>{
             const {createDataService}=await import('./js/services/data-service.js');
