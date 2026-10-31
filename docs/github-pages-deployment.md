@@ -56,3 +56,17 @@ under the existing budget. This removes formatting whitespace without removing d
 changing forecast contracts or rewriting archived source files. Snapshot integrity uses
 canonical JSON values and remains independent of file indentation.
 Future matchdays still grow the package: the existing CI size check remains mandatory.
+
+### Build-only inputs and superseded versions
+
+A second dependency audit excludes eleven exact paths via `internalFiles` in
+`scripts/package-pages.cjs`. They comprise the full MD2 integration (the browser uses
+`champions-md02-ui-2026-27.json`), the MD3 historical individual intermediate and superseded
+seven-fixture v1 catalogs (the browser uses v2), team matchup and shooting-evidence build
+inputs, three exploratory prediction previews and two research summaries. Their compact
+copies total 97,743,095 bytes. All originals remain tracked and available to builders.
+
+The package is now 2,100 files and 543,894,964 bytes, with 406,105,036 bytes of headroom.
+Tests require the active UI/v2 replacements and reject literal browser references to any
+excluded filename, so introducing a new consumer requires revisiting the exclusion.
+The full output comparison continues to verify all retained JSON values and static assets.

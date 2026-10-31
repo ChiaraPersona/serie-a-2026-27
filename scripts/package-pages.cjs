@@ -15,6 +15,20 @@ const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-h
   'data/predictions/champions-event-snapshots/', 'data/predictions/exact-score-research/',
   'data/predictions/player-spatial-prospective/', 'data/predictions/player-spatial-v2-prospective/',
   'data/predictions/spatial-prospective/'];
+// Build inputs and superseded artifacts: browser consumers use the retained UI/v2 files.
+const internalFiles = new Set([
+  'data/normalized/champions-md02-integration-2026-27.json',
+  'data/normalized/team-matchup-profiles-2026-27.json',
+  'data/sources/champions-player-shooting-evidence-2026-10-20.json',
+  'data/derived/champions-md03/probable-individuals-history-v2-2026-10-21.json',
+  'data/derived/champions-md03/market-catalog-official-seven-v1-2026-10-20.json',
+  'data/derived/champions-md03/official-individuals-seven-v1-2026-10-20.json',
+  'data/generated/player-market-backtest-v1-v2-md05.json',
+  'data/generated/prediction-preview-md03-2026-27.json',
+  'data/generated/prediction-preview-md07-2026-27.json',
+  'data/generated/prediction-preview-md08-2026-27.json',
+  'data/generated/referee-history-analytics-md07.json',
+]);
 
 // Compact only the deploy copy. Canonical files and parsed JSON values stay intact.
 function publicContent(file) {
@@ -34,7 +48,7 @@ function plan() {
       if (target.startsWith('scripts/')) browserScripts.add(target);
     }
   }
-  const files = tracked.filter(file => !internalDirectories.some(dir => file.startsWith(dir)) &&
+  const files = tracked.filter(file => !internalFiles.has(file) && !internalDirectories.some(dir => file.startsWith(dir)) &&
     (rootFiles.has(file) || (!file.includes('/') && file.endsWith('.html')) ||
       browserScripts.has(file) || directories.some(dir => file.startsWith(dir))));
   for (const file of files) {
@@ -68,4 +82,4 @@ if (require.main === module) {
   const result = process.argv.includes('--check') ? plan() : build(process.argv[2]);
   console.log(JSON.stringify({files: result.files.length, totalBytes: result.totalBytes, sourceBytes: result.sourceBytes, savedBytes: result.savedBytes, remainingBytes: maximumBytes - result.totalBytes, maximumBytes, destination: result.destination}, null, 2));
 }
-module.exports = {plan, build};
+module.exports = {plan, build, internalFiles};

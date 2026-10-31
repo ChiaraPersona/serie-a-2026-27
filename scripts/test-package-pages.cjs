@@ -2,7 +2,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const {plan} = require('./package-pages.cjs');
+const {plan, internalFiles} = require('./package-pages.cjs');
 const result = plan(), files = new Set(result.files);
 assert(result.totalBytes < result.sourceBytes, 'Deploy JSON should be compacted');
 assert.equal(result.savedBytes, result.sourceBytes - result.totalBytes);
@@ -17,8 +17,19 @@ for (const file of ['index.html', 'offline.html', 'download.html', 'manifest.web
   'data/normalized/matches.json', 'data/normalized/official-starter-registry.json',
   'data/generated/readings/index.json', 'data/generated/schedina-index-2026-27.json',
   'data/sources/official-lineups-2026-27.json', 'data/sources/team-pages/shirt-numbers-2026-27.json',
+  'data/normalized/champions-md02-ui-2026-27.json',
+  'data/derived/champions-md03/market-catalog-official-seven-v2-2026-10-20.json',
+  'data/derived/champions-md03/official-individuals-seven-v2-2026-10-20.json',
   'data/derived/champions-md03/upcoming-forecasts.json', 'data/predictions/snapshots/manifest.json']) {
   assert(files.has(file), 'Missing runtime dependency: ' + file);
+}
+const browserCode = result.files.filter(f => /\.(?:m?js|html)$/.test(f))
+  .map(file => ({file, source: fs.readFileSync(file, 'utf8')}));
+for (const internal of internalFiles) {
+  assert(!files.has(internal), 'Build-only artifact published: ' + internal);
+  const basename = path.posix.basename(internal);
+  for (const consumer of browserCode) assert(!consumer.source.includes(basename),
+    `Excluded artifact is referenced by ${consumer.file}: ${internal}`);
 }
 for (const file of result.files.filter(f => f.endsWith('.html'))) {
   const source = fs.readFileSync(file, 'utf8');
