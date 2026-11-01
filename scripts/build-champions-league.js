@@ -10,7 +10,8 @@ const brandingPath = path.join(root, "data/sources/champions-team-branding-2026-
 const refereeAssignmentsPaths = [
   "data/sources/champions-referee-assignments-2026-27.json",
   "data/sources/champions-referee-assignments-md02-2026-27.json",
-  "data/sources/champions-referee-assignments-md03-2026-27.json"
+  "data/sources/champions-referee-assignments-md03-2026-27.json",
+  "data/sources/champions-referee-assignments-md04-2026-27.json"
 ].map(relativePath => path.join(root, relativePath));
 const probableFormationsPaths = [1, 2].map(matchday => path.join(root, `data/sources/champions-probable-formations-md${String(matchday).padStart(2, "0")}-2026-27.json`));
 const officialFormationsPaths = [1, 2].map(matchday => path.join(root, `data/sources/champions-official-formations-md${String(matchday).padStart(2, "0")}-2026-27.json`));
@@ -89,6 +90,19 @@ if (godinho?.alternateStatistics?.yellowCardsPerMatch !== 6.43) fail("copertura 
 if (kabakov?.cardsSampleMatches !== 24 || kabakov?.foulsPredictionEligible !== false) fail("cautela sul dato falli di Kabakov mancante");
 if (massa?.alternateStatistics?.yellowCardsPerMatch !== 4.73 || massa?.alternateStatistics?.foulsPerMatch !== 27.64) fail("campione alternativo Massa mancante");
 const refereeWatchlist = new Map(refereeWatchlistRows.map(item => [item.fixtureId, item.reason]));
+
+// Designations can be refreshed without rebuilding results, lineups or forecasts.
+if (process.argv.includes('--referees-only')) {
+  if (!targetFixtureIds.size) fail('--referees-only richiede --fixtures');
+  const previous = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+  for (const id of targetFixtureIds) if (!refereeAssignments.has(id) || !previous.fixtures.some(f => f.id === id)) fail(`${id}: target arbitrale non valido`);
+  const next = {...previous, refereeAssignmentsSources: refereeAssignmentsSources.map(item => ({matchday:item.matchday, source:item.source, supportingSources:item.supportingSources||[], verification:item.verification, methodology:item.methodology})), fixtures:previous.fixtures.map(f => targetFixtureIds.has(f.id) ? {...f, refereeAssignment:refereeAssignments.get(f.id), refereeAttention:refereeWatchlist.get(f.id)||null} : f)};
+  const temporaryPath = outputPath + '.tmp';
+  fs.writeFileSync(temporaryPath, JSON.stringify(next, null, 2));
+  fs.renameSync(temporaryPath, outputPath);
+  console.log(`OK Champions designazioni: ${targetFixtureIds.size} gare; altri campi invariati`);
+  return;
+}
 
 const formationPattern = /^(?:[1-5]-){2,3}[1-5]$/;
 const confidenceBands = new Set(["very-high", "medium-high", "lower", "not-rated"]);

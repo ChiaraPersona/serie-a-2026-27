@@ -55,7 +55,7 @@ export function createPage(deps){
       ["AVAR",assignment.avar]
     ].filter(([,value])=>value);
     const officials=roles.length?`<dl>${roles.map(([label,value])=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>`:"";
-    const statistics=stats?`<div class="reading-referee-stats champions-reading-referee-stats"><article><span>Gialli / gara</span>${refereeMetric(stats.yellowCardsPerMatch)}</article><article><span>Rossi / gara</span>${refereeMetric(stats.redCardsPerMatch)}</article><article><span>Falli / gara</span>${refereeMetric(stats.foulsPerMatch)}</article><article><span>Rigori / gara</span>${refereeMetric(stats.penaltiesPerMatch)}</article></div><p class="reading-referee-method">Profilo storico riportato come fornito; non applicato automaticamente alle proiezioni della partita.</p>`:`<div class="reading-referee-stats champions-reading-referee-stats"><article><span>Statistiche disciplinari</span><strong>N/D</strong></article></div><p class="reading-referee-method">Le statistiche arbitrali non sono presenti nelle fonti e restano N/D. La designazione non modifica automaticamente il pronostico.</p>`;
+    const statistics=stats?`<div class="reading-referee-stats champions-reading-referee-stats"><article><span>Gialli / gara</span>${refereeMetric(stats.yellowCardsPerMatch)}</article><article><span>Rossi / gara</span>${refereeMetric(stats.redCardsPerMatch)}</article><article><span>Falli / gara</span>${refereeMetric(stats.foulsPerMatch)}</article><article><span>Rigori / gara</span>${refereeMetric(stats.penaltiesPerMatch)}</article></div><p class="reading-referee-method">Profilo storico riportato come fornito; non applicato automaticamente alle proiezioni della partita.</p>`:`<div class="reading-referee-stats champions-reading-referee-stats"><article><span>Statistiche disciplinari</span><strong>N/D</strong></article></div><p class="reading-referee-method">Statistiche arbitrali non disponibili: N/D. La designazione non modifica automaticamente il pronostico.</p>`;
     return `<aside class="reading-referee-assignment champions-reading-referee champions-reading-hero-referee" id="lettura-referee" aria-labelledby="champions-reading-referee-title"><header><div><p class="eyebrow">Designazione arbitrale</p><h2 id="champions-reading-referee-title">${refereeName(assignment)}</h2></div><p>Designazione e profilo disciplinare.</p></header>${officials}${statistics}</aside>`;
   }
 
@@ -459,7 +459,7 @@ export function createPage(deps){
       const prediction=shared.fixtures.find(f=>f.fixtureId===requestedMatchId);
       if(prediction){
         const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261025-static-recent-form');
-        await mountChampionsReading({fixture:requestedCalendarFixture,prediction,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:''});
+        await mountChampionsReading({fixture:requestedCalendarFixture,prediction,branding,analysis:{match:requestedCalendarFixture,matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:refereeReadingPanel(requestedCalendarFixture.refereeAssignment)});
         return;
       }
     }
