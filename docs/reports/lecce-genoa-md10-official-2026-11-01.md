@@ -1,0 +1,11 @@
+# Lecce–Genoa MD10 — formazioni ufficiali
+
+Aggiornamento locale del 1 novembre 2026 sulla comunicazione dell'utente. Lecce 4-3-3 (Eusebio Di Francesco), Genoa 3-4-2-1 (Daniele De Rossi). Riconciliati i 22 titolari con ID canonici; gli altri giocatori delle rose sono riserve secondo l'indicazione ricevuta. Samuel Wiafe usa l'identità esplicita già verificata nelle ufficiali Genoa MD1/7/8/9 e nell'archivio alias; numero 71 dalla precedente ufficiale MD8. Nessuna aggiunta di statistiche o identità inventate.
+
+Ricalcolo limitato a `lecce-genoa-2026-27-md-10` con builder previsionale, catalogo e publisher esistenti; formule, pesi e criteri invariati. Eseguita policy ufficiale e build Lettura/Schedina. Le altre fixture sono identiche al backup. Le modifiche locali preesistenti di presentazione sono preservate. Il build acquisisce i congelamenti prospettici previsti dai protocolli attivi, separati dalle selezioni operative.
+
+Esclusi e archiviati Fatah DUO 1+ tiri in porta (pali/traverse inclusi) e DUO 2+ tiri perché non titolare. Superati dal ricalcolo Osmajić DUO 2+ tiri in porta e DUO 3+ tiri. Ammessi dai criteri esistenti con quote verificate per lo stesso contratto nello snapshot provider: Messias DUO 1+ tiri in porta (1.75) e 3+ tiri (1.80), Osmajić DUO 1+ tiri in porta (1.50) e 2+ tiri (1.33); pali/traverse inclusi nei contratti tiri in porta. Nessuna previsione trasferita da giocatori esclusi. Probabilità, quota equa ed EV DUO restano null/N/D. Quote, contratti, soglie e modificatori mantenuti sono invariati. Nessuna liquidazione o modifica al rendimento.
+
+Backup compresso, previsione candidata, report, validazione e screenshot in `output/lecce-genoa-md10-official/`. Nessun commit, push o deploy.
+
+Verifiche superate: test ufficiali e proiezioni dedicati (22 identità, riserve escluse, tiratori titolari, isolamento, quote/contratti/soglie/modificatori, DUO null, archivio e vecchi salvataggi), test Schedina MD10 (205 esiti pubblici quotati nell'intera giornata), test deduplica, policy ufficiali inclusi MyCombo, BetSelection, store personale e `git diff --check`. Browser Edge a 1440/390 px: tutti i 22 nomi ufficiali sul campo, due intestazioni ufficiali, contratti superati assenti, nessun overflow o errore JavaScript; controllate Lettura e Schedina. Edge avviato fuori dalla sandbox per il limite noto dell'ambiente.
