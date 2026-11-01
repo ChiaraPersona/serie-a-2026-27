@@ -1,6 +1,6 @@
 import {esc,number,finite,missing} from './format.mjs?v=20261022-assets-v1';
 import {historyMarkup,selectHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
-import {installSpatialMatchup} from './spatial-matchup.mjs?v=20261029-continuity-v1';
+import {installSpatialMatchup} from './spatial-matchup.mjs?v=20261101-spatial-clean-v3';
 export function attackMarkup(channels){
  if(!channels)return missing('Ripartizione delle direzioni d’attacco non disponibile.');
  return `<div class="rd-channels">${[['left','Sinistra'],['central','Centro'],['right','Destra']].map(([key,label])=>`<div><span>${label}</span><i aria-hidden="true"><b style="width:${finite(channels[key])?Math.max(0,Math.min(100,channels[key])):0}%"></b></i><strong>${number(channels[key])}${finite(channels[key])?'%':''}</strong></div>`).join('')}</div>`;
