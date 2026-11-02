@@ -1,0 +1,11 @@
+# Sassuolo–Fiorentina MD10 — formazioni ufficiali
+
+Aggiornamento locale del 2 novembre 2026 sulla comunicazione dell'utente: riconciliati i 22 titolari con ID canonici; gli altri giocatori delle rose sono riserve. Sassuolo: modulo dichiarato 4-3-3, Alberto Aquilani; Fiorentina: 4-3-2-1, Paolo Vanoli. L'elenco Sassuolo è separato in reparti 1/4/2/3/1: conservato il modulo dichiarato 4-3-3 senza correzioni arbitrarie; incongruenza registrata nella fonte interna e disposizione dei reparti indicata da confermare nella Lettura.
+
+Ricalcolo della sola `sassuolo-fiorentina-2026-27-md-10` con builder previsionale, catalogo e publisher esistenti. Formule, pesi e criteri invariati. Eseguita policy ufficiale e build Lettura/Schedina. Previsioni, Letture e cataloghi delle altre fixture identici al backup. Congelamenti prospettici del build separati dalle selezioni operative.
+
+Escluso e archiviato il contratto Ćaleta-Car DUO 1+ tiri perché non titolare. Superati dal ricalcolo Laurienté DUO 1+ tiri in porta, Pellegrino DUO 1+ tiri in porta e Berardi DUO 2+ tiri. Ammessi dai criteri esistenti con verifica del medesimo contratto nello snapshot provider: Laurienté DUO 2+ tiri in porta (3.00), Esposito DUO 1+ tiri in porta (1.44), Berardi DUO 3+ tiri (1.75), Esposito DUO 2+ tiri (1.25); pali/traverse inclusi nei contratti tiri in porta. Nessuna previsione trasferita dagli esclusi. Probabilità, quota equa ed EV DUO rimangono null/N/D. Quote, contratti, soglie e modificatori delle selezioni mantenute invariati. Nessuna liquidazione o modifica al rendimento.
+
+Backup compresso, previsione candidata, report, validazione e screenshot in `output/sassuolo-fiorentina-md10-official/`. Nessun commit, push o deploy.
+
+Verifiche superate: test ufficiali e proiezioni dedicati (22 identità, riserve escluse, tiratori titolari, isolamento, quote/contratti/soglie/modificatori, DUO null, archivio e vecchi salvataggi), test Schedina MD10 (204 esiti pubblici quotati nell'intera giornata), test deduplica, policy ufficiali inclusi MyCombo, BetSelection, store personale e `git diff --check`. Browser Edge a 1440/390 px: tutti i 22 nomi ufficiali sul campo, due intestazioni ufficiali, contratti superati assenti, nessun overflow o errore JavaScript; controllate Lettura e Schedina. Edge avviato fuori dalla sandbox per il limite noto dell'ambiente.
