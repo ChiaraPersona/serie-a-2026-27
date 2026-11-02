@@ -3,8 +3,9 @@ export const MINIMUM_PUBLIC_ODDS=1.08;
 export function meetsMinimumPublicOdds(leg){
   const matchId=leg?.betSelection?.identity?.matchId||leg?.matchId||leg?.fixtureId||leg?.forecastIdentity?.matchId;
   const context=leg?.context;
-  const applies=matchId?/-2026-27-md-10$/.test(matchId)
-    :context?.competition==='serie-a'&&context?.season==='2026-27'&&Number(context?.matchday)===10;
+  const champions=/^ucl-\d{4}-\d{2}-md\d{2}-/.test(matchId||'')||['champions','champions-league'].includes(context?.competition);
+  const applies=champions||(matchId?/-2026-27-md-10$/.test(matchId)
+    :context?.competition==='serie-a'&&context?.season==='2026-27'&&Number(context?.matchday)===10);
   if(!applies)return true;
   const decimal=leg?.betSelection?.quote?.decimal??leg?.quote?.decimal??leg?.linkedSisalQuote?.decimal??leg?.odds;
   return !finite(decimal)||Number(decimal)>=MINIMUM_PUBLIC_ODDS;

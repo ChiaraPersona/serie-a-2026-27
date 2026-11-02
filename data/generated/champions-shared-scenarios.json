@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "pipeline": "SHARED_SERIE_A_SCENARIO",
   "engineVersion": "4.13.0",
-  "generatedAt": "2026-10-24T09:01:03.781Z",
+  "generatedAt": "2026-11-02T17:13:35.730Z",
   "fixtures": [
     {
       "fixtureId": "ucl-2026-27-md04-01",
@@ -15,29 +15,29 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.16,
-        "away": 1.94,
-        "total": 3.1,
+        "home": 1.14,
+        "away": 2.03,
+        "total": 3.17,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
             "attackStrength": 1.051,
             "defenceWeakness": 1.104,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.011,
+              "defenceWeakness": 1.015,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "away": {
             "attackStrength": 1.565,
             "defenceWeakness": 0.73,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.028,
+              "defenceWeakness": 0.979,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "recentForm": {
@@ -86,42 +86,42 @@
         }
       },
       "probabilities": {
-        "home": 22.50561865782805,
-        "draw": 22.01290196512799,
-        "away": 55.48147937704396
+        "home": 20.876935749020337,
+        "draw": 21.246616796303055,
+        "away": 57.876447454676615
       },
       "scoreForecast": {
         "primary": {
           "score": "1-2",
           "outcome": "2",
           "label": "Risultato esatto centrale",
-          "probabilityPct": 9.8,
-          "conditionalProbabilityPct": 17.7,
-          "isAbsoluteMode": false
+          "probabilityPct": 9.9,
+          "conditionalProbabilityPct": 17.1,
+          "isAbsoluteMode": true
         },
         "modal": {
-          "score": "1-1",
-          "outcome": "X",
+          "score": "1-2",
+          "outcome": "2",
           "label": "Moda assoluta",
-          "probabilityPct": 10.1,
-          "conditionalProbabilityPct": 46.1,
+          "probabilityPct": 9.9,
+          "conditionalProbabilityPct": 17.1,
           "isAbsoluteMode": true
         },
         "alternatives": [
           {
             "score": "1-1",
             "outcome": "X",
-            "label": "Moda assoluta",
-            "probabilityPct": 10.1,
-            "conditionalProbabilityPct": 46.1,
-            "isAbsoluteMode": true
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.7,
+            "conditionalProbabilityPct": 45.8,
+            "isAbsoluteMode": false
           },
           {
-            "score": "0-1",
+            "score": "0-2",
             "outcome": "2",
             "label": "Altro risultato probabile",
             "probabilityPct": 8.7,
-            "conditionalProbabilityPct": 15.8,
+            "conditionalProbabilityPct": 15,
             "isAbsoluteMode": false
           }
         ],
@@ -130,24 +130,24 @@
             "score": "1-2",
             "outcome": "2",
             "label": "Risultato esatto centrale",
-            "probabilityPct": 9.8,
-            "conditionalProbabilityPct": 17.7,
-            "isAbsoluteMode": false
+            "probabilityPct": 9.9,
+            "conditionalProbabilityPct": 17.1,
+            "isAbsoluteMode": true
           },
           {
             "score": "1-1",
             "outcome": "X",
-            "label": "Moda assoluta",
-            "probabilityPct": 10.1,
-            "conditionalProbabilityPct": 46.1,
-            "isAbsoluteMode": true
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.7,
+            "conditionalProbabilityPct": 45.8,
+            "isAbsoluteMode": false
           },
           {
-            "score": "0-1",
+            "score": "0-2",
             "outcome": "2",
             "label": "Altro risultato probabile",
             "probabilityPct": 8.7,
-            "conditionalProbabilityPct": 15.8,
+            "conditionalProbabilityPct": 15,
             "isAbsoluteMode": false
           }
         ],
@@ -155,21 +155,21 @@
         "forcedOutcomeScenarios": false,
         "selection": {
           "type": "rounded-expected-goals",
-          "expectedHome": 1.2,
-          "expectedAway": 1.9
+          "expectedHome": 1.1,
+          "expectedAway": 2
         },
         "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "confidence": {
-        "value": 64,
+        "value": 68,
         "level": "moderata"
       },
       "surprise": {
-        "value": 50,
+        "value": 55,
         "level": "medio",
         "upsetOutcome": "1",
-        "upsetProbabilityPct": 22.5,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito e incompletezza prepartita. La componente di divergenza dal mercato resta disattivata finche non sono disponibili quote verificate."
+        "upsetProbabilityPct": 20.9,
+        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
         {
@@ -186,7 +186,7 @@
             "central": 12.1,
             "max": 16,
             "interval": "p20-p80",
-            "sd": 3.83,
+            "sd": 3.84,
             "sampleSize": 35,
             "dataStatus": "venue-history",
             "inputs": [
@@ -212,10 +212,10 @@
           },
           "shotsOnTarget": {
             "min": 1,
-            "central": 4,
+            "central": 3.9,
             "max": 6,
             "interval": "p20-p80",
-            "sd": 2.39,
+            "sd": 2.32,
             "sampleSize": 35,
             "dataStatus": "venue-history",
             "inputs": [
@@ -241,10 +241,10 @@
           },
           "corners": {
             "min": 2,
-            "central": 4.9,
+            "central": 5,
             "max": 7,
             "interval": "p20-p80",
-            "sd": 3.38,
+            "sd": 3.39,
             "sampleSize": 35,
             "dataStatus": "venue-history",
             "inputs": [
@@ -303,7 +303,7 @@
             "central": 2.1,
             "max": 3
           },
-          "expectedGoals": 1.16,
+          "expectedGoals": 1.14,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -320,7 +320,7 @@
             "central": 12.2,
             "max": 16,
             "interval": "p20-p80",
-            "sd": 5.47,
+            "sd": 5.45,
             "sampleSize": 35,
             "dataStatus": "venue-history",
             "inputs": [
@@ -345,11 +345,11 @@
             ]
           },
           "shotsOnTarget": {
-            "min": 1,
-            "central": 4.2,
-            "max": 7,
+            "min": 2,
+            "central": 4.9,
+            "max": 8,
             "interval": "p20-p80",
-            "sd": 2.61,
+            "sd": 3,
             "sampleSize": 35,
             "dataStatus": "venue-history",
             "inputs": [
@@ -375,10 +375,10 @@
           },
           "corners": {
             "min": 3,
-            "central": 5,
+            "central": 4.9,
             "max": 7,
             "interval": "p20-p80",
-            "sd": 3.13,
+            "sd": 3.12,
             "sampleSize": 35,
             "dataStatus": "venue-history",
             "inputs": [
@@ -437,7 +437,7 @@
             "central": 2.1,
             "max": 3
           },
-          "expectedGoals": 1.94,
+          "expectedGoals": 2.03,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -447,16 +447,16 @@
           "central": 24.3,
           "max": 30,
           "interval": "p20-p80-independent",
-          "sd": 6.68,
+          "sd": 6.67,
           "sampleSize": 35,
           "dataStatus": "venue-history"
         },
         "shotsOnTarget": {
           "min": 5,
-          "central": 8.2,
+          "central": 8.8,
           "max": 12,
           "interval": "p20-p80-independent",
-          "sd": 3.54,
+          "sd": 3.79,
           "sampleSize": 35,
           "dataStatus": "venue-history"
         },
@@ -475,9 +475,8 @@
       },
       "dataQuality": {
         "label": "Stima preliminare · copertura parziale",
-        "completenessPct": 45,
+        "completenessPct": 56,
         "missing": [
-          "Formazioni canoniche non integrate",
           "xG comparabili non disponibili",
           "Obiettivi e precedenti non integrati"
         ],
@@ -491,7 +490,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-10-24T09:01:03.781Z",
+        "cutoff": "2026-11-02T17:13:35.730Z",
         "teamIds": [
           "shakhtar-donetsk",
           "sporting-cp"
@@ -499,9 +498,18 @@
         "normalization": "relative-to-domestic-league",
         "recentDecay": 0.82,
         "recentOpponentStrengthAdjustment": false,
-        "lineupsApplied": false,
+        "lineupsApplied": true,
         "xgApplied": false,
         "marketUsedForGoals": false
+      },
+      "inputSnapshot": {
+        "asOf": "2026-11-02T17:13:35.730Z",
+        "sha256": {
+          "data/sources/champions-probable-formations-md04-2026-27.json": "390554ab46f7fc8a4fd9452403a16e714ba04b98a0a2da3ef54b54e62dfae2b6",
+          "data/normalized/odds/sisal/champions-league.json": "1716d5ef53e0b8d77fe7736a965338878600e080e52495e4763cebbc4de1ff0e",
+          "data/sources/champions-pilot-match-stats-2025-27.json": "506c0dfcac8e3a1fab2c64e478b0daccb0976918757d1fc2c7ba5bc2d5b02759",
+          "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
+        }
       }
     },
     {
@@ -515,29 +523,29 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.17,
-        "away": 1.52,
-        "total": 3.69,
+        "home": 2.18,
+        "away": 1.58,
+        "total": 3.76,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
             "attackStrength": 1.051,
             "defenceWeakness": 0.92,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.023,
+              "defenceWeakness": 0.978,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "away": {
             "attackStrength": 1.19,
             "defenceWeakness": 0.991,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.059,
+              "defenceWeakness": 0.983,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "recentForm": {
@@ -586,25 +594,25 @@
         }
       },
       "probabilities": {
-        "home": 52.44980714589455,
-        "draw": 20.644036854756944,
-        "away": 26.906155999348503
+        "home": 51.41108890609259,
+        "draw": 20.595908897758637,
+        "away": 27.993002196148787
       },
       "scoreForecast": {
         "primary": {
           "score": "2-2",
           "outcome": "X",
           "label": "Risultato esatto centrale",
-          "probabilityPct": 6.8,
-          "conditionalProbabilityPct": 33,
+          "probabilityPct": 6.9,
+          "conditionalProbabilityPct": 33.6,
           "isAbsoluteMode": false
         },
         "modal": {
           "score": "2-1",
           "outcome": "1",
           "label": "Moda assoluta",
-          "probabilityPct": 9,
-          "conditionalProbabilityPct": 17.1,
+          "probabilityPct": 8.8,
+          "conditionalProbabilityPct": 17,
           "isAbsoluteMode": true
         },
         "alternatives": [
@@ -612,16 +620,16 @@
             "score": "2-1",
             "outcome": "1",
             "label": "Moda assoluta",
-            "probabilityPct": 9,
-            "conditionalProbabilityPct": 17.1,
+            "probabilityPct": 8.8,
+            "conditionalProbabilityPct": 17,
             "isAbsoluteMode": true
           },
           {
             "score": "1-1",
             "outcome": "X",
             "label": "Altro risultato probabile",
-            "probabilityPct": 8.3,
-            "conditionalProbabilityPct": 40,
+            "probabilityPct": 8,
+            "conditionalProbabilityPct": 39,
             "isAbsoluteMode": false
           }
         ],
@@ -630,24 +638,24 @@
             "score": "2-2",
             "outcome": "X",
             "label": "Risultato esatto centrale",
-            "probabilityPct": 6.8,
-            "conditionalProbabilityPct": 33,
+            "probabilityPct": 6.9,
+            "conditionalProbabilityPct": 33.6,
             "isAbsoluteMode": false
           },
           {
             "score": "2-1",
             "outcome": "1",
             "label": "Moda assoluta",
-            "probabilityPct": 9,
-            "conditionalProbabilityPct": 17.1,
+            "probabilityPct": 8.8,
+            "conditionalProbabilityPct": 17,
             "isAbsoluteMode": true
           },
           {
             "score": "1-1",
             "outcome": "X",
             "label": "Altro risultato probabile",
-            "probabilityPct": 8.3,
-            "conditionalProbabilityPct": 40,
+            "probabilityPct": 8,
+            "conditionalProbabilityPct": 39,
             "isAbsoluteMode": false
           }
         ],
@@ -656,20 +664,20 @@
         "selection": {
           "type": "rounded-expected-goals",
           "expectedHome": 2.2,
-          "expectedAway": 1.5
+          "expectedAway": 1.6
         },
         "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "confidence": {
-        "value": 63,
+        "value": 64,
         "level": "moderata"
       },
       "surprise": {
-        "value": 55,
+        "value": 61,
         "level": "medio",
         "upsetOutcome": "2",
-        "upsetProbabilityPct": 26.9,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito e incompletezza prepartita. La componente di divergenza dal mercato resta disattivata finche non sono disponibili quote verificate."
+        "upsetProbabilityPct": 28,
+        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
         {
@@ -686,7 +694,7 @@
             "central": 22.1,
             "max": 24,
             "interval": "p20-p80",
-            "sd": 7.09,
+            "sd": 7.11,
             "sampleSize": 32,
             "dataStatus": "venue-history",
             "inputs": [
@@ -711,11 +719,11 @@
             ]
           },
           "shotsOnTarget": {
-            "min": 5,
-            "central": 7.4,
+            "min": 6,
+            "central": 8,
             "max": 10,
             "interval": "p20-p80",
-            "sd": 2.6,
+            "sd": 2.83,
             "sampleSize": 32,
             "dataStatus": "venue-history",
             "inputs": [
@@ -803,7 +811,7 @@
             "central": 1.4,
             "max": 3
           },
-          "expectedGoals": 2.17,
+          "expectedGoals": 2.18,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -820,7 +828,7 @@
             "central": 14.4,
             "max": 17,
             "interval": "p20-p80",
-            "sd": 5.94,
+            "sd": 5.92,
             "sampleSize": 33,
             "dataStatus": "venue-history",
             "inputs": [
@@ -846,10 +854,10 @@
           },
           "shotsOnTarget": {
             "min": 3,
-            "central": 4.7,
+            "central": 4.9,
             "max": 7,
             "interval": "p20-p80",
-            "sd": 2.49,
+            "sd": 2.6,
             "sampleSize": 33,
             "dataStatus": "venue-history",
             "inputs": [
@@ -937,7 +945,7 @@
             "central": 1.7,
             "max": 3
           },
-          "expectedGoals": 1.52,
+          "expectedGoals": 1.58,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -953,10 +961,10 @@
         },
         "shotsOnTarget": {
           "min": 9,
-          "central": 12.1,
-          "max": 16,
+          "central": 12.9,
+          "max": 17,
           "interval": "p20-p80-independent",
-          "sd": 3.6,
+          "sd": 3.84,
           "sampleSize": 32,
           "dataStatus": "venue-history"
         },
@@ -975,9 +983,8 @@
       },
       "dataQuality": {
         "label": "Stima preliminare · copertura parziale",
-        "completenessPct": 45,
+        "completenessPct": 56,
         "missing": [
-          "Formazioni canoniche non integrate",
           "xG comparabili non disponibili",
           "Obiettivi e precedenti non integrati"
         ],
@@ -991,7 +998,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-10-24T09:01:03.781Z",
+        "cutoff": "2026-11-02T17:13:35.730Z",
         "teamIds": [
           "galatasaray",
           "stuttgart"
@@ -999,9 +1006,18 @@
         "normalization": "relative-to-domestic-league",
         "recentDecay": 0.82,
         "recentOpponentStrengthAdjustment": false,
-        "lineupsApplied": false,
+        "lineupsApplied": true,
         "xgApplied": false,
         "marketUsedForGoals": false
+      },
+      "inputSnapshot": {
+        "asOf": "2026-11-02T17:13:35.730Z",
+        "sha256": {
+          "data/sources/champions-probable-formations-md04-2026-27.json": "390554ab46f7fc8a4fd9452403a16e714ba04b98a0a2da3ef54b54e62dfae2b6",
+          "data/normalized/odds/sisal/champions-league.json": "1716d5ef53e0b8d77fe7736a965338878600e080e52495e4763cebbc4de1ff0e",
+          "data/sources/champions-pilot-match-stats-2025-27.json": "506c0dfcac8e3a1fab2c64e478b0daccb0976918757d1fc2c7ba5bc2d5b02759",
+          "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
+        }
       }
     },
     {
@@ -1015,29 +1031,29 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.51,
-        "away": 1.92,
-        "total": 3.43,
+        "home": 1.52,
+        "away": 2.03,
+        "total": 3.55,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
             "attackStrength": 1.206,
             "defenceWeakness": 0.829,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.026,
+              "defenceWeakness": 0.978,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "away": {
             "attackStrength": 1.728,
             "defenceWeakness": 0.715,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.08,
+              "defenceWeakness": 0.981,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "recentForm": {
@@ -1086,9 +1102,9 @@
         }
       },
       "probabilities": {
-        "home": 30.540519238560286,
-        "draw": 22.096117936250526,
-        "away": 47.363362825189185
+        "home": 29.00789838714139,
+        "draw": 21.459676363850484,
+        "away": 49.53242524900813
       },
       "scoreForecast": {
         "primary": {
@@ -1096,32 +1112,32 @@
           "outcome": "X",
           "label": "Risultato esatto centrale",
           "probabilityPct": 6.8,
-          "conditionalProbabilityPct": 30.8,
+          "conditionalProbabilityPct": 31.9,
           "isAbsoluteMode": false
         },
         "modal": {
-          "score": "1-1",
-          "outcome": "X",
+          "score": "1-2",
+          "outcome": "2",
           "label": "Moda assoluta",
-          "probabilityPct": 9.4,
-          "conditionalProbabilityPct": 42.5,
+          "probabilityPct": 9,
+          "conditionalProbabilityPct": 18.2,
           "isAbsoluteMode": true
         },
         "alternatives": [
           {
-            "score": "1-1",
-            "outcome": "X",
+            "score": "1-2",
+            "outcome": "2",
             "label": "Moda assoluta",
-            "probabilityPct": 9.4,
-            "conditionalProbabilityPct": 42.5,
+            "probabilityPct": 9,
+            "conditionalProbabilityPct": 18.2,
             "isAbsoluteMode": true
           },
           {
-            "score": "1-2",
-            "outcome": "2",
+            "score": "1-1",
+            "outcome": "X",
             "label": "Altro risultato probabile",
-            "probabilityPct": 9,
-            "conditionalProbabilityPct": 19.1,
+            "probabilityPct": 8.9,
+            "conditionalProbabilityPct": 41.4,
             "isAbsoluteMode": false
           }
         ],
@@ -1131,23 +1147,23 @@
             "outcome": "X",
             "label": "Risultato esatto centrale",
             "probabilityPct": 6.8,
-            "conditionalProbabilityPct": 30.8,
+            "conditionalProbabilityPct": 31.9,
             "isAbsoluteMode": false
-          },
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Moda assoluta",
-            "probabilityPct": 9.4,
-            "conditionalProbabilityPct": 42.5,
-            "isAbsoluteMode": true
           },
           {
             "score": "1-2",
             "outcome": "2",
-            "label": "Altro risultato probabile",
+            "label": "Moda assoluta",
             "probabilityPct": 9,
-            "conditionalProbabilityPct": 19.1,
+            "conditionalProbabilityPct": 18.2,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 8.9,
+            "conditionalProbabilityPct": 41.4,
             "isAbsoluteMode": false
           }
         ],
@@ -1156,20 +1172,20 @@
         "selection": {
           "type": "rounded-expected-goals",
           "expectedHome": 1.5,
-          "expectedAway": 1.9
+          "expectedAway": 2
         },
         "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "confidence": {
-        "value": 51,
-        "level": "prudente"
+        "value": 59,
+        "level": "moderata"
       },
       "surprise": {
-        "value": 61,
+        "value": 66,
         "level": "medio",
         "upsetOutcome": "1",
-        "upsetProbabilityPct": 30.5,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito e incompletezza prepartita. La componente di divergenza dal mercato resta disattivata finche non sono disponibili quote verificate."
+        "upsetProbabilityPct": 29,
+        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
         {
@@ -1183,10 +1199,10 @@
           },
           "shotsTotal": {
             "min": 10,
-            "central": 15.5,
+            "central": 15.6,
             "max": 19,
             "interval": "p20-p80",
-            "sd": 6.49,
+            "sd": 6.51,
             "sampleSize": 51,
             "dataStatus": "venue-history",
             "inputs": [
@@ -1211,11 +1227,11 @@
             ]
           },
           "shotsOnTarget": {
-            "min": 2,
+            "min": 3,
             "central": 5.1,
             "max": 7,
             "interval": "p20-p80",
-            "sd": 2.69,
+            "sd": 2.7,
             "sampleSize": 51,
             "dataStatus": "venue-history",
             "inputs": [
@@ -1241,7 +1257,7 @@
           },
           "corners": {
             "min": 3,
-            "central": 6.3,
+            "central": 6.4,
             "max": 9,
             "interval": "p20-p80",
             "sd": 3.75,
@@ -1303,7 +1319,7 @@
             "central": 2.1,
             "max": 3
           },
-          "expectedGoals": 1.51,
+          "expectedGoals": 1.52,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -1317,10 +1333,10 @@
           },
           "shotsTotal": {
             "min": 10,
-            "central": 15.7,
+            "central": 15.6,
             "max": 19,
             "interval": "p20-p80",
-            "sd": 7.36,
+            "sd": 7.33,
             "sampleSize": 51,
             "dataStatus": "venue-history",
             "inputs": [
@@ -1345,11 +1361,11 @@
             ]
           },
           "shotsOnTarget": {
-            "min": 3,
-            "central": 5.8,
-            "max": 8,
+            "min": 4,
+            "central": 7,
+            "max": 9,
             "interval": "p20-p80",
-            "sd": 3.52,
+            "sd": 4.26,
             "sampleSize": 51,
             "dataStatus": "venue-history",
             "inputs": [
@@ -1378,7 +1394,7 @@
             "central": 5.6,
             "max": 8,
             "interval": "p20-p80",
-            "sd": 3.3,
+            "sd": 3.29,
             "sampleSize": 51,
             "dataStatus": "venue-history",
             "inputs": [
@@ -1437,7 +1453,7 @@
             "central": 1.5,
             "max": 3
           },
-          "expectedGoals": 1.92,
+          "expectedGoals": 2.03,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -1447,25 +1463,25 @@
           "central": 31.2,
           "max": 40,
           "interval": "p20-p80-independent",
-          "sd": 9.81,
+          "sd": 9.8,
           "sampleSize": 51,
           "dataStatus": "venue-history"
         },
         "shotsOnTarget": {
           "min": 7,
-          "central": 10.9,
-          "max": 15,
+          "central": 12.1,
+          "max": 17,
           "interval": "p20-p80-independent",
-          "sd": 4.43,
+          "sd": 5.04,
           "sampleSize": 51,
           "dataStatus": "venue-history"
         },
         "corners": {
           "min": 7,
-          "central": 11.9,
+          "central": 12,
           "max": 17,
           "interval": "p20-p80-independent",
-          "sd": 5,
+          "sd": 4.99,
           "sampleSize": 51,
           "dataStatus": "venue-history"
         }
@@ -1475,9 +1491,8 @@
       },
       "dataQuality": {
         "label": "Stima preliminare · copertura parziale",
-        "completenessPct": 45,
+        "completenessPct": 56,
         "missing": [
-          "Formazioni canoniche non integrate",
           "xG comparabili non disponibili",
           "Obiettivi e precedenti non integrati"
         ],
@@ -1491,7 +1506,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-10-24T09:01:03.781Z",
+        "cutoff": "2026-11-02T17:13:35.730Z",
         "teamIds": [
           "atletico-de-madrid",
           "bayern-munchen"
@@ -1499,9 +1514,18 @@
         "normalization": "relative-to-domestic-league",
         "recentDecay": 0.82,
         "recentOpponentStrengthAdjustment": false,
-        "lineupsApplied": false,
+        "lineupsApplied": true,
         "xgApplied": false,
         "marketUsedForGoals": false
+      },
+      "inputSnapshot": {
+        "asOf": "2026-11-02T17:13:35.730Z",
+        "sha256": {
+          "data/sources/champions-probable-formations-md04-2026-27.json": "390554ab46f7fc8a4fd9452403a16e714ba04b98a0a2da3ef54b54e62dfae2b6",
+          "data/normalized/odds/sisal/champions-league.json": "1716d5ef53e0b8d77fe7736a965338878600e080e52495e4763cebbc4de1ff0e",
+          "data/sources/champions-pilot-match-stats-2025-27.json": "506c0dfcac8e3a1fab2c64e478b0daccb0976918757d1fc2c7ba5bc2d5b02759",
+          "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
+        }
       }
     },
     {
@@ -1515,29 +1539,29 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.69,
+        "home": 2.73,
         "away": 0.88,
-        "total": 3.57,
+        "total": 3.61,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
             "attackStrength": 1.714,
             "defenceWeakness": 0.744,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.036,
+              "defenceWeakness": 0.983,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "away": {
             "attackStrength": 0.991,
             "defenceWeakness": 0.97,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.02,
+              "defenceWeakness": 0.979,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "recentForm": {
@@ -1586,9 +1610,9 @@
         }
       },
       "probabilities": {
-        "home": 75.44300033566358,
-        "draw": 14.727037220725755,
-        "away": 9.829962443610661
+        "home": 76.01214246686642,
+        "draw": 14.423561044497553,
+        "away": 9.564296488636025
       },
       "scoreForecast": {
         "primary": {
@@ -1603,8 +1627,8 @@
           "score": "2-0",
           "outcome": "1",
           "label": "Moda assoluta",
-          "probabilityPct": 10.3,
-          "conditionalProbabilityPct": 13.6,
+          "probabilityPct": 10.2,
+          "conditionalProbabilityPct": 13.4,
           "isAbsoluteMode": true
         },
         "alternatives": [
@@ -1612,8 +1636,8 @@
             "score": "2-0",
             "outcome": "1",
             "label": "Moda assoluta",
-            "probabilityPct": 10.3,
-            "conditionalProbabilityPct": 13.6,
+            "probabilityPct": 10.2,
+            "conditionalProbabilityPct": 13.4,
             "isAbsoluteMode": true
           },
           {
@@ -1638,8 +1662,8 @@
             "score": "2-0",
             "outcome": "1",
             "label": "Moda assoluta",
-            "probabilityPct": 10.3,
-            "conditionalProbabilityPct": 13.6,
+            "probabilityPct": 10.2,
+            "conditionalProbabilityPct": 13.4,
             "isAbsoluteMode": true
           },
           {
@@ -1661,15 +1685,15 @@
         "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "confidence": {
-        "value": 70,
-        "level": "moderata"
+        "value": 76,
+        "level": "alta"
       },
       "surprise": {
-        "value": 26,
+        "value": 24,
         "level": "basso",
         "upsetOutcome": "2",
-        "upsetProbabilityPct": 9.8,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito e incompletezza prepartita. La componente di divergenza dal mercato resta disattivata finche non sono disponibili quote verificate."
+        "upsetProbabilityPct": 9.6,
+        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
         {
@@ -1711,11 +1735,11 @@
             ]
           },
           "shotsOnTarget": {
-            "min": 4,
-            "central": 5.6,
-            "max": 7,
+            "min": 5,
+            "central": 6.3,
+            "max": 8,
             "interval": "p20-p80",
-            "sd": 2.02,
+            "sd": 2.27,
             "sampleSize": 54,
             "dataStatus": "venue-history",
             "inputs": [
@@ -1803,7 +1827,7 @@
             "central": 1.5,
             "max": 3
           },
-          "expectedGoals": 2.69,
+          "expectedGoals": 2.73,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -1846,10 +1870,10 @@
           },
           "shotsOnTarget": {
             "min": 1,
-            "central": 3.7,
+            "central": 3.9,
             "max": 6,
             "interval": "p20-p80",
-            "sd": 2.56,
+            "sd": 2.69,
             "sampleSize": 54,
             "dataStatus": "venue-history",
             "inputs": [
@@ -1952,11 +1976,11 @@
           "dataStatus": "venue-history"
         },
         "shotsOnTarget": {
-          "min": 6,
-          "central": 9.3,
-          "max": 13,
+          "min": 7,
+          "central": 10.2,
+          "max": 14,
           "interval": "p20-p80-independent",
-          "sd": 3.26,
+          "sd": 3.52,
           "sampleSize": 54,
           "dataStatus": "venue-history"
         },
@@ -1975,9 +1999,8 @@
       },
       "dataQuality": {
         "label": "Stima preliminare · copertura parziale",
-        "completenessPct": 45,
+        "completenessPct": 56,
         "missing": [
-          "Formazioni canoniche non integrate",
           "xG comparabili non disponibili",
           "Obiettivi e precedenti non integrati"
         ],
@@ -1991,7 +2014,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-10-24T09:01:03.781Z",
+        "cutoff": "2026-11-02T17:13:35.730Z",
         "teamIds": [
           "barcelona",
           "aston-villa"
@@ -1999,9 +2022,18 @@
         "normalization": "relative-to-domestic-league",
         "recentDecay": 0.82,
         "recentOpponentStrengthAdjustment": false,
-        "lineupsApplied": false,
+        "lineupsApplied": true,
         "xgApplied": false,
         "marketUsedForGoals": false
+      },
+      "inputSnapshot": {
+        "asOf": "2026-11-02T17:13:35.730Z",
+        "sha256": {
+          "data/sources/champions-probable-formations-md04-2026-27.json": "390554ab46f7fc8a4fd9452403a16e714ba04b98a0a2da3ef54b54e62dfae2b6",
+          "data/normalized/odds/sisal/champions-league.json": "1716d5ef53e0b8d77fe7736a965338878600e080e52495e4763cebbc4de1ff0e",
+          "data/sources/champions-pilot-match-stats-2025-27.json": "506c0dfcac8e3a1fab2c64e478b0daccb0976918757d1fc2c7ba5bc2d5b02759",
+          "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
+        }
       }
     },
     {
@@ -2016,28 +2048,28 @@
       "status": "preliminary",
       "expectedGoals": {
         "home": 1.93,
-        "away": 1.99,
-        "total": 3.92,
+        "away": 2.12,
+        "total": 4.04,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
             "attackStrength": 1.307,
             "defenceWeakness": 0.878,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.01,
+              "defenceWeakness": 0.996,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "away": {
             "attackStrength": 1.59,
             "defenceWeakness": 0.882,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.066,
+              "defenceWeakness": 0.989,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "recentForm": {
@@ -2086,9 +2118,9 @@
         }
       },
       "probabilities": {
-        "home": 38.35790109588762,
-        "draw": 20.962354005467574,
-        "away": 40.67974489864482
+        "home": 36.12095916668662,
+        "draw": 20.531436528719674,
+        "away": 43.347604304593716
       },
       "scoreForecast": {
         "primary": {
@@ -2096,32 +2128,32 @@
           "outcome": "X",
           "label": "Risultato esatto centrale",
           "probabilityPct": 7.3,
-          "conditionalProbabilityPct": 35,
+          "conditionalProbabilityPct": 35.6,
           "isAbsoluteMode": false
         },
         "modal": {
-          "score": "1-1",
-          "outcome": "X",
+          "score": "1-2",
+          "outcome": "2",
           "label": "Moda assoluta",
           "probabilityPct": 7.6,
-          "conditionalProbabilityPct": 36.4,
+          "conditionalProbabilityPct": 17.5,
           "isAbsoluteMode": true
         },
         "alternatives": [
           {
-            "score": "1-1",
-            "outcome": "X",
+            "score": "1-2",
+            "outcome": "2",
             "label": "Moda assoluta",
             "probabilityPct": 7.6,
-            "conditionalProbabilityPct": 36.4,
+            "conditionalProbabilityPct": 17.5,
             "isAbsoluteMode": true
           },
           {
-            "score": "1-2",
-            "outcome": "2",
+            "score": "1-1",
+            "outcome": "X",
             "label": "Altro risultato probabile",
-            "probabilityPct": 7.6,
-            "conditionalProbabilityPct": 18.7,
+            "probabilityPct": 7.1,
+            "conditionalProbabilityPct": 34.8,
             "isAbsoluteMode": false
           }
         ],
@@ -2131,23 +2163,23 @@
             "outcome": "X",
             "label": "Risultato esatto centrale",
             "probabilityPct": 7.3,
-            "conditionalProbabilityPct": 35,
+            "conditionalProbabilityPct": 35.6,
             "isAbsoluteMode": false
-          },
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Moda assoluta",
-            "probabilityPct": 7.6,
-            "conditionalProbabilityPct": 36.4,
-            "isAbsoluteMode": true
           },
           {
             "score": "1-2",
             "outcome": "2",
-            "label": "Altro risultato probabile",
+            "label": "Moda assoluta",
             "probabilityPct": 7.6,
-            "conditionalProbabilityPct": 18.7,
+            "conditionalProbabilityPct": 17.5,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 7.1,
+            "conditionalProbabilityPct": 34.8,
             "isAbsoluteMode": false
           }
         ],
@@ -2156,20 +2188,20 @@
         "selection": {
           "type": "rounded-expected-goals",
           "expectedHome": 1.9,
-          "expectedAway": 2
+          "expectedAway": 2.1
         },
         "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "confidence": {
-        "value": 29,
+        "value": 40,
         "level": "prudente"
       },
       "surprise": {
-        "value": 70,
+        "value": 72,
         "level": "alto",
         "upsetOutcome": "1",
-        "upsetProbabilityPct": 38.4,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito e incompletezza prepartita. La componente di divergenza dal mercato resta disattivata finche non sono disponibili quote verificate."
+        "upsetProbabilityPct": 36.1,
+        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
         {
@@ -2183,10 +2215,10 @@
           },
           "shotsTotal": {
             "min": 10,
-            "central": 16.5,
+            "central": 16.6,
             "max": 22,
             "interval": "p20-p80",
-            "sd": 7.97,
+            "sd": 8.01,
             "sampleSize": 51,
             "dataStatus": "venue-history",
             "inputs": [
@@ -2212,10 +2244,10 @@
           },
           "shotsOnTarget": {
             "min": 3,
-            "central": 5.5,
-            "max": 8,
+            "central": 6.3,
+            "max": 9,
             "interval": "p20-p80",
-            "sd": 3.17,
+            "sd": 3.66,
             "sampleSize": 51,
             "dataStatus": "venue-history",
             "inputs": [
@@ -2244,7 +2276,7 @@
             "central": 5.8,
             "max": 8,
             "interval": "p20-p80",
-            "sd": 3.48,
+            "sd": 3.49,
             "sampleSize": 51,
             "dataStatus": "venue-history",
             "inputs": [
@@ -2317,10 +2349,10 @@
           },
           "shotsTotal": {
             "min": 11,
-            "central": 16.5,
-            "max": 22,
+            "central": 16.4,
+            "max": 21,
             "interval": "p20-p80",
-            "sd": 7.91,
+            "sd": 7.87,
             "sampleSize": 51,
             "dataStatus": "venue-history",
             "inputs": [
@@ -2349,7 +2381,7 @@
             "central": 5.7,
             "max": 8,
             "interval": "p20-p80",
-            "sd": 3.27,
+            "sd": 3.29,
             "sampleSize": 51,
             "dataStatus": "venue-history",
             "inputs": [
@@ -2378,7 +2410,7 @@
             "central": 5.1,
             "max": 8,
             "interval": "p20-p80",
-            "sd": 3.02,
+            "sd": 3.01,
             "sampleSize": 51,
             "dataStatus": "venue-history",
             "inputs": [
@@ -2437,7 +2469,7 @@
             "central": 1.7,
             "max": 3
           },
-          "expectedGoals": 1.99,
+          "expectedGoals": 2.12,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -2453,10 +2485,10 @@
         },
         "shotsOnTarget": {
           "min": 7,
-          "central": 11.2,
-          "max": 16,
+          "central": 12,
+          "max": 17,
           "interval": "p20-p80-independent",
-          "sd": 4.55,
+          "sd": 4.92,
           "sampleSize": 51,
           "dataStatus": "venue-history"
         },
@@ -2475,9 +2507,8 @@
       },
       "dataQuality": {
         "label": "Stima preliminare · copertura parziale",
-        "completenessPct": 45,
+        "completenessPct": 56,
         "missing": [
-          "Formazioni canoniche non integrate",
           "xG comparabili non disponibili",
           "Obiettivi e precedenti non integrati"
         ],
@@ -2491,7 +2522,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-10-24T09:01:03.781Z",
+        "cutoff": "2026-11-02T17:13:35.730Z",
         "teamIds": [
           "feyenoord",
           "inter"
@@ -2499,9 +2530,18 @@
         "normalization": "relative-to-domestic-league",
         "recentDecay": 0.82,
         "recentOpponentStrengthAdjustment": false,
-        "lineupsApplied": false,
+        "lineupsApplied": true,
         "xgApplied": false,
         "marketUsedForGoals": false
+      },
+      "inputSnapshot": {
+        "asOf": "2026-11-02T17:13:35.730Z",
+        "sha256": {
+          "data/sources/champions-probable-formations-md04-2026-27.json": "390554ab46f7fc8a4fd9452403a16e714ba04b98a0a2da3ef54b54e62dfae2b6",
+          "data/normalized/odds/sisal/champions-league.json": "1716d5ef53e0b8d77fe7736a965338878600e080e52495e4763cebbc4de1ff0e",
+          "data/sources/champions-pilot-match-stats-2025-27.json": "506c0dfcac8e3a1fab2c64e478b0daccb0976918757d1fc2c7ba5bc2d5b02759",
+          "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
+        }
       }
     },
     {
@@ -2515,29 +2555,29 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.09,
-        "away": 0.95,
-        "total": 3.03,
+        "home": 2.15,
+        "away": 0.93,
+        "total": 3.08,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
             "attackStrength": 1.468,
             "defenceWeakness": 0.662,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.032,
+              "defenceWeakness": 0.981,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "away": {
             "attackStrength": 1.091,
             "defenceWeakness": 0.795,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 0.998,
+              "defenceWeakness": 1.001,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "recentForm": {
@@ -2586,9 +2626,9 @@
         }
       },
       "probabilities": {
-        "home": 63.571134030554376,
-        "draw": 20.204726302355592,
-        "away": 16.224139667090036
+        "home": 65.2300826648499,
+        "draw": 19.57172755820618,
+        "away": 15.198189776943918
       },
       "scoreForecast": {
         "primary": {
@@ -2596,15 +2636,15 @@
           "outcome": "1",
           "label": "Risultato esatto centrale",
           "probabilityPct": 9.9,
-          "conditionalProbabilityPct": 15.6,
+          "conditionalProbabilityPct": 15.2,
           "isAbsoluteMode": false
         },
         "modal": {
           "score": "2-0",
           "outcome": "1",
           "label": "Moda assoluta",
-          "probabilityPct": 10.5,
-          "conditionalProbabilityPct": 16.5,
+          "probabilityPct": 10.6,
+          "conditionalProbabilityPct": 16.3,
           "isAbsoluteMode": true
         },
         "alternatives": [
@@ -2612,16 +2652,16 @@
             "score": "2-0",
             "outcome": "1",
             "label": "Moda assoluta",
-            "probabilityPct": 10.5,
-            "conditionalProbabilityPct": 16.5,
+            "probabilityPct": 10.6,
+            "conditionalProbabilityPct": 16.3,
             "isAbsoluteMode": true
           },
           {
             "score": "1-0",
             "outcome": "1",
             "label": "Altro risultato probabile",
-            "probabilityPct": 10,
-            "conditionalProbabilityPct": 15.7,
+            "probabilityPct": 9.9,
+            "conditionalProbabilityPct": 15.2,
             "isAbsoluteMode": false
           }
         ],
@@ -2631,23 +2671,23 @@
             "outcome": "1",
             "label": "Risultato esatto centrale",
             "probabilityPct": 9.9,
-            "conditionalProbabilityPct": 15.6,
+            "conditionalProbabilityPct": 15.2,
             "isAbsoluteMode": false
           },
           {
             "score": "2-0",
             "outcome": "1",
             "label": "Moda assoluta",
-            "probabilityPct": 10.5,
-            "conditionalProbabilityPct": 16.5,
+            "probabilityPct": 10.6,
+            "conditionalProbabilityPct": 16.3,
             "isAbsoluteMode": true
           },
           {
             "score": "1-0",
             "outcome": "1",
             "label": "Altro risultato probabile",
-            "probabilityPct": 10,
-            "conditionalProbabilityPct": 15.7,
+            "probabilityPct": 9.9,
+            "conditionalProbabilityPct": 15.2,
             "isAbsoluteMode": false
           }
         ],
@@ -2661,15 +2701,15 @@
         "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "confidence": {
-        "value": 67,
+        "value": 69,
         "level": "moderata"
       },
       "surprise": {
-        "value": 40,
-        "level": "basso",
+        "value": 49,
+        "level": "medio",
         "upsetOutcome": "2",
-        "upsetProbabilityPct": 16.2,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito e incompletezza prepartita. La componente di divergenza dal mercato resta disattivata finche non sono disponibili quote verificate."
+        "upsetProbabilityPct": 15.2,
+        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
         {
@@ -2686,7 +2726,7 @@
             "central": 16.6,
             "max": 21,
             "interval": "p20-p80",
-            "sd": 6.95,
+            "sd": 6.93,
             "sampleSize": 53,
             "dataStatus": "venue-history",
             "inputs": [
@@ -2712,10 +2752,10 @@
           },
           "shotsOnTarget": {
             "min": 4,
-            "central": 5.4,
+            "central": 6,
             "max": 8,
             "interval": "p20-p80",
-            "sd": 2.55,
+            "sd": 2.82,
             "sampleSize": 53,
             "dataStatus": "venue-history",
             "inputs": [
@@ -2744,7 +2784,7 @@
             "central": 6.7,
             "max": 10,
             "interval": "p20-p80",
-            "sd": 3.66,
+            "sd": 3.65,
             "sampleSize": 53,
             "dataStatus": "venue-history",
             "inputs": [
@@ -2803,7 +2843,7 @@
             "central": 0.6,
             "max": 2
           },
-          "expectedGoals": 2.09,
+          "expectedGoals": 2.15,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -2820,7 +2860,7 @@
             "central": 11.2,
             "max": 16,
             "interval": "p20-p80",
-            "sd": 6.15,
+            "sd": 6.16,
             "sampleSize": 53,
             "dataStatus": "venue-history",
             "inputs": [
@@ -2937,7 +2977,7 @@
             "central": 2.1,
             "max": 3
           },
-          "expectedGoals": 0.95,
+          "expectedGoals": 0.93,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -2947,16 +2987,16 @@
           "central": 27.8,
           "max": 36,
           "interval": "p20-p80-independent",
-          "sd": 9.28,
+          "sd": 9.27,
           "sampleSize": 53,
           "dataStatus": "venue-history"
         },
         "shotsOnTarget": {
           "min": 6,
-          "central": 9.3,
-          "max": 13,
+          "central": 9.9,
+          "max": 14,
           "interval": "p20-p80-independent",
-          "sd": 3.54,
+          "sd": 3.74,
           "sampleSize": 53,
           "dataStatus": "venue-history"
         },
@@ -2965,7 +3005,7 @@
           "central": 10.6,
           "max": 15,
           "interval": "p20-p80-independent",
-          "sd": 4.86,
+          "sd": 4.85,
           "sampleSize": 53,
           "dataStatus": "venue-history"
         }
@@ -2975,9 +3015,8 @@
       },
       "dataQuality": {
         "label": "Stima preliminare · copertura parziale",
-        "completenessPct": 45,
+        "completenessPct": 56,
         "missing": [
-          "Formazioni canoniche non integrate",
           "xG comparabili non disponibili",
           "Obiettivi e precedenti non integrati"
         ],
@@ -2991,7 +3030,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-10-24T09:01:03.781Z",
+        "cutoff": "2026-11-02T17:13:35.730Z",
         "teamIds": [
           "bodo-glimt",
           "lille"
@@ -2999,9 +3038,18 @@
         "normalization": "relative-to-domestic-league",
         "recentDecay": 0.82,
         "recentOpponentStrengthAdjustment": false,
-        "lineupsApplied": false,
+        "lineupsApplied": true,
         "xgApplied": false,
         "marketUsedForGoals": false
+      },
+      "inputSnapshot": {
+        "asOf": "2026-11-02T17:13:35.730Z",
+        "sha256": {
+          "data/sources/champions-probable-formations-md04-2026-27.json": "390554ab46f7fc8a4fd9452403a16e714ba04b98a0a2da3ef54b54e62dfae2b6",
+          "data/normalized/odds/sisal/champions-league.json": "1716d5ef53e0b8d77fe7736a965338878600e080e52495e4763cebbc4de1ff0e",
+          "data/sources/champions-pilot-match-stats-2025-27.json": "506c0dfcac8e3a1fab2c64e478b0daccb0976918757d1fc2c7ba5bc2d5b02759",
+          "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
+        }
       }
     },
     {
@@ -3015,29 +3063,29 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.32,
-        "away": 0.61,
-        "total": 2.92,
+        "home": 2.44,
+        "away": 0.59,
+        "total": 3.03,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
             "attackStrength": 1.303,
             "defenceWeakness": 0.857,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.017,
+              "defenceWeakness": 0.993,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "away": {
             "attackStrength": 0.643,
             "defenceWeakness": 1.164,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 0.988,
+              "defenceWeakness": 1.034,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "recentForm": {
@@ -3086,17 +3134,17 @@
         }
       },
       "probabilities": {
-        "home": 75.84621866393722,
-        "draw": 16.07364942427906,
-        "away": 8.080131911783706
+        "home": 78.13717898563542,
+        "draw": 14.783408617057342,
+        "away": 7.079412397307233
       },
       "scoreForecast": {
         "primary": {
           "score": "2-1",
           "outcome": "1",
           "label": "Risultato esatto centrale",
-          "probabilityPct": 8.8,
-          "conditionalProbabilityPct": 11.6,
+          "probabilityPct": 8.5,
+          "conditionalProbabilityPct": 10.9,
           "isAbsoluteMode": false
         },
         "modal": {
@@ -3104,7 +3152,7 @@
           "outcome": "1",
           "label": "Moda assoluta",
           "probabilityPct": 14.4,
-          "conditionalProbabilityPct": 19,
+          "conditionalProbabilityPct": 18.5,
           "isAbsoluteMode": true
         },
         "alternatives": [
@@ -3113,15 +3161,15 @@
             "outcome": "1",
             "label": "Moda assoluta",
             "probabilityPct": 14.4,
-            "conditionalProbabilityPct": 19,
+            "conditionalProbabilityPct": 18.5,
             "isAbsoluteMode": true
           },
           {
             "score": "1-0",
             "outcome": "1",
             "label": "Altro risultato probabile",
-            "probabilityPct": 12.4,
-            "conditionalProbabilityPct": 16.4,
+            "probabilityPct": 11.8,
+            "conditionalProbabilityPct": 15.1,
             "isAbsoluteMode": false
           }
         ],
@@ -3130,8 +3178,8 @@
             "score": "2-1",
             "outcome": "1",
             "label": "Risultato esatto centrale",
-            "probabilityPct": 8.8,
-            "conditionalProbabilityPct": 11.6,
+            "probabilityPct": 8.5,
+            "conditionalProbabilityPct": 10.9,
             "isAbsoluteMode": false
           },
           {
@@ -3139,15 +3187,15 @@
             "outcome": "1",
             "label": "Moda assoluta",
             "probabilityPct": 14.4,
-            "conditionalProbabilityPct": 19,
+            "conditionalProbabilityPct": 18.5,
             "isAbsoluteMode": true
           },
           {
             "score": "1-0",
             "outcome": "1",
             "label": "Altro risultato probabile",
-            "probabilityPct": 12.4,
-            "conditionalProbabilityPct": 16.4,
+            "probabilityPct": 11.8,
+            "conditionalProbabilityPct": 15.1,
             "isAbsoluteMode": false
           }
         ],
@@ -3155,21 +3203,21 @@
         "forcedOutcomeScenarios": false,
         "selection": {
           "type": "rounded-expected-goals",
-          "expectedHome": 2.3,
+          "expectedHome": 2.4,
           "expectedAway": 0.6
         },
         "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "confidence": {
-        "value": 71,
-        "level": "moderata"
+        "value": 74,
+        "level": "alta"
       },
       "surprise": {
-        "value": 25,
+        "value": 30,
         "level": "basso",
         "upsetOutcome": "2",
-        "upsetProbabilityPct": 8.1,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito e incompletezza prepartita. La componente di divergenza dal mercato resta disattivata finche non sono disponibili quote verificate."
+        "upsetProbabilityPct": 7.1,
+        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
         {
@@ -3212,10 +3260,10 @@
           },
           "shotsOnTarget": {
             "min": 4,
-            "central": 6.3,
+            "central": 6.2,
             "max": 9,
             "interval": "p20-p80",
-            "sd": 2.66,
+            "sd": 2.61,
             "sampleSize": 30,
             "dataStatus": "venue-history",
             "inputs": [
@@ -3303,7 +3351,7 @@
             "central": 1.4,
             "max": 3
           },
-          "expectedGoals": 2.32,
+          "expectedGoals": 2.44,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -3437,7 +3485,7 @@
             "central": 2.7,
             "max": 4
           },
-          "expectedGoals": 0.61,
+          "expectedGoals": 0.59,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -3453,10 +3501,10 @@
         },
         "shotsOnTarget": {
           "min": 5,
-          "central": 9,
+          "central": 8.9,
           "max": 13,
           "interval": "p20-p80-independent",
-          "sd": 3.99,
+          "sd": 3.95,
           "sampleSize": 28,
           "dataStatus": "venue-history"
         },
@@ -3475,9 +3523,8 @@
       },
       "dataQuality": {
         "label": "Stima preliminare · copertura parziale",
-        "completenessPct": 45,
+        "completenessPct": 56,
         "missing": [
-          "Formazioni canoniche non integrate",
           "xG comparabili non disponibili",
           "Obiettivi e precedenti non integrati"
         ],
@@ -3491,7 +3538,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-10-24T09:01:03.781Z",
+        "cutoff": "2026-11-02T17:13:35.730Z",
         "teamIds": [
           "lask",
           "slovan-bratislava"
@@ -3499,9 +3546,18 @@
         "normalization": "relative-to-domestic-league",
         "recentDecay": 0.82,
         "recentOpponentStrengthAdjustment": false,
-        "lineupsApplied": false,
+        "lineupsApplied": true,
         "xgApplied": false,
         "marketUsedForGoals": false
+      },
+      "inputSnapshot": {
+        "asOf": "2026-11-02T17:13:35.730Z",
+        "sha256": {
+          "data/sources/champions-probable-formations-md04-2026-27.json": "390554ab46f7fc8a4fd9452403a16e714ba04b98a0a2da3ef54b54e62dfae2b6",
+          "data/normalized/odds/sisal/champions-league.json": "1716d5ef53e0b8d77fe7736a965338878600e080e52495e4763cebbc4de1ff0e",
+          "data/sources/champions-pilot-match-stats-2025-27.json": "506c0dfcac8e3a1fab2c64e478b0daccb0976918757d1fc2c7ba5bc2d5b02759",
+          "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
+        }
       }
     },
     {
@@ -3515,29 +3571,29 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.34,
-        "away": 1.46,
-        "total": 2.8,
+        "home": 1.37,
+        "away": 1.47,
+        "total": 2.84,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
             "attackStrength": 1.176,
             "defenceWeakness": 0.994,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.008,
+              "defenceWeakness": 0.987,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "away": {
             "attackStrength": 1.209,
             "defenceWeakness": 0.771,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.021,
+              "defenceWeakness": 1.011,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "recentForm": {
@@ -3586,42 +3642,42 @@
         }
       },
       "probabilities": {
-        "home": 34.66558761221991,
-        "draw": 25.234535403546626,
-        "away": 40.09987698423347
+        "home": 35.2268350491579,
+        "draw": 25.045667687067645,
+        "away": 39.72749726377447
       },
       "scoreForecast": {
         "primary": {
           "score": "1-1",
           "outcome": "X",
           "label": "Risultato esatto centrale",
-          "probabilityPct": 11.9,
-          "conditionalProbabilityPct": 47.2,
+          "probabilityPct": 11.8,
+          "conditionalProbabilityPct": 47,
           "isAbsoluteMode": true
         },
         "modal": {
           "score": "1-1",
           "outcome": "X",
           "label": "Moda assoluta",
-          "probabilityPct": 11.9,
-          "conditionalProbabilityPct": 47.2,
+          "probabilityPct": 11.8,
+          "conditionalProbabilityPct": 47,
           "isAbsoluteMode": true
         },
         "alternatives": [
-          {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.9,
-            "conditionalProbabilityPct": 22.1,
-            "isAbsoluteMode": false
-          },
           {
             "score": "1-2",
             "outcome": "2",
             "label": "Altro risultato probabile",
             "probabilityPct": 8.7,
-            "conditionalProbabilityPct": 21.7,
+            "conditionalProbabilityPct": 21.8,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 8.6,
+            "conditionalProbabilityPct": 21.6,
             "isAbsoluteMode": false
           }
         ],
@@ -3630,24 +3686,24 @@
             "score": "1-1",
             "outcome": "X",
             "label": "Risultato esatto centrale",
-            "probabilityPct": 11.9,
-            "conditionalProbabilityPct": 47.2,
+            "probabilityPct": 11.8,
+            "conditionalProbabilityPct": 47,
             "isAbsoluteMode": true
-          },
-          {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.9,
-            "conditionalProbabilityPct": 22.1,
-            "isAbsoluteMode": false
           },
           {
             "score": "1-2",
             "outcome": "2",
             "label": "Altro risultato probabile",
             "probabilityPct": 8.7,
-            "conditionalProbabilityPct": 21.7,
+            "conditionalProbabilityPct": 21.8,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 8.6,
+            "conditionalProbabilityPct": 21.6,
             "isAbsoluteMode": false
           }
         ],
@@ -3655,21 +3711,21 @@
         "forcedOutcomeScenarios": false,
         "selection": {
           "type": "rounded-expected-goals",
-          "expectedHome": 1.3,
+          "expectedHome": 1.4,
           "expectedAway": 1.5
         },
         "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "confidence": {
-        "value": 34,
+        "value": 36,
         "level": "prudente"
       },
       "surprise": {
-        "value": 69,
+        "value": 74,
         "level": "alto",
-        "upsetOutcome": "1",
-        "upsetProbabilityPct": 34.7,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito e incompletezza prepartita. La componente di divergenza dal mercato resta disattivata finche non sono disponibili quote verificate."
+        "upsetOutcome": "2",
+        "upsetProbabilityPct": 39.7,
+        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
         {
@@ -3686,7 +3742,7 @@
             "central": 16.1,
             "max": 22,
             "interval": "p20-p80",
-            "sd": 6.95,
+            "sd": 6.94,
             "sampleSize": 52,
             "dataStatus": "venue-history",
             "inputs": [
@@ -3712,10 +3768,10 @@
           },
           "shotsOnTarget": {
             "min": 3,
-            "central": 5.2,
+            "central": 5,
             "max": 8,
             "interval": "p20-p80",
-            "sd": 2.51,
+            "sd": 2.44,
             "sampleSize": 52,
             "dataStatus": "venue-history",
             "inputs": [
@@ -3803,7 +3859,7 @@
             "central": 1.6,
             "max": 3
           },
-          "expectedGoals": 1.34,
+          "expectedGoals": 1.37,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -3846,7 +3902,7 @@
           },
           "shotsOnTarget": {
             "min": 2,
-            "central": 3.8,
+            "central": 3.9,
             "max": 6,
             "interval": "p20-p80",
             "sd": 2.05,
@@ -3937,7 +3993,7 @@
             "central": 1.8,
             "max": 3
           },
-          "expectedGoals": 1.46,
+          "expectedGoals": 1.47,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -3947,16 +4003,16 @@
           "central": 28.3,
           "max": 36,
           "interval": "p20-p80-independent",
-          "sd": 9.03,
+          "sd": 9.02,
           "sampleSize": 52,
           "dataStatus": "venue-history"
         },
         "shotsOnTarget": {
           "min": 6,
-          "central": 9,
+          "central": 8.9,
           "max": 12,
           "interval": "p20-p80-independent",
-          "sd": 3.24,
+          "sd": 3.19,
           "sampleSize": 52,
           "dataStatus": "venue-history"
         },
@@ -3975,9 +4031,8 @@
       },
       "dataQuality": {
         "label": "Stima preliminare · copertura parziale",
-        "completenessPct": 45,
+        "completenessPct": 56,
         "missing": [
-          "Formazioni canoniche non integrate",
           "xG comparabili non disponibili",
           "Obiettivi e precedenti non integrati"
         ],
@@ -3991,7 +4046,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-10-24T09:01:03.781Z",
+        "cutoff": "2026-11-02T17:13:35.730Z",
         "teamIds": [
           "manchester-united",
           "roma"
@@ -3999,9 +4054,18 @@
         "normalization": "relative-to-domestic-league",
         "recentDecay": 0.82,
         "recentOpponentStrengthAdjustment": false,
-        "lineupsApplied": false,
+        "lineupsApplied": true,
         "xgApplied": false,
         "marketUsedForGoals": false
+      },
+      "inputSnapshot": {
+        "asOf": "2026-11-02T17:13:35.730Z",
+        "sha256": {
+          "data/sources/champions-probable-formations-md04-2026-27.json": "390554ab46f7fc8a4fd9452403a16e714ba04b98a0a2da3ef54b54e62dfae2b6",
+          "data/normalized/odds/sisal/champions-league.json": "1716d5ef53e0b8d77fe7736a965338878600e080e52495e4763cebbc4de1ff0e",
+          "data/sources/champions-pilot-match-stats-2025-27.json": "506c0dfcac8e3a1fab2c64e478b0daccb0976918757d1fc2c7ba5bc2d5b02759",
+          "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
+        }
       }
     },
     {
@@ -4015,29 +4079,29 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.53,
-        "away": 1.57,
-        "total": 3.1,
+        "home": 1.51,
+        "away": 1.64,
+        "total": 3.15,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
             "attackStrength": 1.206,
             "defenceWeakness": 0.942,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.012,
+              "defenceWeakness": 0.989,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "away": {
             "attackStrength": 1.333,
             "defenceWeakness": 0.793,
             "lineup": {
-              "attack": 1,
-              "defenceWeakness": 1,
-              "resolved": 0,
-              "status": "N/D"
+              "attack": 1.054,
+              "defenceWeakness": 0.978,
+              "resolved": 11,
+              "status": "usable"
             }
           },
           "recentForm": {
@@ -4086,25 +4150,25 @@
         }
       },
       "probabilities": {
-        "home": 37.206525042740694,
-        "draw": 23.856327275212745,
-        "away": 38.93714768204656
+        "home": 35.412189692060544,
+        "draw": 23.595586589408875,
+        "away": 40.99222371853059
       },
       "scoreForecast": {
         "primary": {
           "score": "2-2",
           "outcome": "X",
           "label": "Risultato esatto centrale",
-          "probabilityPct": 6.5,
-          "conditionalProbabilityPct": 27.3,
+          "probabilityPct": 6.6,
+          "conditionalProbabilityPct": 27.9,
           "isAbsoluteMode": false
         },
         "modal": {
           "score": "1-1",
           "outcome": "X",
           "label": "Moda assoluta",
-          "probabilityPct": 10.8,
-          "conditionalProbabilityPct": 45.4,
+          "probabilityPct": 10.6,
+          "conditionalProbabilityPct": 45,
           "isAbsoluteMode": true
         },
         "alternatives": [
@@ -4112,16 +4176,16 @@
             "score": "1-1",
             "outcome": "X",
             "label": "Moda assoluta",
-            "probabilityPct": 10.8,
-            "conditionalProbabilityPct": 45.4,
+            "probabilityPct": 10.6,
+            "conditionalProbabilityPct": 45,
             "isAbsoluteMode": true
           },
           {
             "score": "1-2",
             "outcome": "2",
             "label": "Altro risultato probabile",
-            "probabilityPct": 8.5,
-            "conditionalProbabilityPct": 21.8,
+            "probabilityPct": 8.7,
+            "conditionalProbabilityPct": 21.2,
             "isAbsoluteMode": false
           }
         ],
@@ -4130,24 +4194,24 @@
             "score": "2-2",
             "outcome": "X",
             "label": "Risultato esatto centrale",
-            "probabilityPct": 6.5,
-            "conditionalProbabilityPct": 27.3,
+            "probabilityPct": 6.6,
+            "conditionalProbabilityPct": 27.9,
             "isAbsoluteMode": false
           },
           {
             "score": "1-1",
             "outcome": "X",
             "label": "Moda assoluta",
-            "probabilityPct": 10.8,
-            "conditionalProbabilityPct": 45.4,
+            "probabilityPct": 10.6,
+            "conditionalProbabilityPct": 45,
             "isAbsoluteMode": true
           },
           {
             "score": "1-2",
             "outcome": "2",
             "label": "Altro risultato probabile",
-            "probabilityPct": 8.5,
-            "conditionalProbabilityPct": 21.8,
+            "probabilityPct": 8.7,
+            "conditionalProbabilityPct": 21.2,
             "isAbsoluteMode": false
           }
         ],
@@ -4161,15 +4225,15 @@
         "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "confidence": {
-        "value": 28,
+        "value": 35,
         "level": "prudente"
       },
       "surprise": {
-        "value": 71,
+        "value": 84,
         "level": "alto",
         "upsetOutcome": "1",
-        "upsetProbabilityPct": 37.2,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito e incompletezza prepartita. La componente di divergenza dal mercato resta disattivata finche non sono disponibili quote verificate."
+        "upsetProbabilityPct": 35.4,
+        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
         {
@@ -4183,10 +4247,10 @@
           },
           "shotsTotal": {
             "min": 10,
-            "central": 14,
+            "central": 14.1,
             "max": 18,
             "interval": "p20-p80",
-            "sd": 5.31,
+            "sd": 5.33,
             "sampleSize": 53,
             "dataStatus": "venue-history",
             "inputs": [
@@ -4303,7 +4367,7 @@
             "central": 2,
             "max": 3
           },
-          "expectedGoals": 1.53,
+          "expectedGoals": 1.51,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -4317,10 +4381,10 @@
           },
           "shotsTotal": {
             "min": 11,
-            "central": 15.3,
+            "central": 15.2,
             "max": 18,
             "interval": "p20-p80",
-            "sd": 6.1,
+            "sd": 6.07,
             "sampleSize": 53,
             "dataStatus": "venue-history",
             "inputs": [
@@ -4346,10 +4410,10 @@
           },
           "shotsOnTarget": {
             "min": 3,
-            "central": 5,
-            "max": 7,
+            "central": 5.4,
+            "max": 8,
             "interval": "p20-p80",
-            "sd": 2.52,
+            "sd": 2.71,
             "sampleSize": 53,
             "dataStatus": "venue-history",
             "inputs": [
@@ -4378,7 +4442,7 @@
             "central": 5.1,
             "max": 7,
             "interval": "p20-p80",
-            "sd": 2.42,
+            "sd": 2.41,
             "sampleSize": 53,
             "dataStatus": "venue-history",
             "inputs": [
@@ -4437,7 +4501,7 @@
             "central": 1,
             "max": 2
           },
-          "expectedGoals": 1.57,
+          "expectedGoals": 1.64,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -4447,16 +4511,16 @@
           "central": 29.3,
           "max": 37,
           "interval": "p20-p80-independent",
-          "sd": 8.09,
+          "sd": 8.08,
           "sampleSize": 53,
           "dataStatus": "venue-history"
         },
         "shotsOnTarget": {
-          "min": 6,
-          "central": 9.7,
-          "max": 13,
+          "min": 7,
+          "central": 10.1,
+          "max": 14,
           "interval": "p20-p80-independent",
-          "sd": 3.38,
+          "sd": 3.52,
           "sampleSize": 53,
           "dataStatus": "venue-history"
         },
@@ -4465,7 +4529,7 @@
           "central": 10.3,
           "max": 14,
           "interval": "p20-p80-independent",
-          "sd": 3.49,
+          "sd": 3.48,
           "sampleSize": 53,
           "dataStatus": "venue-history"
         }
@@ -4475,9 +4539,8 @@
       },
       "dataQuality": {
         "label": "Stima preliminare · copertura parziale",
-        "completenessPct": 45,
+        "completenessPct": 56,
         "missing": [
-          "Formazioni canoniche non integrate",
           "xG comparabili non disponibili",
           "Obiettivi e precedenti non integrati"
         ],
@@ -4491,7 +4554,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-10-24T09:01:03.781Z",
+        "cutoff": "2026-11-02T17:13:35.730Z",
         "teamIds": [
           "villarreal",
           "paris-saint-germain"
@@ -4499,9 +4562,18 @@
         "normalization": "relative-to-domestic-league",
         "recentDecay": 0.82,
         "recentOpponentStrengthAdjustment": false,
-        "lineupsApplied": false,
+        "lineupsApplied": true,
         "xgApplied": false,
         "marketUsedForGoals": false
+      },
+      "inputSnapshot": {
+        "asOf": "2026-11-02T17:13:35.730Z",
+        "sha256": {
+          "data/sources/champions-probable-formations-md04-2026-27.json": "390554ab46f7fc8a4fd9452403a16e714ba04b98a0a2da3ef54b54e62dfae2b6",
+          "data/normalized/odds/sisal/champions-league.json": "1716d5ef53e0b8d77fe7736a965338878600e080e52495e4763cebbc4de1ff0e",
+          "data/sources/champions-pilot-match-stats-2025-27.json": "506c0dfcac8e3a1fab2c64e478b0daccb0976918757d1fc2c7ba5bc2d5b02759",
+          "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
+        }
       }
     },
     {

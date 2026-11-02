@@ -8,7 +8,9 @@ for(const value of [1.01,1.07,1.0799])assert.equal(meetsMinimumPublicOdds({match
 for(const value of [1.08,'1.08',1.09,2,null,undefined])assert.equal(meetsMinimumPublicOdds({matchId,odds:value}),true);
 assert.equal(meetsMinimumPublicOdds({matchId,odds:2,betSelection:{quote:{decimal:1.07}}}),false,'Canonical price takes precedence');
 assert.equal(meetsMinimumPublicOdds({matchId:'milan-inter-2026-27-md-09',odds:1.01}),true,'Previous rounds must remain unchanged');
-assert.equal(meetsMinimumPublicOdds({matchId:'ucl-2026-27-md03-01',odds:1.01}),true,'Champions must remain unchanged');
+for(const day of ['01','02','03','04','08'])for(const value of [1.01,1.07,1.0799,1.08,1.09])assert.equal(meetsMinimumPublicOdds({matchId:`ucl-2026-27-md${day}-01`,odds:value}),value>=1.08,'All Champions rounds use inclusive 1.08');
+assert.equal(meetsMinimumPublicOdds({context:{competition:'champions',matchday:4},odds:1.07}),false);
+assert.equal(meetsMinimumPublicOdds({context:{competition:'champions-league'},odds:'1.08'}),true);
 assert.equal(meetsMinimumPublicOdds({matchId:'milan-inter-2026-27-md-11',odds:1.01}),true,'Do not extend this request to future rounds');
 const data=JSON.parse(fs.readFileSync('data/normalized/schedina-md10.json','utf8'));
 const template=sharedForecastsForMatch(data.marketCatalog,data.marketCatalog.matches[0].matchId)[0];
@@ -29,4 +31,16 @@ assert.equal(store.getSnapshot().selections.length,1,'A newer eligible price can
 const original=JSON.stringify(data);
 for(const match of data.marketCatalog.matches)assert(sharedForecastsForMatch(data.marketCatalog,match.matchId).every(meetsMinimumPublicOdds));
 assert.equal(JSON.stringify(data),original);
+const champions=JSON.parse(fs.readFileSync('data/normalized/schedina-champions-md04.json','utf8'));
+const duo=champions.marketCatalog.matches.flatMap(m=>m.selections).find(l=>l.betSelection.market.bookmakerSemantics?.duo);
+const clMemory=new Map(),clStorage={getItem:k=>clMemory.get(k)||null,setItem:(k,v)=>clMemory.set(k,v)};
+const clContext={competition:'champions',season:'2026-27',matchday:4};
+let clStore=createPersonalBetslipStore({storage:clStorage});clStore.setContext(clContext);
+const clLow=structuredClone(duo);clLow.betSelection.quote.decimal=1.0799;
+const clBoundary=structuredClone(duo);clBoundary.betSelection.quote.decimal=1.08;
+assert.equal(clStore.add(clLow).status,'ODDS_BELOW_PUBLIC_MINIMUM');
+assert.equal(clStore.add(clBoundary).status,'ADDED');
+const clSaved=JSON.parse(clMemory.get(PERSONAL_BETSLIP_STORAGE_KEY));clSaved.contexts[clSaved.activeContext].selections[0].betSelection.quote.decimal=1.07;
+clMemory.set(PERSONAL_BETSLIP_STORAGE_KEY,JSON.stringify(clSaved));
+clStore=createPersonalBetslipStore({storage:clStorage});clStore.setContext(clContext);assert.equal(clStore.getSnapshot().selections.length,0,'Saved Champions below minimum excluded');
 console.log('OK soglia 1.08 inclusiva: prezzi canonici, N/D, pubblicazione, aggiunte, ripristino e aggiornamento selezioni salvate; dati originali invariati.');

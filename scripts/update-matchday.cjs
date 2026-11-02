@@ -13,6 +13,7 @@ if(competition==='serie-a'){
 }else if(day===2){
  plan=[command('scripts/build-champions-pilot-predictions.js','--matchday','2'),command('scripts/build-champions-md02-integration.js'),command('scripts/build-champions-md02-schedina.js')];
 }else if(day===1){plan=['build-champions-player-stats.js','build-champions-pilot-predictions.js','build-champions-surprise-factor.js','build-champions-player-markets.js','build-champions-schedina.js'].map(f=>command('scripts/'+f));}
+else if(day===4)plan=[command('scripts/build-champions-md04.cjs')];
 else plan=[command('scripts/build-champions-shared-scenarios.cjs','--matchday',String(day))];
 console.log(JSON.stringify({competition,matchday:day,mode:args.includes('--stage')?'staging':'plan',plan},null,2));
 if(!args.includes('--stage'))return;

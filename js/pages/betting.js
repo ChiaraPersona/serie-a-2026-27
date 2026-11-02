@@ -1,13 +1,13 @@
 const release=new URL(import.meta.url).searchParams.get("v")||"development";
 const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=20261022-assets-v1`);
-const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261031-team-event-dedup`);
-const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts,publicForecastLabel,meetsMinimumPublicOdds}=await import(`./shared-forecast-contract.mjs?v=20261031-team-event-dedup-v6`);
+const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261102-champions-min-108`);
+const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts,publicForecastLabel,meetsMinimumPublicOdds}=await import(`./shared-forecast-contract.mjs?v=20261102-champions-min-108`);
 
-const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=20261022-assets-v1`);
+const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=20261102-md04-lineups`);
 const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=20261022-assets-v1`);
 const {settleMd3Leg}=await import(`./champions-md3-results.mjs?v=20261022-assets-v1`);
 
-const {archiveContractStats}=await import('./archive-contract-stats.mjs?v=20261031-team-event-dedup');
+const {archiveContractStats}=await import('./archive-contract-stats.mjs?v=20261102-champions-min-108');
 
 export function createPage(deps){
   const {esc,dateOnly,hero,load,loadGenerated}=deps;
@@ -146,7 +146,7 @@ export function createPage(deps){
       const catalog=catalogByMatch.get(match.id),shared=sharedForecastsForMatch(data.marketCatalog,match.id,match),entries=data.lineupManaged?shared.map(leg=>({leg,sourceSection:leg.catalogOrigin||"catalogo-mercati"})):data.championsWorkspace?(catalog?.selections||[]).filter(leg=>leg.suggestionAnalysis?.suggested&&(!data.matchday||data.matchday!==3||leg.approvedPreliminary||leg.qualifiedSelection||leg.catalogOrigin==="champions-md03-individual-model")).map(leg=>({leg,sourceSection:leg.catalogOrigin||"archivio-champions"})):catalog?.selections?.length?shared.map(leg=>({leg,sourceSection:leg.catalogOrigin||"catalogo-mercati"})):[...(modelByMatch.get(match.id)||[]),...comboLegs.filter(hasVerifiedPlayableQuote).map(leg=>({leg,sourceSection:"mycombo-partita"}))];
       uniqueForecastContracts(entries.filter(entry=>meetsMinimumPublicOdds(entry.leg)),entry=>entry.leg).forEach(entry=>{if(entry.leg.selectionId&&!seen.has(entry.leg.selectionId)){seen.add(entry.leg.selectionId);markets.push(entry)}});markets.sort((left,right)=>Number(left.leg.suggestionAnalysis.rank)-Number(right.leg.suggestionAnalysis.rank));
       let selectedCount=markets.length;
-      if(compactForecasts&&data.championsWorkspace&&data.matchday!==3)for(const leg of manualChampionsLegs(catalog?.selections||[],match)){
+      if(compactForecasts&&data.championsWorkspace&&data.matchday!==3&&!data.lineupManaged)for(const leg of manualChampionsLegs(catalog?.selections||[],match)){
         if(!seen.has(leg.selectionId)){seen.add(leg.selectionId);markets.push({leg,sourceSection:'catalogo-manuale-champions'});}
       }
       const uniqueMarkets=uniqueForecastContracts(markets,entry=>entry.leg);
@@ -422,7 +422,7 @@ export function createPage(deps){
   }
 
   function championsWorkspaceMarkup(workspace,fixtureId=null){
-    if(workspace.matchday===3)compactForecasts=true;
+    if(workspace.matchday===3||workspace.lineupManaged)compactForecasts=true;
     prepareChampionsWorkspace(workspace);
     const visible=workspace.fixtures.filter(f=>!fixtureId||f.id===fixtureId),matches=new Map(visible.map(f=>[f.id,f])),teams=new Map();
     const count=workspace.all.filter(leg=>leg.suggestionAnalysis?.suggested).length;
@@ -458,7 +458,8 @@ export function createPage(deps){
       const number=index+1;
       return {date:firstDate([...matchById.values()].filter(m=>m.matchday===number)),html:archiveCard(data,number,matchById)};
     });
-    for(const [index,data] of [champions,championsMd02,championsMd03].entries()){
+    const championsMd04=await load('schedina-champions-md04.json');
+    for(const [index,data] of [champions,championsMd02,championsMd03,championsMd04].entries()){
       const number=index+1;
       cards.push({date:firstDate(championsCalendar.fixtures.filter(f=>f.matchday===number)),html:championsArchiveCard(data,number)});
     }
@@ -474,10 +475,10 @@ export function createPage(deps){
     const matchday=params.get("giornata"),competition=params.get("competizione");
     if(competition==="champions"){
       const number=Number(matchday||1);
-      if(![1,2,3].includes(number))throw new Error("Giornata Champions non disponibile");
+      if(![1,2,3,4].includes(number))throw new Error("Giornata Champions non disponibile");
       const [workspace,outcomes]=await Promise.all([number===3?load("schedina-champions-md03-ui.json").then(async data=>(await import('./champions-md3-browser-workspace.mjs?v=20261022-assets-v1')).restoreMd3Workspace(data)):loadChampionsWorkspaceMd3Derived(load,number),load("card-settlement-records.json")]);
       recordedOutcomes=outcomes.records;
-      document.querySelector("#app").innerHTML=hero(`UEFA Champions League · ${number}ª giornata`,"Schedine",number===3?"Pronostici aggiornati con le formazioni probabili e la panchina provvisoria, secondo i criteri condivisi con la Serie A.":"Pronostici e risultati originali archiviati, in sola consultazione.")+`<nav class="betting-round-back"><a href="schedina.html">← Tutte le giornate</a><a href="champions-league.html">Letture Champions →</a></nav>`+championsWorkspaceMarkup(workspace);
+      document.querySelector("#app").innerHTML=hero(`UEFA Champions League · ${number}ª giornata`,"Schedine",number>=3?"Pronostici preliminari per le partite con entrambi gli undici probabili. Formazioni e panchine restano da confermare.":"Pronostici e risultati originali archiviati, in sola consultazione.")+`<nav class="betting-round-back"><a href="schedina.html">← Tutte le giornate</a><a href="champions-league.html">Letture Champions →</a></nav>`+championsWorkspaceMarkup(workspace);
       mountChampionsWorkspace(workspace);
       return;
     }

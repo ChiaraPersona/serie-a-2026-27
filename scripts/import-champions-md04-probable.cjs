@@ -1,5 +1,6 @@
 const fs = require('fs'), path = require('path'), assert = require('assert/strict');
 const root = path.resolve(__dirname, '..');
+const { canonicalTeam } = require('./champions/current-season-offline');
 const read = p => JSON.parse(fs.readFileSync(path.join(root, p), 'utf8'));
 const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f\uFEFF]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 const roster = read('data/normalized/champions-registered-squads-2026-27.json');
@@ -13,7 +14,8 @@ const input = fs.readFileSync(path.resolve(root, inputFile), 'utf8').split('Merc
 const lines = input.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
 const teams = [], issues = [];
 for (const f of fixtures) for (const venue of ['home', 'away']) {
-  const team = roster.teams.find(t => t.team === f[venue + 'Team']); assert(team);
+  const rosterTeam = roster.teams.find(t => t.team === f[venue + 'Team']); assert(rosterTeam);
+  const team = { ...rosterTeam, id: canonicalTeam(rosterTeam.id) };
   const start = lines.findIndex(l => l.startsWith(team.team + ':')); assert(start >= 0, team.team);
   const block = lines.slice(start + 1, start + 4);
   const old = previous.teams.find(t => t.team === team.team);

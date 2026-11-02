@@ -11,7 +11,7 @@ const writeHtml = (file, html) => {
 const readingsIndexOnly = process.argv.includes('--readings-index-only');
 const bettingPageOnly = process.argv.includes('--betting-page-only');
 const championsPageOnly = process.argv.includes('--champions-page-only');
-const md3PagesOnly = process.argv.includes('--md3-pages-only');
+const md3PagesOnly = process.argv.includes('--md3-pages-only') || process.argv.includes('--champions-pages-only');
 const readingPagesOnly = bettingPageOnly || md3PagesOnly || championsPageOnly || readingsIndexOnly || process.argv.includes('--reading-pages-only');
 const teamPagesOnly = readingPagesOnly || process.argv.includes('--team-pages-only');
 if (!teamPagesOnly && !presentationOnly) require('./apply-official-starter-policy.js').build();
@@ -39,10 +39,10 @@ const version = "20260901-coppa-round16-calendar-v1";
 const homeVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const teamVersion = "20261018-no-player-media-v1";
 const leaderboardVersion = "20261013-md06-results-v1";
-const bettingVersion = "20261031-schedina-team-event-dedup-v7";
+const bettingVersion = "20261102-champions-min-108-v1";
 const readingVersion = "20261101-spatial-clean-v3";
 const cupVersion = "20261025-coppa-round16-disclosure-v1";
-const championsVersion = "20261102-champions-referee-available-fields-v1";
+const championsVersion = "20261102-champions-min-108-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (!teamPagesOnly && !presentationOnly && fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));
