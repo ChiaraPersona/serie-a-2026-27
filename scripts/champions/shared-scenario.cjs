@@ -28,7 +28,7 @@ function eligible(fixture,asOf){
 }
 // Adapt observed domestic data to one common league scale. No Elo-derived goals,
 // guessed identities, copied lineups, or individual market publication.
-function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null}){
+function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,canonicalLineups=null,playerDatabase=null}){
  if(!finite(Date.parse(asOf)))throw Error('Valid asOf required');
  const targets=calendar.fixtures.filter(f=>eligible(f,asOf)&&(matchday===null||f.matchday===matchday));
  const metrics=['goals','totalShots','shotsOnTarget','wonCorners'];
@@ -50,13 +50,30 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null}){
    const observed=rows[i];
    return {...style,competition:teams[i]?.leagueName,goalRatesOnTargetScale:true,derived:{...style.derived,goalsPerGame:gf},formation:{...style.formation,appearances:rr.length,goalsAgainst:ga*rr.length},summary:{...style.summary,appearances:rr.length,shotsPerGame:mean(rr.map(r=>r.for.totalShots).filter(finite))},modelInputs:{numeric:{...style.modelInputs?.numeric,yellowCardsPerGame:mean(observed.map(r=>r.for.yellowCards).filter(finite))}}};
   });
-  // Lineup names in the calendar do not establish canonical player identity.
-  // Until a fixture-scoped canonical adapter is available, keep this input absent.
-  missing.push('Formazioni canoniche non integrate','xG comparabili non disponibili','Obiettivi e precedenti non integrati');
+  // Optional fixture-scoped adapter: resolve canonical IDs before entering the
+  // unchanged shared engine. Never reuse a team's XI from another fixture.
+  const lineups=['home','away'].map(venue=>canonicalLineups?.teams.find(t=>t.fixtureId===f.id&&t.venue===venue&&t.status==='probable'));
+  const canonicalSquads=lineups.map((lineup,i)=>{
+   const db=playerDatabase?.teams.find(t=>t.teamId===lineup?.teamId);
+   if(!lineup||lineup.team!==sides[i]||lineup.starters.length!==11||new Set(lineup.starters.map(p=>p.playerId)).size!==11||!db)return null;
+   const players=lineup.starters.map(p=>db.players.find(m=>m.playerId===p.playerId));
+   if(players.some(p=>!p))return null;
+   const roles={goalkeeper:'Portiere',defender:'Difensore',midfielder:'Centrocampista',forward:'Attaccante'};
+   if(players.some(p=>!roles[p.position]))return null;
+   return {players:players.map(p=>({...p,id:p.playerId,name:p.canonicalName||p.name,role:roles[p.position]}))};
+  });
+  const lineupsApplied=canonicalSquads.every(Boolean);
+  if(!lineupsApplied)missing.push('Formazioni canoniche non integrate');
+  missing.push('xG comparabili non disponibili','Obiettivi e precedenti non integrati');
   const input={homeTeam:{id:teams[0]?.id},awayTeam:{id:teams[1]?.id},homeSquad:{players:[]},awaySquad:{players:[]},homeProfile:profiles[0],awayProfile:profiles[1],homeVolume:volumes[0],awayVolume:volumes[1],crossCompetitionBaseline:teams[0]?.league!==teams[1]?.league,
    leagueSummary:{homeGoalsPerMatch:target('home','goals'),awayGoalsPerMatch:target('away','goals')},
    oddsEvent:odds.events.find(e=>e.canonicalMatchId===f.id&&e.canonicalDate===f.date&&e.retrievedAt&&e.retrievedAt<=asOf),
    reading:{sections:{}},generatedAt:asOf};
+  if(lineupsApplied)for(let i=0;i<2;i++){
+   const side=i?'away':'home';
+   input[side+'Squad']=canonicalSquads[i];
+   input[side+'Team']={...input[side+'Team'],probableLineup:{status:'probable',formation:lineups[i].formation,players:canonicalSquads[i].players.map(p=>p.name)}};
+  }
   normalized.forEach((rr,i)=>{
    const side=i?'away':'home',venue=rr.filter(r=>r.venue===side);
    input[side+'Venue']={played:venue.length,goalsFor:venue.reduce((n,r)=>n+(r.for.goals??0),0),goalsAgainst:venue.reduce((n,r)=>n+(r.against.goals??0),0)};
@@ -82,7 +99,7 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null}){
    matchProjection:result?Object.fromEntries(['shotsTotal','shotsOnTarget','corners'].map(k=>[k,projections.every(p=>p[k])?result.matchProjection[k]:null])):null,
    cards:{central:projections.every(p=>finite(p.cards?.central))?projections.reduce((n,p)=>n+p.cards.central,0):null},
    dataQuality:{label:'Stima preliminare · '+(covered?'copertura parziale':'dati insufficienti'),completenessPct:result?Math.round(result.dataCompleteness*100):null,missing,teamSamples:rows.map(rr=>rr.length),latestMatchDates:rows.map(rr=>rr.at(-1)?.date??null)},
-   provenance:{cutoff,teamIds:teams.map(t=>t?.id??null),normalization:'relative-to-domestic-league',recentDecay:.82,recentOpponentStrengthAdjustment:false,lineupsApplied:false,xgApplied:false,marketUsedForGoals:false}
+   provenance:{cutoff,teamIds:teams.map(t=>t?.id??null),normalization:'relative-to-domestic-league',recentDecay:.82,recentOpponentStrengthAdjustment:false,lineupsApplied,xgApplied:false,marketUsedForGoals:false}
   };
  });
  return {schemaVersion:1,pipeline:'SHARED_SERIE_A_SCENARIO',engineVersion:ENGINE_VERSION,generatedAt:asOf,fixtures:output};
