@@ -22,7 +22,11 @@ export function createPage(deps){
   const refereeNumber=(value,digits=2)=>Number.isFinite(value)?value.toLocaleString("it-IT",{minimumFractionDigits:digits,maximumFractionDigits:digits}):"N/D";
   const refereePercent=value=>Number.isFinite(value)?`${Math.round(value*100)}%`:"N/D";
   const refereeDate=value=>value?new Intl.DateTimeFormat("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"Europe/Rome"}).format(new Date(`${value}T12:00:00Z`)):"N/D";
-  const refereeName=(assignment,profile)=>assignment?.status==="assigned"?`${esc(assignment.referee.name)} <span class="champions-reading-referee-country"><span aria-hidden="true">${esc(assignment.referee.countryFlag)}</span> ${profile?.country?esc(profile.country):"Nazionalità N/D"}</span>`:"Da designare";
+  const refereeName=(assignment,profile)=>{
+    if(assignment?.status!=="assigned")return "Da designare";
+    const country=[assignment.referee.countryFlag?`<span aria-hidden="true">${esc(assignment.referee.countryFlag)}</span>`:"",profile?.country?esc(profile.country):""].filter(Boolean).join(" ");
+    return `${esc(assignment.referee.name)}${country?` <span class="champions-reading-referee-country">${country}</span>`:""}`;
+  };
   const refereeOvers=(frequencies,label)=>{
     const rows=[["over3_5","Over 3,5"],["over4_5","Over 4,5"],["over5_5","Over 5,5"]].filter(([key])=>Number.isFinite(frequencies?.[key]?.frequency));
     if(!rows.length)return "";
@@ -55,8 +59,9 @@ export function createPage(deps){
       ["AVAR",assignment.avar]
     ].filter(([,value])=>value);
     const officials=roles.length?`<dl>${roles.map(([label,value])=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>`:"";
-    const statistics=stats?`<div class="reading-referee-stats champions-reading-referee-stats"><article><span>Gialli / gara</span>${refereeMetric(stats.yellowCardsPerMatch)}</article><article><span>Rossi / gara</span>${refereeMetric(stats.redCardsPerMatch)}</article><article><span>Falli / gara</span>${refereeMetric(stats.foulsPerMatch)}</article><article><span>Rigori / gara</span>${refereeMetric(stats.penaltiesPerMatch)}</article></div><p class="reading-referee-method">Profilo storico riportato come fornito; non applicato automaticamente alle proiezioni della partita.</p>`:`<div class="reading-referee-stats champions-reading-referee-stats"><article><span>Statistiche disciplinari</span><strong>N/D</strong></article></div><p class="reading-referee-method">Statistiche arbitrali non disponibili: N/D. La designazione non modifica automaticamente il pronostico.</p>`;
-    return `<aside class="reading-referee-assignment champions-reading-referee champions-reading-hero-referee" id="lettura-referee" aria-labelledby="champions-reading-referee-title"><header><div><p class="eyebrow">Designazione arbitrale</p><h2 id="champions-reading-referee-title">${refereeName(assignment)}</h2></div><p>Designazione e profilo disciplinare.</p></header>${officials}${statistics}</aside>`;
+    const metrics=[["yellowCardsPerMatch","Gialli / gara"],["redCardsPerMatch","Rossi / gara"],["foulsPerMatch","Falli / gara"],["penaltiesPerMatch","Rigori / gara"]].filter(([key])=>stats?.[key]?.display && stats[key].display!=="N/D");
+    const statistics=metrics.length?`<div class="reading-referee-stats champions-reading-referee-stats">${metrics.map(([key,label])=>`<article><span>${label}</span>${refereeMetric(stats[key])}</article>`).join("")}</div><p class="reading-referee-method">Profilo storico riportato come fornito; non applicato automaticamente alle proiezioni della partita.</p>`:"";
+    return `<aside class="reading-referee-assignment champions-reading-referee champions-reading-hero-referee" id="lettura-referee" aria-labelledby="champions-reading-referee-title"><header><div><p class="eyebrow">Designazione arbitrale</p><h2 id="champions-reading-referee-title">${refereeName(assignment)}</h2></div>${metrics.length?"<p>Designazione e profilo disciplinare.</p>":""}</header>${officials}${statistics}</aside>`;
   }
 
 

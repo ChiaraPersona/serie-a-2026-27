@@ -42,7 +42,7 @@ const leaderboardVersion = "20261013-md06-results-v1";
 const bettingVersion = "20261031-schedina-team-event-dedup-v7";
 const readingVersion = "20261101-spatial-clean-v3";
 const cupVersion = "20261025-coppa-round16-disclosure-v1";
-const championsVersion = "20261031-champions-team-event-dedup-v3";
+const championsVersion = "20261102-champions-referee-available-fields-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (!teamPagesOnly && !presentationOnly && fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));
