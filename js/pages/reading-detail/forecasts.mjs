@@ -1,6 +1,6 @@
 import {esc,number,pct,finite,missing} from './format.mjs?v=20261022-assets-v1';
-import {isCanonicalModelForecast,isPublishedForecast,hasVerifiedPlayableQuote,sharedForecastsForMatch,publicForecastLabel,meetsMinimumPublicOdds} from '../shared-forecast-contract.mjs?v=20261102-champions-min-108';
-import {createPersonalBetslipStore} from '../personal-betslip-store.mjs?v=20261102-champions-min-108';
+import {isCanonicalModelForecast,isPublishedForecast,hasVerifiedPlayableQuote,sharedForecastsForMatch,publicForecastLabel,meetsMinimumPublicOdds} from '../shared-forecast-contract.mjs?v=20261102-champions-no-draw';
+import {createPersonalBetslipStore} from '../personal-betslip-store.mjs?v=20261102-champions-no-draw';
 
 export function forecastPresentation(leg){
  const contract=leg.betSelection||{},market=contract.market||{},subject=market.subject||{},player=leg.player&&typeof leg.player==='object'?leg.player:{};

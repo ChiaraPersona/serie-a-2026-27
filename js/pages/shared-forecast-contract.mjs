@@ -1,5 +1,12 @@
 const finite=value=>value!==null&&value!==undefined&&value!==""&&Number.isFinite(Number(value));
 export const MINIMUM_PUBLIC_ODDS=1.08;
+export function isExcludedStraightDraw(leg){
+  const bet=leg?.betSelection,matchId=bet?.identity?.matchId||leg?.matchId||leg?.fixtureId||'';
+  if(!/^ucl-/.test(matchId)&&!['champions','champions-league'].includes(leg?.context?.competition))return false;
+  const selection=String(bet?.market?.selection||leg?.selection||'').toUpperCase();
+  const family=leg?.suggestionAnalysis?.family;
+  return selection==='X'&&(family==='result'||String(bet?.market?.code)==='3'||/1X2|ESITO FINALE/i.test(bet?.market?.name||leg?.market||''));
+}
 export function meetsMinimumPublicOdds(leg){
   const matchId=leg?.betSelection?.identity?.matchId||leg?.matchId||leg?.fixtureId||leg?.forecastIdentity?.matchId;
   const context=leg?.context;
@@ -47,7 +54,7 @@ export function isUnquotedIndividualForecast(leg){
 }
 
 export function isPublishedForecast(leg,{archived=false}={}){
-  return meetsMinimumPublicOdds(leg)&&leg?.lineupEligibility?.eligible!==false
+  return meetsMinimumPublicOdds(leg)&&!isExcludedStraightDraw(leg)&&leg?.lineupEligibility?.eligible!==false
     && (!globalThis.officialStarterPolicy||globalThis.officialStarterPolicy.eligible(leg))
     && leg?.forecastStatus!=="withdrawn"
     && leg?.suggestionAnalysis?.suggested===true

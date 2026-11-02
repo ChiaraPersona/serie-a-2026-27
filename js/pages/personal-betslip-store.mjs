@@ -1,5 +1,5 @@
 import '../official-starter-policy.js';
-import {isCanonicalModelForecast,usesCurrentForecastPolicy,meetsMinimumPublicOdds} from './shared-forecast-contract.mjs?v=20261102-champions-min-108';
+import {isCanonicalModelForecast,usesCurrentForecastPolicy,meetsMinimumPublicOdds,isExcludedStraightDraw} from './shared-forecast-contract.mjs?v=20261102-champions-no-draw';
 export const PERSONAL_BETSLIP_VERSION=1;
 export const PERSONAL_BETSLIP_STORAGE_KEY="serie-a-2026-27:personal-betslip:v1";
 
@@ -35,6 +35,7 @@ export function isCornerPeriodSelection(selection){
 }
 
 function playability(selection){
+  if(isExcludedStraightDraw(selection))return {status:"NOT_PLAYABLE",code:"STRAIGHT_DRAW_EXCLUDED",reason:"La X secca è esclusa dalle selezioni Champions."};
   if(!meetsMinimumPublicOdds(selection))return {status:"NOT_PLAYABLE",code:"ODDS_BELOW_PUBLIC_MINIMUM",reason:"Quota inferiore a 1.08."};
   if(globalThis.officialStarterPolicy&&!globalThis.officialStarterPolicy.eligible(selection))return {status:'NOT_PLAYABLE',code:'OFFICIAL_NON_STARTER',reason:'Giocatore assente dagli undici ufficiali.'};
   const declared=selection?.betSelection?.operational?.playability;
@@ -147,7 +148,7 @@ export function createPersonalBetslipStore({storage=globalThis.localStorage,stor
   const commit=()=>{persist();emit()};
   const getSnapshot=()=>{
     const active=bucket();
-    const selections=clone((active?.selections||[]).filter(meetsMinimumPublicOdds));
+    const selections=clone((active?.selections||[]).filter(selection=>meetsMinimumPublicOdds(selection)&&!isExcludedStraightDraw(selection)));
     return {version:state.version,activeContext:state.activeContext,context:clone(active?.context||null),selections,assessment:assessSelections(selections),storageError:state.storageError};
   };
   const setContext=context=>{
@@ -194,7 +195,7 @@ export function createPersonalBetslipStore({storage=globalThis.localStorage,stor
       if(useFresh){updated+=1;return {...clone(fresh),addedAt:stored.addedAt,addedQuote:stored.addedQuote,previousQuote:changed&&finite(storedQuote.decimal)?Number(storedQuote.decimal):(stored.previousQuote??null),quoteChanged:Boolean(stored.quoteChanged||changed),dataStatus:"CURRENT"}}
       return {...stored,dataStatus:"CURRENT"};
     });
-    active.selections=active.selections.filter(meetsMinimumPublicOdds);
+    active.selections=active.selections.filter(selection=>meetsMinimumPublicOdds(selection)&&!isExcludedStraightDraw(selection));
     active.updatedAt=now();commit();return {status:"RECONCILED",updated,missing};
   };
   const subscribe=listener=>{listeners.add(listener);return()=>listeners.delete(listener)};
@@ -204,7 +205,7 @@ export function createPersonalBetslipStore({storage=globalThis.localStorage,stor
 export function personalBetslipSummary(snapshot){
   const context=snapshot?.context;
   const heading=context?`Schedina personale · ${context.competition} ${context.season} · giornata ${context.matchday}`:"Schedina personale";
-  const rows=(snapshot?.selections||[]).filter(meetsMinimumPublicOdds).map((selection,index)=>{
+  const rows=(snapshot?.selections||[]).filter(selection=>meetsMinimumPublicOdds(selection)&&!isExcludedStraightDraw(selection)).map((selection,index)=>{
     const currentQuote=quote(selection);
     const quoteText=finite(currentQuote.decimal)?Number(currentQuote.decimal).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}):(isCanonicalModelForecast(selection)?"—":"N/D");
     return `${index+1}. ${selection.fixture||matchId(selection)||"Partita N/D"} — ${selection.label||selection.betSelection?.market?.selection||"Selezione N/D"} @ ${quoteText} (snapshot ${currentQuote.verifiedAt||"N/D"})`;

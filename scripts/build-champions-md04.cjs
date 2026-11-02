@@ -38,9 +38,11 @@ async function applyPublicOddsMinimum(matches){
 }
 async function refreshPublicOddsMinimum(){
  const out=read(catalogPath);await applyPublicOddsMinimum(out.marketCatalog.matches);
+ await require('./champions/result-preference.cjs').applyResultPreference(out.marketCatalog.matches);
  const selected=out.marketCatalog.matches.flatMap(m=>m.selections).filter(l=>l.suggestionAnalysis?.suggested);
  Object.assign(out.summary,{selections:selected.length,teamSelections:selected.filter(l=>l.marketScope!=='player').length,playerSelections:selected.filter(l=>l.marketScope==='player').length,approvedSelections:selected.filter(l=>l.qualifiedSelection).length});
- out.minimumSelectionOdds=1.08;write(catalogPath,out);
+ out.minimumSelectionOdds=1.08;
+ out.resultPreference={excluded:['X'],allowed:['1','2','1X','X2'],replacement:'EXISTING_PRELIMINARY_PORTFOLIO_ONLY'};write(catalogPath,out);
  const report=read('output/champions-md04/build-report.json');report.summary=out.summary;write('output/champions-md04/build-report.json',report);
  console.log(JSON.stringify(out.summary));
 }
@@ -171,6 +173,7 @@ async function build(){
  const fixtureEvidence=scenarios.fixtures.map(f=>({fixtureId:f.fixtureId,date:f.date,kickoff:f.kickoff,forecast:f}));
  const publication=await buildPublication({matches:integration.matches,fixtures:fixtureEvidence,individuals,evidence:{validationRegistry:loadRegistry(),modelIds:{collective:'champions-shared:'+hash('scripts/champions/shared-scenario.cjs'),player:'champions-md04:'+hash('scripts/build-champions-md04.cjs')},officialRegistry:{},preview:{calibrationStatus:'PRELIMINARY_NOT_STATISTICALLY_VALIDATED'},pilot:read('data/normalized/champions-pilot-volume-backtest.json'),calibration:read('data/analysis/champions/model-calibration-audit-2026-10-11.json')}});
  await applyPublicOddsMinimum(publication.matches);
+ await require('./champions/result-preference.cjs').applyResultPreference(publication.matches);
  const all=publication.matches.flatMap(m=>m.selections),selected=all.filter(l=>l.suggestionAnalysis.suggested);
  // The generic publication checker describes single-player conditional models;
  // it must never relabel or evaluate the probability of a DUO contract.
@@ -188,6 +191,7 @@ async function build(){
  }
  const out={schemaVersion:4,competition:'champions',season:'2026-27',matchday:4,status:'PRELIMINARY_NOT_STATISTICALLY_VALIDATED',generatedAt:asOf,oddsRetrievedAt:odds.retrievedAt,scope:[...ids],lineupInput:{path:lineupPath,sha256:hash(lineupPath)},individualInput:{path:individualPath},selectionRule:'Stime preliminari sulle sole partite con entrambi gli undici probabili. Criteri e modelli condivisi invariati. Contratti DUO conservati; probabilità, quota equa ed EV DUO: N/D.',summary:{fixtures:targets.length,selections:selected.length,teamSelections:selected.filter(l=>l.marketScope!=='player').length,playerSelections:selected.filter(l=>l.marketScope==='player').length,approvedSelections:selected.filter(l=>l.qualifiedSelection).length},slips:[],marketCatalog:{schemaVersion:4,policy:'SHARED_SERIE_A_LINEUP_FORECASTS',matchday:4,matches:publication.matches,myCombo:publication.myCombo},coverage:individuals.summary};
  out.minimumSelectionOdds=1.08;
+ out.resultPreference={excluded:['X'],allowed:['1','2','1X','X2'],replacement:'EXISTING_PRELIMINARY_PORTFOLIO_ONLY'};
  const sharedPath='data/generated/champions-shared-scenarios.json',previous=read(sharedPath);
  const forecastInputs=Object.fromEntries([lineupPath,oddsPath,'data/sources/champions-pilot-match-stats-2025-27.json','data/normalized/team-style-profiles.json'].map(p=>[p,hash(p)]));
  for(const f of scenarios.fixtures)f.inputSnapshot={asOf,sha256:forecastInputs};
@@ -201,5 +205,5 @@ async function build(){
  console.log(JSON.stringify({summary:out.summary,coverage:out.coverage,unquotedExcluded:excludedQuotes.length}));
  return out;
 }
-if(require.main===module)(process.argv.includes('--public-odds-only')?refreshPublicOddsMinimum():build()).catch(e=>{console.error(e);process.exitCode=1;});
+if(require.main===module)(process.argv.includes('--public-odds-only')||process.argv.includes('--result-policy-only')?refreshPublicOddsMinimum():build()).catch(e=>{console.error(e);process.exitCode=1;});
 module.exports={build,buildDatabase,buildIndividuals,buildTeamCatalog};

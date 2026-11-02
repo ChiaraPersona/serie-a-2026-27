@@ -1,7 +1,7 @@
-import {createChampionsSelection} from './champions-market-ui.mjs?v=20261102-champions-min-108';
+import {createChampionsSelection} from './champions-market-ui.mjs?v=20261102-champions-no-draw';
 import {md3IndividualMarkets,md3IndividualCandidates} from './champions-md3-individual-markets.mjs?v=20261022-assets-v1';
 import {championsAuditDisplay} from './champions-audit-display.mjs?v=20261022-assets-v1';
-import {hasVerifiedPlayableQuote} from './shared-forecast-contract.mjs?v=20261102-champions-min-108';
+import {hasVerifiedPlayableQuote} from './shared-forecast-contract.mjs?v=20261102-champions-no-draw';
 import {md3ResultMatch,settleMd3Leg} from './champions-md3-results.mjs?v=20261022-assets-v1';
 
 const familyLabels={result:'Risultato', 'double-chance':'Doppia chance',goals:'Gol',corners:'Corner',shots:'Tiri','team-shots':'Tiri squadra','team-sot':'SOT squadra','team-corners':'Corner squadra'};

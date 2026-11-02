@@ -16,6 +16,8 @@ Le selezioni sono preliminari: la validazione del precedente modello Champions n
 
 La quota minima pubblica Champions è **1,08 inclusiva**, per tutte le giornate. La policy condivisa esclude le quote inferiori da Letture, Schedina, MyCombo e schedina personale, incluse le selezioni salvate. I contratti e le quote originali restano negli archivi. Per riapplicare soltanto la soglia MD4 senza ricalcolare le previsioni: `node scripts/build-champions-md04.cjs --public-odds-only`.
 
+La X secca è esclusa dagli esiti proposti. Se il precedente esito era X, `champions/result-preference.cjs` valuta i contratti 1, 2, 1X e X2 già quotati con il ranking preliminare e le soglie di sostegno sportivo esistenti; seleziona una sola alternativa ammessa, oppure nessuna. Non modifica probabilità, formule o quote e non trasferisce la probabilità della X a un altro contratto. Le alternative restano preliminari. La policy condivisa esclude la X secca anche dalle selezioni personali salvate; la distribuzione 1-X-2 e i risultati previsti dell'analisi restano intatti. Per applicare la preferenza senza ricalcolare il modello: `node scripts/build-champions-md04.cjs --result-policy-only`. Test: `node scripts/test-champions-no-draw.mjs`.
+
 ## Comandi e verifiche
 
 ```text

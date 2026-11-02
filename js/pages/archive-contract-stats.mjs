@@ -1,4 +1,4 @@
-import {uniqueForecastContracts,meetsMinimumPublicOdds} from './shared-forecast-contract.mjs?v=20261102-champions-min-108';
+import {uniqueForecastContracts,meetsMinimumPublicOdds} from './shared-forecast-contract.mjs?v=20261102-champions-no-draw';
 
 // Presentation economics: original selections and settlements remain immutable.
 export function archiveContractStats(legs,resolve){

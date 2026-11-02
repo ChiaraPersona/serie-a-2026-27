@@ -1,13 +1,13 @@
 const release=new URL(import.meta.url).searchParams.get("v")||"development";
 const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=20261022-assets-v1`);
-const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261102-champions-min-108`);
-const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts,publicForecastLabel,meetsMinimumPublicOdds}=await import(`./shared-forecast-contract.mjs?v=20261102-champions-min-108`);
+const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261102-champions-no-draw`);
+const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts,publicForecastLabel,meetsMinimumPublicOdds,isExcludedStraightDraw}=await import(`./shared-forecast-contract.mjs?v=20261102-champions-no-draw`);
 
 const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=20261102-md04-lineups`);
 const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=20261022-assets-v1`);
 const {settleMd3Leg}=await import(`./champions-md3-results.mjs?v=20261022-assets-v1`);
 
-const {archiveContractStats}=await import('./archive-contract-stats.mjs?v=20261102-champions-min-108');
+const {archiveContractStats}=await import('./archive-contract-stats.mjs?v=20261102-champions-no-draw');
 
 export function createPage(deps){
   const {esc,dateOnly,hero,load,loadGenerated}=deps;
@@ -31,7 +31,7 @@ export function createPage(deps){
     return base+3;
   };
   const visualOrder=(rows,getLeg=row=>row)=>compactForecasts?[...rows].sort((a,b)=>presentationRank(getLeg(a))-presentationRank(getLeg(b))):rows;
-  const manualChampionsLegs=(legs,match)=>legs.filter(leg=>meetsMinimumPublicOdds(leg)&&!leg.suggestionAnalysis?.suggested&&(leg.context?.matchday!==3||Number.isFinite(leg.betSelection?.evaluation?.modelProbabilityPct)));
+  const manualChampionsLegs=(legs,match)=>legs.filter(leg=>meetsMinimumPublicOdds(leg)&&!isExcludedStraightDraw(leg)&&!leg.suggestionAnalysis?.suggested&&(leg.context?.matchday!==3||Number.isFinite(leg.betSelection?.evaluation?.modelProbabilityPct)));
   let recordedOutcomes=[];
   const settleLeg=(leg,match)=>match?.id?.startsWith('ucl-2026-27-md03-')?settleMd3Leg(leg,match):settleArchivedLeg(leg,match,recordedOutcomes);
   const pct=value=>Number(value).toLocaleString("it-IT",Number(value)>0&&Number(value)<.01?{minimumFractionDigits:4,maximumFractionDigits:6}:{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -42,7 +42,7 @@ export function createPage(deps){
 
   function registerSelection(leg,{fixture=leg.fixture,sourceSection="modello"}={}){
     const contract=leg?.betSelection;
-    if(!meetsMinimumPublicOdds(leg)||!currentContext||!leg?.selectionId||contract?.selectionId!==leg.selectionId||(contract?.identity?.status!=="VERIFIED_PROVIDER_IDS"&&!isCanonicalModelForecast(leg)))return null;
+    if(!meetsMinimumPublicOdds(leg)||isExcludedStraightDraw(leg)||!currentContext||!leg?.selectionId||contract?.selectionId!==leg.selectionId||(contract?.identity?.status!=="VERIFIED_PROVIDER_IDS"&&!isCanonicalModelForecast(leg)))return null;
     const selection={selectionId:leg.selectionId,context:{...currentContext},fixture:fixture||contract.identity.matchId,label:publicForecastLabel(leg)||contract.market?.selection||"Selezione",market:leg.market||contract.market?.name||"Mercato",sourceSection,scenarioAnalysis:leg.scenarioAnalysis||null,betSelection:contract};
     selectionRegistry.set(selection.selectionId,selection);
     return selection;
@@ -103,7 +103,7 @@ export function createPage(deps){
   };
 
   function selectableMarketRow({leg,sourceSection,showContractNote=true},index,fixture,match){
-    if(!meetsMinimumPublicOdds(leg))return "";
+    if(!meetsMinimumPublicOdds(leg)||isExcludedStraightDraw(leg))return "";
     const evaluation=leg.betSelection.evaluation,market=leg.betSelection.market||{},semantics=market.bookmakerSemantics||{},selection=leg.auditDisplayOnly?null:registerSelection(leg,{fixture,sourceSection}),quote=leg.betSelection.quote.decimal==null?NaN:Number(leg.betSelection.quote.decimal),probability=evaluation.modelProbabilityPct==null?NaN:Number(evaluation.modelProbabilityPct),ev=evaluation.expectedValuePct==null?NaN:Number(evaluation.expectedValuePct),individualProbability=evaluation.individualReference?.modelProbabilityPct==null?NaN:Number(evaluation.individualReference.modelProbabilityPct),duo=semantics.duo===true;
     const metricText=(value,formatter,suffix="")=>Number.isFinite(value)?`${formatter(value)}${suffix}`:"—";
     const result=leg.context?.competition==="champions"&&leg.auditDisplayOnly&&leg.settlement?leg.settlement: settleLeg(leg,match),finished=match?.status==="finished",settled=["won","lost","void"].includes(result.status);
@@ -114,7 +114,7 @@ export function createPage(deps){
 
 
   function unquotedForecastRow({leg,sourceSection},index){
-    if(!meetsMinimumPublicOdds(leg))return "";
+    if(!meetsMinimumPublicOdds(leg)||isExcludedStraightDraw(leg))return "";
     const evaluation=leg.betSelection.evaluation,market=leg.betSelection.market||{},probability=Number(evaluation.modelProbabilityPct);
     return `<li class="betting-market-row betting-selection-row is-unquoted${leg.isOutsider===true?" is-outsider":""}${hasVisiblePreferred(leg)?" is-preferred":""}" data-selection-row${leg.isOutsider===true?' data-outsider="true"':""}${hasVisiblePreferred(leg)?' data-preferred="true"':""} data-selection-label="${esc(publicForecastLabel(leg))}" data-source-section="${esc(sourceSection)}" data-selected-forecast="${leg.context?.competition==='champions'&&leg.suggestionAnalysis?.suggested===false?'false':'true'}" data-order="${index}" data-quote-availability="unavailable" data-probability="${probability}" aria-disabled="true"><div class="betting-market-copy"><small>${esc(cardFamily(leg))}</small>${editorialBadges(leg)}<strong>${esc(publicForecastLabel(leg))}</strong></div><span class="betting-market-metric"><small>Probabilità</small><b>${Number.isFinite(probability)?`${pct(probability)}%`:"—"}</b></span><span class="betting-market-metric betting-market-quote-unavailable"><small>Quota Sisal</small><b>${leg.linkedSisalQuote?Number(leg.linkedSisalQuote.decimal).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}):"Quota non disponibile"}</b>${leg.linkedSisalQuote?`<small>EV ${leg.linkedSisalQuote.expectedValuePct.toLocaleString("it-IT",{maximumFractionDigits:1})}% · quota verificata</small>`:""}</span></li>`;
   }

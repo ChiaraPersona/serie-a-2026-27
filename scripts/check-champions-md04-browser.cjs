@@ -27,6 +27,7 @@ async function run(){
    await page.waitForSelector('[data-champions-workspace="4"]');
    await page.locator('[data-match-open-all]').click();
    assert(await page.locator('[data-selection-row][data-odds]').evaluateAll(rows=>rows.every(r=>!r.dataset.odds||Number(r.dataset.odds)>=1.08)),'No public Champions price below 1.08');
+   assert(await page.locator('[data-selection-row]').evaluateAll(rows=>rows.every(r=>!/ESITO FINALE 1X2\s*·\s*X$/.test(r.dataset.selectionLabel||''))),'No straight-draw proposal');
    for(const m of catalog.marketCatalog.matches){const panel=page.locator(`[data-match-id="${m.matchId}"]`);assert.equal(await panel.locator('[data-selection-row]').count(),m.suggestions.length,m.matchId);}
    assert.equal(await page.locator('[data-match-id*="md04-1"]').count(),0,'Wednesday absent');
    assert.equal(await page.locator('[data-champions-forecast-coverage]').count(),9);

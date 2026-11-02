@@ -429,7 +429,7 @@ export function createPage(deps){
 
   async function appendSharedSchedina(matchday,fixtureId,host){
     if(!host||typeof host.insertAdjacentHTML!=="function")return;
-    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261102-md04-lineups'),import('./betting.js?v=20261102-md04-lineups')]);
+    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261102-md04-lineups'),import('./betting.js?v=20261102-champions-no-draw')]);
     const workspace=await loadChampionsWorkspaceMd3Derived(load,matchday);
     const controller=createBettingPage({...deps,dateOnly:deps.dateOnly||(value=>String(value||"").slice(0,10))});
     const section=host.querySelector('#lettura-pronostici .rd-section-content');
@@ -441,7 +441,7 @@ export function createPage(deps){
     }else target.insertAdjacentHTML('beforeend',markup);
     const store=controller.mountChampionsWorkspace(workspace);
     if(section){
-      const [{createReadingView},{installForecasts},{sharedForecastsForMatch}]=await Promise.all([import('./reading-detail/view-model.mjs?v=20261022-assets-v1'),import('./reading-detail/forecasts.mjs?v=20261102-champions-min-108'),import('./shared-forecast-contract.mjs?v=20261102-champions-min-108')]);
+      const [{createReadingView},{installForecasts},{sharedForecastsForMatch}]=await Promise.all([import('./reading-detail/view-model.mjs?v=20261022-assets-v1'),import('./reading-detail/forecasts.mjs?v=20261102-champions-no-draw'),import('./shared-forecast-contract.mjs?v=20261102-champions-no-draw')]);
       const fixture=workspace.fixtures.find(f=>f.id===fixtureId);
       const model=createReadingView({competition:'champions',fixture,home:{name:fixture.homeTeam},away:{name:fixture.awayTeam},forecasts:sharedForecastsForMatch(workspace.marketCatalog,fixtureId,fixture)});
       const table=document.createElement('div');section.prepend(table);
