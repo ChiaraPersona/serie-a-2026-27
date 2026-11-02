@@ -1,7 +1,9 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const root=path.resolve(__dirname,'..'),out=path.join(root,'output/champions-md04/browser');
+const root=path.resolve(__dirname,'..'),outIndex=process.argv.indexOf('--output-dir');
+const out=path.resolve(root,outIndex<0?'output/champions-md04/browser':process.argv[outIndex+1]);
+assert(out.startsWith(path.join(root,'output')+path.sep),'Browser evidence must remain inside output/');
 fs.mkdirSync(out,{recursive:true});
 const catalog=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/schedina-champions-md04.json')));
 const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp'};
@@ -27,6 +29,9 @@ async function run(){
    assert(await page.locator('[data-selection-row][data-odds]').evaluateAll(rows=>rows.every(r=>!r.dataset.odds||Number(r.dataset.odds)>=1.08)),'No public Champions price below 1.08');
    for(const m of catalog.marketCatalog.matches){const panel=page.locator(`[data-match-id="${m.matchId}"]`);assert.equal(await panel.locator('[data-selection-row]').count(),m.suggestions.length,m.matchId);}
    assert.equal(await page.locator('[data-match-id*="md04-1"]').count(),0,'Wednesday absent');
+   assert.equal(await page.locator('[data-champions-forecast-coverage]').count(),9);
+   const volumePanel=page.locator('[data-champions-forecast-coverage]').first();await volumePanel.locator('summary').click();
+   const volumeText=await volumePanel.innerText();assert(/Tiri.*Tiri in porta.*Corner/.test(volumeText),'Updated team volumes available in Schedina');
    const target=catalog.marketCatalog.matches[0],pick=target.suggestions.find(id=>target.selections.find(l=>l.selectionId===id).marketScope==='player');
    await page.locator(`[data-personal-pick="${pick}"]`).first().click();
    assert((await page.evaluate(()=>localStorage.getItem('serie-a-2026-27:personal-betslip:v1'))).includes(pick));

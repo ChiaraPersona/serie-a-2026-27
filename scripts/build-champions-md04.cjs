@@ -180,6 +180,12 @@ async function build(){
   e.status='DUO_PROBABILITY_UNAVAILABLE';e.probabilitySemantics='DUO_CONTRACT_UNAVAILABLE';
   assert.equal(l.modelProbabilityPct,null);assert.equal(l.fairOdds,null);assert.equal(l.expectedValuePct,null);
  }
+ // Expose the recalculated team counts through the existing Schedina coverage
+ // renderer. A point estimate never becomes an invented threshold probability.
+ for(const match of publication.matches){
+  const f=scenarios.fixtures.find(f=>f.fixtureId===match.matchId),individual=individuals.fixtures.find(f=>f.fixtureId===match.matchId);
+  match.forecastCoverage={lineupStatus:'probable',teamProjections:f.teamProjections.map((t,i)=>({...t,team:[f.homeTeam,f.awayTeam][i]})),matchProjection:f.matchProjection,cards:f.cards,result:f.probabilities,doubleChance:{'1X':f.probabilities.home+f.probabilities.draw,'X2':f.probabilities.draw+f.probabilities.away},generatedIndividualMarkets:individual.teams.flatMap(t=>t.players).filter(p=>p.projectedRole==='starter'&&p.eventProbabilities).length*5,marginalVolumeProbabilitiesAvailable:false,missing:['Probabilità delle soglie di corner, tiri e SOT di squadra non collegate a una distribuzione validata per questo modello.'],teamSampleDates:f.dataQuality.latestMatchDates};
+ }
  const out={schemaVersion:4,competition:'champions',season:'2026-27',matchday:4,status:'PRELIMINARY_NOT_STATISTICALLY_VALIDATED',generatedAt:asOf,oddsRetrievedAt:odds.retrievedAt,scope:[...ids],lineupInput:{path:lineupPath,sha256:hash(lineupPath)},individualInput:{path:individualPath},selectionRule:'Stime preliminari sulle sole partite con entrambi gli undici probabili. Criteri e modelli condivisi invariati. Contratti DUO conservati; probabilità, quota equa ed EV DUO: N/D.',summary:{fixtures:targets.length,selections:selected.length,teamSelections:selected.filter(l=>l.marketScope!=='player').length,playerSelections:selected.filter(l=>l.marketScope==='player').length,approvedSelections:selected.filter(l=>l.qualifiedSelection).length},slips:[],marketCatalog:{schemaVersion:4,policy:'SHARED_SERIE_A_LINEUP_FORECASTS',matchday:4,matches:publication.matches,myCombo:publication.myCombo},coverage:individuals.summary};
  out.minimumSelectionOdds=1.08;
  const sharedPath='data/generated/champions-shared-scenarios.json',previous=read(sharedPath);

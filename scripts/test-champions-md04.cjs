@@ -17,6 +17,8 @@ async function test(){
   assert(out.scope.includes(m.matchId));
   const fixture=individuals.fixtures.find(f=>f.fixtureId===m.matchId),scenario=scenarios.fixtures.find(f=>f.fixtureId===m.matchId);
   assert.equal(fixture.status,'probable');assert(scenario.provenance.lineupsApplied);
+  assert.deepEqual(m.forecastCoverage.teamProjections.map(t=>[t.shotsTotal,t.shotsOnTarget,t.corners]),scenario.teamProjections.map(t=>[t.shotsTotal,t.shotsOnTarget,t.corners]));
+  assert.equal(m.forecastCoverage.marginalVolumeProbabilitiesAvailable,false,'Point estimates must not invent threshold probabilities');
   assert(Math.abs(Object.values(scenario.probabilities).reduce((a,b)=>a+b,0)-100)<1e-8);
   for(const t of fixture.teams){
    assert.equal(t.players.filter(p=>p.projectedRole==='starter').length,11);

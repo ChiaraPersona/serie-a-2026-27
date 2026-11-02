@@ -14,10 +14,17 @@ function recentStats(rows,metric){
  const weight=observed.reduce((n,r)=>n+r.w,0);
  return {...summarize(values),weightedMean:weight?observed.reduce((n,r)=>n+r.v*r.w,0)/weight:null};
 }
+function usableProfileMatch(m){
+ if(m.coverage==='complete')return true;
+ // Missing discipline does not discard observed shot/corner counts. Keep the
+ // missing fields null; never turn a partially covered match into complete.
+ return m.coverageByMetric?.goals===true&&['home','away'].every(side=>Number.isFinite(m[side]?.score)&&['totalShots','shotsOnTarget','wonCorners'].every(k=>Number.isFinite(m[side]?.statistics?.[k])));
+}
 function profileRows(source,team,cutoff){
- return source.matches.filter(m=>m.league===team.league&&m.coverage==='complete'&&m.date<cutoff&&m.source?.retrievedAt&&m.source.retrievedAt<cutoff)
+ return source.matches.filter(m=>m.league===team.league&&usableProfileMatch(m)&&m.date<cutoff&&m.source?.retrievedAt&&m.source.retrievedAt<cutoff)
  .flatMap(m=>{
-  const side=String(m.home.providerTeamId)===String(team.espnTeamId)?'home':String(m.away.providerTeamId)===String(team.espnTeamId)?'away':null;
+  const providerTeamId=team.statisticsProviderIds?.[m.source?.provider]||team.espnTeamId;
+  const side=String(m.home.providerTeamId)===String(providerTeamId)?'home':String(m.away.providerTeamId)===String(providerTeamId)?'away':null;
   if(!side)return [];
   const own=m[side],other=m[side==='home'?'away':'home'];
   return [{date:m.date,eventId:m.eventId,venue:side,for:{goals:own.score,...own.statistics},against:{goals:other.score,...other.statistics}}];
@@ -37,7 +44,7 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,ca
   const teams=sides.map(name=>source.teams.find(t=>t.name===name));
   const rows=teams.map(t=>t?profileRows(source,t,cutoff):[]);
   const missing=[];
-  const leagueRows=t=>t?source.matches.filter(m=>m.league===t.league&&m.coverage==='complete'&&m.date<cutoff&&m.source?.retrievedAt&&m.source.retrievedAt<cutoff):[];
+  const leagueRows=t=>t?source.matches.filter(m=>m.league===t.league&&usableProfileMatch(m)&&m.date<cutoff&&m.source?.retrievedAt&&m.source.retrievedAt<cutoff):[];
   const leagues=teams.map(leagueRows);
   const baseline=(i,venue,metric)=>mean(leagues[i].map(m=>metric==='goals'?m[venue].score:m[venue].statistics?.[metric]).filter(finite));
   const target=(venue,metric)=>mean([0,1].map(i=>baseline(i,venue,metric)).filter(finite));
@@ -65,6 +72,7 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,ca
   const lineupsApplied=canonicalSquads.every(Boolean);
   if(!lineupsApplied)missing.push('Formazioni canoniche non integrate');
   missing.push('xG comparabili non disponibili','Obiettivi e precedenti non integrati');
+  if(rows.some(rr=>rr.some(r=>!finite(r.for.yellowCards)||!finite(r.for.foulsCommitted))))missing.push('Copertura disciplinare parziale');
   const input={homeTeam:{id:teams[0]?.id},awayTeam:{id:teams[1]?.id},homeSquad:{players:[]},awaySquad:{players:[]},homeProfile:profiles[0],awayProfile:profiles[1],homeVolume:volumes[0],awayVolume:volumes[1],crossCompetitionBaseline:teams[0]?.league!==teams[1]?.league,
    leagueSummary:{homeGoalsPerMatch:target('home','goals'),awayGoalsPerMatch:target('away','goals')},
    oddsEvent:odds.events.find(e=>e.canonicalMatchId===f.id&&e.canonicalDate===f.date&&e.retrievedAt&&e.retrievedAt<=asOf),
