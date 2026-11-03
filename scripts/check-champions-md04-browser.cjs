@@ -29,8 +29,8 @@ async function run(){
    assert(await page.locator('[data-selection-row][data-odds]').evaluateAll(rows=>rows.every(r=>!r.dataset.odds||Number(r.dataset.odds)>=1.08)),'No public Champions price below 1.08');
    assert(await page.locator('[data-selection-row]').evaluateAll(rows=>rows.every(r=>!/ESITO FINALE 1X2\s*·\s*X$/.test(r.dataset.selectionLabel||''))),'No straight-draw proposal');
    for(const m of catalog.marketCatalog.matches){const panel=page.locator(`[data-match-id="${m.matchId}"]`);assert.equal(await panel.locator('[data-selection-row]').count(),m.suggestions.length,m.matchId);}
-   assert.equal(await page.locator('[data-match-id*="md04-1"]').count(),0,'Wednesday absent');
-   assert.equal(await page.locator('[data-champions-forecast-coverage]').count(),9);
+
+   assert.equal(await page.locator('[data-champions-forecast-coverage]').count(),catalog.marketCatalog.matches.length);
    const volumePanel=page.locator('[data-champions-forecast-coverage]').first();await volumePanel.locator('summary').click();
    const volumeText=await volumePanel.innerText();assert(/Tiri.*Tiri in porta.*Corner/.test(volumeText),'Updated team volumes available in Schedina');
    const target=catalog.marketCatalog.matches[0],pick=target.suggestions.find(id=>target.selections.find(l=>l.selectionId===id).marketScope==='player');
@@ -39,7 +39,7 @@ async function run(){
    await check('schedina-md04');await page.screenshot({path:path.join(out,`schedina-${width}.png`)});
    for(const m of catalog.marketCatalog.matches){
     await page.goto(base+'/champions-league.html?match='+m.matchId);
-    await page.waitForSelector('#lettura-pronostici [data-shared-forecast-id]',{state:'attached'}).catch(async e=>{fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({errors,text:await page.locator('#app').innerText()},null,2));throw e;});
+    await page.waitForSelector(m.suggestions.length?'#lettura-pronostici [data-shared-forecast-id]':'[data-md3-probable-player]',{state:'attached'}).catch(async e=>{fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({errors,text:await page.locator('#app').innerText()},null,2));throw e;});
     assert.equal(await page.locator('#lettura-pronostici [data-shared-forecast-id]').count(),m.suggestions.length,m.matchId);
     assert.equal(await page.locator('[data-md3-probable-player][data-projected-role="starter"]').count(),22);
     if(m===target){
@@ -52,12 +52,12 @@ async function run(){
     await check(m.matchId);
    }
    await page.goto(base+'/champions-league.html?match=ucl-2026-27-md04-10');await page.waitForSelector('.rd-scenario');
-   assert.equal(await page.locator('[data-champions-workspace="4"]').count(),0);assert.equal(await page.locator('[data-md3-probable-player]').count(),0);await check('Wednesday-no-new-forecasts');
+   assert.equal(await page.locator('[data-md3-probable-player][data-projected-role="starter"]').count(),22);await check('Wednesday-probable-XI');
    await page.goto(base+'/schedina.html');await page.waitForSelector('[data-champions-matchday="4"]');await check('archive-md04-card');
    await page.goto(base+'/schedina.html?competizione=champions&giornata=3');await page.waitForSelector('[data-champions-workspace="3"]');await check('historical-md03');
    await context.close();
   }
-  fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(results,null,2)+'\n');console.log('OK: '+results.length+' desktop/mobile states; nine fixtures, DUO persistence, reading/schedina sync, Wednesday and MD3 regression.');
+  fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(results,null,2)+'\n');console.log('OK: '+results.length+' desktop/mobile states; 18 fixtures, DUO persistence, reading/schedina sync, Wednesday and MD3 regression.');
  }finally{if(browser)await browser.close();server.close();}
 }
 run().catch(e=>{console.error(e);process.exitCode=1;});

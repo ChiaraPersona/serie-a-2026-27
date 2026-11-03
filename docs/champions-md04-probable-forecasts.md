@@ -1,6 +1,6 @@
 # Champions MD4: pronostici con probabili canoniche
 
-Il builder `scripts/build-champions-md04.cjs` pubblica soltanto le fixture future e non iniziate della quarta giornata per cui `data/sources/champions-probable-formations-md04-2026-27.json` contiene entrambi gli undici probabili. L'acquisizione del 2 novembre copre le nove gare di martedì 3 novembre; le nove gare di mercoledì non ricevono nuove selezioni.
+Il builder `scripts/build-champions-md04.cjs` pubblica soltanto le fixture future e non iniziate della quarta giornata per cui `data/sources/champions-probable-formations-md04-2026-27.json` contiene entrambi gli undici probabili. Le acquisizioni utente coprono le 18 gare del 3–4 novembre. Il 3 novembre sono stati aggiunti i 198 titolari probabili delle nove gare di mercoledì, preservando le proiezioni e i contratti di martedì. Viking–Sabah conserva gli undici ma non pubblica selezioni: il campione statistico del Sabah è insufficiente. Rota resta titolare probabile con dubbio medico separato.
 
 ## Catena
 
@@ -21,7 +21,8 @@ La X secca è esclusa dagli esiti proposti. Se il precedente esito era X, `champ
 ## Comandi e verifiche
 
 ```text
-node scripts/build-champions-md04.cjs
+node scripts/import-champions-md04-probable.cjs --date 2026-11-04 --input data/sources/lineups/champions-md04-wednesday-user-2026-11-03.txt --write
+node scripts/build-champions-md04.cjs --date 2026-11-04
 node scripts/test-champions-md04.cjs
 node scripts/test-champions-shared-scenarios.cjs
 node scripts/build-site.js --presentation-only --champions-pages-only --matchday 4
@@ -30,6 +31,6 @@ node scripts/check-champions-md04-browser.cjs
 
 Il builder scrive tre dataset normalizzati MD4, aggiorna soltanto gli Scenari delle fixture coperte e conserva esclusioni ed evidenze interne. Il build di presentazione aggiorna soltanto le shell Champions/Schedina e l'indice Schedina. Nessuno di questi comandi esegue commit, push, deploy o liquidazioni.
 
-Il test dei contratti verifica undici, copertura delle rose, budget minuti, riconciliazione dei volumi, quote e ID esatti, semantica DUO, assenza di approvazioni improprie e invarianza degli input protetti. Il test browser verifica le nove Letture e la Schedina a 1440/390 pixel, persistenza della selezione DUO e sincronizzazione tra pagine, assenza di nuove selezioni per mercoledì e regressione MD3. Evidenze in `output/champions-md04/`.
+Il test dei contratti verifica undici, copertura delle rose, budget minuti, riconciliazione dei volumi, quote e ID esatti, semantica DUO, assenza di approvazioni improprie e invarianza degli input protetti. Il test browser verifica le 18 Letture e la Schedina a 1440/390 pixel, persistenza della selezione DUO e sincronizzazione tra pagine, formazioni probabili di mercoledì e regressione MD3. Evidenze in `output/champions-md04/`.
 
 Formazioni ufficiali successive richiedono la pipeline ufficiale e il registro titolari; questo builder rifiuta fixture già iniziate o concluse e non certifica le probabili come ufficiali.

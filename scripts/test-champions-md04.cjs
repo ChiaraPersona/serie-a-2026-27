@@ -9,8 +9,8 @@ async function test(){
  const report=read('output/champions-md04/build-report.json'),scenarios=read('data/generated/champions-shared-scenarios.json');
  const squads=read('data/normalized/champions-registered-squads-2026-27.json');
  assert.equal(out.lineupInput.sha256,hash(out.lineupInput.path));assert.equal(out.individualInput.sha256,hash(out.individualInput.path));
- assert.equal(individuals.source.sha256,out.lineupInput.sha256);assert.equal(out.scope.length,9);
- assert.deepEqual(out.scope,calendar.fixtures.filter(f=>f.matchday===4&&f.date==='2026-11-03').map(f=>f.id));
+ assert.equal(individuals.source.sha256,out.lineupInput.sha256);assert.equal(out.scope.length,18);
+ assert.deepEqual(out.scope,calendar.fixtures.filter(f=>f.matchday===4).map(f=>f.id));
  const {sharedForecastsForMatch}=await import('../js/pages/shared-forecast-contract.mjs');
  const seen=new Set();let published=0,duo=0;
  for(const m of out.marketCatalog.matches){
@@ -19,13 +19,15 @@ async function test(){
   assert.equal(fixture.status,'probable');assert(scenario.provenance.lineupsApplied);
   assert.deepEqual(m.forecastCoverage.teamProjections.map(t=>[t.shotsTotal,t.shotsOnTarget,t.corners]),scenario.teamProjections.map(t=>[t.shotsTotal,t.shotsOnTarget,t.corners]));
   assert.equal(m.forecastCoverage.marginalVolumeProbabilitiesAvailable,false,'Point estimates must not invent threshold probabilities');
-  assert(Math.abs(Object.values(scenario.probabilities).reduce((a,b)=>a+b,0)-100)<1e-8);
+  if(scenario.status==='preliminary')assert(Math.abs(Object.values(scenario.probabilities).reduce((a,b)=>a+b,0)-100)<1e-8);
+  else {assert.equal(m.selections.length,0);assert(Object.values(scenario.probabilities).every(p=>p===null));}
   for(const t of fixture.teams){
    assert.equal(t.players.filter(p=>p.projectedRole==='starter').length,11);
    const original=source.teams.find(x=>x.fixtureId===m.matchId&&x.teamId===t.teamId);
    assert.deepEqual(t.players.filter(p=>p.projectedRole==='starter').map(p=>p.playerId),original.starters.map(p=>p.playerId));
+   assert.deepEqual(t.players.filter(p=>p.projectedRole==='bench').map(p=>p.playerId),original.bench.map(p=>p.playerId));
    const unavailableIds=new Set([...original.unavailable,...original.suspended,...original.doubtful].map(p=>p.playerId));
-   assert(t.players.every(p=>!unavailableIds.has(p.playerId)));
+   assert(t.players.every(p=>p.projectedRole==='starter'||!unavailableIds.has(p.playerId)));
    const roster=squads.teams.find(s=>canonicalTeam(s.id)===t.teamId);
    for(const p of roster.players)assert(t.players.some(x=>x.playerId===p.id)||unavailableIds.has(p.id));
    assert(t.minuteBudget.allocatedExpectedMinutes<=990.1);
@@ -61,7 +63,7 @@ async function test(){
  for(const [p,h] of Object.entries(report.protectedBefore))assert.equal(hash(p),h,'Protected canonical input changed: '+p);
  const {loadChampionsWorkspace}=await import('../js/pages/champions-workspace-catalog.mjs');
  const workspace=await loadChampionsWorkspace(async name=>read('data/normalized/'+name),4);
- assert.equal(workspace.fixtures.length,9);assert(workspace.all.every(l=>out.scope.includes(l.matchId)));
- console.log(JSON.stringify({fixtures:9,published,duo,contracts:'exact',probableOnly:true,unrelatedFixturesPreserved:true}));
+ assert.equal(workspace.fixtures.length,18);assert(workspace.all.every(l=>out.scope.includes(l.matchId)));
+ console.log(JSON.stringify({fixtures:18,published,duo,contracts:'exact',probableOnly:true,unrelatedFixturesPreserved:true}));
 }
 test().catch(e=>{console.error(e);process.exitCode=1;});

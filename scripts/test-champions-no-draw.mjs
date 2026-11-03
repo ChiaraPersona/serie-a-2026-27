@@ -12,6 +12,7 @@ for(const m of current.marketCatalog.matches){
  assert(selected.every(l=>['1','2','1X','X2'].includes(l.selection)));
  assert(!m.selections.filter(l=>l.suggestionAnalysis?.suggested).some(isExcludedStraightDraw));
  const playerContracts=rows=>rows.filter(l=>l.marketScope==='player').map(l=>{const c=structuredClone(l);delete c.suggestionAnalysis.rank;return c;});
+ if(!previous)continue; // New fixtures have no baseline before the historical policy change.
  assert(JSON.stringify(playerContracts(m.selections))===JSON.stringify(playerContracts(previous.selections)),'Player contracts/projections changed beyond display rank');
  for(const l of m.selections){const before=previous.selections.find(x=>x.selectionId===l.selectionId);assert.deepEqual(l.betSelection.quote,before.betSelection.quote);assert.deepEqual(l.betSelection.evaluation,before.betSelection.evaluation);}
  if(previous.selections.some(l=>l.suggestionAnalysis?.suggested&&isExcludedStraightDraw(l))){assert.equal(selected.length,1);replaced++;}

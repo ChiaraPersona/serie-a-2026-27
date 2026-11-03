@@ -8,16 +8,20 @@ const previous = read('data/sources/champions-probable-formations-md03-2026-27.j
 const stats = read('data/normalized/champions-player-stats-2026-27.json');
 // Explicit aliases reviewed against existing canonical team rosters; no fuzzy matching.
 const reviewed = { 'Atlético de Madrid': { Barrios: 'pablo-barrios', Llorente: 'marcos-llorente' }, 'Bodø/Glimt': { Ejven: 'hakon-evjen' }, 'Manchester United': { Mbuemo: 'bryan-mbeumo' } };
-const fixtures = read('data/normalized/champions-league-2026-27.json').fixtures.filter(f => f.matchday === 4 && f.date === '2026-11-03');
+Object.assign(reviewed, { Liverpool: { Szobozslai: 'dominik-szoboszlai' }, 'Real Madrid': { 'Rüdıger': 'antonio-rudiger', Vinicius: 'vinicius-junior' }, 'Borussia Dortmund': { Gadou: 'kouakou-gadou' }, Viking: { 'Østbø': 'arild-stb', 'Bjørdal': 'henrik-rorvik-bjordal', Baertelsen: 'anders-baertelsen' }, Arsenal: { 'Ødegaard': 'martin-degaard' } });
+const dateIndex = process.argv.indexOf('--date');
+const date = dateIndex < 0 ? '2026-11-03' : process.argv[dateIndex + 1];
+const fixtures = read('data/normalized/champions-league-2026-27.json').fixtures.filter(f => f.matchday === 4 && f.date === date);
 const inputFile = process.argv.includes('--input') ? process.argv[process.argv.indexOf('--input') + 1] : 'data/sources/lineups/champions-md04-tuesday-user-2026-11-02.txt';
-const input = fs.readFileSync(path.resolve(root, inputFile), 'utf8').split('Mercoledì 4 novembre')[0].replace(/\uFEFF/g, '');
+const input = fs.readFileSync(path.resolve(root, inputFile), 'utf8').replace(/\uFEFF/g, '');
 const lines = input.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
 const teams = [], issues = [];
 for (const f of fixtures) for (const venue of ['home', 'away']) {
   const rosterTeam = roster.teams.find(t => t.team === f[venue + 'Team']); assert(rosterTeam);
   const team = { ...rosterTeam, id: canonicalTeam(rosterTeam.id) };
   const start = lines.findIndex(l => l.startsWith(team.team + ':')); assert(start >= 0, team.team);
-  const block = lines.slice(start + 1, start + 4);
+  const nextTeam = lines.findIndex((l,i) => i > start && roster.teams.some(t => l.startsWith(t.team + ':')));
+  const block = lines.slice(start + 1, nextTeam < 0 ? lines.length : nextTeam);
   const old = previous.teams.find(t => t.team === team.team);
   function resolve(raw) {
     const m = raw.trim().match(/^(.*?)\s*(?:\(([^)]+)\))?$/); const label = m[1].trim(), key = norm(label);
@@ -48,7 +52,10 @@ console.log(JSON.stringify({ teams: teams.length, starters: teams.reduce((s,t) =
 if (issues.length) process.exitCode = 1;
 else if (process.argv.includes('--write')) {
   assert.equal(teams.length, 18); for (const t of teams) { assert.equal(t.starters.length, 11); assert.equal(new Set(t.starters.map(p => p.playerId)).size, 11); }
-  const rawFile = 'data/sources/lineups/champions-md04-tuesday-user-2026-11-02.txt';
+  const rawFile = inputFile;
   fs.mkdirSync(path.dirname(path.join(root, rawFile)), { recursive: true }); fs.writeFileSync(path.join(root, rawFile), input);
-  fs.writeFileSync(path.join(root, 'data/sources/champions-probable-formations-md04-2026-27.json'), JSON.stringify({ schemaVersion: 1, competition: 'champions-league', season: '2026-27', matchday: 4, status: 'probable', source: { type: 'user-provided', consultedAt: new Date().toISOString(), rawFile, scope: 'Tuesday 2026-11-03 only', benchPolicy: 'Unmentioned registered roster members are predicted bench; unavailable, suspended and doubtful remain separate.' }, teams }, null, 2) + '\n');
+  const target = 'data/sources/champions-probable-formations-md04-2026-27.json';
+  const existing = read(target), ids = new Set(fixtures.map(f => f.id));
+  const merged = [...existing.teams.filter(t => !ids.has(t.fixtureId)), ...teams];
+  fs.writeFileSync(path.join(root, target), JSON.stringify({ ...existing, source: { ...existing.source, consultedAt: new Date().toISOString(), rawFiles: [...new Set([...(existing.source.rawFiles || [existing.source.rawFile]), rawFile])], scope: 'Fixture-scoped user-provided probable XIs', benchPolicy: 'Unmentioned registered roster members are predicted bench; unavailable, suspended and doubtful remain separate.' }, teams: merged }, null, 2) + '\n');
 }

@@ -102,6 +102,7 @@ function buildIndividuals({lineups,database,scenarios,evidence,observed,asOf}){
 async function buildTeamCatalog(scenarios,odds){
  const {createChampionsSelection}=await import('../js/pages/champions-market-ui.mjs');
  return scenarios.fixtures.map(f=>{
+  if(f.status!=='preliminary')return {matchId:f.fixtureId,homeTeam:f.homeTeam,awayTeam:f.awayTeam,selections:[],suggestions:[]};
   const event=odds.events.find(e=>e.canonicalMatchId===f.fixtureId);assert(event&&event.canonicalDate===f.date);
   const matrix=scoreMatrix(f.expectedGoals.home,f.expectedGoals.away,7,null),legs=[];
   for(const market of event.markets){
@@ -135,6 +136,9 @@ async function buildTeamCatalog(scenarios,odds){
 }
 async function build(){
  const asOf=new Date().toISOString(),calendar=read('data/normalized/champions-league-2026-27.json'),lineups=read(lineupPath),odds=read(oddsPath);
+ const dateIndex=process.argv.indexOf('--date'),scopeDate=dateIndex<0?null:process.argv[dateIndex+1];
+ const saved=scopeDate?{catalog:read(catalogPath),individuals:read(individualPath),database:read(databasePath),archive:read('data/technical-archive/champions-md04/excluded-player-quotes.json')}:null;
+ if(scopeDate)lineups.teams=lineups.teams.filter(t=>calendar.fixtures.some(f=>f.id===t.fixtureId&&f.date===scopeDate));
  assert.equal(lineups.status,'probable');assert.equal(lineups.matchday,4);
  const ids=new Set(lineups.teams.map(t=>t.fixtureId));
  const targets=calendar.fixtures.filter(f=>ids.has(f.id)&&f.matchday===4&&eligible(f,asOf));
@@ -146,7 +150,7 @@ async function build(){
  require('./champions/md3-identity-corrections.cjs').applyIdentityCorrections(root,oldDatabase);
  const database=buildDatabase(lineups,current,registered,read('data/normalized/champions-player-stats-2025-26.json'),oldDatabase,read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json'));
  const scenarios=buildSharedScenarios({calendar:{...calendar,fixtures:targets},source:read('data/sources/champions-pilot-match-stats-2025-27.json'),styles:read('data/normalized/team-style-profiles.json'),odds,asOf,matchday:4,canonicalLineups:lineups,playerDatabase:database});
- assert(scenarios.fixtures.every(f=>f.status==='preliminary'&&f.provenance.lineupsApplied),'Incomplete team or canonical XI evidence');
+ assert(scenarios.fixtures.every(f=>f.provenance.lineupsApplied),'Incomplete team or canonical XI evidence: '+JSON.stringify(scenarios.fixtures.filter(f=>f.status!=='preliminary'||!f.provenance.lineupsApplied).map(f=>({id:f.fixtureId,status:f.status,lineups:f.provenance.lineupsApplied,samples:f.dataQuality.teamSamples}))));
  const evidence=collectRosterEvidence(root,lineups.teams.flatMap(t=>[...t.starters,...t.bench].map(p=>p.providerPlayerId)));
  const observed=loadObservedShooting(root,lineups.teams.map(t=>({...t,players:[...t.starters,...t.bench]})));
  for(const [id,rows] of observed.minutes){const keys=new Set(rows.map(r=>r.date+'|'+r.competitionCode));evidence.set(id,(evidence.get(id)||[]).filter(r=>r.season!=='2026-27'||!keys.has(r.date+'|'+r.competitionCode)).concat(rows).sort((a,b)=>a.date.localeCompare(b.date)));}
@@ -171,7 +175,9 @@ async function build(){
   return true;
  });
  const fixtureEvidence=scenarios.fixtures.map(f=>({fixtureId:f.fixtureId,date:f.date,kickoff:f.kickoff,forecast:f}));
- const publication=await buildPublication({matches:integration.matches,fixtures:fixtureEvidence,individuals,evidence:{validationRegistry:loadRegistry(),modelIds:{collective:'champions-shared:'+hash('scripts/champions/shared-scenario.cjs'),player:'champions-md04:'+hash('scripts/build-champions-md04.cjs')},officialRegistry:{},preview:{calibrationStatus:'PRELIMINARY_NOT_STATISTICALLY_VALIDATED'},pilot:read('data/normalized/champions-pilot-volume-backtest.json'),calibration:read('data/analysis/champions/model-calibration-audit-2026-10-11.json')}});
+ const supported=integration.matches.filter(m=>scenarios.fixtures.find(f=>f.fixtureId===m.matchId).status==='preliminary');
+ const publication=await buildPublication({matches:supported,fixtures:fixtureEvidence,individuals,evidence:{validationRegistry:loadRegistry(),modelIds:{collective:'champions-shared:'+hash('scripts/champions/shared-scenario.cjs'),player:'champions-md04:'+hash('scripts/build-champions-md04.cjs')},officialRegistry:{},preview:{calibrationStatus:'PRELIMINARY_NOT_STATISTICALLY_VALIDATED'},pilot:read('data/normalized/champions-pilot-volume-backtest.json'),calibration:read('data/analysis/champions/model-calibration-audit-2026-10-11.json')}});
+ for(const m of integration.matches.filter(m=>!supported.includes(m)))publication.matches.push({...m,selections:[],suggestions:[]});
  await applyPublicOddsMinimum(publication.matches);
  await require('./champions/result-preference.cjs').applyResultPreference(publication.matches);
  const all=publication.matches.flatMap(m=>m.selections),selected=all.filter(l=>l.suggestionAnalysis.suggested);
@@ -187,7 +193,7 @@ async function build(){
  // renderer. A point estimate never becomes an invented threshold probability.
  for(const match of publication.matches){
   const f=scenarios.fixtures.find(f=>f.fixtureId===match.matchId),individual=individuals.fixtures.find(f=>f.fixtureId===match.matchId);
-  match.forecastCoverage={lineupStatus:'probable',teamProjections:f.teamProjections.map((t,i)=>({...t,team:[f.homeTeam,f.awayTeam][i]})),matchProjection:f.matchProjection,cards:f.cards,result:f.probabilities,doubleChance:{'1X':f.probabilities.home+f.probabilities.draw,'X2':f.probabilities.draw+f.probabilities.away},generatedIndividualMarkets:individual.teams.flatMap(t=>t.players).filter(p=>p.projectedRole==='starter'&&p.eventProbabilities).length*5,marginalVolumeProbabilitiesAvailable:false,missing:['Probabilità delle soglie di corner, tiri e SOT di squadra non collegate a una distribuzione validata per questo modello.'],teamSampleDates:f.dataQuality.latestMatchDates};
+  match.forecastCoverage={lineupStatus:'probable',teamProjections:f.teamProjections.map((t,i)=>({...t,team:[f.homeTeam,f.awayTeam][i]})),matchProjection:f.matchProjection,cards:f.cards,result:f.probabilities,doubleChance:{'1X':f.status==='preliminary'?f.probabilities.home+f.probabilities.draw:null,'X2':f.status==='preliminary'?f.probabilities.draw+f.probabilities.away:null},generatedIndividualMarkets:individual.teams.flatMap(t=>t.players).filter(p=>p.projectedRole==='starter'&&p.eventProbabilities).length*5,marginalVolumeProbabilitiesAvailable:false,missing:['Probabilità delle soglie di corner, tiri e SOT di squadra non collegate a una distribuzione validata per questo modello.'],teamSampleDates:f.dataQuality.latestMatchDates};
  }
  const out={schemaVersion:4,competition:'champions',season:'2026-27',matchday:4,status:'PRELIMINARY_NOT_STATISTICALLY_VALIDATED',generatedAt:asOf,oddsRetrievedAt:odds.retrievedAt,scope:[...ids],lineupInput:{path:lineupPath,sha256:hash(lineupPath)},individualInput:{path:individualPath},selectionRule:'Stime preliminari sulle sole partite con entrambi gli undici probabili. Criteri e modelli condivisi invariati. Contratti DUO conservati; probabilità, quota equa ed EV DUO: N/D.',summary:{fixtures:targets.length,selections:selected.length,teamSelections:selected.filter(l=>l.marketScope!=='player').length,playerSelections:selected.filter(l=>l.marketScope==='player').length,approvedSelections:selected.filter(l=>l.qualifiedSelection).length},slips:[],marketCatalog:{schemaVersion:4,policy:'SHARED_SERIE_A_LINEUP_FORECASTS',matchday:4,matches:publication.matches,myCombo:publication.myCombo},coverage:individuals.summary};
  out.minimumSelectionOdds=1.08;
@@ -198,9 +204,21 @@ async function build(){
  const shared={...previous,generatedAt:asOf,fixtures:previous.fixtures.map(f=>scenarios.fixtures.find(n=>n.fixtureId===f.fixtureId)||f)};
  for(const f of scenarios.fixtures)if(!shared.fixtures.some(p=>p.fixtureId===f.fixtureId))shared.fixtures.push(f);
  for(const [p,h] of Object.entries(protectedBefore))assert.equal(hash(p),h,'Concurrent input change: '+p);
+ if(saved){
+  const keep=rows=>rows.filter(f=>!ids.has(f.fixtureId||f.matchId));
+  individuals.fixtures=[...keep(saved.individuals.fixtures),...individuals.fixtures];
+  const allPlayers=individuals.fixtures.flatMap(f=>f.teams.flatMap(t=>t.players));
+  individuals.summary={fixtures:individuals.fixtures.length,teams:individuals.fixtures.length*2,probableStarters:allPlayers.filter(p=>p.projectedRole==='starter').length,predictedBench:allPlayers.filter(p=>p.projectedRole==='bench').length,operationalStarters:allPlayers.filter(p=>p.projectedRole==='starter'&&p.projectedShots!==null).length,blockedStarters:allPlayers.filter(p=>p.projectedRole==='starter'&&p.projectedShots===null).length};
+  database.teams=[...saved.database.teams.filter(t=>!database.teams.some(n=>n.teamId===t.teamId)),...database.teams];
+  out.marketCatalog.matches=[...keep(saved.catalog.marketCatalog.matches),...out.marketCatalog.matches];
+  out.marketCatalog.myCombo=[...keep(saved.catalog.marketCatalog.myCombo),...out.marketCatalog.myCombo];
+  out.scope=out.marketCatalog.matches.map(m=>m.matchId);out.coverage=individuals.summary;
+  const selected=out.marketCatalog.matches.flatMap(m=>m.selections).filter(l=>l.suggestionAnalysis?.suggested);
+  out.summary={fixtures:out.scope.length,selections:selected.length,teamSelections:selected.filter(l=>l.marketScope!=='player').length,playerSelections:selected.filter(l=>l.marketScope==='player').length,approvedSelections:selected.filter(l=>l.qualifiedSelection).length};
+ }
  write(databasePath,database);write(individualPath,individuals);out.individualInput.sha256=hash(individualPath);
  write(catalogPath,out);write(sharedPath,shared);
- write('data/technical-archive/champions-md04/excluded-player-quotes.json',{excludedQuotes,candidateExclusions:integration.summary.excluded,identityConflicts:identities.conflicts});
+ write('data/technical-archive/champions-md04/excluded-player-quotes.json',{excludedQuotes:[...(saved?.archive.excludedQuotes||[]).filter(l=>!ids.has(l.matchId)),...excludedQuotes],candidateExclusions:integration.summary.excluded,identityConflicts:identities.conflicts,previousScopeArchive:saved?.archive||null});
  write('output/champions-md04/build-report.json',{generatedAt:asOf,protectedBefore,summary:out.summary,coverage:out.coverage,unquotedExcluded:excludedQuotes.length,fixtureIds:[...ids],untouchedSharedFixtures:previous.fixtures.filter(f=>!ids.has(f.fixtureId)).map(f=>({fixtureId:f.fixtureId,sha256:crypto.createHash('sha256').update(JSON.stringify(f)).digest('hex')}))});
  console.log(JSON.stringify({summary:out.summary,coverage:out.coverage,unquotedExcluded:excludedQuotes.length}));
  return out;
