@@ -16,20 +16,21 @@ async function test(){
  for(const m of out.marketCatalog.matches){
   assert(out.scope.includes(m.matchId));
   const fixture=individuals.fixtures.find(f=>f.fixtureId===m.matchId),scenario=scenarios.fixtures.find(f=>f.fixtureId===m.matchId);
-  assert.equal(fixture.status,'probable');assert(scenario.provenance.lineupsApplied);
+  assert(['probable','official'].includes(fixture.status));assert(scenario.provenance.lineupsApplied);
   assert.deepEqual(m.forecastCoverage.teamProjections.map(t=>[t.shotsTotal,t.shotsOnTarget,t.corners]),scenario.teamProjections.map(t=>[t.shotsTotal,t.shotsOnTarget,t.corners]));
   assert.equal(m.forecastCoverage.marginalVolumeProbabilitiesAvailable,false,'Point estimates must not invent threshold probabilities');
   if(scenario.status==='preliminary')assert(Math.abs(Object.values(scenario.probabilities).reduce((a,b)=>a+b,0)-100)<1e-8);
   else {assert.equal(m.selections.length,0);assert(Object.values(scenario.probabilities).every(p=>p===null));}
   for(const t of fixture.teams){
    assert.equal(t.players.filter(p=>p.projectedRole==='starter').length,11);
-   const original=source.teams.find(x=>x.fixtureId===m.matchId&&x.teamId===t.teamId);
+   const fixtureSource=read(fixture.status==='official'?'data/sources/champions-official-formations-md04-2026-27.json':'data/sources/champions-probable-formations-md04-2026-27.json');
+   const original=fixtureSource.teams.find(x=>x.fixtureId===m.matchId&&x.teamId===t.teamId);
    assert.deepEqual(t.players.filter(p=>p.projectedRole==='starter').map(p=>p.playerId),original.starters.map(p=>p.playerId));
    assert.deepEqual(t.players.filter(p=>p.projectedRole==='bench').map(p=>p.playerId),original.bench.map(p=>p.playerId));
    const unavailableIds=new Set([...original.unavailable,...original.suspended,...original.doubtful].map(p=>p.playerId));
    assert(t.players.every(p=>p.projectedRole==='starter'||!unavailableIds.has(p.playerId)));
    const roster=squads.teams.find(s=>canonicalTeam(s.id)===t.teamId);
-   for(const p of roster.players)assert(t.players.some(x=>x.playerId===p.id)||unavailableIds.has(p.id));
+   if(fixture.status!=='official')for(const p of roster.players)assert(t.players.some(x=>x.playerId===p.id)||unavailableIds.has(p.id));
    assert(t.minuteBudget.allocatedExpectedMinutes<=990.1);
    const projected=t.players.filter(p=>p.projectedShots!==null);
    if(projected.length){
@@ -52,7 +53,9 @@ async function test(){
    if(l.marketScope==='player'){
     duo++;assert(bet.market.bookmakerSemantics.duo&&bet.market.bookmakerSemantics.substituteIncluded);
     assert.equal(bet.market.bookmakerSemantics.extraTimeIncluded,/INC\.?\s*T\.?S\.?|INCL\.?\s*T\.?S\.?/i.test(market.marketName+' '+market.variantName));
-    assert(fixture.teams.flatMap(t=>t.players).some(p=>p.playerId===l.playerId&&p.projectedRole==='starter'&&!p.blockers.length));
+    const player=fixture.teams.flatMap(t=>t.players).find(p=>p.playerId===l.playerId&&p.projectedRole==='starter');assert(player);
+    if(l.publication?.userAuthorizedException){const exception=read(l.publication.userAuthorizedException.sourcePath);assert(exception.selections.some(s=>s.selectionId===l.selectionId&&s.betSelection.identity.providerMarketId===bet.identity.providerMarketId&&s.odds===l.odds));assert.equal(l.selectionStatus,'PRELIMINARY');assert.deepEqual(player.blockers,['TEAM_RECONCILIATION_NOT_PASSED']);}
+    else assert.equal(player.blockers.length,0);
     for(const k of ['modelProbabilityPct','prudentProbabilityPct','fairOdds','expectedValuePct','conservativeExpectedValuePct'])assert.equal(bet.evaluation[k],null);
     assert.equal(bet.evaluation.individualReference.appliedToDuo,false);
    }
@@ -64,6 +67,6 @@ async function test(){
  const {loadChampionsWorkspace}=await import('../js/pages/champions-workspace-catalog.mjs');
  const workspace=await loadChampionsWorkspace(async name=>read('data/normalized/'+name),4);
  assert.equal(workspace.fixtures.length,18);assert(workspace.all.every(l=>out.scope.includes(l.matchId)));
- console.log(JSON.stringify({fixtures:18,published,duo,contracts:'exact',probableOnly:true,unrelatedFixturesPreserved:true}));
+ console.log(JSON.stringify({fixtures:18,published,duo,contracts:'exact',officialAndProbable:true,unrelatedFixturesPreserved:true}));
 }
 test().catch(e=>{console.error(e);process.exitCode=1;});

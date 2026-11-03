@@ -11406,5 +11406,995 @@
     "isOutsider": false,
     "archivedAt": "2026-11-02T19:23:33.465Z",
     "archiveReason": "OFFICIAL_NONSTARTER"
+  },
+  {
+    "matchId": "ucl-2026-27-md04-01",
+    "fixture": "Shakhtar Donetsk - Sporting CP",
+    "startsAt": "2026-11-03T17:45:00.000Z",
+    "market": "TIRI TOTALI GIOCATORE (DUO)",
+    "variant": "Nestory Irankunda e suo eventuale sostituto 2+ tiri",
+    "marketScope": "player",
+    "marketFamily": "Tiri totali DUO",
+    "threshold": 1.5,
+    "selection": "OVER",
+    "label": "Nestory Irankunda e suo eventuale sostituto 2+ tiri",
+    "odds": 1.25,
+    "modelProbabilityPct": null,
+    "individualModelProbabilityPct": 43.21,
+    "fairOdds": null,
+    "expectedValuePct": null,
+    "evidenceLabel": "Stima preliminare condizionata alla partenza da titolare",
+    "providerMarketId": "832594245",
+    "providerSelectionId": "5434240346",
+    "marketUpdatedAt": "2026-11-02T11:48:14.814Z",
+    "compatibility": "BOOKMAKER_CONTRACT_VERIFIED_MODEL_PROBABILITY_UNAVAILABLE",
+    "evStatus": "DUO_PROBABILITY_NOT_VALIDATED",
+    "overlapKey": "player-forecast:ucl-2026-27-md04-01:nestory-irankunda:shots",
+    "semanticKeys": [
+      "prediction-v2-player:ucl-2026-27-md04-01:nestory-irankunda:shots"
+    ],
+    "selectionId": "forecast:v2:ucl-2026-27-md04-01:nestory-irankunda:shots:2",
+    "playerId": "nestory-irankunda",
+    "playerName": "Nestory Irankunda",
+    "teamId": "sporting-cp",
+    "lineupEligibility": {
+      "eligible": true,
+      "status": "probable-starter",
+      "source": "internal-probable-lineup",
+      "sourceUpdatedAt": "2026-11-02T17:05:30.166Z",
+      "playerId": "nestory-irankunda",
+      "playerName": "Nestory Irankunda"
+    },
+    "catalogOrigin": "prediction-v2-player-forecast",
+    "betSelection": {
+      "schemaVersion": 1,
+      "selectionId": "forecast:v2:ucl-2026-27-md04-01:nestory-irankunda:shots:2",
+      "identity": {
+        "status": "VERIFIED_PROVIDER_IDS",
+        "matchId": "ucl-2026-27-md04-01",
+        "provider": "sisal",
+        "providerMarketId": "832594245",
+        "providerSelectionId": "5434240346",
+        "canonicalPlayerIds": [
+          "nestory-irankunda"
+        ]
+      },
+      "market": {
+        "name": "TIRI TOTALI GIOCATORE (DUO)",
+        "variant": "Nestory Irankunda e suo eventuale sostituto 2+ tiri",
+        "scope": "player",
+        "family": "Tiri totali DUO",
+        "threshold": 1.5,
+        "selection": "OVER",
+        "subject": {
+          "type": "named-player-with-substitute",
+          "id": "nestory-irankunda",
+          "name": "Nestory Irankunda",
+          "teamId": "sporting-cp"
+        },
+        "bookmakerSemantics": {
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "IRANKUNDA N. U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "selectionName": "OVER",
+          "marketCode": "28507",
+          "providerPlayerId": "603570",
+          "duo": true,
+          "substituteIncluded": true,
+          "postsAndCrossbarIncluded": false,
+          "extraTimeIncluded": true,
+          "subjectType": "named-player-and-substitute"
+        }
+      },
+      "quote": {
+        "decimal": 1.25,
+        "verifiedAt": "2026-11-02T16:57:17.840Z",
+        "marketUpdatedAt": "2026-11-02T11:48:14.814Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/serie-a.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-11-02T16-57-17-840Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "operational": {
+        "classification": "WATCH",
+        "classificationReason": "Profilo presente nella lettura V2; giocabilità fondata sul contratto Sisal DUO verificato, non su un EV DUO.",
+        "reliability": {
+          "level": "Bassa",
+          "status": "LIMITED_EVIDENCE",
+          "reason": "Unvalidated competition-specific stability; no positive reliability inferred from coverage.",
+          "evidence": {
+            "teamSamples": [
+              11,
+              44
+            ],
+            "currentSeasonSamples": null,
+            "minuteSample": {
+              "exactStarterAppearances": 6,
+              "competitionScope": "cross-competition-fallback"
+            },
+            "historicalMinutes": 2031,
+            "expectedMinutes": 72.5,
+            "startingProbability": null,
+            "role": "forward",
+            "baselineStatus": "diagnostic-rate-only",
+            "opponentInputs": [
+              {
+                "source": "away-for",
+                "weightPct": 45,
+                "mean": 12.81,
+                "matches": 22
+              },
+              {
+                "source": "home-opponent-against",
+                "weightPct": 35,
+                "mean": 5.49,
+                "matches": 7
+              },
+              {
+                "source": "recent-8",
+                "weightPct": 20,
+                "mean": 15.73,
+                "matches": 8
+              }
+            ]
+          },
+          "missing": [
+            "STARTING_PROBABILITY_NOT_ESTIMATED",
+            "PLAYER_TEAM_JOINT_ALLOCATION_NOT_VALIDATED",
+            "EVENT_PROBABILITY_MISSING",
+            "BASELINE_DIAGNOSTIC_ONLY"
+          ]
+        },
+        "playability": {
+          "status": "PLAYABLE",
+          "code": null,
+          "reason": null
+        }
+      },
+      "evaluation": {
+        "modelProbabilityPct": null,
+        "fairOdds": null,
+        "expectedValuePct": null,
+        "status": "DUO_PROBABILITY_UNAVAILABLE",
+        "kind": "SISAL_DUO_PLAYER_THRESHOLD",
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "DUO_CONTRACT_UNAVAILABLE",
+        "fairOddsBasis": null,
+        "expectedValueBasis": null,
+        "individualReference": {
+          "modelProbabilityPct": 43.21,
+          "probabilitySemantics": "INDIVIDUAL_PLAYER_V2",
+          "modelTarget": "player:nestory-irankunda:shots:2+",
+          "appliedToDuo": false
+        },
+        "provenance": {
+          "source": "predictions.shooters.allPlayers.shotProbabilities.over15",
+          "modelVersion": "existing-probable-lineup",
+          "playerMarketModelVersion": null,
+          "predictionGeneratedAt": null,
+          "modelTarget": "player:nestory-irankunda:shots:2+"
+        },
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": null,
+          "blocker": "Temporal holdout for this Champions model and exact event: clusters>=180, deltaBrier<=0.005, ECE<=0.08, absolute bias<=2.5 shots / 1.25 SOT or corners; exact threshold >=30 positive and >=30 negative outcomes, deltaBrier<=0.015, ECE<=0.10 (existing V2 gates)."
+        },
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-md04:db3a1e7f39462cd17558cf40692ccf5930125c13a1346c5515bf8e6ca09e1fab",
+          "eventKey": "[\"[\\\"champions-md04:db3a1e7f39462cd17558cf40692ccf5930125c13a1346c5515bf8e6ca09e1fab\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",true,false,true,true]\",1.5,\"OVER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Temporal holdout for this Champions model and exact event: clusters>=180, deltaBrier<=0.005, ECE<=0.08, absolute bias<=2.5 shots / 1.25 SOT or corners; exact threshold >=30 positive and >=30 negative outcomes, deltaBrier<=0.015, ECE<=0.10 (existing V2 gates).",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "shots",
+          "evidence": null,
+          "evidenceScope": "NO_PLAYER_EVENT_TEMPORAL_HOLDOUT",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/normalized/champions-pilot-volume-backtest.json",
+            "data/analysis/champions/model-calibration-audit-2026-10-11.json"
+          ],
+          "calibrationGate": "CHAMPIONS MODEL-CALIBRATION GATE = PARTIAL"
+        }
+      },
+      "compatibility": {
+        "status": "BOOKMAKER_CONTRACT_VERIFIED_MODEL_PROBABILITY_UNAVAILABLE",
+        "reason": "Contratto Sisal DUO riconciliato per partita, provider player ID, codice mercato e soglia; la probabilità V2 individuale non è applicata al DUO.",
+        "modelTarget": "player:nestory-irankunda:shots:2+",
+        "bookmakerTarget": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS · IRANKUNDA N. U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S."
+      },
+      "overlap": {
+        "overlapKey": "player-forecast:ucl-2026-27-md04-01:nestory-irankunda:shots",
+        "semanticKeys": [
+          "prediction-v2-player:ucl-2026-27-md04-01:nestory-irankunda:shots"
+        ]
+      },
+      "warnings": [
+        "DUO_PROBABILITY_NOT_VALIDATED",
+        "INDIVIDUAL_V2_NOT_APPLIED_TO_DUO"
+      ],
+      "risks": []
+    },
+    "forecastEvidence": {
+      "sources": [
+        "primary-shots",
+        "primary-sot"
+      ],
+      "role": "forward",
+      "detailedRole": null,
+      "expectedMinutes": 72.5,
+      "projectedShots": 1.47,
+      "projectedShotsOnTarget": 0.46,
+      "stability": "medium",
+      "matchupEvidence": [],
+      "individualModelProbabilityPct": 43.21,
+      "individualModelTarget": "player:nestory-irankunda:shots:2+",
+      "appliedToDuo": false,
+      "lineupInput": "data/sources/champions-probable-formations-md04-2026-27.json"
+    },
+    "suggestionAnalysis": {
+      "version": 3,
+      "suggested": true,
+      "rank": 4,
+      "family": "shots",
+      "familyLabel": "Tiri totali",
+      "criteria": "APPROVED_BASELINE_PLUS_STRUCTURED_READING_V2_NO_EV_GATE",
+      "reasons": [
+        "NOT_MODELLED",
+        "ROBUST_PROBABILITY_NOT_AVAILABLE",
+        "SETTLEMENT_NOT_SUPPORTED",
+        "NOT_COHERENT_WITH_PREVALENT_SCENARIO",
+        "NO_COMPARABLE_SCORE_EVENT",
+        "STATISTICAL_FAMILY_NOT_VALIDATED",
+        "CHAMPIONS_EVENT_MODEL_NOT_VALIDATED"
+      ],
+      "conservativeExpectedValuePct": null,
+      "canonicalThresholdIdentity": "shots:player:nestory-irankunda:over",
+      "resultThesisIdentity": null,
+      "rankingMode": "reading-v2-structured",
+      "rankingTuple": null,
+      "heuristicDisclosure": "Soglia letta dalla previsione individuale V2; quota riferita al contratto Sisal DUO. Probabilità DUO ed EV non disponibili.",
+      "quoteAvailability": "AVAILABLE_AT_SNAPSHOT",
+      "baselineApproved": false,
+      "sharedAdmission": {
+        "version": 2,
+        "suggested": false,
+        "rank": null,
+        "family": "shots",
+        "familyLabel": "Tiri totali",
+        "criteria": "SPORTS_COHERENCE_VALIDATED_MODEL_RELIABILITY_AND_BALANCED_CANONICAL_THRESHOLD_WITH_EV_INFORMATION_ONLY",
+        "reasons": [
+          "NOT_MODELLED",
+          "ROBUST_PROBABILITY_NOT_AVAILABLE",
+          "SETTLEMENT_NOT_SUPPORTED",
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO",
+          "NO_COMPARABLE_SCORE_EVENT",
+          "STATISTICAL_FAMILY_NOT_VALIDATED"
+        ],
+        "conservativeExpectedValuePct": null,
+        "canonicalThresholdIdentity": "shots:player:nestory-irankunda:over:TIRI TOTALI DUO",
+        "resultThesisIdentity": null,
+        "rankingMode": "probability-first",
+        "resultChoice": "legacy",
+        "rankingTuple": null,
+        "heuristicDisclosure": "Operational portfolio rule applied to an existing probability model.",
+        "quoteAvailability": "AVAILABLE_AT_2026_10_09_SNAPSHOT_CURRENT_NOT_VERIFIED"
+      }
+    },
+    "context": {
+      "competition": "champions",
+      "season": "2026-27",
+      "matchday": 4,
+      "forecastPolicy": "SERIE_A_CURRENT"
+    },
+    "scenarioAnalysis": {
+      "version": 1,
+      "classification": "NOT_DETERMINABLE",
+      "label": "Non determinabile dai dati disponibili",
+      "prevalentOutcome": "1",
+      "compatibleOutcomes": null,
+      "pushOutcomes": [],
+      "basis": "NOT_MODELLED",
+      "eventKey": null,
+      "eventProbabilityPct": null,
+      "scoreMask": null,
+      "reason": "La probabilità specifica non è disponibile; la relazione con lo scenario prevalente non viene stimata.",
+      "status": "UNVERIFIABLE",
+      "checks": {
+        "contradictions": [],
+        "missing": [
+          "STARTING_PROBABILITY_NOT_ESTIMATED",
+          "PLAYER_TEAM_JOINT_ALLOCATION_NOT_VALIDATED",
+          "EVENT_PROBABILITY_MISSING"
+        ]
+      },
+      "conditionalOnProbableStart": true
+    },
+    "approvedPreliminary": false,
+    "selectionStatus": "PRELIMINARY",
+    "qualifiedSelection": false,
+    "publication": {
+      "status": "PRELIMINARY",
+      "approvalGate": "MD7_SHARED_SELECTOR_AND_CHAMPIONS_EVENT_VALIDATION",
+      "reasons": [
+        "NOT_MODELLED",
+        "ROBUST_PROBABILITY_NOT_AVAILABLE",
+        "SETTLEMENT_NOT_SUPPORTED",
+        "NOT_COHERENT_WITH_PREVALENT_SCENARIO",
+        "NO_COMPARABLE_SCORE_EVENT",
+        "STATISTICAL_FAMILY_NOT_VALIDATED",
+        "CHAMPIONS_EVENT_MODEL_NOT_VALIDATED"
+      ],
+      "identity": "ucl-2026-27-md04-01:nestory-irankunda:shots"
+    }
+  },
+  {
+    "matchId": "ucl-2026-27-md04-02",
+    "fixture": "Galatasaray - Stuttgart",
+    "startsAt": "2026-11-03T17:45:00.000Z",
+    "market": "TIRI TOTALI GIOCATORE (DUO)",
+    "variant": "Gabriel Sara e suo eventuale sostituto 3+ tiri",
+    "marketScope": "player",
+    "marketFamily": "Tiri totali DUO",
+    "threshold": 2.5,
+    "selection": "OVER",
+    "label": "Gabriel Sara e suo eventuale sostituto 3+ tiri",
+    "odds": 1.47,
+    "modelProbabilityPct": null,
+    "individualModelProbabilityPct": 49.9,
+    "fairOdds": null,
+    "expectedValuePct": null,
+    "evidenceLabel": "Stima preliminare condizionata alla partenza da titolare",
+    "providerMarketId": "832233396",
+    "providerSelectionId": "5432230149",
+    "marketUpdatedAt": "2026-11-02T15:11:42.019Z",
+    "compatibility": "BOOKMAKER_CONTRACT_VERIFIED_MODEL_PROBABILITY_UNAVAILABLE",
+    "evStatus": "DUO_PROBABILITY_NOT_VALIDATED",
+    "overlapKey": "player-forecast:ucl-2026-27-md04-02:gabriel-sara:shots",
+    "semanticKeys": [
+      "prediction-v2-player:ucl-2026-27-md04-02:gabriel-sara:shots"
+    ],
+    "selectionId": "forecast:v2:ucl-2026-27-md04-02:gabriel-sara:shots:3",
+    "playerId": "gabriel-sara",
+    "playerName": "Gabriel Sara",
+    "teamId": "galatasaray",
+    "lineupEligibility": {
+      "eligible": true,
+      "status": "probable-starter",
+      "source": "internal-probable-lineup",
+      "sourceUpdatedAt": "2026-11-02T17:05:30.166Z",
+      "playerId": "gabriel-sara",
+      "playerName": "Gabriel Sara"
+    },
+    "catalogOrigin": "prediction-v2-player-forecast",
+    "betSelection": {
+      "schemaVersion": 1,
+      "selectionId": "forecast:v2:ucl-2026-27-md04-02:gabriel-sara:shots:3",
+      "identity": {
+        "status": "VERIFIED_PROVIDER_IDS",
+        "matchId": "ucl-2026-27-md04-02",
+        "provider": "sisal",
+        "providerMarketId": "832233396",
+        "providerSelectionId": "5432230149",
+        "canonicalPlayerIds": [
+          "gabriel-sara"
+        ]
+      },
+      "market": {
+        "name": "TIRI TOTALI GIOCATORE (DUO)",
+        "variant": "Gabriel Sara e suo eventuale sostituto 3+ tiri",
+        "scope": "player",
+        "family": "Tiri totali DUO",
+        "threshold": 2.5,
+        "selection": "OVER",
+        "subject": {
+          "type": "named-player-with-substitute",
+          "id": "gabriel-sara",
+          "name": "Gabriel Sara",
+          "teamId": "galatasaray"
+        },
+        "bookmakerSemantics": {
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "GABRIEL SARA U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "selectionName": "OVER",
+          "marketCode": "28507",
+          "providerPlayerId": "345639",
+          "duo": true,
+          "substituteIncluded": true,
+          "postsAndCrossbarIncluded": false,
+          "extraTimeIncluded": true,
+          "subjectType": "named-player-and-substitute"
+        }
+      },
+      "quote": {
+        "decimal": 1.47,
+        "verifiedAt": "2026-11-02T16:57:17.840Z",
+        "marketUpdatedAt": "2026-11-02T15:11:42.019Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/serie-a.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-11-02T16-57-17-840Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "operational": {
+        "classification": "WATCH",
+        "classificationReason": "Profilo presente nella lettura V2; giocabilità fondata sul contratto Sisal DUO verificato, non su un EV DUO.",
+        "reliability": {
+          "level": "Bassa",
+          "status": "LIMITED_EVIDENCE",
+          "reason": "Unvalidated competition-specific stability; no positive reliability inferred from coverage.",
+          "evidence": {
+            "teamSamples": [
+              9,
+              42
+            ],
+            "currentSeasonSamples": null,
+            "minuteSample": {
+              "exactStarterAppearances": 8,
+              "competitionScope": "uefa-only"
+            },
+            "historicalMinutes": 2577,
+            "expectedMinutes": 82.5,
+            "startingProbability": null,
+            "role": "midfielder",
+            "baselineStatus": "diagnostic-rate-only",
+            "opponentInputs": [
+              {
+                "source": "home-for",
+                "weightPct": 45,
+                "mean": 26.28,
+                "matches": 5
+              },
+              {
+                "source": "away-opponent-against",
+                "weightPct": 35,
+                "mean": 18.26,
+                "matches": 22
+              },
+              {
+                "source": "recent-8",
+                "weightPct": 20,
+                "mean": 18.55,
+                "matches": 8
+              }
+            ]
+          },
+          "missing": [
+            "STARTING_PROBABILITY_NOT_ESTIMATED",
+            "PLAYER_TEAM_JOINT_ALLOCATION_NOT_VALIDATED",
+            "EVENT_PROBABILITY_MISSING",
+            "BASELINE_DIAGNOSTIC_ONLY"
+          ]
+        },
+        "playability": {
+          "status": "PLAYABLE",
+          "code": null,
+          "reason": null
+        }
+      },
+      "evaluation": {
+        "modelProbabilityPct": null,
+        "fairOdds": null,
+        "expectedValuePct": null,
+        "status": "DUO_PROBABILITY_UNAVAILABLE",
+        "kind": "SISAL_DUO_PLAYER_THRESHOLD",
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "DUO_CONTRACT_UNAVAILABLE",
+        "fairOddsBasis": null,
+        "expectedValueBasis": null,
+        "individualReference": {
+          "modelProbabilityPct": 49.9,
+          "probabilitySemantics": "INDIVIDUAL_PLAYER_V2",
+          "modelTarget": "player:gabriel-sara:shots:3+",
+          "appliedToDuo": false
+        },
+        "provenance": {
+          "source": "predictions.shooters.allPlayers.shotProbabilities.over25",
+          "modelVersion": "existing-probable-lineup",
+          "playerMarketModelVersion": null,
+          "predictionGeneratedAt": null,
+          "modelTarget": "player:gabriel-sara:shots:3+"
+        },
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": null,
+          "blocker": "Temporal holdout for this Champions model and exact event: clusters>=180, deltaBrier<=0.005, ECE<=0.08, absolute bias<=2.5 shots / 1.25 SOT or corners; exact threshold >=30 positive and >=30 negative outcomes, deltaBrier<=0.015, ECE<=0.10 (existing V2 gates)."
+        },
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-md04:db3a1e7f39462cd17558cf40692ccf5930125c13a1346c5515bf8e6ca09e1fab",
+          "eventKey": "[\"[\\\"champions-md04:db3a1e7f39462cd17558cf40692ccf5930125c13a1346c5515bf8e6ca09e1fab\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",true,false,true,true]\",2.5,\"OVER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Temporal holdout for this Champions model and exact event: clusters>=180, deltaBrier<=0.005, ECE<=0.08, absolute bias<=2.5 shots / 1.25 SOT or corners; exact threshold >=30 positive and >=30 negative outcomes, deltaBrier<=0.015, ECE<=0.10 (existing V2 gates).",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "shots",
+          "evidence": null,
+          "evidenceScope": "NO_PLAYER_EVENT_TEMPORAL_HOLDOUT",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/normalized/champions-pilot-volume-backtest.json",
+            "data/analysis/champions/model-calibration-audit-2026-10-11.json"
+          ],
+          "calibrationGate": "CHAMPIONS MODEL-CALIBRATION GATE = PARTIAL"
+        }
+      },
+      "compatibility": {
+        "status": "BOOKMAKER_CONTRACT_VERIFIED_MODEL_PROBABILITY_UNAVAILABLE",
+        "reason": "Contratto Sisal DUO riconciliato per partita, provider player ID, codice mercato e soglia; la probabilità V2 individuale non è applicata al DUO.",
+        "modelTarget": "player:gabriel-sara:shots:3+",
+        "bookmakerTarget": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS · GABRIEL SARA U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S."
+      },
+      "overlap": {
+        "overlapKey": "player-forecast:ucl-2026-27-md04-02:gabriel-sara:shots",
+        "semanticKeys": [
+          "prediction-v2-player:ucl-2026-27-md04-02:gabriel-sara:shots"
+        ]
+      },
+      "warnings": [
+        "DUO_PROBABILITY_NOT_VALIDATED",
+        "INDIVIDUAL_V2_NOT_APPLIED_TO_DUO"
+      ],
+      "risks": []
+    },
+    "forecastEvidence": {
+      "sources": [
+        "primary-shots",
+        "primary-sot"
+      ],
+      "role": "midfielder",
+      "detailedRole": null,
+      "expectedMinutes": 82.5,
+      "projectedShots": 2.67,
+      "projectedShotsOnTarget": 0.84,
+      "stability": "medium",
+      "matchupEvidence": [],
+      "individualModelProbabilityPct": 49.9,
+      "individualModelTarget": "player:gabriel-sara:shots:3+",
+      "appliedToDuo": false,
+      "lineupInput": "data/sources/champions-probable-formations-md04-2026-27.json"
+    },
+    "suggestionAnalysis": {
+      "version": 3,
+      "suggested": true,
+      "rank": 4,
+      "family": "shots",
+      "familyLabel": "Tiri totali",
+      "criteria": "APPROVED_BASELINE_PLUS_STRUCTURED_READING_V2_NO_EV_GATE",
+      "reasons": [
+        "NOT_MODELLED",
+        "ROBUST_PROBABILITY_NOT_AVAILABLE",
+        "SETTLEMENT_NOT_SUPPORTED",
+        "NOT_COHERENT_WITH_PREVALENT_SCENARIO",
+        "NO_COMPARABLE_SCORE_EVENT",
+        "STATISTICAL_FAMILY_NOT_VALIDATED",
+        "CHAMPIONS_EVENT_MODEL_NOT_VALIDATED"
+      ],
+      "conservativeExpectedValuePct": null,
+      "canonicalThresholdIdentity": "shots:player:gabriel-sara:over",
+      "resultThesisIdentity": null,
+      "rankingMode": "reading-v2-structured",
+      "rankingTuple": null,
+      "heuristicDisclosure": "Soglia letta dalla previsione individuale V2; quota riferita al contratto Sisal DUO. Probabilità DUO ed EV non disponibili.",
+      "quoteAvailability": "AVAILABLE_AT_SNAPSHOT",
+      "baselineApproved": false,
+      "sharedAdmission": {
+        "version": 2,
+        "suggested": false,
+        "rank": null,
+        "family": "shots",
+        "familyLabel": "Tiri totali",
+        "criteria": "SPORTS_COHERENCE_VALIDATED_MODEL_RELIABILITY_AND_BALANCED_CANONICAL_THRESHOLD_WITH_EV_INFORMATION_ONLY",
+        "reasons": [
+          "NOT_MODELLED",
+          "ROBUST_PROBABILITY_NOT_AVAILABLE",
+          "SETTLEMENT_NOT_SUPPORTED",
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO",
+          "NO_COMPARABLE_SCORE_EVENT",
+          "STATISTICAL_FAMILY_NOT_VALIDATED"
+        ],
+        "conservativeExpectedValuePct": null,
+        "canonicalThresholdIdentity": "shots:player:gabriel-sara:over:TIRI TOTALI DUO",
+        "resultThesisIdentity": null,
+        "rankingMode": "probability-first",
+        "resultChoice": "legacy",
+        "rankingTuple": null,
+        "heuristicDisclosure": "Operational portfolio rule applied to an existing probability model.",
+        "quoteAvailability": "AVAILABLE_AT_2026_10_09_SNAPSHOT_CURRENT_NOT_VERIFIED"
+      }
+    },
+    "context": {
+      "competition": "champions",
+      "season": "2026-27",
+      "matchday": 4,
+      "forecastPolicy": "SERIE_A_CURRENT"
+    },
+    "scenarioAnalysis": {
+      "version": 1,
+      "classification": "NOT_DETERMINABLE",
+      "label": "Non determinabile dai dati disponibili",
+      "prevalentOutcome": "1",
+      "compatibleOutcomes": null,
+      "pushOutcomes": [],
+      "basis": "NOT_MODELLED",
+      "eventKey": null,
+      "eventProbabilityPct": null,
+      "scoreMask": null,
+      "reason": "La probabilità specifica non è disponibile; la relazione con lo scenario prevalente non viene stimata.",
+      "status": "UNVERIFIABLE",
+      "checks": {
+        "contradictions": [],
+        "missing": [
+          "STARTING_PROBABILITY_NOT_ESTIMATED",
+          "PLAYER_TEAM_JOINT_ALLOCATION_NOT_VALIDATED",
+          "EVENT_PROBABILITY_MISSING"
+        ]
+      },
+      "conditionalOnProbableStart": true
+    },
+    "approvedPreliminary": false,
+    "selectionStatus": "PRELIMINARY",
+    "qualifiedSelection": false,
+    "publication": {
+      "status": "PRELIMINARY",
+      "approvalGate": "MD7_SHARED_SELECTOR_AND_CHAMPIONS_EVENT_VALIDATION",
+      "reasons": [
+        "NOT_MODELLED",
+        "ROBUST_PROBABILITY_NOT_AVAILABLE",
+        "SETTLEMENT_NOT_SUPPORTED",
+        "NOT_COHERENT_WITH_PREVALENT_SCENARIO",
+        "NO_COMPARABLE_SCORE_EVENT",
+        "STATISTICAL_FAMILY_NOT_VALIDATED",
+        "CHAMPIONS_EVENT_MODEL_NOT_VALIDATED"
+      ],
+      "identity": "ucl-2026-27-md04-02:gabriel-sara:shots"
+    }
+  },
+  {
+    "matchId": "ucl-2026-27-md04-02",
+    "fixture": "Galatasaray - Stuttgart",
+    "startsAt": "2026-11-03T17:45:00.000Z",
+    "market": "TIRI IN PORTA GIOCATORE (DUO, PALI/TRAVERSE INCLUSI)",
+    "variant": "Gabriel Sara e suo eventuale sostituto 1+ tiri in porta (pali e traverse inclusi)",
+    "marketScope": "player",
+    "marketFamily": "Tiri in porta DUO",
+    "threshold": 0.5,
+    "selection": "OVER",
+    "label": "Gabriel Sara e suo eventuale sostituto 1+ tiri in porta (pali e traverse inclusi)",
+    "odds": 1.25,
+    "modelProbabilityPct": null,
+    "individualModelProbabilityPct": 56.83,
+    "fairOdds": null,
+    "expectedValuePct": null,
+    "evidenceLabel": "Stima preliminare condizionata alla partenza da titolare",
+    "providerMarketId": "832229620",
+    "providerSelectionId": "5432227703",
+    "marketUpdatedAt": "2026-11-02T11:47:49.217Z",
+    "compatibility": "BOOKMAKER_CONTRACT_VERIFIED_MODEL_PROBABILITY_UNAVAILABLE",
+    "evStatus": "DUO_PROBABILITY_NOT_VALIDATED",
+    "overlapKey": "player-forecast:ucl-2026-27-md04-02:gabriel-sara:sot",
+    "semanticKeys": [
+      "prediction-v2-player:ucl-2026-27-md04-02:gabriel-sara:sot"
+    ],
+    "selectionId": "forecast:v2:ucl-2026-27-md04-02:gabriel-sara:sot:1",
+    "playerId": "gabriel-sara",
+    "playerName": "Gabriel Sara",
+    "teamId": "galatasaray",
+    "lineupEligibility": {
+      "eligible": true,
+      "status": "probable-starter",
+      "source": "internal-probable-lineup",
+      "sourceUpdatedAt": "2026-11-02T17:05:30.166Z",
+      "playerId": "gabriel-sara",
+      "playerName": "Gabriel Sara"
+    },
+    "catalogOrigin": "prediction-v2-player-forecast",
+    "betSelection": {
+      "schemaVersion": 1,
+      "selectionId": "forecast:v2:ucl-2026-27-md04-02:gabriel-sara:sot:1",
+      "identity": {
+        "status": "VERIFIED_PROVIDER_IDS",
+        "matchId": "ucl-2026-27-md04-02",
+        "provider": "sisal",
+        "providerMarketId": "832229620",
+        "providerSelectionId": "5432227703",
+        "canonicalPlayerIds": [
+          "gabriel-sara"
+        ]
+      },
+      "market": {
+        "name": "TIRI IN PORTA GIOCATORE (DUO, PALI/TRAVERSE INCLUSI)",
+        "variant": "Gabriel Sara e suo eventuale sostituto 1+ tiri in porta (pali e traverse inclusi)",
+        "scope": "player",
+        "family": "Tiri in porta DUO",
+        "threshold": 0.5,
+        "selection": "OVER",
+        "subject": {
+          "type": "named-player-with-substitute",
+          "id": "gabriel-sara",
+          "name": "Gabriel Sara",
+          "teamId": "galatasaray"
+        },
+        "bookmakerSemantics": {
+          "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+          "variantName": "GABRIEL SARA U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+          "selectionName": "OVER",
+          "marketCode": "28506",
+          "providerPlayerId": "345639",
+          "duo": true,
+          "substituteIncluded": true,
+          "postsAndCrossbarIncluded": true,
+          "extraTimeIncluded": true,
+          "subjectType": "named-player-and-substitute"
+        }
+      },
+      "quote": {
+        "decimal": 1.25,
+        "verifiedAt": "2026-11-02T16:57:17.840Z",
+        "marketUpdatedAt": "2026-11-02T11:47:49.217Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/serie-a.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-11-02T16-57-17-840Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "operational": {
+        "classification": "WATCH",
+        "classificationReason": "Profilo presente nella lettura V2; giocabilità fondata sul contratto Sisal DUO verificato, non su un EV DUO.",
+        "reliability": {
+          "level": "Bassa",
+          "status": "LIMITED_EVIDENCE",
+          "reason": "Unvalidated competition-specific stability; no positive reliability inferred from coverage.",
+          "evidence": {
+            "teamSamples": [
+              9,
+              42
+            ],
+            "currentSeasonSamples": null,
+            "minuteSample": {
+              "exactStarterAppearances": 8,
+              "competitionScope": "uefa-only"
+            },
+            "historicalMinutes": 2577,
+            "expectedMinutes": 82.5,
+            "startingProbability": null,
+            "role": "midfielder",
+            "baselineStatus": "diagnostic-rate-only",
+            "opponentInputs": [
+              {
+                "source": "home-for",
+                "weightPct": 45,
+                "mean": 26.28,
+                "matches": 5
+              },
+              {
+                "source": "away-opponent-against",
+                "weightPct": 35,
+                "mean": 18.26,
+                "matches": 22
+              },
+              {
+                "source": "recent-8",
+                "weightPct": 20,
+                "mean": 18.55,
+                "matches": 8
+              }
+            ]
+          },
+          "missing": [
+            "STARTING_PROBABILITY_NOT_ESTIMATED",
+            "PLAYER_TEAM_JOINT_ALLOCATION_NOT_VALIDATED",
+            "EVENT_PROBABILITY_MISSING",
+            "BASELINE_DIAGNOSTIC_ONLY"
+          ]
+        },
+        "playability": {
+          "status": "PLAYABLE",
+          "code": null,
+          "reason": null
+        }
+      },
+      "evaluation": {
+        "modelProbabilityPct": null,
+        "fairOdds": null,
+        "expectedValuePct": null,
+        "status": "DUO_PROBABILITY_UNAVAILABLE",
+        "kind": "SISAL_DUO_PLAYER_THRESHOLD",
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "DUO_CONTRACT_UNAVAILABLE",
+        "fairOddsBasis": null,
+        "expectedValueBasis": null,
+        "individualReference": {
+          "modelProbabilityPct": 56.83,
+          "probabilitySemantics": "INDIVIDUAL_PLAYER_V2",
+          "modelTarget": "player:gabriel-sara:sot:1+",
+          "appliedToDuo": false
+        },
+        "provenance": {
+          "source": "predictions.shooters.allPlayers.shotOnTargetProbabilities.over05",
+          "modelVersion": "existing-probable-lineup",
+          "playerMarketModelVersion": null,
+          "predictionGeneratedAt": null,
+          "modelTarget": "player:gabriel-sara:sot:1+"
+        },
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": null,
+          "blocker": "Temporal holdout for this Champions model and exact event: clusters>=180, deltaBrier<=0.005, ECE<=0.08, absolute bias<=2.5 shots / 1.25 SOT or corners; exact threshold >=30 positive and >=30 negative outcomes, deltaBrier<=0.015, ECE<=0.10 (existing V2 gates)."
+        },
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-md04:db3a1e7f39462cd17558cf40692ccf5930125c13a1346c5515bf8e6ca09e1fab",
+          "eventKey": "[\"[\\\"champions-md04:db3a1e7f39462cd17558cf40692ccf5930125c13a1346c5515bf8e6ca09e1fab\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",true,true,true,true]\",0.5,\"OVER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Temporal holdout for this Champions model and exact event: clusters>=180, deltaBrier<=0.005, ECE<=0.08, absolute bias<=2.5 shots / 1.25 SOT or corners; exact threshold >=30 positive and >=30 negative outcomes, deltaBrier<=0.015, ECE<=0.10 (existing V2 gates).",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "sot",
+          "evidence": null,
+          "evidenceScope": "NO_PLAYER_EVENT_TEMPORAL_HOLDOUT",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/normalized/champions-pilot-volume-backtest.json",
+            "data/analysis/champions/model-calibration-audit-2026-10-11.json"
+          ],
+          "calibrationGate": "CHAMPIONS MODEL-CALIBRATION GATE = PARTIAL"
+        }
+      },
+      "compatibility": {
+        "status": "BOOKMAKER_CONTRACT_VERIFIED_MODEL_PROBABILITY_UNAVAILABLE",
+        "reason": "Contratto Sisal DUO riconciliato per partita, provider player ID, codice mercato e soglia; la probabilità V2 individuale non è applicata al DUO.",
+        "modelTarget": "player:gabriel-sara:sot:1+",
+        "bookmakerTarget": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS · GABRIEL SARA U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S."
+      },
+      "overlap": {
+        "overlapKey": "player-forecast:ucl-2026-27-md04-02:gabriel-sara:sot",
+        "semanticKeys": [
+          "prediction-v2-player:ucl-2026-27-md04-02:gabriel-sara:sot"
+        ]
+      },
+      "warnings": [
+        "DUO_PROBABILITY_NOT_VALIDATED",
+        "INDIVIDUAL_V2_NOT_APPLIED_TO_DUO"
+      ],
+      "risks": []
+    },
+    "forecastEvidence": {
+      "sources": [
+        "primary-shots",
+        "primary-sot"
+      ],
+      "role": "midfielder",
+      "detailedRole": null,
+      "expectedMinutes": 82.5,
+      "projectedShots": 2.67,
+      "projectedShotsOnTarget": 0.84,
+      "stability": "medium",
+      "matchupEvidence": [],
+      "individualModelProbabilityPct": 56.83,
+      "individualModelTarget": "player:gabriel-sara:sot:1+",
+      "appliedToDuo": false,
+      "lineupInput": "data/sources/champions-probable-formations-md04-2026-27.json"
+    },
+    "suggestionAnalysis": {
+      "version": 3,
+      "suggested": true,
+      "rank": 8,
+      "family": "sot",
+      "familyLabel": "Tiri in porta",
+      "criteria": "APPROVED_BASELINE_PLUS_STRUCTURED_READING_V2_NO_EV_GATE",
+      "reasons": [
+        "NOT_MODELLED",
+        "ROBUST_PROBABILITY_NOT_AVAILABLE",
+        "SETTLEMENT_NOT_SUPPORTED",
+        "NOT_COHERENT_WITH_PREVALENT_SCENARIO",
+        "NO_COMPARABLE_SCORE_EVENT",
+        "STATISTICAL_FAMILY_NOT_VALIDATED",
+        "CHAMPIONS_EVENT_MODEL_NOT_VALIDATED"
+      ],
+      "conservativeExpectedValuePct": null,
+      "canonicalThresholdIdentity": "sot:player:gabriel-sara:over",
+      "resultThesisIdentity": null,
+      "rankingMode": "reading-v2-structured",
+      "rankingTuple": null,
+      "heuristicDisclosure": "Soglia letta dalla previsione individuale V2; quota riferita al contratto Sisal DUO. Probabilità DUO ed EV non disponibili.",
+      "quoteAvailability": "AVAILABLE_AT_SNAPSHOT",
+      "baselineApproved": false,
+      "sharedAdmission": {
+        "version": 2,
+        "suggested": false,
+        "rank": null,
+        "family": "sot",
+        "familyLabel": "Tiri in porta",
+        "criteria": "SPORTS_COHERENCE_VALIDATED_MODEL_RELIABILITY_AND_BALANCED_CANONICAL_THRESHOLD_WITH_EV_INFORMATION_ONLY",
+        "reasons": [
+          "NOT_MODELLED",
+          "ROBUST_PROBABILITY_NOT_AVAILABLE",
+          "SETTLEMENT_NOT_SUPPORTED",
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO",
+          "NO_COMPARABLE_SCORE_EVENT",
+          "STATISTICAL_FAMILY_NOT_VALIDATED"
+        ],
+        "conservativeExpectedValuePct": null,
+        "canonicalThresholdIdentity": "sot:player:gabriel-sara:over:TIRI IN PORTA DUO",
+        "resultThesisIdentity": null,
+        "rankingMode": "probability-first",
+        "resultChoice": "legacy",
+        "rankingTuple": null,
+        "heuristicDisclosure": "Operational portfolio rule applied to an existing probability model.",
+        "quoteAvailability": "AVAILABLE_AT_2026_10_09_SNAPSHOT_CURRENT_NOT_VERIFIED"
+      }
+    },
+    "context": {
+      "competition": "champions",
+      "season": "2026-27",
+      "matchday": 4,
+      "forecastPolicy": "SERIE_A_CURRENT"
+    },
+    "scenarioAnalysis": {
+      "version": 1,
+      "classification": "NOT_DETERMINABLE",
+      "label": "Non determinabile dai dati disponibili",
+      "prevalentOutcome": "1",
+      "compatibleOutcomes": null,
+      "pushOutcomes": [],
+      "basis": "NOT_MODELLED",
+      "eventKey": null,
+      "eventProbabilityPct": null,
+      "scoreMask": null,
+      "reason": "La probabilità specifica non è disponibile; la relazione con lo scenario prevalente non viene stimata.",
+      "status": "UNVERIFIABLE",
+      "checks": {
+        "contradictions": [],
+        "missing": [
+          "STARTING_PROBABILITY_NOT_ESTIMATED",
+          "PLAYER_TEAM_JOINT_ALLOCATION_NOT_VALIDATED",
+          "EVENT_PROBABILITY_MISSING"
+        ]
+      },
+      "conditionalOnProbableStart": true
+    },
+    "approvedPreliminary": false,
+    "selectionStatus": "PRELIMINARY",
+    "qualifiedSelection": false,
+    "publication": {
+      "status": "PRELIMINARY",
+      "approvalGate": "MD7_SHARED_SELECTOR_AND_CHAMPIONS_EVENT_VALIDATION",
+      "reasons": [
+        "NOT_MODELLED",
+        "ROBUST_PROBABILITY_NOT_AVAILABLE",
+        "SETTLEMENT_NOT_SUPPORTED",
+        "NOT_COHERENT_WITH_PREVALENT_SCENARIO",
+        "NO_COMPARABLE_SCORE_EVENT",
+        "STATISTICAL_FAMILY_NOT_VALIDATED",
+        "CHAMPIONS_EVENT_MODEL_NOT_VALIDATED"
+      ],
+      "identity": "ucl-2026-27-md04-02:gabriel-sara:sot"
+    }
   }
 ]

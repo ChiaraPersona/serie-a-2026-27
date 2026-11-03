@@ -59,7 +59,7 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,ca
   });
   // Optional fixture-scoped adapter: resolve canonical IDs before entering the
   // unchanged shared engine. Never reuse a team's XI from another fixture.
-  const lineups=['home','away'].map(venue=>canonicalLineups?.teams.find(t=>t.fixtureId===f.id&&t.venue===venue&&t.status==='probable'));
+  const lineups=['home','away'].map(venue=>canonicalLineups?.teams.find(t=>t.fixtureId===f.id&&t.venue===venue&&['probable','official'].includes(t.status)));
   const canonicalSquads=lineups.map((lineup,i)=>{
    const db=playerDatabase?.teams.find(t=>t.teamId===lineup?.teamId);
    if(!lineup||lineup.team!==sides[i]||lineup.starters.length!==11||new Set(lineup.starters.map(p=>p.playerId)).size!==11||!db)return null;
@@ -80,7 +80,7 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,ca
   if(lineupsApplied)for(let i=0;i<2;i++){
    const side=i?'away':'home';
    input[side+'Squad']=canonicalSquads[i];
-   input[side+'Team']={...input[side+'Team'],probableLineup:{status:'probable',formation:lineups[i].formation,players:canonicalSquads[i].players.map(p=>p.name)}};
+   input[side+'Team']={...input[side+'Team'],probableLineup:{status:lineups[i].status,formation:lineups[i].formation,players:canonicalSquads[i].players.map(p=>p.name)}};
   }
   normalized.forEach((rr,i)=>{
    const side=i?'away':'home',venue=rr.filter(r=>r.venue===side);
