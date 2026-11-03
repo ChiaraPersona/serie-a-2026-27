@@ -20,6 +20,8 @@ La X secca è esclusa dagli esiti proposti. Se il precedente esito era X, `champ
 
 ## Comandi e verifiche
 
+Il catalogo CL4 include anche opzioni manuali per tiri totali, tiri in porta e corner: Over/Under di squadra e partita, confronti 1/2 e soglie entrambe già quotate. `scripts/champions/md04-team-volume-markets.cjs` conserva gli ID, le soglie e le quote originali, esclude periodi parziali, prezzi sotto 1,08 e fixture con copertura insufficiente. Non promuove queste opzioni a pronostici approvati: probabilità, quota equa ed EV restano N/D e la combinabilità resta da verificare. La sezione manuale è condivisa da Lettura e Schedina; le opzioni possono essere salvate nella schedina personale. Per aggiornare solo questo catalogo senza ricalcolare previsioni: `node scripts/champions/md04-team-volume-markets.cjs`.
+
 ```text
 node scripts/import-champions-md04-probable.cjs --date 2026-11-04 --input data/sources/lineups/champions-md04-wednesday-user-2026-11-03.txt --write
 node scripts/build-champions-md04.cjs --date 2026-11-04

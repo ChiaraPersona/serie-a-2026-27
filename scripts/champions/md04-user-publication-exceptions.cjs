@@ -2,9 +2,10 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'../..');
 const sourcePath='data/sources/champions-md04-user-publication-exceptions.json';
-function applyUserPublicationExceptions(catalog,odds,registry){
+function applyUserPublicationExceptions(catalog,odds,registry,fixtureIds=null){
  if(!fs.existsSync(path.join(root,sourcePath)))return catalog;
  const source=JSON.parse(fs.readFileSync(path.join(root,sourcePath),'utf8'));
+ if(fixtureIds&&!fixtureIds.has(source.fixtureId))return catalog;
  assert.equal(source.authorization.waivedGate,'TEAM_RECONCILIATION_NOT_PASSED');
  assert.equal(source.authorization.statisticalApproval,false);
  assert.equal(source.selections.length,3);

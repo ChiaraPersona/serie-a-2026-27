@@ -409,10 +409,10 @@ export function createPage(deps){
   }
 
   function championsManualMarkets(legs,fixture,match){
-    if(compactForecasts||match.matchday===3)return '';
-    const manual=manualChampionsLegs(legs,match);
+    if(match.matchday===3)return '';
+    const manual=manualChampionsLegs(legs,match).filter(leg=>!compactForecasts||leg.catalogOrigin==='champions-md04-team-volumes');
     if(!manual.length)return "";
-    return `<details class="betting-mycombo-watch"><summary>Altri mercati disponibili · ${manual.length} selezioni · ${match.matchday===3?"non approvate":"probabilità N/D"}</summary><p>${match.matchday===3?"Alternative valutabili: non sono pronostici approvati; le righe senza quota non sono giocabili.":"Scelta manuale: non sono pronostici del modello."}</p><ol class="betting-market-list">${championsGroupedRows(manual.map(leg=>({leg,sourceSection:"catalogo-manuale-champions"})),fixture,match)}</ol></details>`;
+    return `<details class="betting-mycombo-watch" data-manual-champions-markets><summary>Altri mercati disponibili · ${manual.length} selezioni · ${match.matchday===3?"non approvate":"probabilità N/D"}</summary><p>${match.matchday===3?"Alternative valutabili: non sono pronostici approvati; le righe senza quota non sono giocabili.":"Opzioni da combinare nella schedina personale. Probabilità ed EV N/D; combinabilità e quota finale da verificare."}</p><ol class="betting-market-list">${championsGroupedRows(manual.map(leg=>({leg,sourceSection:"catalogo-manuale-champions"})),fixture,match)}</ol></details>`;
   }
 
   function prepareChampionsWorkspace(workspace){
