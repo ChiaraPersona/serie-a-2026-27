@@ -18,7 +18,9 @@ async function test(){
   const fixture=individuals.fixtures.find(f=>f.fixtureId===m.matchId),scenario=scenarios.fixtures.find(f=>f.fixtureId===m.matchId);
   assert(['probable','official'].includes(fixture.status));assert(scenario.provenance.lineupsApplied);
   assert.deepEqual(m.forecastCoverage.teamProjections.map(t=>[t.shotsTotal,t.shotsOnTarget,t.corners]),scenario.teamProjections.map(t=>[t.shotsTotal,t.shotsOnTarget,t.corners]));
-  assert.equal(m.forecastCoverage.marginalVolumeProbabilitiesAvailable,false,'Point estimates must not invent threshold probabilities');
+  const volumeMarkets=m.selections.filter(l=>l.catalogOrigin==='champions-md04-team-volumes'&&l.suggestionAnalysis?.suggested);
+  assert.equal(m.forecastCoverage.marginalVolumeProbabilitiesAvailable,volumeMarkets.length>0,'Volume probabilities require explicit shared count model markets');
+  if(volumeMarkets.length)assert.equal(m.forecastCoverage.marginalVolumeProbabilityStatus,'PRELIMINARY_NOT_CALIBRATED');
   if(scenario.status==='preliminary')assert(Math.abs(Object.values(scenario.probabilities).reduce((a,b)=>a+b,0)-100)<1e-8);
   else {assert.equal(m.selections.length,0);assert(Object.values(scenario.probabilities).every(p=>p===null));}
   for(const t of fixture.teams){

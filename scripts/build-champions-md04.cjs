@@ -226,7 +226,7 @@ async function build(){
  }
  write(databasePath,database);write(individualPath,individuals);out.individualInput.sha256=hash(individualPath);
  require('./champions/md04-user-publication-exceptions.cjs').applyUserPublicationExceptions(out,odds,read('data/normalized/official-starter-registry.json'),ids);
- await require('./champions/md04-team-volume-markets.cjs').addTeamVolumeMarkets(out,odds);
+ await require('./champions/md04-team-volume-markets.cjs').addTeamVolumeMarkets(out,odds,{fixtureIds:ids,asOf});
  write(catalogPath,out);write(sharedPath,shared);
  write('data/technical-archive/champions-md04/excluded-player-quotes.json',{excludedQuotes:[...(saved?.archive.excludedQuotes||[]).filter(l=>!ids.has(l.matchId)),...excludedQuotes],candidateExclusions:integration.summary.excluded,identityConflicts:identities.conflicts,previousScopeArchive:saved?.archive||null});
  write('output/champions-md04/build-report.json',{generatedAt:asOf,protectedBefore,summary:out.summary,coverage:out.coverage,unquotedExcluded:excludedQuotes.length,fixtureIds:[...ids],untouchedSharedFixtures:previous.fixtures.filter(f=>!ids.has(f.fixtureId)).map(f=>({fixtureId:f.fixtureId,sha256:crypto.createHash('sha256').update(JSON.stringify(f)).digest('hex')}))});

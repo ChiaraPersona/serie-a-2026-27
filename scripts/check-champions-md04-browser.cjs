@@ -29,23 +29,22 @@ async function run(){
    assert(await page.locator('[data-selection-row][data-odds]').evaluateAll(rows=>rows.every(r=>!r.dataset.odds||Number(r.dataset.odds)>=1.08)),'No public Champions price below 1.08');
    assert(await page.locator('[data-selection-row]').evaluateAll(rows=>rows.every(r=>!/ESITO FINALE 1X2\s*·\s*X$/.test(r.dataset.selectionLabel||''))),'No straight-draw proposal');
    for(const m of catalog.marketCatalog.matches){const panel=page.locator(`[data-match-id="${m.matchId}"]`);assert.equal(await panel.locator('.betting-match-body > .betting-market-list [data-selection-row]').count(),m.suggestions.length,m.matchId);
-    const manual=m.selections.filter(l=>l.catalogOrigin==='champions-md04-team-volumes');
-    assert.equal(await panel.locator('[data-manual-champions-markets] [data-selection-row]').count(),manual.length,m.matchId+' manual volume contracts');
    }
 
-   assert.equal(await page.locator('[data-champions-forecast-coverage]').count(),catalog.marketCatalog.matches.length);
-   const volumePanel=page.locator('[data-champions-forecast-coverage]').first();await volumePanel.locator('summary').click();
-   const volumeText=await volumePanel.innerText();assert(/Tiri.*Tiri in porta.*Corner/.test(volumeText),'Updated team volumes available in Schedina');
+   assert.equal(await page.locator('[data-champions-forecast-coverage],[data-manual-champions-markets]').count(),0,'Retired sections removed');
+   assert(!/Altri mercati disponibili|Previsioni di squadra e partita/.test(await page.locator('#app').innerText()));
    const target=catalog.marketCatalog.matches[0],pick=target.suggestions.find(id=>target.selections.find(l=>l.selectionId===id).marketScope==='player');
    await page.locator(`[data-personal-pick="${pick}"]`).first().click();
    assert((await page.evaluate(()=>localStorage.getItem('serie-a-2026-27:personal-betslip:v1'))).includes(pick));
-   const volumePick=target.selections.find(l=>l.catalogOrigin==='champions-md04-team-volumes');
+   const volumePick=catalog.marketCatalog.matches.flatMap(m=>m.selections).find(l=>l.catalogOrigin==='champions-md04-team-volumes'&&l.suggestionAnalysis?.suggested);
    if(volumePick){
-    const manualPanel=page.locator(`[data-match-id="${target.matchId}"] [data-manual-champions-markets]`);
-    await manualPanel.locator('summary').click();
-    await manualPanel.locator(`[data-personal-pick="${volumePick.selectionId}"]`).click();
+    const volumePanel=page.locator(`[data-match-id="${volumePick.matchId}"]`);
+    const volumeRow=volumePanel.locator(`[data-personal-pick="${volumePick.selectionId}"]`);
+    assert(Math.abs(Number(await volumeRow.getAttribute('data-probability'))-volumePick.modelProbabilityPct)<1e-9);
+    assert((await volumeRow.innerText()).includes('Probabilità preliminare'));
+    await volumePanel.locator(`[data-personal-pick="${volumePick.selectionId}"]`).click();
+    await volumeRow.screenshot({path:path.join(out,`team-market-${width}.png`)});
     assert((await page.evaluate(()=>localStorage.getItem('serie-a-2026-27:personal-betslip:v1'))).includes(volumePick.selectionId));
-    await manualPanel.locator('summary').click();
    }
    await check('schedina-md04');await page.screenshot({path:path.join(out,`schedina-${width}.png`)});
    for(const m of catalog.marketCatalog.matches){
@@ -54,7 +53,7 @@ async function run(){
     assert.equal(await page.locator('#lettura-pronostici [data-shared-forecast-id]').count(),m.suggestions.length,m.matchId);
     assert.equal(await page.locator('[data-md3-probable-player][data-projected-role="starter"]').count(),22);
     if(m===target){
-     if(volumePick)assert((await page.evaluate(()=>localStorage.getItem('serie-a-2026-27:personal-betslip:v1'))).includes(volumePick.selectionId),'Manual volume survives navigation to reading');
+     if(volumePick)assert((await page.evaluate(()=>localStorage.getItem('serie-a-2026-27:personal-betslip:v1'))).includes(volumePick.selectionId),'Team market survives navigation to reading');
      const button=page.locator(`[data-rd-pick="${pick}"]`);assert.equal(await button.getAttribute('aria-pressed'),'true');
      await page.locator('[data-player-lineup-filter="bench"]').scrollIntoViewIfNeeded();
      await page.locator('[data-player-lineup-filter="bench"]').click();assert(await page.locator('[data-player-card][data-player-lineup="bench"]:visible').count()>0);
