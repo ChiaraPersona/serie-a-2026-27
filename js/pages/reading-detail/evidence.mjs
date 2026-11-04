@@ -10,6 +10,7 @@ export async function readArtifact(path){
 }
 export async function loadEvidence(model,{benchForecasts=true}={}){
  const analysis=model.analysis||{},directory=analysis.teamDirectory||await readArtifact('data/teams/index.json');
+ const championsTactics=model.competition==='champions'?await readArtifact('data/generated/champions-tactical-profiles-2026-27.json').then(d=>d.fixtures.find(f=>f.fixtureId===model.fixture.id)||null).catch(()=>null):null;
  const sides=[model.home,model.away];
  const squadFiles=await Promise.all(sides.map(async(side,i)=>{
   const id=side.id||model.prediction?.teamProjections?.[i]?.teamId;
@@ -53,7 +54,7 @@ export async function loadEvidence(model,{benchForecasts=true}={}){
  const benchData=benchForecasts?await readArtifact('data/normalized/reading-bench-forecasts.json').catch(()=>null):null;
  const starterScenarios=benchForecasts&&model.competition==='serie-a'&&model.prediction?await readArtifact('data/generated/reading-bench-starter-scenarios/'+encodeURIComponent(model.fixture.id)+'.json').catch(()=>null):null;
  const spatial=model.competition==='serie-a'?projectedArtifact('data/generated/reading-spatial-matchup.json')?.value??null:null;
- return {competition:model.competition,analysis,directory,squadFiles,lineups,benchForecasts:benchData,starterScenarios,spatial,
+ return {competition:model.competition,analysis,directory,squadFiles,lineups,championsTactics,benchForecasts:benchData,starterScenarios,spatial,
   availability: model.competition==='serie-a'&&Number(model.fixture.matchday)===8?probable:null};
 }
 export function playerLineupStatus(id,lineups){

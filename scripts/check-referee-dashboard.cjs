@@ -23,16 +23,19 @@ const server=http.createServer((req,res)=>{const f=path.resolve(root,'.'+new URL
   assert.equal(await panel.locator('.rf-trend,.rf-side').count(),0);
   assert.equal(await panel.getByText('Tendenza disciplinare',{exact:true}).count(),0);
   assert.equal(await panel.locator('.rf-history tbody td:nth-child(n+4) small').count(),0);
-  assert.equal(await panel.locator('.rf-average-card small,.rf-average-card .rf-note,.rf-average-card .rf-comparison').count(),0);
-  assert.equal(await panel.locator('.rf-averages').count(),2);
-  for(const average of await panel.locator('.rf-averages').all()){assert.deepEqual(await average.locator('dt').allTextContents(),['Gialli','Rossi','Falli','Cartellini']);assert.equal(await average.locator('dd').count(),4);}
+  assert.equal(await panel.locator('.rf-average-card > small,.rf-average-card > .rf-note,.rf-average-card > .rf-comparison').count(),0);
+  assert.equal(await panel.locator('.rf-averages:not(.rf-historical)').count(),1);
+  assert.equal(await panel.getByText('Media stagionale 2026/27',{exact:true}).count(),0);
+  assert.equal(await panel.locator('.rf-average-card > .rf-historical').count(),1);
+  assert.equal(await panel.locator('.rf-dashboard > .rf-historical').count(),0);
+  for(const average of await panel.locator('.rf-averages:not(.rf-historical)').all()){assert.deepEqual(await average.locator('dt').allTextContents(),['Gialli','Rossi','Falli','Cartellini']);assert.equal(await average.locator('dd').count(),4);}
   if(previous){
    const old=previous.find(f=>f.id===id&&f.competition===competition);
    const values=await panel.evaluate((n,html)=>{const old=document.createElement('div');old.innerHTML=html;const numericRows=root=>[...root.querySelectorAll('tbody tr')].map(r=>[...r.cells].slice(3).map(c=>c.childNodes[0]?.textContent.trim()));const averages=root=>[...root.querySelectorAll('.rf-averages dd')].map(v=>v.textContent);return {expectedRows:numericRows(old),actualRows:numericRows(n),expectedAverages:averages(old),actualAverages:averages(n)};},old.html);
    assert.deepEqual(values.actualRows,values.expectedRows);assert.deepEqual(values.actualAverages,values.expectedAverages);
   }
-  const compact=await panel.evaluate(n=>{const lower=n.querySelector('.rf-lower'),a=n.querySelector('.rf-average-card'),h=n.querySelector('.rf-history');return {children:lower.children.length,columns:getComputedStyle(lower).gridTemplateColumns.split(' ').length,averageTop:a.getBoundingClientRect().top,historyTop:h.getBoundingClientRect().top,historyBottom:h.getBoundingClientRect().bottom,averageColumns:[...a.querySelectorAll('dl')].map(d=>getComputedStyle(d).gridTemplateColumns.split(' ').length)};});
-  assert.equal(compact.children,2);assert.equal(compact.columns,width<=1000?1:2);assert.deepEqual(compact.averageColumns,[4,4]);
+  const compact=await panel.evaluate(n=>{const lower=n.querySelector('.rf-lower'),a=n.querySelector('.rf-average-card'),h=n.querySelector('.rf-history');return {children:lower.children.length,columns:getComputedStyle(lower).gridTemplateColumns.split(' ').length,averageTop:a.getBoundingClientRect().top,historyTop:h.getBoundingClientRect().top,historyBottom:h.getBoundingClientRect().bottom,averageColumns:[...a.querySelectorAll('.rf-averages:not(.rf-historical) > dl')].map(d=>getComputedStyle(d).gridTemplateColumns.split(' ').length)};});
+  assert.equal(compact.children,2);assert.equal(compact.columns,width<=1000?1:2);assert.deepEqual(compact.averageColumns,[4]);
   if(width<=1000)assert(Math.abs(compact.averageTop-compact.historyBottom-12)<2);else assert(Math.abs(compact.averageTop-compact.historyTop)<2);
 
   const dimensions=await panel.evaluate(n=>({width:n.getBoundingClientRect().width,page:document.documentElement.scrollWidth,viewport:innerWidth,text:n.innerText,background:getComputedStyle(n.querySelector('.rf-card')).backgroundColor,columns:getComputedStyle(n.querySelector('.rf-indicators')).gridTemplateColumns.split(' ').length}));

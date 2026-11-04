@@ -32,7 +32,7 @@ async function test(){
    const unavailableIds=new Set([...original.unavailable,...original.suspended,...original.doubtful].map(p=>p.playerId));
    assert(t.players.every(p=>p.projectedRole==='starter'||!unavailableIds.has(p.playerId)));
    const roster=squads.teams.find(s=>canonicalTeam(s.id)===t.teamId);
-   if(fixture.status!=='official')for(const p of roster.players)assert(t.players.some(x=>x.playerId===p.id)||unavailableIds.has(p.id));
+   if(fixture.status!=='official'&&original.benchStatus!=='documented-probable-bench')for(const p of roster.players)assert(t.players.some(x=>x.playerId===p.id)||unavailableIds.has(p.id));
    assert(t.minuteBudget.allocatedExpectedMinutes<=990.1);
    const projected=t.players.filter(p=>p.projectedShots!==null);
    if(projected.length){

@@ -63,6 +63,12 @@ function build({matchday=null}={}){
   const previous=read('data/generated/reading-referee-history.json'),replacements=new Map(fixtures.map(f=>[f.fixtureId,f]));
   output.fixtures=[...previous.fixtures.map(f=>replacements.get(f.fixtureId)||f),...fixtures.filter(f=>!previous.fixtures.some(p=>p.fixtureId===f.fixtureId))];
  }
+ const md4Path='data/normalized/champions-referee-match-history-md04-2026-27.json';
+ if(fs.existsSync(path.join(root,md4Path))){
+  const entries=read(md4Path).presentation||[],byId=new Map(entries.map(e=>[e.fixtureId,e]));
+  output.fixtures=output.fixtures.map(e=>byId.get(e.fixtureId)||e);
+  for(const entry of entries)if(!output.fixtures.some(e=>e.fixtureId===entry.fixtureId))output.fixtures.push(entry);
+ }
  fs.writeFileSync(path.join(root,'data/generated/reading-referee-history.json'),JSON.stringify(output,null,2)+'\n');
  console.log(JSON.stringify({fixtures:fixtures.length,withFive:fixtures.filter(f=>f.rows.length===5).length,serieA:fixtures.filter(f=>f.competition==='serie-a'&&f.rows.length).length,champions:fixtures.filter(f=>f.competition==='champions'&&f.rows.length).length,missingDomestic:curated.missing}));
  return output;

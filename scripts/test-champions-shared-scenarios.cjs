@@ -17,6 +17,9 @@ for(let i=0;i<styles.profiles.length;i++){
  assert.deepEqual(predictMatch(input),previous.exports.predictMatch(input),'Serie A regression '+i);
 }
 const inputs={calendar:read('data/normalized/champions-league-2026-27.json'),source:read('data/sources/champions-pilot-match-stats-2025-27.json'),styles,odds:read('data/normalized/odds/sisal/champions-league.json'),asOf:'2026-10-24T00:00:00Z',matchday:4};
+// This frozen pre-match regression uses the calendar state at the historical cutoff.
+inputs.calendar=structuredClone(inputs.calendar);
+for(const fixture of inputs.calendar.fixtures)if(fixture.matchday===4)fixture.status='scheduled';
 const baseline=buildSharedScenarios(inputs);assert.equal(baseline.fixtures.length,18);
 assert(baseline.fixtures.every(f=>f.matchday===4&&f.pipeline==='SHARED_SERIE_A_SCENARIO'));
 for(const f of baseline.fixtures){

@@ -1,4 +1,4 @@
-import {mountRefereeDashboard} from './referee-dashboard.mjs?v=20261022-assets-v1';
+import {mountRefereeDashboard} from './referee-dashboard.mjs?v=20261104-tactical-profiles-v3';
 import {esc} from './format.mjs?v=20261022-assets-v1';
 import {readArtifact} from './evidence.mjs?v=20261022-assets-v1';
 const known=v=>typeof v==='number'&&Number.isFinite(v);

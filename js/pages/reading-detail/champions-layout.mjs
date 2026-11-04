@@ -1,13 +1,13 @@
 import {esc,number} from './format.mjs?v=20261022-assets-v1';
 import {createReadingView} from './view-model.mjs?v=20261022-assets-v1';
-import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261025-static-recent-form';
+import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261104-tactical-profiles-v3';
 
 // Adapt existing MD3 artifacts for the shared presentation; never recalculate them.
 export async function mountChampionsReading({fixture,prediction,probableFixture,branding,analysis,refereeMarkup,probableMarkup,extend}){
  const side=name=>({name,...branding.get(name)});
  const model=createReadingView({competition:'champions',fixture,home:side(fixture.homeTeam),away:side(fixture.awayTeam),prediction:{...prediction,scoreForecast:{...prediction.scoreForecast,display:prediction.scoreForecast?.display||[prediction.scoreForecast?.primary,...(prediction.scoreForecast?.alternatives||[])].filter(Boolean)}},quality:prediction.dataQuality,analysis});
  const prepared=await prepareReadingShell(model);
- if(probableFixture)prepared.evidence.lineups=probableFixture.teams.map((t,i)=>({side:[model.home,model.away][i],formation:t.formation,status:t.status,coach:t.coach,players:t.players.filter(p=>p.projectedRole==='starter').map(p=>({id:p.playerId,name:p.canonicalName||p.sourceName,shirtNumber:p.shirtNumber,source:p})),bench:t.players.filter(p=>p.projectedRole==='bench').map(p=>p.canonicalName||p.sourceName),benchPlayers:t.players.filter(p=>p.projectedRole==='bench').map(p=>({id:p.playerId,name:p.canonicalName||p.sourceName,shirtNumber:p.shirtNumber,source:p})),benchPlayerIds:t.players.filter(p=>p.projectedRole==='bench').map(p=>p.playerId)}));
+ if(probableFixture)prepared.evidence.lineups=probableFixture.teams.map((t,i)=>({side:[model.home,model.away][i],formation:t.formation,status:t.status,coach:t.coach||prepared.evidence.lineups[i]?.coach?.replace(/-+$/,'').trim()||null,players:t.players.filter(p=>p.projectedRole==='starter').map(p=>({id:p.playerId,name:p.canonicalName||p.sourceName,shirtNumber:p.shirtNumber,source:p})),bench:t.players.filter(p=>p.projectedRole==='bench').map(p=>p.canonicalName||p.sourceName),benchPlayers:t.players.filter(p=>p.projectedRole==='bench').map(p=>({id:p.playerId,name:p.canonicalName||p.sourceName,shirtNumber:p.shirtNumber,source:p})),benchPlayerIds:t.players.filter(p=>p.projectedRole==='bench').map(p=>p.playerId)}));
  const root=document.querySelector('#app');
  const draft=document.createElement('div');draft.innerHTML=refereeMarkup;
  root.innerHTML='<div class="reading-back"><a href="champions-league.html">← Letture Champions League</a></div><div class="reading-match-hero"></div>';
@@ -19,17 +19,6 @@ export async function mountChampionsReading({fixture,prediction,probableFixture,
  }
  await mountReadingShell(model,root,{prepared,extend:async context=>{
    const scenario=context.groups.get('scenario').lastElementChild;
-   const probabilities=document.createElement('p');probabilities.className='rd-footnote';
-   probabilities.textContent=['home','draw','away'].map((key,i)=>`${['1','X','2'][i]}: ${number(prediction.probabilities?.[key],2)}%`).join(' · ');
-   scenario.append(probabilities);
-   if(prediction.pipeline==='SHARED_SERIE_A_SCENARIO'){
-     const note=document.createElement('p');note.className='rd-footnote';
-     note.textContent=`Stima preliminare. ${(prediction.dataQuality?.missing||[]).join('. ')}. Campioni squadra: ${(prediction.dataQuality?.teamSamples||[]).join(' / ')} gare. Ultime gare utilizzate: ${(prediction.dataQuality?.latestMatchDates||[]).map(d=>d||'N/D').join(' / ')}.`;
-     scenario.append(note);
-   }
-   const totals=document.createElement('details');totals.className='rd-disclosure';
-   totals.innerHTML='<summary>Totali previsti · modello</summary><dl class="rd-player-kpis">'+[['Gol',prediction.expectedGoals?.total],['Tiri',prediction.matchProjection?.shotsTotal?.central],['SOT',prediction.matchProjection?.shotsOnTarget?.central],['Corner',prediction.matchProjection?.corners?.central],['Cartellini',prediction.cards?.central]].map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${number(value,2)}</dd></div>`).join('')+'</dl>';
-   scenario.append(totals);
    if(probableMarkup){
      const draft=document.createElement('div');draft.innerHTML=probableMarkup;
      const content=context.groups.get('giocatori').lastElementChild;

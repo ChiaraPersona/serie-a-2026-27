@@ -10,12 +10,24 @@ function profileFor(model,evidence,i){
  return evidence.analysis.styles?.profiles?.find(p=>p.teamId===id)||null;
 }
 export function tacticsMarkup(model,evidence){
+ if(model.competition==='champions'&&evidence.championsTactics)return championsTacticsMarkup(model,evidence);
  const sides=[model.home,model.away],profiles=sides.map((_,i)=>profileFor(model,evidence,i));
  const panels=sides.map((side,i)=>{
   const p=profiles[i],channels=evidence.analysis.attackChannels?.profiles?.find(p=>p.team===side.name)?.attackChannels||model.prediction?.teamProjections?.[i]?.attackChannels||p?.attackChannels;
   return `<article class="rd-tactical-column" data-tactical-side="${i?'away':'home'}"><header class="rd-tactical-team"><span>${i?'Ospite':'Casa'}</span><h3>${esc(side.name)}</h3></header><p class="rd-footnote rd-tactical-baseline">Baseline ${esc(p?.season||'storica')} · ${esc(p?.competition||'Campione N/D')} · ${number(p?.summary?.appearances,0)} gare</p><dl class="rd-player-kpis rd-tactical-metrics"><div><dt>Possesso</dt><dd>${number(p?.summary?.possessionPct)}${finite(p?.summary?.possessionPct)?'%':''}</dd></div><div><dt>Tiri / gara</dt><dd>${number(p?.summary?.shotsPerGame)}</dd></div><div><dt>Gol / gara</dt><dd>${number(p?.derived?.goalsPerGame)}</dd></div></dl><div class="rd-tactical-directions">${attackMarkup(channels)}</div></article>`;
  });
  return `<div class="rd-tactical-comparison" aria-label="Confronto tattico Casa e Ospite">${panels.join('')}</div>`;
+}
+function championsTacticsMarkup(model,evidence){
+ const sampleLabel=s=>`${s.competitionLabel}${s.id.endsWith('historical')?' · storico':''} ${s.season.replace('-','/')} · ${s.matches} gare`;
+ const metrics=sample=>[['possessionPct','Possesso','%'],['passSuccessPct','Precisione passaggi','%'],['shots','Tiri / gara',''],['shotsAgainst','Tiri concessi / gara',''],['sot','SOT / gara',''],['goals','Gol / gara',''],['goalsAgainst','Gol subiti / gara',''],['corners','Corner / gara',''],['crosses','Cross / gara',''],['longBalls','Lanci lunghi / gara','']].map(([key,label,suffix])=>{const m=sample.metrics[key];return `<div data-tactical-metric="${key}"><dt>${label}</dt><dd>${number(m?.mean)}${finite(m?.mean)?suffix:''}</dd><small>${m?.n?`n=${m.n}`:'N/D'}</small></div>`;}).join('');
+ return `<div class="rd-tactical-comparison" aria-label="Confronto tattico Casa e Ospite">${[model.home,model.away].map((side,i)=>{
+  const p=evidence.championsTactics.teams[i],samples=p.samples.filter(s=>s.matches>0),primary=samples[0],formation=primary?.formations[0];
+  const actual=evidence.lineups[i];
+  const setup=actual?.formation?`${actual.formation} · ${actual.status==='official'?'ufficiale':actual.status==='probable'?'probabile':'da confermare'}`:formation?`${formation.code} · ${formation.matches} gare nel campione`:'N/D';
+  const narrative=primary&&finite(primary.metrics.shots.mean)&&finite(primary.metrics.shotsAgainst.mean)?`Nel campione: ${number(primary.metrics.shots.mean)} tiri prodotti e ${number(primary.metrics.shotsAgainst.mean)} concessi per gara. ${finite(primary.metrics.possessionPct.mean)?`Possesso medio ${number(primary.metrics.possessionPct.mean)}%.`:''}`:'Profilo dei volumi N/D.';
+  return `<article class="rd-tactical-column" data-tactical-team="${esc(p.teamId)}" data-tactical-side="${i?'away':'home'}"><header class="rd-tactical-team"><span>${i?'Ospite':'Casa'}</span><h3>${esc(side.name)}</h3></header><p class="rd-footnote">Modulo: ${esc(setup)}</p><p class="rd-tactical-reading">${esc(narrative)}</p>${primary?`<p class="rd-footnote rd-tactical-baseline">${esc(sampleLabel(primary))} · ${esc(primary.from)}–${esc(primary.to)}</p><dl class="rd-player-kpis rd-tactical-metrics">${metrics(primary)}</dl>${samples.slice(1).map(s=>`<details class="rd-disclosure"><summary>${esc(sampleLabel(s))}</summary><dl class="rd-player-kpis rd-tactical-metrics">${metrics(s)}</dl></details>`).join('')}`:missing('Campione tattico non disponibile.')}<div class="rd-tactical-directions"><h4>Direzioni d’attacco · ${esc(p.attackChannelsSeason.replace('-','/'))}</h4>${attackMarkup(p.attackChannels)}</div></article>`;
+ }).join('')}</div>`;
 }
 export function priorMatches(model,evidence,side){
  return (evidence.analysis.matches||[]).filter(m=>m.id!==model.fixture.id&&m.status==='finished'&&m.score&&m.date<model.fixture.date&&[m.homeTeam,m.awayTeam].some(t=>t===side.id||t===side.name)).sort((a,b)=>b.date.localeCompare(a.date)||String(b.kickoff||'').localeCompare(String(a.kickoff||'')));

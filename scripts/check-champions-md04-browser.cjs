@@ -33,10 +33,13 @@ async function run(){
 
    assert.equal(await page.locator('[data-champions-forecast-coverage],[data-manual-champions-markets]').count(),0,'Retired sections removed');
    assert(!/Altri mercati disponibili|Previsioni di squadra e partita/.test(await page.locator('#app').innerText()));
-   const target=catalog.marketCatalog.matches[0],pick=target.suggestions.find(id=>target.selections.find(l=>l.selectionId===id).marketScope==='player');
+   const calendar=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/champions-league-2026-27.json')));
+   const target=catalog.marketCatalog.matches.find(m=>calendar.fixtures.some(f=>f.id===m.matchId&&f.status==='scheduled')&&m.suggestions.some(id=>m.selections.find(l=>l.selectionId===id).marketScope==='player'));
+   assert(target,'A scheduled fixture with a selectable player contract is required');
+   const pick=target.suggestions.find(id=>target.selections.find(l=>l.selectionId===id).marketScope==='player');
    await page.locator(`[data-personal-pick="${pick}"]`).first().click();
    assert((await page.evaluate(()=>localStorage.getItem('serie-a-2026-27:personal-betslip:v1'))).includes(pick));
-   const volumePick=catalog.marketCatalog.matches.flatMap(m=>m.selections).find(l=>l.catalogOrigin==='champions-md04-team-volumes'&&l.suggestionAnalysis?.suggested);
+   const volumePick=catalog.marketCatalog.matches.filter(m=>calendar.fixtures.some(f=>f.id===m.matchId&&f.status==='scheduled')).flatMap(m=>m.selections).find(l=>l.catalogOrigin==='champions-md04-team-volumes'&&l.suggestionAnalysis?.suggested);
    if(volumePick){
     const volumePanel=page.locator(`[data-match-id="${volumePick.matchId}"]`);
     const volumeRow=volumePanel.locator(`[data-personal-pick="${volumePick.selectionId}"]`);

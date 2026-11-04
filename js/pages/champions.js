@@ -60,7 +60,7 @@ export function createPage(deps){
     ].filter(([,value])=>value);
     const officials=roles.length?`<dl>${roles.map(([label,value])=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>`:"";
     const metrics=[["yellowCardsPerMatch","Gialli / gara"],["redCardsPerMatch","Rossi / gara"],["foulsPerMatch","Falli / gara"],["penaltiesPerMatch","Rigori / gara"]].filter(([key])=>stats?.[key]?.display && stats[key].display!=="N/D");
-    const statistics=metrics.length?`<div class="reading-referee-stats champions-reading-referee-stats" data-descriptive-referee-stats>${metrics.map(([key,label])=>`<article data-referee-metric="${key}"><span>${label}</span>${refereeMetric(stats[key])}</article>`).join("")}</div><p class="rf-note">${esc(assignment.statisticsSample||'Profilo storico descrittivo; non applicato automaticamente alle proiezioni della partita.')}</p>`:'<p class="rf-note">Statistiche arbitrali N/D.</p>';
+    const statistics=metrics.length?`<div class="reading-referee-stats champions-reading-referee-stats" data-descriptive-referee-stats>${metrics.map(([key,label])=>`<article data-referee-metric="${key}"><span>${label}</span>${refereeMetric(stats[key])}</article>`).join("")}</div>`:'<p class="rf-note">Statistiche arbitrali N/D.</p>';
     return `<aside class="reading-referee-assignment champions-reading-referee champions-reading-hero-referee" id="lettura-referee" aria-labelledby="champions-reading-referee-title"><header><div><p class="eyebrow">Designazione arbitrale</p><h2 id="champions-reading-referee-title">${refereeName(assignment)}</h2></div>${metrics.length?"<p>Designazione e profilo disciplinare.</p>":""}</header>${officials}${statistics}</aside>`;
   }
 
@@ -468,13 +468,13 @@ export function createPage(deps){
       const shared=await load('../generated/champions-shared-scenarios.json');
       const prediction=shared.fixtures.find(f=>f.fixtureId===requestedMatchId);
       if(prediction){
-        const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261025-static-recent-form');
+        const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261104-tactical-profiles-v3');
         let probableFixture,probableMarkup;
         if(requestedCalendarFixture.matchday===4){
           const individuals=await load('champions-md04-probable-individuals-2026-27.json');
           probableFixture=individuals.fixtures.find(f=>f.fixtureId===requestedMatchId);
           if(probableFixture){
-            const {md3ProbableMarkup}=await import('./champions-md3-probable.mjs?v=20261102-md04-probables');
+            const {md3ProbableMarkup}=await import('./champions-md3-probable.mjs?v=20261104-reading-clean-v1');
             probableMarkup=md3ProbableMarkup(probableFixture);
           }
         }
@@ -483,13 +483,13 @@ export function createPage(deps){
       }
     }
     if(requestedCalendarFixture?.matchday===3&&requestedCalendarFixture.refereeAssignment?.status==='assigned'){
-      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,officialProbables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261022-assets-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261022-assets-v1'),load('../derived/champions-md03/probable-individuals-v2-2026-10-20.json'),loadDerived('champions-md03/official-individuals-two-v1-2026-10-20.json'),import('./champions-md3-probable.mjs?v=20261022-assets-v1')]);
+      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,officialProbables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261022-assets-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261022-assets-v1'),load('../derived/champions-md03/probable-individuals-v2-2026-10-20.json'),loadDerived('champions-md03/official-individuals-two-v1-2026-10-20.json'),import('./champions-md3-probable.mjs?v=20261104-reading-clean-v1')]);
       const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
       const fixture=catalog.fixtures.find(f=>f.fixtureId===requestedMatchId);
       const sevenOfficial=await loadDerived('champions-md03/official-individuals-seven-v2-2026-10-20.json');
       const todayOfficial=await loadDerived('champions-md03/official-individuals-2026-10-21.json');
       const probableFixture=todayOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||sevenOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||officialProbables.fixtures.find(f=>f.fixtureId===requestedMatchId)||probables.fixtures.find(f=>f.fixtureId===requestedMatchId);
-      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261025-static-recent-form');
+      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261104-tactical-profiles-v3');
       await mountChampionsReading({fixture:requestedCalendarFixture,prediction:fixture.forecast,profile,probableFixture,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:md3RefereeMarkup(requestedCalendarFixture,profile,branding),probableMarkup:md3ProbableMarkup(probableFixture),extend:({shell})=>appendSharedSchedina(3,requestedMatchId,shell)});
       return;
     }
@@ -507,7 +507,7 @@ export function createPage(deps){
       let finishReading=null;
       if(isReadingPilot('champions',requestedMatchId,location.search)&&typeof document.createElement==='function'){
         try{
-          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261025-static-recent-form')]);
+          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261104-tactical-profiles-v3')]);
           const analysis={match:requestedCalendarFixture,matches:data.fixtures,lineups:md2MarketEntry?.lineups,availability:md2MarketEntry?.availability,referee:refereeProfile,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads,teamProfiles:activePilot.profiles};
           const model=adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[],analysis});
           const prepared=await prepareReadingShell(model);

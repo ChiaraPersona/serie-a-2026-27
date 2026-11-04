@@ -17,6 +17,7 @@ const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-h
   'data/predictions/spatial-prospective/'];
 // Build inputs and superseded artifacts: browser consumers use the retained UI/v2 files.
 const internalFiles = new Set([
+  'data/normalized/champions-tactical-evidence-2026-27.json',
   'data/normalized/champions-md02-integration-2026-27.json',
   'data/normalized/team-matchup-profiles-2026-27.json',
   'data/sources/champions-player-shooting-evidence-2026-10-20.json',
