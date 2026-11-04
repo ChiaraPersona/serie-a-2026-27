@@ -32,7 +32,8 @@ function captureFixture({ fixture, match, catalogGeneratedAt, now, receipts, bas
   const events = new Map(), exclusions = [];
   for (const leg of match.selections || []) {
     const t = target(leg), evaluation = leg.betSelection?.evaluation;
-    const publishedModelId = evaluation?.validation?.modelId || (evaluation?.provenance?.model === 'scripts/md06-statistical-models.js' && leg.catalogOrigin === 'champions-md04-team-volumes' ? countModelId : null);
+    const baseModelId = evaluation?.validation?.modelId || (evaluation?.provenance?.model === 'scripts/md06-statistical-models.js' && leg.catalogOrigin === 'champions-md04-team-volumes' ? countModelId : null);
+    const publishedModelId = baseModelId && evaluation?.provenance?.adapterVersion ? `${baseModelId}:adapter:${evaluation.provenance.adapterVersion}` : baseModelId;
     let issue = null;
     if (!t.metric || !['result', 'double-chance', 'goals', 'shots', 'sot', 'corners'].includes(t.metric)) issue = 'UNSUPPORTED_MARKET';
     else if (t.duo || t.woodwork || t.extraTime) issue = 'EXTENDED_CONTRACT_NOT_VALIDATED';

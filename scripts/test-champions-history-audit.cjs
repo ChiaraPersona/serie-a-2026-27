@@ -1,0 +1,16 @@
+'use strict';
+const assert=require('node:assert/strict');
+const {resultInventory,oddsInventory}=require('./research/champions-history-audit.cjs');
+const fixture={id:'uefa-1',competitionCode:'ucl',season:'2025-26',date:'2025-09-01',kickoffUtc:'2025-09-01T19:00:00Z',status:'finished',homeTeam:{id:'home'},awayTeam:{id:'away'},score90:{home:2,away:1}};
+assert.equal(resultInventory([fixture,structuredClone(fixture)]).summary.uniqueUsable,1,'Duplicate rows must not become independent fixtures');
+assert.equal(resultInventory([fixture,{...fixture,score90:{home:0,away:2}}]).summary.uniqueUsable,0,'Conflicting outcomes must be excluded, not selected');
+assert.equal(resultInventory([{...fixture,score90:{home:null,away:0}}]).summary.uniqueUsable,0,'Missing results cannot become zero');
+assert.equal(resultInventory([{...fixture,homeTeam:{id:'away'}}]).summary.uniqueUsable,0,'A team cannot play itself');
+const calendar={fixtures:[{id:'ucl-test',date:'2025-09-01',kickoff:'21:00',matchday:1}]};
+const event={canonicalMatchId:'ucl-test',providerEventId:'event',startsAt:'2025-09-01T19:00:00Z',retrievedAt:'2025-09-01T18:00:00Z',markets:[{providerMarketId:'market',marketCode:'3',marketName:'1X2 ESITO FINALE',variantName:'ESITO FINALE 1X2',threshold:null,status:'open',selections:['1','X','2'].map(name=>({name,providerSelectionId:name,status:'open',odds:3}))}]};
+assert.equal(oddsInventory([event],calendar,[]).verifiedPrematch1x2,1);
+assert.equal(oddsInventory([{...event,retrievedAt:event.startsAt}],calendar,[]).verifiedPrematch1x2,0,'A snapshot at kickoff is not pre-match');
+assert.equal(oddsInventory([{...event,startsAt:'2025-09-01T20:00:00Z'}],calendar,[]).verifiedPrematch1x2,0,'Provider time must match canonical kickoff');
+const extended=structuredClone(event);extended.markets[0].periodScope='extra-time';assert.equal(oddsInventory([extended],calendar,[]).verifiedPrematch1x2,0);
+const missing=structuredClone(event);missing.markets[0].selections[0].providerSelectionId=null;assert.equal(oddsInventory([missing],calendar,[]).verifiedPrematch1x2,0);
+console.log('PASS history audit: independent fixtures, conflict quarantine, missing data, exact contracts and strict canonical prematch cutoff.');

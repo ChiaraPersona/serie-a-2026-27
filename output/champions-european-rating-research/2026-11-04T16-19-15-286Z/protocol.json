@@ -1,0 +1,460 @@
+{
+  "asOf": "2026-11-04T16:19:15.286Z",
+  "inputHashes": {
+    "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+    "data/normalized/uefa-1x2-model-2026-27.json": "d02e3b50291c32bacdadc7eaaa9a2fcc0633cd57a06df9480a347fb0f441b19d",
+    "data/generated/uefa-1x2-backtest.json": "cad68a9375ddca9090c4b7b5a9482e47915ce1a8fb72e66bbc64a753b58265f0",
+    "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+    "data/normalized/champions-league-2026-27.json": "d69b8a82a4b009f0d1015826f30f0db91891a42008a168cafeefbe22a45b84ad",
+    "scripts/research/european-rating-model.cjs": "f9ced2ddfd1b79311f706e414679faa104d5875df9fbbd18df0de27fa7bafbdd",
+    "scripts/research/run-european-rating.cjs": "b4fa5e2bc24534839a61124873a0ab8d5e9253bca8d410db3c66e47f0b16d13a",
+    "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8"
+  },
+  "status": "RETROSPECTIVE_DIAGNOSTIC_NOT_NEW_HOLDOUT",
+  "train": "2023-24",
+  "validation": "2024-25",
+  "diagnosticTest": "2025-26",
+  "configurations": [
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0,
+      "shrinkMatches": 0,
+      "halfLifeDays": null
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0,
+      "shrinkMatches": 0,
+      "halfLifeDays": 180
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0,
+      "shrinkMatches": 0,
+      "halfLifeDays": 365
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0,
+      "shrinkMatches": 6,
+      "halfLifeDays": null
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0,
+      "shrinkMatches": 6,
+      "halfLifeDays": 180
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0,
+      "shrinkMatches": 6,
+      "halfLifeDays": 365
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0,
+      "shrinkMatches": 12,
+      "halfLifeDays": null
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0,
+      "shrinkMatches": 12,
+      "halfLifeDays": 180
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0,
+      "shrinkMatches": 12,
+      "halfLifeDays": 365
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0.5,
+      "shrinkMatches": 0,
+      "halfLifeDays": null
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0.5,
+      "shrinkMatches": 0,
+      "halfLifeDays": 180
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0.5,
+      "shrinkMatches": 0,
+      "halfLifeDays": 365
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0.5,
+      "shrinkMatches": 6,
+      "halfLifeDays": null
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0.5,
+      "shrinkMatches": 6,
+      "halfLifeDays": 180
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0.5,
+      "shrinkMatches": 6,
+      "halfLifeDays": 365
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0.5,
+      "shrinkMatches": 12,
+      "halfLifeDays": null
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0.5,
+      "shrinkMatches": 12,
+      "halfLifeDays": 180
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 0.5,
+      "shrinkMatches": 12,
+      "halfLifeDays": 365
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 1,
+      "shrinkMatches": 0,
+      "halfLifeDays": null
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 1,
+      "shrinkMatches": 0,
+      "halfLifeDays": 180
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 1,
+      "shrinkMatches": 0,
+      "halfLifeDays": 365
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 1,
+      "shrinkMatches": 6,
+      "halfLifeDays": null
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 1,
+      "shrinkMatches": 6,
+      "halfLifeDays": 180
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 1,
+      "shrinkMatches": 6,
+      "halfLifeDays": 365
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 1,
+      "shrinkMatches": 12,
+      "halfLifeDays": null
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 1,
+      "shrinkMatches": 12,
+      "halfLifeDays": 180
+    },
+    {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      },
+      "countryWeight": 1,
+      "shrinkMatches": 12,
+      "halfLifeDays": 365
+    }
+  ],
+  "selection": "Lowest all-European validation log loss, then Brier, then original grid order. No test scores select configuration.",
+  "update": "Predict full calendar date before updates. Only earlier results enter a target.",
+  "abstention": "Fixed >=6 prior European appearances per team; coverage reported separately. All fixtures still scored to avoid easy-case selection.",
+  "countryPrior": "Mean of previously observed other clubs from that country; minimum three other clubs, otherwise neutral. No name matching.",
+  "limitations": [
+    "2025-26 scores have already been inspected; this is not a fresh preregistered holdout.",
+    "No historical domestic profile or provider-odds comparison is claimed.",
+    "Country prior represents observed European clubs, not all clubs in the domestic league."
+  ]
+}

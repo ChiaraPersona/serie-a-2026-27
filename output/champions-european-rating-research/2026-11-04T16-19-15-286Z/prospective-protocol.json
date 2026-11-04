@@ -1,0 +1,37 @@
+{
+  "createdAt": "2026-11-04T16:19:17.462Z",
+  "modelId": "research-european-rating:1a7e6b8ae549eac1379dcf660bd42b8e7ff045333c9963d66138db1baa4eb0b5",
+  "parameters": {
+    "homeAdvantage": 80,
+    "kFactor": 40,
+    "drawBase": 0.22,
+    "drawScale": 600,
+    "seasonRetention": 1,
+    "competitionWeightProfile": "flat",
+    "competitionUpdateWeights": {
+      "ucl": 1,
+      "uel": 1,
+      "uecl": 1
+    },
+    "countryWeight": 0,
+    "shrinkMatches": 0,
+    "halfLifeDays": null
+  },
+  "criteria": {
+    "clusters": 180,
+    "deltaBrier": 0.005,
+    "ece": 0.08,
+    "thresholdPositives": 30,
+    "thresholdNegatives": 30,
+    "thresholdDeltaBrier": 0.015,
+    "thresholdEce": 0.1,
+    "oneXTwoPositives": 60,
+    "oneXTwoNegatives": 120
+  },
+  "scope": "CHAMPIONS_REGULATION_1X2_ONLY",
+  "minimumAppearances": 6,
+  "baseline": "All prior observed UCL results before the capture date; frozen separately for each capture.",
+  "admission": "Only immutable predictions captured before kickoff may be scored. Revisions never replace the first event prediction.",
+  "historicalTest": "Diagnostic only; never admitted as original prospective predictions.",
+  "approval": false
+}

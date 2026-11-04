@@ -1,0 +1,2690 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-11-04T16:08:05.773Z",
+  "status": "AUDIT_ONLY_NO_APPROVAL",
+  "criteria": {
+    "clusters": 180,
+    "deltaBrier": 0.005,
+    "ece": 0.08,
+    "thresholdPositives": 30,
+    "thresholdNegatives": 30,
+    "thresholdDeltaBrier": 0.015,
+    "thresholdEce": 0.1,
+    "oneXTwoPositives": 60,
+    "oneXTwoNegatives": 120
+  },
+  "inputHashes": {
+    "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+    "data/sources/champions-pilot-match-stats-2025-27.json": "6dcffd5933ca2b5ba1f074575202beb70e8201534b676dfaa7da3c8f0076d096",
+    "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+    "data/normalized/odds/sisal/champions-league.json": "cda4b724aa89a6fa5a498ba552cb4cc433db94d3a4dda9c99d24d25995c2d4a9",
+    "data/normalized/champions-league-2026-27.json": "d69b8a82a4b009f0d1015826f30f0db91891a42008a168cafeefbe22a45b84ad",
+    "data/analysis/champions/event-validation/registry.json": "3ea2f9324db2757d36e1aed8801ed65c511c836140a9459a5a595ee603c96e00",
+    "data/generated/uefa-1x2-backtest.json": "cad68a9375ddca9090c4b7b5a9482e47915ce1a8fb72e66bbc64a753b58265f0"
+  },
+  "resultHistory": {
+    "input": 1469,
+    "uniqueUsable": 1469,
+    "invalid": [],
+    "duplicates": [],
+    "conflicts": [],
+    "seasons": [
+      {
+        "season": "2023-24",
+        "competitions": [
+          {
+            "competition": "ucl",
+            "fixtures": 125,
+            "outcomes": {
+              "1": 60,
+              "2": 38,
+              "X": 27
+            },
+            "resultSampleGates": {
+              "1": {
+                "positives": 60,
+                "negatives": 65,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "2": {
+                "positives": 38,
+                "negatives": 87,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "X": {
+                "positives": 27,
+                "negatives": 98,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              }
+            }
+          },
+          {
+            "competition": "uecl",
+            "fixtures": 141,
+            "outcomes": {
+              "1": 65,
+              "2": 45,
+              "X": 31
+            },
+            "resultSampleGates": {
+              "1": {
+                "positives": 65,
+                "negatives": 76,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "2": {
+                "positives": 45,
+                "negatives": 96,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "X": {
+                "positives": 31,
+                "negatives": 110,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              }
+            }
+          },
+          {
+            "competition": "uel",
+            "fixtures": 141,
+            "outcomes": {
+              "1": 71,
+              "2": 41,
+              "X": 29
+            },
+            "resultSampleGates": {
+              "1": {
+                "positives": 71,
+                "negatives": 70,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "2": {
+                "positives": 41,
+                "negatives": 100,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "X": {
+                "positives": 29,
+                "negatives": 112,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "season": "2024-25",
+        "competitions": [
+          {
+            "competition": "ucl",
+            "fixtures": 189,
+            "outcomes": {
+              "1": 96,
+              "2": 66,
+              "X": 27
+            },
+            "resultSampleGates": {
+              "1": {
+                "positives": 96,
+                "negatives": 93,
+                "sampleSufficient": false,
+                "reasons": [
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "2": {
+                "positives": 66,
+                "negatives": 123,
+                "sampleSufficient": true,
+                "reasons": [],
+                "approval": false
+              },
+              "X": {
+                "positives": 27,
+                "negatives": 162,
+                "sampleSufficient": false,
+                "reasons": [
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              }
+            }
+          },
+          {
+            "competition": "uecl",
+            "fixtures": 153,
+            "outcomes": {
+              "1": 77,
+              "2": 46,
+              "X": 30
+            },
+            "resultSampleGates": {
+              "1": {
+                "positives": 77,
+                "negatives": 76,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "2": {
+                "positives": 46,
+                "negatives": 107,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "X": {
+                "positives": 30,
+                "negatives": 123,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              }
+            }
+          },
+          {
+            "competition": "uel",
+            "fixtures": 189,
+            "outcomes": {
+              "1": 94,
+              "2": 51,
+              "X": 44
+            },
+            "resultSampleGates": {
+              "1": {
+                "positives": 94,
+                "negatives": 95,
+                "sampleSufficient": false,
+                "reasons": [
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "2": {
+                "positives": 51,
+                "negatives": 138,
+                "sampleSufficient": false,
+                "reasons": [
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "X": {
+                "positives": 44,
+                "negatives": 145,
+                "sampleSufficient": false,
+                "reasons": [
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "season": "2025-26",
+        "competitions": [
+          {
+            "competition": "ucl",
+            "fixtures": 189,
+            "outcomes": {
+              "1": 94,
+              "2": 61,
+              "X": 34
+            },
+            "resultSampleGates": {
+              "1": {
+                "positives": 94,
+                "negatives": 95,
+                "sampleSufficient": false,
+                "reasons": [
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "2": {
+                "positives": 61,
+                "negatives": 128,
+                "sampleSufficient": true,
+                "reasons": [],
+                "approval": false
+              },
+              "X": {
+                "positives": 34,
+                "negatives": 155,
+                "sampleSufficient": false,
+                "reasons": [
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              }
+            }
+          },
+          {
+            "competition": "uecl",
+            "fixtures": 153,
+            "outcomes": {
+              "1": 76,
+              "2": 45,
+              "X": 32
+            },
+            "resultSampleGates": {
+              "1": {
+                "positives": 76,
+                "negatives": 77,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "2": {
+                "positives": 45,
+                "negatives": 108,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "X": {
+                "positives": 32,
+                "negatives": 121,
+                "sampleSufficient": false,
+                "reasons": [
+                  "INSUFFICIENT_INDEPENDENT_FIXTURES",
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              }
+            }
+          },
+          {
+            "competition": "uel",
+            "fixtures": 189,
+            "outcomes": {
+              "1": 95,
+              "2": 62,
+              "X": 32
+            },
+            "resultSampleGates": {
+              "1": {
+                "positives": 95,
+                "negatives": 94,
+                "sampleSufficient": false,
+                "reasons": [
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              },
+              "2": {
+                "positives": 62,
+                "negatives": 127,
+                "sampleSufficient": true,
+                "reasons": [],
+                "approval": false
+              },
+              "X": {
+                "positives": 32,
+                "negatives": 157,
+                "sampleSufficient": false,
+                "reasons": [
+                  "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+                ],
+                "approval": false
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "domesticInputs": {
+    "matches": 5012,
+    "leagues": 18,
+    "earliestReceipt": "2026-09-06T16:52:11.656Z",
+    "latestReceipt": "2026-11-02T17:39:50.064Z",
+    "historicalUclTestFixtures": 189,
+    "bothTeamsMapped": 60,
+    "fixturesWithAsOfProfiles": 0,
+    "coverage": [
+      {
+        "fixtureId": "2045903",
+        "date": "2025-09-16",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045904",
+        "date": "2025-09-16",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045905",
+        "date": "2025-09-16",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045906",
+        "date": "2025-09-16",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045907",
+        "date": "2025-09-16",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045908",
+        "date": "2025-09-16",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045909",
+        "date": "2025-09-17",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045910",
+        "date": "2025-09-17",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045911",
+        "date": "2025-09-17",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045912",
+        "date": "2025-09-17",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045913",
+        "date": "2025-09-17",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045914",
+        "date": "2025-09-17",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045915",
+        "date": "2025-09-18",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045916",
+        "date": "2025-09-18",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045917",
+        "date": "2025-09-18",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045918",
+        "date": "2025-09-18",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045919",
+        "date": "2025-09-18",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045920",
+        "date": "2025-09-18",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045921",
+        "date": "2025-09-30",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045922",
+        "date": "2025-09-30",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045923",
+        "date": "2025-09-30",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045924",
+        "date": "2025-09-30",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045925",
+        "date": "2025-09-30",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045926",
+        "date": "2025-09-30",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045927",
+        "date": "2025-09-30",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045928",
+        "date": "2025-09-30",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045929",
+        "date": "2025-09-30",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045930",
+        "date": "2025-10-01",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045931",
+        "date": "2025-10-01",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045932",
+        "date": "2025-10-01",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045933",
+        "date": "2025-10-01",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045934",
+        "date": "2025-10-01",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045935",
+        "date": "2025-10-01",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045936",
+        "date": "2025-10-01",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045937",
+        "date": "2025-10-01",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045938",
+        "date": "2025-10-01",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045939",
+        "date": "2025-10-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045940",
+        "date": "2025-10-21",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045941",
+        "date": "2025-10-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045942",
+        "date": "2025-10-21",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045943",
+        "date": "2025-10-21",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045944",
+        "date": "2025-10-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045945",
+        "date": "2025-10-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045946",
+        "date": "2025-10-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045947",
+        "date": "2025-10-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045948",
+        "date": "2025-10-22",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045949",
+        "date": "2025-10-22",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045950",
+        "date": "2025-10-22",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045951",
+        "date": "2025-10-22",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045952",
+        "date": "2025-10-22",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045953",
+        "date": "2025-10-22",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045954",
+        "date": "2025-10-22",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045955",
+        "date": "2025-10-22",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045956",
+        "date": "2025-10-22",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045957",
+        "date": "2025-11-04",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045958",
+        "date": "2025-11-04",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045959",
+        "date": "2025-11-04",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045960",
+        "date": "2025-11-04",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045961",
+        "date": "2025-11-04",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045962",
+        "date": "2025-11-04",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045963",
+        "date": "2025-11-04",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045964",
+        "date": "2025-11-04",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045965",
+        "date": "2025-11-04",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045966",
+        "date": "2025-11-05",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045967",
+        "date": "2025-11-05",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045968",
+        "date": "2025-11-05",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045969",
+        "date": "2025-11-05",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045970",
+        "date": "2025-11-05",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045971",
+        "date": "2025-11-05",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045972",
+        "date": "2025-11-05",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045973",
+        "date": "2025-11-05",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045974",
+        "date": "2025-11-05",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045975",
+        "date": "2025-11-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045976",
+        "date": "2025-11-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045977",
+        "date": "2025-11-25",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045978",
+        "date": "2025-11-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045979",
+        "date": "2025-11-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045980",
+        "date": "2025-11-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045981",
+        "date": "2025-11-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045982",
+        "date": "2025-11-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045983",
+        "date": "2025-11-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045984",
+        "date": "2025-11-26",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045985",
+        "date": "2025-11-26",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045986",
+        "date": "2025-11-26",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045987",
+        "date": "2025-11-26",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045988",
+        "date": "2025-11-26",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045989",
+        "date": "2025-11-26",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045990",
+        "date": "2025-11-26",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045991",
+        "date": "2025-11-26",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045992",
+        "date": "2025-11-26",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045993",
+        "date": "2025-12-09",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045994",
+        "date": "2025-12-09",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045995",
+        "date": "2025-12-09",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045996",
+        "date": "2025-12-09",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045997",
+        "date": "2025-12-09",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045998",
+        "date": "2025-12-09",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2045999",
+        "date": "2025-12-09",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046000",
+        "date": "2025-12-09",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046001",
+        "date": "2025-12-09",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046002",
+        "date": "2025-12-10",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046003",
+        "date": "2025-12-10",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046004",
+        "date": "2025-12-10",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046005",
+        "date": "2025-12-10",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046006",
+        "date": "2025-12-10",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046007",
+        "date": "2025-12-10",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046008",
+        "date": "2025-12-10",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046009",
+        "date": "2025-12-10",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046010",
+        "date": "2025-12-10",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046011",
+        "date": "2026-01-20",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046012",
+        "date": "2026-01-20",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046013",
+        "date": "2026-01-20",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046014",
+        "date": "2026-01-20",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046015",
+        "date": "2026-01-20",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046016",
+        "date": "2026-01-20",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046017",
+        "date": "2026-01-20",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046018",
+        "date": "2026-01-20",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046019",
+        "date": "2026-01-20",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046020",
+        "date": "2026-01-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046021",
+        "date": "2026-01-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046022",
+        "date": "2026-01-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046023",
+        "date": "2026-01-21",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046024",
+        "date": "2026-01-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046025",
+        "date": "2026-01-21",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046026",
+        "date": "2026-01-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046027",
+        "date": "2026-01-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046028",
+        "date": "2026-01-21",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046029",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046030",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046031",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046032",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046033",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046034",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046035",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046036",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046037",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046038",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046039",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046040",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046041",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046042",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046043",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046044",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046045",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2046046",
+        "date": "2026-01-28",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047761",
+        "date": "2026-02-17",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047762",
+        "date": "2026-02-17",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047763",
+        "date": "2026-02-17",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047764",
+        "date": "2026-02-17",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047765",
+        "date": "2026-02-18",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047766",
+        "date": "2026-02-18",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047767",
+        "date": "2026-02-18",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047768",
+        "date": "2026-02-18",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047773",
+        "date": "2026-02-24",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047774",
+        "date": "2026-02-24",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047775",
+        "date": "2026-02-24",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047776",
+        "date": "2026-02-24",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047769",
+        "date": "2026-02-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047770",
+        "date": "2026-02-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047771",
+        "date": "2026-02-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047772",
+        "date": "2026-02-25",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048048",
+        "date": "2026-03-10",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048050",
+        "date": "2026-03-10",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048051",
+        "date": "2026-03-10",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048052",
+        "date": "2026-03-10",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048047",
+        "date": "2026-03-11",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048049",
+        "date": "2026-03-11",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048053",
+        "date": "2026-03-11",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048054",
+        "date": "2026-03-11",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048055",
+        "date": "2026-03-17",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048057",
+        "date": "2026-03-17",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048061",
+        "date": "2026-03-17",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048062",
+        "date": "2026-03-17",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048056",
+        "date": "2026-03-18",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048058",
+        "date": "2026-03-18",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048059",
+        "date": "2026-03-18",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048060",
+        "date": "2026-03-18",
+        "canonicalTeamsResolved": false,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048064",
+        "date": "2026-04-07",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048066",
+        "date": "2026-04-07",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048063",
+        "date": "2026-04-08",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048065",
+        "date": "2026-04-08",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048067",
+        "date": "2026-04-14",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048069",
+        "date": "2026-04-14",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048068",
+        "date": "2026-04-15",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048070",
+        "date": "2026-04-15",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048072",
+        "date": "2026-04-28",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048071",
+        "date": "2026-04-29",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048074",
+        "date": "2026-05-05",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2048073",
+        "date": "2026-05-06",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      },
+      {
+        "fixtureId": "2047742",
+        "date": "2026-05-30",
+        "canonicalTeamsResolved": true,
+        "samples": [
+          0,
+          0
+        ],
+        "sharedProfileCovered": false
+      }
+    ],
+    "rule": "Exact current UEFA-to-canonical map only; use production profileRows with each historical date cutoff and the existing 6-match / 2-per-venue coverage rule."
+  },
+  "odds": {
+    "events": 36,
+    "verifiedPrematch1x2": 36,
+    "byMatchday": {
+      "3": 18,
+      "4": 18
+    },
+    "historical2023to2026ExactMatches": 0,
+    "rejected": [],
+    "limitation": "Only the inspected normalized provider archive is counted; raw files and unlinked odds are not presumed verified historical contracts."
+  },
+  "evidence": {
+    "registryAt": "2026-11-04T15:57:28.798Z",
+    "eligibleObservations": 88,
+    "approvals": 0,
+    "families": [
+      {
+        "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+        "metric": "result",
+        "metrics": {
+          "calibration": [
+            {
+              "from": 0,
+              "to": 0.1,
+              "n": 0,
+              "meanProbability": null,
+              "observedFrequency": null
+            },
+            {
+              "from": 0.1,
+              "to": 0.2,
+              "n": 22,
+              "meanProbability": 0.1547,
+              "observedFrequency": 0.1818
+            },
+            {
+              "from": 0.2,
+              "to": 0.3,
+              "n": 9,
+              "meanProbability": 0.24,
+              "observedFrequency": 0.2222
+            },
+            {
+              "from": 0.3,
+              "to": 0.4,
+              "n": 5,
+              "meanProbability": 0.3508,
+              "observedFrequency": 0.4
+            },
+            {
+              "from": 0.4,
+              "to": 0.5,
+              "n": 5,
+              "meanProbability": 0.4432,
+              "observedFrequency": 0.2
+            },
+            {
+              "from": 0.5,
+              "to": 0.6,
+              "n": 5,
+              "meanProbability": 0.5614,
+              "observedFrequency": 0.6
+            },
+            {
+              "from": 0.6,
+              "to": 0.7,
+              "n": 3,
+              "meanProbability": 0.651,
+              "observedFrequency": 0.6667
+            },
+            {
+              "from": 0.7,
+              "to": 0.8,
+              "n": 5,
+              "meanProbability": 0.7414,
+              "observedFrequency": 0.8
+            },
+            {
+              "from": 0.8,
+              "to": 0.9,
+              "n": 0,
+              "meanProbability": null,
+              "observedFrequency": null
+            },
+            {
+              "from": 0.9,
+              "to": 1,
+              "n": 0,
+              "meanProbability": null,
+              "observedFrequency": null
+            }
+          ],
+          "observations": 54,
+          "matchClusters": 18,
+          "brier": 0.1761,
+          "baselineBrier": 0.1912,
+          "deltaBrier": -0.0152,
+          "ece": 0.051,
+          "logLoss": 0.5295,
+          "meanBias": null,
+          "mae": null
+        },
+        "reasons": [
+          "INSUFFICIENT_INDEPENDENT_FIXTURES"
+        ]
+      },
+      {
+        "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+        "metric": "double-chance",
+        "metrics": {
+          "calibration": [
+            {
+              "from": 0,
+              "to": 0.1,
+              "n": 0,
+              "meanProbability": null,
+              "observedFrequency": null
+            },
+            {
+              "from": 0.1,
+              "to": 0.2,
+              "n": 0,
+              "meanProbability": null,
+              "observedFrequency": null
+            },
+            {
+              "from": 0.2,
+              "to": 0.3,
+              "n": 5,
+              "meanProbability": 0.2586,
+              "observedFrequency": 0.2
+            },
+            {
+              "from": 0.3,
+              "to": 0.4,
+              "n": 3,
+              "meanProbability": 0.349,
+              "observedFrequency": 0.3333
+            },
+            {
+              "from": 0.4,
+              "to": 0.5,
+              "n": 5,
+              "meanProbability": 0.4386,
+              "observedFrequency": 0.4
+            },
+            {
+              "from": 0.5,
+              "to": 0.6,
+              "n": 5,
+              "meanProbability": 0.5568,
+              "observedFrequency": 0.8
+            },
+            {
+              "from": 0.6,
+              "to": 0.7,
+              "n": 5,
+              "meanProbability": 0.649,
+              "observedFrequency": 0.6
+            },
+            {
+              "from": 0.7,
+              "to": 0.8,
+              "n": 5,
+              "meanProbability": 0.7474,
+              "observedFrequency": 0.6
+            },
+            {
+              "from": 0.8,
+              "to": 0.9,
+              "n": 6,
+              "meanProbability": 0.8502,
+              "observedFrequency": 0.8333
+            },
+            {
+              "from": 0.9,
+              "to": 1,
+              "n": 0,
+              "meanProbability": null,
+              "observedFrequency": null
+            }
+          ],
+          "observations": 34,
+          "matchClusters": 18,
+          "brier": 0.2054,
+          "baselineBrier": 0.2238,
+          "deltaBrier": -0.0184,
+          "ece": 0.0833,
+          "logLoss": 0.5965,
+          "meanBias": null,
+          "mae": null
+        },
+        "reasons": [
+          "INSUFFICIENT_INDEPENDENT_FIXTURES",
+          "CALIBRATION_ERROR_ABOVE_MD7_LIMIT"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+        "metric": "result",
+        "direction": "1",
+        "fixtures": 18,
+        "positives": 11,
+        "negatives": 7,
+        "reasons": [
+          "INSUFFICIENT_INDEPENDENT_FIXTURES",
+          "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+        ]
+      },
+      {
+        "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+        "metric": "result",
+        "direction": "X",
+        "fixtures": 18,
+        "positives": 3,
+        "negatives": 15,
+        "reasons": [
+          "INSUFFICIENT_INDEPENDENT_FIXTURES",
+          "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+        ]
+      },
+      {
+        "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+        "metric": "result",
+        "direction": "2",
+        "fixtures": 18,
+        "positives": 4,
+        "negatives": 14,
+        "reasons": [
+          "INSUFFICIENT_INDEPENDENT_FIXTURES",
+          "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+        ]
+      },
+      {
+        "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+        "metric": "double-chance",
+        "direction": "1X",
+        "fixtures": 16,
+        "positives": 12,
+        "negatives": 4,
+        "reasons": [
+          "INSUFFICIENT_INDEPENDENT_FIXTURES",
+          "CALIBRATION_ERROR_ABOVE_MD7_LIMIT",
+          "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT",
+          "EXACT_EVENT_ACCURACY_OR_CALIBRATION_FAILED"
+        ]
+      },
+      {
+        "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+        "metric": "double-chance",
+        "direction": "X2",
+        "fixtures": 18,
+        "positives": 7,
+        "negatives": 11,
+        "reasons": [
+          "INSUFFICIENT_INDEPENDENT_FIXTURES",
+          "CALIBRATION_ERROR_ABOVE_MD7_LIMIT",
+          "EXACT_EVENT_CLASS_COUNTS_INSUFFICIENT"
+        ]
+      }
+    ],
+    "legacySnapshots": 18,
+    "legacyQuarantined": 0,
+    "md04": {
+      "captureFiles": 27,
+      "validCaptureFiles": 27,
+      "independentFixtures": 9,
+      "resultModels": [
+        {
+          "modelId": "champions-shared:7db7970a2fd61623fa664e0510cc91a4567400a233cdf19f8beac8bb862ac806",
+          "independentFixtures": 8
+        }
+      ],
+      "rule": "Revisions are not independent fixtures and are not pooled into legacy model evidence."
+    }
+  },
+  "existingElo": {
+    "protocol": {
+      "train": "2023-24 + 2024-25",
+      "test": "2025-26",
+      "frozenParameters": true
+    },
+    "championsTest": {
+      "matches": 189,
+      "logLoss": 0.94918,
+      "brier": 0.56156,
+      "accuracyPct": 59.26,
+      "calibrationError": 0.04688,
+      "calibration": [
+        {
+          "bin": "0-10%",
+          "count": 1,
+          "meanProbability": 0.0705,
+          "observedRate": 0
+        },
+        {
+          "bin": "10-20%",
+          "count": 162,
+          "meanProbability": 0.1714,
+          "observedRate": 0.1481
+        },
+        {
+          "bin": "20-30%",
+          "count": 121,
+          "meanProbability": 0.235,
+          "observedRate": 0.2397
+        },
+        {
+          "bin": "30-40%",
+          "count": 97,
+          "meanProbability": 0.3448,
+          "observedRate": 0.2474
+        },
+        {
+          "bin": "40-50%",
+          "count": 82,
+          "meanProbability": 0.45,
+          "observedRate": 0.5366
+        },
+        {
+          "bin": "50-60%",
+          "count": 58,
+          "meanProbability": 0.5448,
+          "observedRate": 0.6207
+        },
+        {
+          "bin": "60-70%",
+          "count": 34,
+          "meanProbability": 0.6449,
+          "observedRate": 0.6471
+        },
+        {
+          "bin": "70-80%",
+          "count": 11,
+          "meanProbability": 0.7318,
+          "observedRate": 0.8182
+        },
+        {
+          "bin": "80-90%",
+          "count": 1,
+          "meanProbability": 0.8095,
+          "observedRate": 1
+        }
+      ]
+    },
+    "baseline": {
+      "matches": 189,
+      "logLoss": 1.02251,
+      "brier": 0.61683,
+      "accuracyPct": 49.74,
+      "calibrationError": 0.0137,
+      "calibration": [
+        {
+          "bin": "20-30%",
+          "count": 189,
+          "meanProbability": 0.2004,
+          "observedRate": 0.1799
+        },
+        {
+          "bin": "30-40%",
+          "count": 189,
+          "meanProbability": 0.306,
+          "observedRate": 0.3228
+        },
+        {
+          "bin": "40-50%",
+          "count": 189,
+          "meanProbability": 0.4936,
+          "observedRate": 0.4974
+        }
+      ]
+    },
+    "limitation": "Existing historical Elo experiment only. Its reported 2025-26 test has already been inspected; tuning a new model against these scores cannot be called a new untouched holdout."
+  },
+  "decision": {
+    "historicalResultResearch": "READY_FOR_DIAGNOSTIC_EUROPEAN_RATING_RESEARCH",
+    "productionSharedHistoricalReplay": "BLOCKED_NO_AS_OF_DOMESTIC_PROFILES_IN_INSPECTED_INPUT",
+    "historicalProviderComparison": "NO_VERIFIED_2023_26_CONTRACTS_IN_INSPECTED_NORMALIZED_ARCHIVE",
+    "newModelOperationalApproval": "NOT_AVAILABLE",
+    "next": [
+      "Use European scores for an isolated retrospective rating comparison, labelled diagnostic; keep 2025-26 historical test separate from new validation claims.",
+      "To replay the current domestic adapter historically, acquire date-versioned domestic profiles and exact team mappings; never move receipt timestamps backward.",
+      "Freeze the new model, input policy, baseline and abstention rules before collecting a new independent holdout.",
+      "Keep operational result suggestions blocked until the unchanged exact-model/event gates pass."
+    ]
+  }
+}

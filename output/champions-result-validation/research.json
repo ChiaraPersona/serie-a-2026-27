@@ -1,0 +1,417 @@
+{
+  "asOf": "2026-11-04T15:51:29.506Z",
+  "status": "RESEARCH_ONLY_NOT_CALIBRATED",
+  "inputHashes": {
+    "scenario": "42da3b345705c4ed06b33bb0c9fb3583111b4bb96b767e1ecb43210e87b3205c",
+    "model": "d02e3b50291c32bacdadc7eaaa9a2fcc0633cd57a06df9480a347fb0f441b19d",
+    "backtest": "cad68a9375ddca9090c4b7b5a9482e47915ce1a8fb72e66bbc64a753b58265f0",
+    "map": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+    "odds": "cda4b724aa89a6fa5a498ba552cb4cc433db94d3a4dda9c99d24d25995c2d4a9"
+  },
+  "historicalElo": {
+    "generatedAt": "2026-09-02",
+    "historyThrough": "2026-05-30",
+    "holdoutProtocol": {
+      "train": "2023-24 + 2024-25",
+      "test": "2025-26",
+      "frozenParameters": true
+    },
+    "uclBaseline": {
+      "matches": 189,
+      "logLoss": 1.02251,
+      "brier": 0.61683,
+      "accuracyPct": 49.74,
+      "calibrationError": 0.0137,
+      "calibration": [
+        {
+          "bin": "20-30%",
+          "count": 189,
+          "meanProbability": 0.2004,
+          "observedRate": 0.1799
+        },
+        {
+          "bin": "30-40%",
+          "count": 189,
+          "meanProbability": 0.306,
+          "observedRate": 0.3228
+        },
+        {
+          "bin": "40-50%",
+          "count": 189,
+          "meanProbability": 0.4936,
+          "observedRate": 0.4974
+        }
+      ]
+    },
+    "uclModel": {
+      "matches": 189,
+      "logLoss": 0.94918,
+      "brier": 0.56156,
+      "accuracyPct": 59.26,
+      "calibrationError": 0.04688,
+      "calibration": [
+        {
+          "bin": "0-10%",
+          "count": 1,
+          "meanProbability": 0.0705,
+          "observedRate": 0
+        },
+        {
+          "bin": "10-20%",
+          "count": 162,
+          "meanProbability": 0.1714,
+          "observedRate": 0.1481
+        },
+        {
+          "bin": "20-30%",
+          "count": 121,
+          "meanProbability": 0.235,
+          "observedRate": 0.2397
+        },
+        {
+          "bin": "30-40%",
+          "count": 97,
+          "meanProbability": 0.3448,
+          "observedRate": 0.2474
+        },
+        {
+          "bin": "40-50%",
+          "count": 82,
+          "meanProbability": 0.45,
+          "observedRate": 0.5366
+        },
+        {
+          "bin": "50-60%",
+          "count": 58,
+          "meanProbability": 0.5448,
+          "observedRate": 0.6207
+        },
+        {
+          "bin": "60-70%",
+          "count": 34,
+          "meanProbability": 0.6449,
+          "observedRate": 0.6471
+        },
+        {
+          "bin": "70-80%",
+          "count": 11,
+          "meanProbability": 0.7318,
+          "observedRate": 0.8182
+        },
+        {
+          "bin": "80-90%",
+          "count": 1,
+          "meanProbability": 0.8095,
+          "observedRate": 1
+        }
+      ]
+    },
+    "scope": "Elo 1X2 only; not shared Poisson, goal markets, count markets or DUO"
+  },
+  "rows": [
+    {
+      "fixtureId": "ucl-2026-27-md04-10",
+      "fixture": "AEK Athens - Real Madrid",
+      "sharedProbabilityPct": {
+        "home": 47.631777566657675,
+        "draw": 25.663324203328536,
+        "away": 26.70489823001379
+      },
+      "teamSamples": [
+        9,
+        48
+      ],
+      "latestMatchDates": [
+        "2026-10-10",
+        "2026-10-25"
+      ],
+      "opponentAdjusted": false,
+      "eloProbabilityPct": {
+        "home": 32.332,
+        "draw": 19.616,
+        "away": 48.052
+      },
+      "eloStatus": "FROZEN_HISTORICAL_REFERENCE_NOT_CURRENT_MODEL_VALIDATION",
+      "marketProbabilityPct": {
+        "home": 7.937,
+        "draw": 12.698,
+        "away": 79.365
+      },
+      "marketSnapshotAt": "2026-11-04T13:38:26.529Z",
+      "marketMarginPct": 5,
+      "approved": false
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-11",
+      "fixture": "Fenerbahçe - Liverpool",
+      "sharedProbabilityPct": {
+        "home": 74.80031950077087,
+        "draw": 14.591827753259096,
+        "away": 10.607852745970026
+      },
+      "teamSamples": [
+        8,
+        45
+      ],
+      "latestMatchDates": [
+        "2026-10-26",
+        "2026-10-17"
+      ],
+      "opponentAdjusted": false,
+      "eloProbabilityPct": {
+        "home": 37.97,
+        "draw": 21.604,
+        "away": 40.426
+      },
+      "eloStatus": "FROZEN_HISTORICAL_REFERENCE_NOT_CURRENT_MODEL_VALIDATION",
+      "marketProbabilityPct": {
+        "home": 15.778,
+        "draw": 18.934,
+        "away": 65.288
+      },
+      "marketSnapshotAt": "2026-11-04T13:38:26.529Z",
+      "marketMarginPct": 5.632,
+      "approved": false
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-12",
+      "fixture": "Borussia Dortmund - Real Betis",
+      "sharedProbabilityPct": {
+        "home": 59.150078825801856,
+        "draw": 20.815257999456467,
+        "away": 20.03466317474168
+      },
+      "teamSamples": [
+        41,
+        47
+      ],
+      "latestMatchDates": [
+        "2026-10-31",
+        "2026-10-17"
+      ],
+      "opponentAdjusted": false,
+      "eloProbabilityPct": {
+        "home": 53.961,
+        "draw": 18.169,
+        "away": 27.87
+      },
+      "eloStatus": "FROZEN_HISTORICAL_REFERENCE_NOT_CURRENT_MODEL_VALIDATION",
+      "marketProbabilityPct": {
+        "home": 55.47,
+        "draw": 23.575,
+        "away": 20.955
+      },
+      "marketSnapshotAt": "2026-11-04T13:38:26.529Z",
+      "marketMarginPct": 6.046,
+      "approved": false
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-13",
+      "fixture": "Porto - Napoli",
+      "sharedProbabilityPct": {
+        "home": 57.1473242258858,
+        "draw": 24.943481179791423,
+        "away": 17.909194594322773
+      },
+      "teamSamples": [
+        42,
+        46
+      ],
+      "latestMatchDates": [
+        "2026-10-10",
+        "2026-10-24"
+      ],
+      "opponentAdjusted": false,
+      "eloProbabilityPct": {
+        "home": 62.098,
+        "draw": 16.222,
+        "away": 21.68
+      },
+      "eloStatus": "FROZEN_HISTORICAL_REFERENCE_NOT_CURRENT_MODEL_VALIDATION",
+      "marketProbabilityPct": {
+        "home": 51.988,
+        "draw": 25.994,
+        "away": 22.018
+      },
+      "marketSnapshotAt": "2026-11-04T13:38:26.529Z",
+      "marketMarginPct": 6.863,
+      "approved": false
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-14",
+      "fixture": "PSV Eindhoven - Club Brugge",
+      "sharedProbabilityPct": {
+        "home": 44.8460681350571,
+        "draw": 20.66771378479656,
+        "away": 34.48621808014633
+      },
+      "teamSamples": [
+        44,
+        47
+      ],
+      "latestMatchDates": [
+        "2026-10-25",
+        "2026-10-10"
+      ],
+      "opponentAdjusted": false,
+      "eloProbabilityPct": {
+        "home": 44.762,
+        "draw": 20.451,
+        "away": 34.787
+      },
+      "eloStatus": "FROZEN_HISTORICAL_REFERENCE_NOT_CURRENT_MODEL_VALIDATION",
+      "marketProbabilityPct": {
+        "home": 49.853,
+        "draw": 22.287,
+        "away": 27.859
+      },
+      "marketSnapshotAt": "2026-11-04T13:38:26.529Z",
+      "marketMarginPct": 5.573,
+      "approved": false
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-15",
+      "fixture": "Leipzig - Manchester City",
+      "sharedProbabilityPct": {
+        "home": 41.14516259213607,
+        "draw": 22.69485052717081,
+        "away": 36.159986880693125
+      },
+      "teamSamples": [
+        40,
+        46
+      ],
+      "latestMatchDates": [
+        "2026-10-17",
+        "2026-10-24"
+      ],
+      "opponentAdjusted": false,
+      "eloProbabilityPct": {
+        "home": 32.353,
+        "draw": 19.622,
+        "away": 48.025
+      },
+      "eloStatus": "FROZEN_HISTORICAL_REFERENCE_NOT_CURRENT_MODEL_VALIDATION",
+      "marketProbabilityPct": {
+        "home": 17.169,
+        "draw": 19.88,
+        "away": 62.952
+      },
+      "marketSnapshotAt": "2026-11-04T13:38:26.529Z",
+      "marketMarginPct": 5.901,
+      "approved": false
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-16",
+      "fixture": "Lens - Como",
+      "sharedProbabilityPct": {
+        "home": 39.38715232970406,
+        "draw": 25.308995142261743,
+        "away": 35.3038525280342
+      },
+      "teamSamples": [
+        42,
+        45
+      ],
+      "latestMatchDates": [
+        "2026-10-30",
+        "2026-10-18"
+      ],
+      "opponentAdjusted": false,
+      "eloProbabilityPct": null,
+      "eloStatus": "N/D_EXACT_RATING_OR_TEMPORAL_EVIDENCE_MISSING",
+      "marketProbabilityPct": {
+        "home": 26.273,
+        "draw": 25.222,
+        "away": 48.504
+      },
+      "marketSnapshotAt": "2026-11-04T13:38:26.529Z",
+      "marketMarginPct": 5.726,
+      "approved": false
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-17",
+      "fixture": "Slavia Praha - Arsenal",
+      "sharedProbabilityPct": {
+        "home": 12.371240559219304,
+        "draw": 18.163351068068074,
+        "away": 69.46540837271262
+      },
+      "teamSamples": [
+        10,
+        45
+      ],
+      "latestMatchDates": [
+        "2026-10-13",
+        "2026-10-18"
+      ],
+      "opponentAdjusted": false,
+      "eloProbabilityPct": {
+        "home": 13.315,
+        "draw": 13.428,
+        "away": 73.256
+      },
+      "eloStatus": "FROZEN_HISTORICAL_REFERENCE_NOT_CURRENT_MODEL_VALIDATION",
+      "marketProbabilityPct": {
+        "home": 7.235,
+        "draw": 15.675,
+        "away": 77.09
+      },
+      "marketSnapshotAt": "2026-11-04T13:38:26.529Z",
+      "marketMarginPct": 6.326,
+      "approved": false
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-18",
+      "fixture": "Viking - Sabah",
+      "sharedProbabilityPct": {
+        "home": null,
+        "draw": null,
+        "away": null
+      },
+      "teamSamples": [
+        49,
+        0
+      ],
+      "latestMatchDates": [
+        "2026-10-30",
+        null
+      ],
+      "opponentAdjusted": false,
+      "eloProbabilityPct": null,
+      "eloStatus": "N/D_EXACT_RATING_OR_TEMPORAL_EVIDENCE_MISSING",
+      "marketProbabilityPct": {
+        "home": 68.182,
+        "draw": 18.182,
+        "away": 13.636
+      },
+      "marketSnapshotAt": "2026-11-04T13:38:26.529Z",
+      "marketMarginPct": 4.762,
+      "approved": false
+    }
+  ],
+  "blockers": [
+    "Shared scenario lacks exact-model chronological holdout validation.",
+    "Frozen historical Elo is stale; missing exact ratings stay N/D, never neutral guesses.",
+    "Comparable prematch historical provider odds and timestamped domestic inputs must be verified before a market-baseline backtest.",
+    "Small-sample shrinkage, recency and opponent corrections require training/validation before independent test; no production weights changed."
+  ],
+  "nextProtocol": {
+    "training": "Fit only on earlier seasons; tune league/opponent correction, shrinkage and recency on a later validation partition.",
+    "test": "Freeze model and thresholds before an untouched chronological test; group by fixture and date.",
+    "comparators": [
+      "Domestic shared model",
+      "Frozen common European rating",
+      "Training-only result-frequency baseline",
+      "Verified prematch provider probabilities normalized by margin"
+    ],
+    "metrics": [
+      "Multiclass Brier",
+      "Log loss",
+      "Calibration bins and ECE",
+      "Fixture-cluster confidence intervals",
+      "Coverage and abstention by sample size, age, league pair"
+    ],
+    "approval": "Reuse exact-event and exact-model event-validation gates; independent validation for result, double chance, goals, counts and extended player contracts."
+  }
+}

@@ -1,12 +1,12 @@
 # Validazione Champions: sei punti
 
-Generato: 2026-10-20T14:59:58.166Z. MyCombo escluso.
+Generato: 2026-11-04T15:57:28.798Z. MyCombo escluso.
 
 ## Censimento
 
 - 1469 risultati europei storici, 503 Champions: utilizzabili per esiti, non per inventare tiri o minuti.
 - 189 gare Champions 2025/26 con statistiche locali; 186 utilizzabili e verificate sui 90 minuti per tiri/SOT/corner. Supplementari e rigori esclusi. Sono actual utilizzabili come riferimento storico; non sono probabilità MD3 prepartita.
-- 36 fixture correnti concluse; actual di squadra: {"shots":36,"sot":36,"corners":34}.
+- 63 fixture correnti concluse; actual di squadra: {"shots":126,"sot":126,"corners":124}.
 - Replay comparativo del motore condiviso MD7: 93 gare training e 93 test, con input di data strettamente precedente. È diagnostico: versione diversa dal modello MD3 e ricevute storiche di disponibilità mancanti.
 - 62 righe individuali con ID esatti; 30 osservazioni nel precedente audit rigoroso. I casi in conflitto sono quarantinati.
 - Snapshot storici: [{"path":"data/normalized/champions-pilot-predictions-2026-27.json","versions":14,"fixtures":18,"prematchFixtures":18,"originalResultEventProbabilities":90,"scope":"LEGACY_MODEL_ONLY_NOT_MD3_VALIDATION","proof":"GIT_COMMITTER_TIMESTAMP_AND_SERIALIZED_GENERATION_TIME"},{"path":"data/normalized/champions-pilot-predictions-md02-2026-27.json","versions":1,"fixtures":18,"prematchFixtures":18,"originalResultEventProbabilities":90,"scope":"LEGACY_MODEL_ONLY_NOT_MD3_VALIDATION","proof":"GIT_COMMITTER_TIMESTAMP_AND_SERIALIZED_GENERATION_TIME"},{"path":"data/normalized/champions-player-markets-md01-2026-27.json","versions":11,"fixtures":18,"prematchFixtures":18,"originalResultEventProbabilities":0,"scope":"LEGACY_MODEL_ONLY_NOT_MD3_VALIDATION","proof":"GIT_COMMITTER_TIMESTAMP_AND_SERIALIZED_GENERATION_TIME"}]. Le metriche legacy sono descrittive e separate per modello; non validano il modello MD3.
@@ -22,7 +22,7 @@ Generato: 2026-10-20T14:59:58.166Z. MyCombo escluso.
 
 ## Stato attuale
 
-Snapshot prospettici disponibili: 18. Osservazioni di test ammissibili: 0. Eventi in attesa di esito/dati: 2803. Approvazioni: 0.
+Snapshot prospettici disponibili: 18. Osservazioni di test ammissibili: 88. Eventi in attesa di esito/dati: 2338. Approvazioni: 0.
 
 Nessun nuovo coefficiente o calibratore è stato fittato: il modello è congelato. I campioni legacy appartengono a versioni differenti e restano diagnostici. Il backtest Elo non certifica il correttore motivazionale o la conversione Poisson; il test sui volumi domestici non certifica il modello MD3. Le probabilità storiche non serializzate restano N/D.
 

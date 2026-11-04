@@ -3,6 +3,8 @@ const assert=require('node:assert/strict'),fs=require('fs'),path=require('path')
 const {evaluateEvidence,resolveValidation,prudentEvaluation,targetForLeg,eventKey,observationIssue}=require('./champions/event-validation.cjs');
 const {freezeCandidate}=require('./champions/complete-forecast-snapshots');
 const {readFrozen,loadRegistry,currentModels,read,actualFor,digest}=require('./champions/validation-data.cjs');
+const {captureInputs,assertInputsUnchanged}=require('./test-champions-validation-inputs.cjs');
+const protectedBefore=captureInputs(),catalogBefore=read('data/normalized/schedina-champions-md03.json');
 assert.equal(targetForLeg({suggestionAnalysis:{family:'corners'},betSelection:{market:{threshold:'10.5'}}}).threshold,10.5);
 assert.equal(targetForLeg({suggestionAnalysis:{family:'corners'},betSelection:{market:{threshold:null}}}).threshold,null);
 const target={scope:'match',metric:'shots',threshold:1.5,direction:'OVER',period:'REGULATION',duo:false,woodwork:false,extraTime:false,conditionalOnStart:false,subjectId:null};
@@ -40,8 +42,8 @@ try{
 }finally{assert(path.resolve(tmp).startsWith(out+path.sep));fs.rmSync(tmp,{recursive:true,force:true});}
 const real=loadRegistry();assert(real);assert.deepEqual(real.modelIds,currentModels().ids);assert.equal(real.events.filter(e=>e.approvable).length,0);
 const replay=read('data/analysis/champions/event-validation/historical-count-replay.json');assert.equal(replay.trainingMatches,93);assert.equal(replay.testMatches,93);assert(replay.rows.every(r=>r.latestInputEventDate<r.date));assert.equal(replay.approvable,false);
-for(const [file,expected] of Object.entries(read('output/champions-validation-six-points/protected.json')))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'),expected,file);
-const before=read('output/champions-validation-six-points/schedina.before.json'),after=read('data/normalized/schedina-champions-md03.json');assert.deepEqual(after.marketCatalog.myCombo,before.marketCatalog.myCombo,'MyCombo fuori ambito');
+assertInputsUnchanged(protectedBefore);
+const before=catalogBefore,after=read('data/normalized/schedina-champions-md03.json');assert.deepEqual(after.marketCatalog.myCombo,before.marketCatalog.myCombo,'MyCombo fuori ambito');
 assert.deepEqual(after.slips,before.slips);
 const originals=new Map(before.marketCatalog.matches.flatMap(m=>m.selections).map(l=>[l.selectionId,l]));
 for(const leg of after.marketCatalog.matches.flatMap(m=>m.selections)){const old=originals.get(leg.selectionId);assert(old);assert.deepEqual(leg.betSelection.quote,old.betSelection.quote);assert.deepEqual(leg.betSelection.identity,old.betSelection.identity);for(const key of ['modelProbabilityPct','fairOdds','expectedValuePct'])assert.equal(leg.betSelection.evaluation[key],old.betSelection.evaluation[key]);}

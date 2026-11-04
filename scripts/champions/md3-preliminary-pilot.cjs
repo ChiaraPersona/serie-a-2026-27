@@ -3,6 +3,7 @@
 // never written into prudent/calibrated fields. The MD7 portfolio rules are reused.
 const selector=require('../md06-suggested-forecasts');
 const {playablePolicyFor}=require('../betting-market-policy');
+const {pairRelation}=require('../md06-scenario-coherence');
 const TARGET='ucl-2026-27-md03-01';
 const finite=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
 function selectorView(original){
@@ -27,12 +28,18 @@ function assessPreliminary(leg){
  return {eligible:reasons.length===0,reasons:[...new Set(reasons)],conservativeExpectedValuePct:null};
 }
 function selectPreliminaryFixture(match){
- const views=match.selections.map(selectorView);
+ // An existing exact-event approval must not be demoted by the presentation
+ // pilot, nor can a conflicting provisional candidate replace it.
+ const approved=match.selections.filter(l=>l.qualifiedSelection===true&&l.publication?.status==='APPROVED'&&l.betSelection?.evaluation?.validation?.approvable===true);
+ const locked=new Set(approved.map(l=>l.selectionId));
+ const conflicts=l=>approved.some(a=>['MUTUALLY_EXCLUSIVE','EQUIVALENT_OVERLAP','LOGICAL_IMPLICATION'].includes(pairRelation(l,a).type));
+ const views=match.selections.filter(l=>!locked.has(l.selectionId)&&!conflicts(l)).map(selectorView);
  const result=selector.chooseSuggestions({selections:views},'probability-first',{assessment:assessPreliminary,probabilityKey:'modelProbabilityPct'});
- const ranks=new Map(result.accepted.map((l,i)=>[l.selectionId,i+1]));
+ const ranks=new Map([...approved,...result.accepted].map((l,i)=>[l.selectionId,i+1]));
  const selections=match.selections.map(leg=>{
+  if(locked.has(leg.selectionId))return {...leg,suggestionAnalysis:{...leg.suggestionAnalysis,suggested:true,rank:ranks.get(leg.selectionId)}};
   const rank=ranks.get(leg.selectionId)||null,assessment=result.assessments.get(leg.selectionId);
-  const reasons=rank?[]:assessment.eligible?[result.rejected.get(leg.selectionId)||'LOWER_RANKED']:assessment.reasons;
+  const reasons=conflicts(leg)?['CONFLICT_WITH_LOCKED_APPROVED_SELECTION']:rank?[]:assessment.eligible?[result.rejected.get(leg.selectionId)||'LOWER_RANKED']:assessment.reasons;
   const status=rank?'PRELIMINARY':'NOT_SELECTED';
   return {...leg,selectionStatus:status,qualifiedSelection:false,approvedPreliminary:false,
    publication:{...leg.publication,status,selectionGate:'MD7_PORTFOLIO_CENTRAL_PROVISIONAL_PILOT',reasons:[...reasons,'CHAMPIONS_EVENT_MODEL_NOT_VALIDATED']},
@@ -43,7 +50,7 @@ function selectPreliminaryFixture(match){
    betSelection:{...leg.betSelection,operational:{...leg.betSelection.operational,classification:'WATCH'}}};
  });
  const selected=selections.filter(l=>l.suggestionAnalysis.suggested);
- return {...match,selections,suggestions:result.accepted.map(l=>l.selectionId),suggestionSummary:{total:selected.length,byFamily:Object.fromEntries([...new Set(selected.map(l=>l.suggestionAnalysis.family))].map(f=>[f,selected.filter(l=>l.suggestionAnalysis.family===f).length]))}};
+ return {...match,selections,suggestions:[...approved,...result.accepted].map(l=>l.selectionId),suggestionSummary:{total:selected.length,byFamily:Object.fromEntries([...new Set(selected.map(l=>l.suggestionAnalysis.family))].map(f=>[f,selected.filter(l=>l.suggestionAnalysis.family===f).length]))}};
 }
 function selectPreliminaryMatch(match){
  if(match.matchId!==TARGET)throw Error('Preliminary pilot is restricted to Fenerbahce-Slavia');
