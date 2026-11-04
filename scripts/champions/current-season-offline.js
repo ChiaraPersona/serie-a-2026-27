@@ -1,6 +1,7 @@
 "use strict";
 const {historicalBaseline,blendRates,ROLE_PRIORS}=require('./context-adjusted-player-baseline');
 const {scaleShotProjections}=require('./player-volume-utils');
+const {conserveTeamVolume}=require('./substitute-minutes');
 const TEAM_ALIASES=Object.freeze({'bod-glimt':'bodo-glimt'});
 const TEAM_ONLY=new Set(['sabah','slavia-praha','slovan-bratislava','shakhtar-donetsk']);
 const canonicalTeam=id=>TEAM_ALIASES[id]||id;
@@ -51,9 +52,10 @@ function projectDocumentedTeam({teamId,players,lineupVerified,benchVerified,targ
  if(TEAM_ONLY.has(canonicalTeam(teamId)))return {status:'blocked-collective-only',players:[]};
  if(!lineupVerified||!benchVerified||!players.length||players.some(p=>!(p.expectedMinutes>0)||!Number.isFinite(p.per90?.shots)||!Number.isFinite(p.per90?.shotsOnTarget)))return {status:'blocked-documentation-or-minutes',players:[]};
  if(players.reduce((s,p)=>s+p.expectedMinutes,0)>990)return {status:'blocked-existing-990-minute-budget',players:[]};
- if(!Number.isFinite(targetShots)||!Number.isFinite(targetSOT))return {status:'blocked-team-volumes',players:[]};
- const projections=precision=>{
-  const shots=scaleShotProjections(players,'shots',targetShots,precision),sot=scaleShotProjections(players,'shotsOnTarget',targetSOT,precision);
+ if(!Number.isFinite(targetShots)||!Number.isFinite(targetSOT)||targetShots<0||targetSOT<0||targetSOT>targetShots)return {status:'blocked-team-volumes',players:[]};
+ const projections=(precision,conserve=false)=>{
+  const scale=(key,target)=>{const rows=scaleShotProjections(players,key,target,precision);return conserve?conserveTeamVolume(rows,target):rows;};
+  const shots=scale('shots',targetShots),sot=scale('shotsOnTarget',targetSOT);
   const result=shots.map(s=>({playerId:s.player.playerId,shots:s.projection,sot:sot.find(t=>t.player.playerId===s.player.playerId)?.projection}));
   const ds=Number((result.reduce((s,p)=>s+p.shots,0)-targetShots).toFixed(precision));
   const dt=Number((result.reduce((s,p)=>s+p.sot,0)-targetSOT).toFixed(precision));
@@ -67,8 +69,15 @@ function projectDocumentedTeam({teamId,players,lineupVerified,benchVerified,targ
   const precise=projections(4);
   if(passes(precise))allocation=precise;
  }
+ // Reuse the existing substitute-volume conservation on the same inputs.
+ // Do not relax the total-volume gate or the per-player SOT <= shots invariant.
+ let conservationApplied=false;
+ if(!passes(allocation)){
+  const conserved=projections(4,true);
+  if(passes(conserved)){allocation=conserved;conservationApplied=true;}
+ }
  const {result,ds,dt}=allocation;
  if(Math.abs(ds)>0.02||Math.abs(dt)>0.02||result.some(p=>p.sot>p.shots))return {status:'blocked-existing-reconciliation-limit',players:[],diagnostic:{shotsDifference:ds,sotDifference:dt,unapprovedRaw:result}};
- return {status:'offline-conditional-only',players:result,shotsDifference:ds,sotDifference:dt};
+ return {status:'offline-conditional-only',players:result,shotsDifference:ds,sotDifference:dt,...(conservationApplied?{conservationApplied:true,conservationMethod:'existing-substitute-minutes.conserveTeamVolume'}:{})};
 }
 module.exports={canonicalTeam,TEAM_ONLY,exactPlayer,aggregate,channel,rateCandidate,projectDocumentedTeam};

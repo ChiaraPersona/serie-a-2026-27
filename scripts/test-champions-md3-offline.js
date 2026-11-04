@@ -30,7 +30,11 @@ const players=[{playerId:'p',roleKey:'forward',expectedMinutes:90,per90:{shots:2
 const good={teamId:'arsenal',players,lineupVerified:true,benchVerified:true,targetShots:2,targetSOT:1};
 assert.equal(projectDocumentedTeam(good).status,'offline-conditional-only');
 assert.equal(projectDocumentedTeam({...good,lineupVerified:false}).players.length,0);
-assert.equal(projectDocumentedTeam({...good,targetShots:20}).status,'blocked-existing-reconciliation-limit');
+const conserved=projectDocumentedTeam({...good,targetShots:20});
+assert.equal(conserved.status,'offline-conditional-only');
+assert.equal(conserved.players[0].shots,20);
+assert.equal(conserved.conservationApplied,true);
+assert.equal(projectDocumentedTeam({...good,targetShots:0,targetSOT:1}).status,'blocked-team-volumes');
 assert.equal(projectDocumentedTeam({...good,players:Array.from({length:12},(_,i)=>({...players[0],playerId:String(i)}))}).status,'blocked-existing-990-minute-budget');
 for(const teamId of ['sabah','slavia-praha','shakhtar-donetsk','slovan-bratislava'])assert.equal(projectDocumentedTeam({...good,teamId}).status,'blocked-collective-only');
 const preview=JSON.parse(fs.readFileSync('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json','utf8'));

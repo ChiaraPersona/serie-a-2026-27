@@ -41,7 +41,12 @@ for (const team of frozen.fixtures.flatMap(fixture => fixture.teams)) {
     assert.deepEqual(result.players, original.players, `${team.teamId}: previously usable projection changed`);
     unchanged++;
   } else {
-    assert.equal(result.status, original.status, `${team.teamId}: unrelated blocker changed`);
+    if(result.status==='offline-conditional-only'){
+      assert.equal(original.status,'blocked-existing-reconciliation-limit');
+      assert.equal(result.conservationApplied,true);
+      assert(Math.abs(result.shotsDifference)<=0.02&&Math.abs(result.sotDifference)<=0.02);
+      assert(result.players.every(row=>row.sot<=row.shots));
+    }else assert.equal(result.status, original.status, `${team.teamId}: unrelated blocker changed`);
   }
 }
 assert.equal(released.size, 3);
