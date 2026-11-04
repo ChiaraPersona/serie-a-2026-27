@@ -56,7 +56,7 @@ function replay({ model, fixtures, teamMap, asOf }) {
   }
   return { ratings, frozen, counts, rows, metrics: { matches: rows.length, frozen: metrics(rows, "frozen"), updated: metrics(rows, "updated") } };
 }
-function domesticForm({ team, pilot, model, frozen, teamMap, asOf }) {
+function domesticForm({ team, pilot, model, frozen, teamMap, asOf, opponentResolver = null }) {
   if (team.baselineKind !== "domestic") return { status: "no_domestic_baseline", matches: 0, adjustedPointsPerMatchResidual: null };
   const identity = new Map(pilot.teams.filter(t => t.espnTeamId).map(t => [String(t.espnTeamId), t]));
   const canonical = new Map(pilot.teams.map(t => [t.id, t]));
@@ -72,15 +72,17 @@ function domesticForm({ team, pilot, model, frozen, teamMap, asOf }) {
     const own = home ? m.home : m.away, opponent = home ? m.away : m.home;
     const opponentTeam = resolve(opponent, m);
     const ownRating = frozen.get(uefa.get(team.name));
-    const opponentRating = opponentTeam?.league === team.league ? frozen.get(uefa.get(opponentTeam.name)) : null;
+    const expandedIdentity = opponentResolver?.({ provider: m.source?.provider, providerTeamId: opponent.providerTeamId, canonicalTeamId: opponent.canonicalTeamId });
+    const opponentUefaId = expandedIdentity?.uefaTeamId || (opponentTeam?.league === team.league ? uefa.get(opponentTeam.name) : null);
+    const opponentRating = opponentUefaId ? frozen.get(String(opponentUefaId)) : null;
     const probability = finite(ownRating) && finite(opponentRating) ? predict(home ? ownRating : opponentRating, home ? opponentRating : ownRating, model.parameters) : null;
     const points = own.score > opponent.score ? 3 : own.score === opponent.score ? 1 : 0;
     const expectedPoints = probability ? 3 * (home ? probability.home : probability.away) + probability.draw : null;
     const shotDiff = finite(own.statistics?.totalShots) && finite(opponent.statistics?.totalShots) ? own.statistics.totalShots - opponent.statistics.totalShots : null;
-    return { eventId: m.eventId, date: m.date, opponentProviderId: opponent.providerTeamId, opponentUefaId: finite(opponentRating) ? uefa.get(opponentTeam.name) : null, venue: home ? "home" : "away", points, opponentFrozenElo: opponentRating ?? null, expectedPoints, residual: expectedPoints == null ? null : points - expectedPoints, shotDifference: shotDiff, source: m.source };
+    return { eventId: m.eventId, date: m.date, opponentProviderId: opponent.providerTeamId, opponentUefaId: opponentUefaId ?? null, opponentIdentityMethod: expandedIdentity?.method ?? (opponentUefaId ? "CANONICAL_CHAMPIONS_SEED" : null), venue: home ? "home" : "away", points, opponentFrozenElo: opponentRating ?? null, expectedPoints, residual: expectedPoints == null ? null : points - expectedPoints, shotDifference: shotDiff, source: m.source };
   });
   const mean = (rows, key) => rows.length ? round(rows.reduce((sum, r) => sum + r[key], 0) / rows.length) : null;
   const covered = observations.filter(r => r.residual != null), shots = observations.filter(r => r.shotDifference != null);
-  return { status: observations.length ? "partial_diagnostic" : "no_current_observations", matches: observations.length, through: observations[0]?.date ?? null, pointsPerMatch: mean(observations, "points"), directOpponentCoverage: covered.length, adjustedPointsPerMatchResidual: covered.length === observations.length && covered.length ? mean(covered, "residual") : null, coveredSubsetResidual: mean(covered, "residual"), meanShotDifference: mean(shots, "shotDifference"), shotMatches: shots.length, xg: null, observations };
+  return { status: observations.length ? "partial_diagnostic" : "no_current_observations", matches: observations.length, through: observations[0]?.date ?? null, pointsPerMatch: mean(observations, "points"), directOpponentCoverage: covered.length, ratedOpponentObservations: observations.filter(r => finite(r.opponentFrozenElo)).length, adjustedPointsPerMatchResidual: covered.length === observations.length && covered.length ? mean(covered, "residual") : null, coveredSubsetResidual: mean(covered, "residual"), meanShotDifference: mean(shots, "shotDifference"), shotMatches: shots.length, xg: null, observations };
 }
 module.exports = { predict, loss, replay, domesticForm, round };

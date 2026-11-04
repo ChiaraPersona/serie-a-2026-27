@@ -1,6 +1,7 @@
 "use strict";
 const fs = require("fs"), path = require("path"), crypto = require("crypto");
-const { replay, domesticForm, round } = require("./champions/strength-comparison.cjs");
+const { replay, domesticForm: baseDomesticForm, round } = require("./champions/strength-comparison.cjs");
+const { createOpponentResolver } = require("./champions/opponent-identity.cjs");
 const { buildLeagueStrengthDataset } = require("./champions/league-strength.js");
 const root = path.resolve(__dirname, "..");
 const arg = process.argv.indexOf("--as-of");
@@ -18,6 +19,11 @@ const teamMap = read("data/sources/champions-team-history-map-2026-27.json");
 const pilot = read("data/sources/champions-pilot-match-stats-2025-27.json");
 const strength = read("data/normalized/champions-team-strength-2026-27.json");
 const history = read("data/normalized/uefa-europe-history-2023-26.json");
+const expanded = process.argv.includes("--with-opponent-map");
+const opponentDataset = expanded ? read("data/sources/champions-opponent-identity-map-2026-27.json") : null;
+if (opponentDataset && opponentDataset.asOf > asOf) throw new Error("Opponent map later than diagnostic cutoff");
+const opponentResolver = opponentDataset ? createOpponentResolver(opponentDataset) : null;
+const domesticForm = args => baseDomesticForm({ ...args, opponentResolver });
 // Require every replayed score to agree with the owning matchday archive.
 const verified = new Map();
 for (let day = 1; day <= 4; day++) {
@@ -45,16 +51,20 @@ const output = { schemaVersion: 1, asOf, status: "internal_diagnostic_only", act
 const dir = path.join(root, "data/analysis/champions");
 output.coverage.domesticObservationsInWindows = teams.reduce((sum, t) => sum + t.domesticForm.matches, 0);
 output.coverage.domesticDirectOpponentRatings = teams.reduce((sum, t) => sum + (t.domesticForm.directOpponentCoverage || 0), 0);
+output.coverage.domesticRatedOpponentObservations = teams.reduce((sum, t) => sum + (t.domesticForm.ratedOpponentObservations || 0), 0);
 output.coverage.teamsWithoutDomesticObservations = teams.filter(t => !t.domesticForm.matches).map(t => t.team);
 output.validation.observedImprovement = result.metrics.updated != null && result.metrics.updated.logLoss < result.metrics.frozen.logLoss && result.metrics.updated.brier < result.metrics.frozen.brier;
 output.validation.statisticalSignificance = "not_established";
 output.validation.conclusion = output.validation.observedImprovement ? "Numerical improvement only; no activation justified." : "No improvement on both metrics in this archived sample; do not activate.";
 fs.mkdirSync(dir, { recursive: true });
-const file = `data/analysis/champions/strength-comparison-${asOf}.json`;
+const suffix = `${asOf}${expanded ? "-opponent-map" : ""}`;
+const file = `data/analysis/champions/strength-comparison-${suffix}.json`;
+const reportFile = path.join(root, `docs/reports/champions-strength-comparison-${suffix}.md`);
 fs.writeFileSync(path.join(root, file), JSON.stringify(output, null, 2) + "\n");
 const fmt = value => value == null ? "N/D" : String(value);
 const lines = ["# Confronto interno forza Champions", "", `Cutoff esclusivo: ${asOf}. Solo ricerca, nessuna attivazione operativa.`, "", `36 squadre; ${result.rows.length} risultati Champions archiviati. Altre coppe non aggiornate.`, "", "## Confronto cronologico", "", "Ogni partita è prevista prima dell'aggiornamento; le gare dello stesso giorno usano lo stesso stato iniziale. Replay retrospettivo, non validazione prospettica. Log-loss e Brier più bassi sono migliori.", "", `Congelato: ${JSON.stringify(result.metrics.frozen)}. Aggiornato: ${JSON.stringify(result.metrics.updated)}.`, "", "## Squadre", "", "Forma = punti/gara domestici nelle ultime otto osservazioni archiviate. Residuo completo N/D se manca anche un solo avversario con rating diretto; sottoinsiemi nel JSON. Tiri e forma non entrano nell'Elo.", "", "| Squadra | Elo storico | Elo aggiornato | Gare CL | Gare domestiche | Punti/gara | Avversari con Elo | Residuo completo |", "|---|---:|---:|---:|---:|---:|---:|---:|", ...teams.map(t => `| ${t.team} | ${fmt(t.frozenElo)} | ${t.updatedElo} | ${t.currentEuropeanMatches} | ${t.domesticForm.matches} | ${fmt(t.domesticForm.pointsPerMatch)} | ${fmt(t.domesticForm.directOpponentCoverage)} | ${fmt(t.domesticForm.adjustedPointsPerMatchResidual)} |`), "", "## Limiti e riproduzione", "", ...Object.values(output.methodology).map(text => `- ${text}`), "", "Non promuovere il confronto a pronostico: nessuna prova di miglioramento del contributo domestico o dei tiri. Nessuna probabilità DUO o modifica di quote/selezioni.", "", `Comando: node scripts/build-champions-strength-comparison.cjs --as-of ${asOf}`, "", `Evidenza completa e hash input: [JSON](../../${file}).`, "", "Fonti canoniche interne:", ...sources.map(s => `- \`${s.path}\` (SHA-256 nel JSON).`), ""];
-fs.writeFileSync(path.join(root, `docs/reports/champions-strength-comparison-${asOf}.md`), lines.join("\n"));
-fs.appendFileSync(path.join(root, `docs/reports/champions-strength-comparison-${asOf}.md`), `\nEsito: ${output.validation.conclusion} Significatività statistica non stabilita.\n`);
-fs.appendFileSync(path.join(root, `docs/reports/champions-strength-comparison-${asOf}.md`), `\nCopertura avversari domestici con rating diretto: ${output.coverage.domesticDirectOpponentRatings}/${output.coverage.domesticObservationsInWindows} osservazioni nelle finestre. Mapping limitato alle identità canoniche disponibili, senza inferenze sui nomi. Forma domestica assente: ${output.coverage.teamsWithoutDomesticObservations.join(", ")}.\n`);
+fs.writeFileSync(reportFile, lines.join("\n"));
+fs.appendFileSync(reportFile, `\nEsito: ${output.validation.conclusion} Significatività statistica non stabilita.\n`);
+fs.appendFileSync(reportFile, `\nCopertura avversari domestici con rating diretto: ${output.coverage.domesticDirectOpponentRatings}/${output.coverage.domesticObservationsInWindows} osservazioni nelle finestre. Mapping limitato alle identità canoniche disponibili, senza inferenze sui nomi. Forma domestica assente: ${output.coverage.teamsWithoutDomesticObservations.join(", ")}.\n`);
+if (expanded) fs.appendFileSync(reportFile, "\nVariante con overlay identità: aggiungere --with-opponent-map al comando. L'overlay disponibile oggi non prova la conoscenza delle identità prima delle gare passate; la base originale è conservata nel report senza suffisso.\n");
 console.log(JSON.stringify({ file, coverage: output.coverage, validation: result.metrics }));

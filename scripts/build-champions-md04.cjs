@@ -233,5 +233,5 @@ async function build(){
  console.log(JSON.stringify({summary:out.summary,coverage:out.coverage,unquotedExcluded:excludedQuotes.length}));
  return out;
 }
-if(require.main===module)(process.argv.includes('--public-odds-only')||process.argv.includes('--result-policy-only')?refreshPublicOddsMinimum():build()).catch(e=>{console.error(e);process.exitCode=1;});
+if(require.main===module)(process.argv.includes('--public-odds-only')||process.argv.includes('--result-policy-only')?refreshPublicOddsMinimum():build()).then(()=>require('./champions-market-prospective.cjs').run({capture:true,matchday:4})).catch(e=>{console.error(e);process.exitCode=1;});
 module.exports={build,buildDatabase,buildIndividuals,buildTeamCatalog};
