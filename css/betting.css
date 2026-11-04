@@ -479,3 +479,8 @@ body[data-page="betting"] .betting-archive-card--champions .betting-archive-perf
 @media(max-width:480px){body[data-page="betting"] .betting-archive-list.team-directory-grid.team-flip-grid{grid-template-columns:minmax(0,1fr)}}
 
 body[data-page="betting"] .betting-archive-card--champions .betting-archive-number{background:none;box-shadow:none;text-shadow:none}
+
+/* Finished Champions selections share outcome colors across all workspaces. */
+body[data-page] .betting-round-page[data-champions-workspace] .betting-market-row[data-settlement="won"]{background:color-mix(in srgb,#168754 24%,var(--ds-color-surface));border-color:#168754;box-shadow:inset 3px 0 #168754}
+body[data-page] .betting-round-page[data-champions-workspace] .betting-market-row[data-settlement="lost"]{background:color-mix(in srgb,#c9323a 24%,var(--ds-color-surface));border-color:#c9323a;box-shadow:inset 3px 0 #c9323a}
+body[data-page] .betting-round-page[data-champions-workspace] .betting-market-row[data-settlement="unavailable"]{background:var(--ds-color-surface-soft);border-color:var(--ds-color-border);box-shadow:inset 3px 0 #7b8b9b}

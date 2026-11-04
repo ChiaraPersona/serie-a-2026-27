@@ -552,3 +552,7 @@ body[data-reading-detail-theme="champions"] .rd-compact-forecast-table [data-pub
  .rd-forecasts .rd-compact-forecast-table :is(th,td):last-child{width:48px}
  .rd-forecasts .rd-compact-forecast-table button{min-width:44px;min-height:44px}
 }
+.rd-shell .rd-compact-forecast-table tr[data-outcome="won"] td{background:color-mix(in srgb,#168754 18%,var(--ds-color-surface))}
+.rd-shell .rd-compact-forecast-table tr[data-outcome="lost"] td{background:color-mix(in srgb,#c9323a 18%,var(--ds-color-surface))}
+.rd-shell .rd-compact-forecast-table tr:is([data-outcome="pending"],[data-outcome="unavailable"],[data-outcome="void"]) td{background:var(--ds-color-surface-soft)}
+.rd-shell .rd-compact-forecast-table .rd-outcome{display:block;font-size:11px}

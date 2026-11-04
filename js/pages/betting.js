@@ -1,9 +1,9 @@
 const release=new URL(import.meta.url).searchParams.get("v")||"development";
-const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=20261022-assets-v1`);
+const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=20261104-champions-results`);
 const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261102-champions-no-draw`);
 const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts,publicForecastLabel,meetsMinimumPublicOdds,isExcludedStraightDraw}=await import(`./shared-forecast-contract.mjs?v=20261102-champions-no-draw`);
 
-const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=20261102-md04-lineups`);
+const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=20261104-champions-results`);
 const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=20261022-assets-v1`);
 const {settleMd3Leg}=await import(`./champions-md3-results.mjs?v=20261022-assets-v1`);
 

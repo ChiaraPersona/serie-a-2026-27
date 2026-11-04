@@ -3,6 +3,7 @@ import {md3IndividualMarkets,md3IndividualCandidates} from './champions-md3-indi
 import {championsAuditDisplay} from './champions-audit-display.mjs?v=20261022-assets-v1';
 import {hasVerifiedPlayableQuote} from './shared-forecast-contract.mjs?v=20261102-champions-no-draw';
 import {md3ResultMatch,settleMd3Leg} from './champions-md3-results.mjs?v=20261022-assets-v1';
+import {settleLeg} from './betting-settlement.mjs?v=20261104-champions-results';
 
 const familyLabels={result:'Risultato', 'double-chance':'Doppia chance',goals:'Gol',corners:'Corner',shots:'Tiri','team-shots':'Tiri squadra','team-sot':'SOT squadra','team-corners':'Corner squadra'};
 const finite=value=>value!=null&&Number.isFinite(value);
@@ -31,9 +32,11 @@ export async function loadChampionsWorkspace(load,matchday){
     const ids=new Set(source.scope);
     const covered=fixtures.filter(f=>ids.has(f.id));
     if(source.matchday!==4||source.status!=='PRELIMINARY_NOT_STATISTICALLY_VALIDATED'||covered.length!==ids.size)throw Error('Catalogo Champions quarta giornata non coerente');
-    all=source.marketCatalog.matches.flatMap(m=>m.selections);
+    const byId=new Map(covered.map(f=>[f.id,f]));
+    const marketCatalog={...source.marketCatalog,matches:source.marketCatalog.matches.map(m=>({...m,selections:m.selections.map(leg=>({...leg,settlement:settleLeg(leg,byId.get(m.matchId))}))}))};
+    all=marketCatalog.matches.flatMap(m=>m.selections);
     if(all.some(l=>!ids.has(l.matchId)))throw Error('Pronostico senza probabili canoniche');
-    return {championsWorkspace:true,lineupManaged:true,matchday,season:source.season,source,fixtures:covered,all,slips:[],oddsRetrievedAt:source.oddsRetrievedAt,marketCatalog:source.marketCatalog};
+    return {championsWorkspace:true,lineupManaged:true,matchday,season:source.season,source,fixtures:covered,all,slips:[],oddsRetrievedAt:source.oddsRetrievedAt,marketCatalog};
   }else if(matchday===3){
     const [catalog,approved,individuals]=await Promise.all([load('champions-md03-preliminary-2026-27.json'),load('schedina-champions-md03.json'),load('champions-md03-probable-individuals-2026-27.json')]);
     source=approved;

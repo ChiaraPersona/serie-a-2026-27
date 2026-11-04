@@ -127,6 +127,15 @@ export function settleLeg(leg,match){
   if(!globalThis.officialStarterPolicy.eligible(leg,match?.id))return {...voided(),nonStarter:true};
   if(match?.status!=="finished"||!finite(match?.score?.home)||!finite(match?.score?.away))return pending();
 
+  // Verified post-match observations belong to the exact archived contract.
+  // Provider IDs also reconcile selections saved with an older presentation ID.
+  const verified=match.matchReport?.verifiedSelections?.find(row=>{
+    const providerId=leg.betSelection?.identity?.providerSelectionId||leg.providerSelectionId;
+    if(providerId&&row.providerSelectionId)return String(providerId)===String(row.providerSelectionId);
+    return row.selectionId===leg.selectionId&&row.market===leg.market&&row.selection===leg.selection&&row.label===leg.label;
+  });
+  if(verified)return {...verified.settlement};
+
   const home=Number(match.score.home),away=Number(match.score.away),total=home+away;
   const market=normalized(leg?.market),selection=normalized(leg?.selection),actualScore=`${home}-${away}`;
   if(market.includes("CARTELLINO")||leg?.marketFamily==="Ammoniti"){

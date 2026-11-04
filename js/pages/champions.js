@@ -60,7 +60,7 @@ export function createPage(deps){
     ].filter(([,value])=>value);
     const officials=roles.length?`<dl>${roles.map(([label,value])=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>`:"";
     const metrics=[["yellowCardsPerMatch","Gialli / gara"],["redCardsPerMatch","Rossi / gara"],["foulsPerMatch","Falli / gara"],["penaltiesPerMatch","Rigori / gara"]].filter(([key])=>stats?.[key]?.display && stats[key].display!=="N/D");
-    const statistics=metrics.length?`<div class="reading-referee-stats champions-reading-referee-stats">${metrics.map(([key,label])=>`<article><span>${label}</span>${refereeMetric(stats[key])}</article>`).join("")}</div><p class="reading-referee-method">Profilo storico riportato come fornito; non applicato automaticamente alle proiezioni della partita.</p>`:"";
+    const statistics=metrics.length?`<div class="reading-referee-stats champions-reading-referee-stats" data-descriptive-referee-stats>${metrics.map(([key,label])=>`<article data-referee-metric="${key}"><span>${label}</span>${refereeMetric(stats[key])}</article>`).join("")}</div><p class="rf-note">${esc(assignment.statisticsSample||'Profilo storico descrittivo; non applicato automaticamente alle proiezioni della partita.')}</p>`:'<p class="rf-note">Statistiche arbitrali N/D.</p>';
     return `<aside class="reading-referee-assignment champions-reading-referee champions-reading-hero-referee" id="lettura-referee" aria-labelledby="champions-reading-referee-title"><header><div><p class="eyebrow">Designazione arbitrale</p><h2 id="champions-reading-referee-title">${refereeName(assignment)}</h2></div>${metrics.length?"<p>Designazione e profilo disciplinare.</p>":""}</header>${officials}${statistics}</aside>`;
   }
 
@@ -429,7 +429,7 @@ export function createPage(deps){
 
   async function appendSharedSchedina(matchday,fixtureId,host){
     if(!host||typeof host.insertAdjacentHTML!=="function")return;
-    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261102-md04-lineups'),import('./betting.js?v=20261102-champions-no-draw')]);
+    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261104-champions-results'),import('./betting.js?v=20261104-champions-results')]);
     const workspace=await loadChampionsWorkspaceMd3Derived(load,matchday);
     const controller=createBettingPage({...deps,dateOnly:deps.dateOnly||(value=>String(value||"").slice(0,10))});
     const section=host.querySelector('#lettura-pronostici .rd-section-content');
@@ -441,7 +441,7 @@ export function createPage(deps){
     }else target.insertAdjacentHTML('beforeend',markup);
     const store=controller.mountChampionsWorkspace(workspace);
     if(section){
-      const [{createReadingView},{installForecasts},{sharedForecastsForMatch}]=await Promise.all([import('./reading-detail/view-model.mjs?v=20261022-assets-v1'),import('./reading-detail/forecasts.mjs?v=20261102-champions-no-draw'),import('./shared-forecast-contract.mjs?v=20261102-champions-no-draw')]);
+      const [{createReadingView},{installForecasts},{sharedForecastsForMatch}]=await Promise.all([import('./reading-detail/view-model.mjs?v=20261022-assets-v1'),import('./reading-detail/forecasts.mjs?v=20261104-champions-results'),import('./shared-forecast-contract.mjs?v=20261102-champions-no-draw')]);
       const fixture=workspace.fixtures.find(f=>f.id===fixtureId);
       const model=createReadingView({competition:'champions',fixture,home:{name:fixture.homeTeam},away:{name:fixture.awayTeam},forecasts:sharedForecastsForMatch(workspace.marketCatalog,fixtureId,fixture)});
       const table=document.createElement('div');section.prepend(table);
@@ -459,7 +459,12 @@ export function createPage(deps){
     const branding=new Map(data.teamBranding.map(team=>[team.team,team]));
     const motivationByFixture=new Map(motivation.fixtures.map(fixture=>[fixture.matchId,fixture]));
     const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;
-    if(requestedCalendarFixture?.status==='scheduled'&&requestedCalendarFixture.matchday>=4){
+    if(requestedCalendarFixture?.matchday===4){
+      const [profiles,{descriptiveRefereeAssignment}]=await Promise.all([load('champions-referee-profiles-md04-2026-27.json'),import('./reading-detail/champions-md4-referees.mjs?v=20261103-referee-stats')]);
+      const profile=profiles.fixtures.find(p=>p.fixtureId===requestedMatchId);
+      requestedCalendarFixture.refereeAssignment=descriptiveRefereeAssignment(requestedCalendarFixture.refereeAssignment,profile);
+    }
+    if(requestedCalendarFixture&&requestedCalendarFixture.matchday>=4&&(requestedCalendarFixture.status==='scheduled'||requestedCalendarFixture.matchday===4&&requestedCalendarFixture.status==='finished')){
       const shared=await load('../generated/champions-shared-scenarios.json');
       const prediction=shared.fixtures.find(f=>f.fixtureId===requestedMatchId);
       if(prediction){

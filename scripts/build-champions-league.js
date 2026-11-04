@@ -25,14 +25,17 @@ const results = JSON.parse(fs.readFileSync(path.join(root, "data/sources/champio
   const md02Results=fs.existsSync(md02Path)?JSON.parse(fs.readFileSync(md02Path,'utf8')):null;
   const md03Path=path.join(root,'data/sources/champions-results-md03-2026-27.json');
   const md03Results=fs.existsSync(md03Path)?JSON.parse(fs.readFileSync(md03Path,'utf8')):null;
-  const resultById = new Map([...results.fixtures,...(md02Results?.fixtures||[]),...(md03Results?.fixtures||[])].map(item => [item.fixtureId, item]));
-  if (resultById.size !== results.fixtures.length+(md02Results?.fixtures.length||0)+(md03Results?.fixtures.length||0)) throw new Error("Risultati Champions duplicati");
-for (const batch of [results, md02Results, md03Results].filter(Boolean)) for (const result of batch.fixtures) {
+  const md04Path=path.join(root,'data/sources/champions-results-md04-2026-27.json');
+  const md04Results=fs.existsSync(md04Path)?JSON.parse(fs.readFileSync(md04Path,'utf8')):null;
+  const batches=[results,md02Results,md03Results,md04Results].filter(Boolean);
+  const resultById = new Map(batches.flatMap(batch=>batch.fixtures).map(item => [item.fixtureId, item]));
+  if (resultById.size !== batches.reduce((n,batch)=>n+batch.fixtures.length,0)) throw new Error("Risultati Champions duplicati");
+for (const batch of batches) for (const result of batch.fixtures) {
   if (!source.fixtures.some(f => f.id === result.fixtureId && f.matchday === batch.matchday) || result.status !== 'finished' || ![result.score?.home,result.score?.away].every(n=>Number.isInteger(n)&&n>=0) || !result.sourceUrl?.startsWith('https://')) throw new Error('Risultato Champions non valido');
 }
 if (process.argv.includes('--results-only')) {
   const previous=JSON.parse(fs.readFileSync(outputPath,'utf8'));
-  const latest=md03Results||md02Results||results;
+  const latest=md04Results||md03Results||md02Results||results;
   const output={...previous,generatedAt:latest.verifiedAt,resultsSource:latest.source,resultsCoverageNote:latest.coverageNote,summary:{...previous.summary,finished:resultById.size},fixtures:previous.fixtures.map(f=>resultById.has(f.id)?{...f,status:'finished',score:resultById.get(f.id).score,matchReport:resultById.get(f.id)}:f)};
   fs.writeFileSync(outputPath,JSON.stringify(output,null,2));
   console.log('OK Champions risultati: '+resultById.size+' gare concluse');

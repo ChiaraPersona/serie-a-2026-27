@@ -1,0 +1,31 @@
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
+const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const root=path.resolve(__dirname,'..'),out=path.join(root,'output/champions-md04-results');
+const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp'};
+const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(root+path.sep))return res.writeHead(403).end();fs.readFile(file,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':types[path.extname(file)]||'application/octet-stream'});res.end(e?'Missing':b)})});
+(async()=>{fs.mkdirSync(out,{recursive:true});await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;const report=[];
+try{browser=await chromium.launch({channel:'msedge',headless:true});
+for(const width of [1440,390]){
+ const page=await browser.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.route('https://fonts.googleapis.com/**',r=>r.abort());await page.route('https://fonts.gstatic.com/**',r=>r.abort());
+ await page.goto(`http://127.0.0.1:${server.address().port}/schedina.html?competizione=champions&giornata=4`);
+ await page.waitForSelector('[data-champions-workspace="4"]');await page.locator('[data-match-open-all]').first().click();
+ const rows=page.locator('.betting-match-body > .betting-market-list [data-selection-row]');
+ const states=await rows.evaluateAll(rows=>rows.reduce((a,r)=>(a[r.dataset.settlement||'upcoming']=(a[r.dataset.settlement||'upcoming']||0)+1,a),{}));
+ assert.equal(states.won,61);assert.equal(states.lost,75);assert.equal(states.unavailable||0,0);assert(states.upcoming>0);
+ assert.equal(await rows.locator('[data-personal-pick]').count(),0);
+ const colors=await rows.evaluateAll(rows=>Object.fromEntries(['won','lost'].map(state=>{const row=rows.find(r=>r.dataset.settlement===state);return [state,getComputedStyle(row).background]})));
+ assert.notEqual(colors.won,colors.lost);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);assert.deepEqual(errors,[]);
+ await page.screenshot({path:path.join(out,`schedina-${width}.png`)});
+ await page.goto(`http://127.0.0.1:${server.address().port}/champions-league.html?match=ucl-2026-27-md04-01`);
+ await page.waitForSelector('[data-shared-forecast-id][data-outcome]',{state:'attached'});
+ await page.locator('#lettura-pronostici').evaluate(el=>{for(let p=el;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;el.hidden=false;});
+ const reading=await page.locator('[data-shared-forecast-id][data-outcome]').evaluateAll(rows=>rows.reduce((a,r)=>(a[r.dataset.outcome]=(a[r.dataset.outcome]||0)+1,a),{}));assert.deepEqual(reading,{lost:5,won:2});
+ assert.equal(await page.locator('[data-rd-pick]:enabled').count(),0);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);assert.deepEqual(errors,[]);
+ await page.locator('[data-shared-forecast-id][data-outcome]').first().scrollIntoViewIfNeeded();
+ await page.screenshot({path:path.join(out,`reading-${width}.png`)});
+ report.push({width,states,colors,reading,errors});await page.close();
+}
+fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));
+}finally{await browser?.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});

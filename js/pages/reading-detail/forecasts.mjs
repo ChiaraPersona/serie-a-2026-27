@@ -1,6 +1,7 @@
 import {esc,number,pct,finite,missing} from './format.mjs?v=20261022-assets-v1';
 import {isCanonicalModelForecast,isPublishedForecast,hasVerifiedPlayableQuote,sharedForecastsForMatch,publicForecastLabel,meetsMinimumPublicOdds} from '../shared-forecast-contract.mjs?v=20261102-champions-no-draw';
 import {createPersonalBetslipStore} from '../personal-betslip-store.mjs?v=20261102-champions-no-draw';
+import {settleLeg} from '../betting-settlement.mjs?v=20261104-champions-results';
 
 export function forecastPresentation(leg){
  const contract=leg.betSelection||{},market=contract.market||{},subject=market.subject||{},player=leg.player&&typeof leg.player==='object'?leg.player:{};
@@ -20,7 +21,7 @@ export function canPickReading(model,leg){
  return model.fixture.status!=='finished'&&['serie-a','champions'].includes(model.competition)&&isPublishedForecast(leg)&&(isCanonicalModelForecast(leg)||hasVerifiedPlayableQuote(leg));
 }
 export function compactForecastMarkup(model){
- const rows=model.forecasts.filter(meetsMinimumPublicOdds).map(leg=>{const v=forecastPresentation(leg),enabled=canPickReading(model,leg);return `<tr data-forecast-id="${esc(v.id)}" data-shared-forecast-id="${esc(v.id)}"><td class="rd-forecast-name">${esc(v.label)}${leg.publication?`<small class="rd-footnote" data-publication-status="${esc(leg.publication.status)}">${leg.publication.status==='APPROVED'?'Approvata':leg.betSelection?.evaluation?.kind==='SHARED_DISCRETE_COUNT_PRELIMINARY'?'Probabilità preliminare':'Preliminare'}</small>`:''}</td><td>${pct(v.probability)}</td><td>${v.quoted?number(v.odds,2):'—'}</td><td><button type="button" data-rd-pick="${esc(v.id)}" aria-label="${esc(enabled?'Aggiungi '+v.label:model.fixture.status==='finished'?'Partita conclusa: '+v.label:'Solo consultazione: '+v.label)}" aria-pressed="false" ${enabled?'':'disabled'}>+</button></td></tr>`}).join('');
+ const rows=model.forecasts.filter(meetsMinimumPublicOdds).map(leg=>{const v=forecastPresentation(leg),enabled=canPickReading(model,leg),result=model.competition==='champions'&&model.fixture.status==='finished'?(leg.settlement||settleLeg(leg,model.fixture)):null;return `<tr${result?` data-outcome="${esc(result.status)}"`:''} data-forecast-id="${esc(v.id)}" data-shared-forecast-id="${esc(v.id)}"><td class="rd-forecast-name">${esc(v.label)}${result?`<span class="rd-outcome" data-outcome="${esc(result.status)}">${esc(result.label||'Da verificare')}</span>`:''}${leg.publication?`<small class="rd-footnote" data-publication-status="${esc(leg.publication.status)}">${leg.publication.status==='APPROVED'?'Approvata':leg.betSelection?.evaluation?.kind==='SHARED_DISCRETE_COUNT_PRELIMINARY'?'Probabilità preliminare':'Preliminare'}</small>`:''}</td><td>${pct(v.probability)}</td><td>${v.quoted?number(v.odds,2):'—'}</td><td><button type="button" data-rd-pick="${esc(v.id)}" aria-label="${esc(enabled?'Aggiungi '+v.label:model.fixture.status==='finished'?'Partita conclusa: '+v.label:'Solo consultazione: '+v.label)}" aria-pressed="false" ${enabled?'':'disabled'}>+</button></td></tr>`}).join('');
  return `<table class="rd-compact-forecast-table"><thead><tr><th scope="col">Nome pronostico</th><th scope="col">Probabilità</th><th scope="col">Quota</th><th scope="col" aria-label="Selezione">+</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
