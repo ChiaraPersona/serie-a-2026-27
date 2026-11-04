@@ -9,8 +9,10 @@ const aek=match.selections.find(l=>l.suggestionAnalysis?.family==='result'&&l.se
 assert(aek&&!aek.betSelection.evaluation.validation.approvable);
 // Reproduce both initial candidate publication and a draw-policy replacement.
 aek.suggestionAnalysis.suggested=true;
+delete aek.publication.userAuthorizedResultModel;
 const replacement=match.selections.find(l=>l.suggestionAnalysis?.family==='double-chance');
 assert(replacement);replacement.suggestionAnalysis.suggested=true;
+delete replacement.publication.userAuthorizedResultModel;
 const quote=structuredClone(aek.betSelection.quote),evaluation=structuredClone(aek.betSelection.evaluation);
 applyResultValidationPolicy(catalog,new Set([target]));
 assert.equal(aek.suggestionAnalysis.suggested,false);assert.equal(replacement.suggestionAnalysis.suggested,false);

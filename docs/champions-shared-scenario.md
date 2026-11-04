@@ -1,6 +1,16 @@
 # Scenario Champions: motore condiviso
 
-Dal 24 ottobre 2026 le nuove Letture Champions usano `predictScenario` in `scripts/predictions/engine.js`, chiamato anche da `predictMatch` per la Serie A. Sono condivisi gol attesi, matrice Poisson, risultato centrale e alternative, probabilità 1-X-2, volumi, modello disciplinare, confidenza e sorpresa. Formule e pesi del motore Serie A restano invariati.
+Dal 24 ottobre 2026 le nuove Letture Champions usano `predictScenario` in `scripts/predictions/engine.js`, chiamato anche da `predictMatch` per la Serie A, per la base tecnica di gol, volumi e disciplina. Dal 4 novembre, su richiesta esplicita dell'utente, l'1X2 e le doppie chance delle fixture future dalla MD4 usano il rating europeo tramite `scripts/champions/european-result-policy.cjs`. Formule e pesi del motore Serie A restano invariati; le previsioni delle gare iniziate restano quelle originali.
+
+## Esito europeo dal 4 novembre
+
+La configurazione in `data/sources/champions-european-result-policy.json` applica l'Elo selezionato nella ricerca e lo aggiorna con i soli risultati europei conclusi anteriori alla data di previsione. Le identità passano dalla mappa UEFA canonica; servono almeno sei precedenti europei per entrambe le squadre. Altrimenti 1X2 e doppie chance restano N/D. Il rating non riceve correzioni arbitrarie di forma domestica o formazione.
+
+La distribuzione è preliminare. L'autorizzazione dell'utente permette di proporre un contratto esistente verificato, nel rispetto della quota minima 1,08 e della policy senza X secca; non equivale a PASS statistico. `qualifiedSelection` rimane falso, probabilità prudenziale ed EV rimangono N/D. Le doppie chance sommano gli esiti disgiunti della stessa distribuzione; non si ricava una matrice di punteggi dal rating.
+
+I risultati esatti precedenti non vengono presentati come previsioni del nuovo 1X2. Gol attesi e volumi rimangono stime separate con formule invariate. La UI espone distribuzione 1X2, stato preliminare e casi N/D, senza sezioni pubbliche dedicate alle fonti. Il precedente Scenario e i mercati di esito sono conservati nell'archivio tecnico per le fixture aggiornate.
+
+Per applicare soltanto il nuovo esito agli artefatti esistenti, preservando gli altri mercati: `node scripts/apply-champions-european-results.cjs`, poi build di presentazione Champions MD4. I builder MD4 e dello Scenario chiamano automaticamente lo stesso adattatore per le fixture di loro competenza; il builder MD4 riallinea anche il catalogo Schedina. MyCombo rimane N/D in assenza di distribuzione congiunta validata. Le selezioni personali conservano il contratto scelto e riconciliano le probabilità con quelle nuove, senza sostituire una puntata personale con un'altra.
 
 `scripts/champions/shared-scenario.cjs` adatta le statistiche canoniche Champions al contratto del motore. I volumi domestici sono normalizzati rispetto al campionato di appartenenza; le ultime otto gare usano il decadimento 0,82. I tassi già normalizzati non ricevono il correttivo di promozione dalla Serie B. Questo adattamento non calibra automaticamente il modello sulle competizioni europee.
 

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "pipeline": "SHARED_SERIE_A_SCENARIO",
   "engineVersion": "4.13.0",
-  "generatedAt": "2026-11-04T14:08:04.961Z",
+  "generatedAt": "2026-11-04T16:57:04.235Z",
   "fixtures": [
     {
       "fixtureId": "ucl-2026-27-md04-01",
@@ -4581,15 +4581,15 @@
       "status": "preliminary",
       "expectedGoals": {
         "home": 1.52,
-        "away": 1.07,
-        "total": 2.59,
+        "away": 1.1,
+        "total": 2.62,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
             "attackStrength": 1.207,
             "defenceWeakness": 0.632,
             "lineup": {
-              "attack": 1.008,
+              "attack": 1.01,
               "defenceWeakness": 0.993,
               "resolved": 11,
               "status": "usable"
@@ -4599,8 +4599,8 @@
             "attackStrength": 1.321,
             "defenceWeakness": 0.793,
             "lineup": {
-              "attack": 1.043,
-              "defenceWeakness": 0.987,
+              "attack": 1.072,
+              "defenceWeakness": 0.981,
               "resolved": 11,
               "status": "usable"
             }
@@ -4651,90 +4651,22 @@
         }
       },
       "probabilities": {
-        "home": 47.631777566657675,
-        "draw": 25.663324203328536,
-        "away": 26.70489823001379
+        "home": 26.489746264126858,
+        "draw": 17.73356490850674,
+        "away": 55.77668882736641
       },
       "scoreForecast": {
-        "primary": {
-          "score": "2-1",
-          "outcome": "1",
-          "label": "Risultato esatto centrale",
-          "probabilityPct": 9.3,
-          "conditionalProbabilityPct": 19.5,
-          "isAbsoluteMode": false
-        },
-        "modal": {
-          "score": "1-1",
-          "outcome": "X",
-          "label": "Moda assoluta",
-          "probabilityPct": 12.2,
-          "conditionalProbabilityPct": 47.6,
-          "isAbsoluteMode": true
-        },
-        "alternatives": [
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Moda assoluta",
-            "probabilityPct": 12.2,
-            "conditionalProbabilityPct": 47.6,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 11.4,
-            "conditionalProbabilityPct": 23.9,
-            "isAbsoluteMode": false
-          }
-        ],
-        "display": [
-          {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Risultato esatto centrale",
-            "probabilityPct": 9.3,
-            "conditionalProbabilityPct": 19.5,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Moda assoluta",
-            "probabilityPct": 12.2,
-            "conditionalProbabilityPct": 47.6,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 11.4,
-            "conditionalProbabilityPct": 23.9,
-            "isAbsoluteMode": false
-          }
-        ],
-        "coherentWithVerdict": true,
-        "forcedOutcomeScenarios": false,
-        "selection": {
-          "type": "rounded-expected-goals",
-          "expectedHome": 1.5,
-          "expectedAway": 1.1
-        },
-        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
+        "primary": null,
+        "modal": null,
+        "alternatives": [],
+        "display": [],
+        "status": "N/D_EUROPEAN_RESULT_HAS_NO_SCORE_MATRIX"
       },
       "confidence": {
-        "value": 55,
-        "level": "moderata"
+        "value": null
       },
       "surprise": {
-        "value": 86,
-        "level": "alto",
-        "upsetOutcome": "1",
-        "upsetProbabilityPct": 47.6,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
+        "value": null
       },
       "teamProjections": [
         {
@@ -4751,7 +4683,7 @@
             "central": 14.4,
             "max": 18,
             "interval": "p20-p80",
-            "sd": 4.5,
+            "sd": 4.51,
             "sampleSize": 36,
             "dataStatus": "venue-history",
             "inputs": [
@@ -4777,10 +4709,10 @@
           },
           "shotsOnTarget": {
             "min": 3,
-            "central": 4.5,
+            "central": 4.2,
             "max": 6,
             "interval": "p20-p80",
-            "sd": 1.74,
+            "sd": 1.63,
             "sampleSize": 36,
             "dataStatus": "venue-history",
             "inputs": [
@@ -4885,7 +4817,7 @@
             "central": 13.3,
             "max": 18,
             "interval": "p20-p80",
-            "sd": 5.87,
+            "sd": 5.86,
             "sampleSize": 36,
             "dataStatus": "venue-history",
             "inputs": [
@@ -5002,7 +4934,7 @@
             "central": 1.9,
             "max": 3
           },
-          "expectedGoals": 1.07,
+          "expectedGoals": 1.1,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -5012,16 +4944,16 @@
           "central": 27.7,
           "max": 34,
           "interval": "p20-p80-independent",
-          "sd": 7.4,
+          "sd": 7.39,
           "sampleSize": 36,
           "dataStatus": "venue-history"
         },
         "shotsOnTarget": {
-          "min": 6,
-          "central": 9.4,
+          "min": 5,
+          "central": 9.1,
           "max": 13,
           "interval": "p20-p80-independent",
-          "sd": 3.77,
+          "sd": 3.72,
           "sampleSize": 36,
           "dataStatus": "venue-history"
         },
@@ -5052,6 +4984,11 @@
         "latestMatchDates": [
           "2026-10-10",
           "2026-10-25"
+        ],
+        "resultStatus": "PRELIMINARY",
+        "resultTeamSamples": [
+          19,
+          44
         ]
       },
       "provenance": {
@@ -5068,13 +5005,64 @@
         "marketUsedForGoals": false
       },
       "inputSnapshot": {
-        "asOf": "2026-11-04T14:08:04.961Z",
+        "asOf": "2026-11-04T16:57:04.235Z",
         "sha256": {
-          "data/sources/champions-probable-formations-md04-2026-27.json": "4dadccc93ebeab96722bc4ef8519e71574022abedb16d1a5879054285c988fae",
+          "data/sources/champions-official-formations-md04-2026-27.json": "1f4739cac9eba141bc113c2314cf45d6b449ad8696c41c5d4a8efb7369f0c13c",
           "data/normalized/odds/sisal/champions-league.json": "cda4b724aa89a6fa5a498ba552cb4cc433db94d3a4dda9c99d24d25995c2d4a9",
           "data/sources/champions-pilot-match-stats-2025-27.json": "6dcffd5933ca2b5ba1f074575202beb70e8201534b676dfaa7da3c8f0076d096",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
         }
+      },
+      "resultModel": {
+        "modelId": "champions-european-result:2a6abdc81a48332727ce2b7d3d1577c53e355483addbe5668623afecdb4cc782",
+        "type": "EUROPEAN_RATING_RESULT",
+        "status": "PRELIMINARY",
+        "probabilities": {
+          "home": 26.489746264126858,
+          "draw": 17.73356490850674,
+          "away": 55.77668882736641
+        },
+        "samples": [
+          19,
+          44
+        ],
+        "features": {
+          "home": {
+            "rating": 1500.3518196088887,
+            "raw": 1500.3518196088887,
+            "prior": 1500,
+            "appearances": 19,
+            "peerClubs": 3,
+            "lastDate": "2026-10-20"
+          },
+          "away": {
+            "rating": 1709.7017918171157,
+            "raw": 1709.7017918171157,
+            "prior": 1500,
+            "appearances": 44,
+            "peerClubs": 10,
+            "lastDate": "2026-10-21"
+          },
+          "gap": -129.34997220822697
+        },
+        "cutoff": "2026-11-04",
+        "asOf": "2026-11-04T16:57:04.235Z",
+        "statisticallyValidated": false,
+        "policyPath": "data/sources/champions-european-result-policy.json",
+        "inputHashes": {
+          "data/sources/champions-european-result-policy.json": "fb2ee93341ff5d0b987dbe719c9d700abff4dadb7f8a42b952d07ae00710f807",
+          "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+          "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8",
+          "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+          "data/normalized/champions-league-2026-27.json": "d69b8a82a4b009f0d1015826f30f0db91891a42008a168cafeefbe22a45b84ad"
+        },
+        "missing": []
+      },
+      "verdict": {
+        "outcome": "2",
+        "probabilityPct": 55.77668882736641,
+        "label": "Real Madrid",
+        "status": "PRELIMINARY"
       }
     },
     {
@@ -5088,17 +5076,17 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.79,
-        "away": 0.98,
-        "total": 3.77,
+        "home": 2.83,
+        "away": 0.99,
+        "total": 3.82,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
             "attackStrength": 1.562,
             "defenceWeakness": 0.641,
             "lineup": {
-              "attack": 1.024,
-              "defenceWeakness": 0.978,
+              "attack": 1.027,
+              "defenceWeakness": 0.993,
               "resolved": 11,
               "status": "usable"
             }
@@ -5107,8 +5095,8 @@
             "attackStrength": 1.11,
             "defenceWeakness": 0.993,
             "lineup": {
-              "attack": 1.019,
-              "defenceWeakness": 0.981,
+              "attack": 1.021,
+              "defenceWeakness": 0.992,
               "resolved": 11,
               "status": "usable"
             }
@@ -5159,90 +5147,22 @@
         }
       },
       "probabilities": {
-        "home": 74.80031950077087,
-        "draw": 14.591827753259096,
-        "away": 10.607852745970026
+        "home": 32.603286603325806,
+        "draw": 19.706097085040916,
+        "away": 47.69061631163328
       },
       "scoreForecast": {
-        "primary": {
-          "score": "3-1",
-          "outcome": "1",
-          "label": "Risultato esatto centrale",
-          "probabilityPct": 8.2,
-          "conditionalProbabilityPct": 11,
-          "isAbsoluteMode": false
-        },
-        "modal": {
-          "score": "2-0",
-          "outcome": "1",
-          "label": "Moda assoluta",
-          "probabilityPct": 9,
-          "conditionalProbabilityPct": 12.1,
-          "isAbsoluteMode": true
-        },
-        "alternatives": [
-          {
-            "score": "2-0",
-            "outcome": "1",
-            "label": "Moda assoluta",
-            "probabilityPct": 9,
-            "conditionalProbabilityPct": 12.1,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.9,
-            "conditionalProbabilityPct": 11.8,
-            "isAbsoluteMode": false
-          }
-        ],
-        "display": [
-          {
-            "score": "3-1",
-            "outcome": "1",
-            "label": "Risultato esatto centrale",
-            "probabilityPct": 8.2,
-            "conditionalProbabilityPct": 11,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "2-0",
-            "outcome": "1",
-            "label": "Moda assoluta",
-            "probabilityPct": 9,
-            "conditionalProbabilityPct": 12.1,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.9,
-            "conditionalProbabilityPct": 11.8,
-            "isAbsoluteMode": false
-          }
-        ],
-        "coherentWithVerdict": true,
-        "forcedOutcomeScenarios": false,
-        "selection": {
-          "type": "rounded-expected-goals",
-          "expectedHome": 2.7,
-          "expectedAway": 1
-        },
-        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
+        "primary": null,
+        "modal": null,
+        "alternatives": [],
+        "display": [],
+        "status": "N/D_EUROPEAN_RESULT_HAS_NO_SCORE_MATRIX"
       },
       "confidence": {
-        "value": 64,
-        "level": "moderata"
+        "value": null
       },
       "surprise": {
-        "value": 71,
-        "level": "alto",
-        "upsetOutcome": "1",
-        "upsetProbabilityPct": 74.8,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
+        "value": null
       },
       "teamProjections": [
         {
@@ -5376,7 +5296,7 @@
             "central": 1.5,
             "max": 3
           },
-          "expectedGoals": 2.79,
+          "expectedGoals": 2.83,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -5510,7 +5430,7 @@
             "central": 1.6,
             "max": 3
           },
-          "expectedGoals": 0.98,
+          "expectedGoals": 0.99,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -5560,6 +5480,11 @@
         "latestMatchDates": [
           "2026-10-26",
           "2026-10-17"
+        ],
+        "resultStatus": "PRELIMINARY",
+        "resultTeamSamples": [
+          35,
+          35
         ]
       },
       "provenance": {
@@ -5576,13 +5501,64 @@
         "marketUsedForGoals": false
       },
       "inputSnapshot": {
-        "asOf": "2026-11-04T14:08:04.961Z",
+        "asOf": "2026-11-04T16:57:04.235Z",
         "sha256": {
-          "data/sources/champions-probable-formations-md04-2026-27.json": "4dadccc93ebeab96722bc4ef8519e71574022abedb16d1a5879054285c988fae",
+          "data/sources/champions-official-formations-md04-2026-27.json": "1f4739cac9eba141bc113c2314cf45d6b449ad8696c41c5d4a8efb7369f0c13c",
           "data/normalized/odds/sisal/champions-league.json": "cda4b724aa89a6fa5a498ba552cb4cc433db94d3a4dda9c99d24d25995c2d4a9",
           "data/sources/champions-pilot-match-stats-2025-27.json": "6dcffd5933ca2b5ba1f074575202beb70e8201534b676dfaa7da3c8f0076d096",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
         }
+      },
+      "resultModel": {
+        "modelId": "champions-european-result:2a6abdc81a48332727ce2b7d3d1577c53e355483addbe5668623afecdb4cc782",
+        "type": "EUROPEAN_RATING_RESULT",
+        "status": "PRELIMINARY",
+        "probabilities": {
+          "home": 32.603286603325806,
+          "draw": 19.706097085040916,
+          "away": 47.69061631163328
+        },
+        "samples": [
+          35,
+          35
+        ],
+        "features": {
+          "home": {
+            "rating": 1533.3095224210501,
+            "raw": 1533.3095224210501,
+            "prior": 1500,
+            "appearances": 35,
+            "peerClubs": 4,
+            "lastDate": "2026-10-20"
+          },
+          "away": {
+            "rating": 1679.378143698658,
+            "raw": 1679.378143698658,
+            "prior": 1500,
+            "appearances": 35,
+            "peerClubs": 11,
+            "lastDate": "2026-10-20"
+          },
+          "gap": -66.06862127760792
+        },
+        "cutoff": "2026-11-04",
+        "asOf": "2026-11-04T16:57:04.235Z",
+        "statisticallyValidated": false,
+        "policyPath": "data/sources/champions-european-result-policy.json",
+        "inputHashes": {
+          "data/sources/champions-european-result-policy.json": "fb2ee93341ff5d0b987dbe719c9d700abff4dadb7f8a42b952d07ae00710f807",
+          "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+          "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8",
+          "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+          "data/normalized/champions-league-2026-27.json": "d69b8a82a4b009f0d1015826f30f0db91891a42008a168cafeefbe22a45b84ad"
+        },
+        "missing": []
+      },
+      "verdict": {
+        "outcome": "2",
+        "probabilityPct": 47.69061631163328,
+        "label": "Liverpool",
+        "status": "PRELIMINARY"
       }
     },
     {
@@ -5667,90 +5643,22 @@
         }
       },
       "probabilities": {
-        "home": 59.150078825801856,
-        "draw": 20.815257999456467,
-        "away": 20.03466317474168
+        "home": 49.3260148567902,
+        "draw": 19.298904526578315,
+        "away": 31.37508061663148
       },
       "scoreForecast": {
-        "primary": {
-          "score": "2-1",
-          "outcome": "1",
-          "label": "Risultato esatto centrale",
-          "probabilityPct": 9.9,
-          "conditionalProbabilityPct": 16.7,
-          "isAbsoluteMode": true
-        },
-        "modal": {
-          "score": "2-1",
-          "outcome": "1",
-          "label": "Moda assoluta",
-          "probabilityPct": 9.9,
-          "conditionalProbabilityPct": 16.7,
-          "isAbsoluteMode": true
-        },
-        "alternatives": [
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 9.5,
-            "conditionalProbabilityPct": 45.6,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "2-0",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.7,
-            "conditionalProbabilityPct": 14.8,
-            "isAbsoluteMode": false
-          }
-        ],
-        "display": [
-          {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Risultato esatto centrale",
-            "probabilityPct": 9.9,
-            "conditionalProbabilityPct": 16.7,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 9.5,
-            "conditionalProbabilityPct": 45.6,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "2-0",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.7,
-            "conditionalProbabilityPct": 14.8,
-            "isAbsoluteMode": false
-          }
-        ],
-        "coherentWithVerdict": true,
-        "forcedOutcomeScenarios": false,
-        "selection": {
-          "type": "rounded-expected-goals",
-          "expectedHome": 2.1,
-          "expectedAway": 1.1
-        },
-        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
+        "primary": null,
+        "modal": null,
+        "alternatives": [],
+        "display": [],
+        "status": "N/D_EUROPEAN_RESULT_HAS_NO_SCORE_MATRIX"
       },
       "confidence": {
-        "value": 70,
-        "level": "moderata"
+        "value": null
       },
       "surprise": {
-        "value": 47,
-        "level": "medio",
-        "upsetOutcome": "2",
-        "upsetProbabilityPct": 20,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
+        "value": null
       },
       "teamProjections": [
         {
@@ -6068,6 +5976,11 @@
         "latestMatchDates": [
           "2026-10-31",
           "2026-10-17"
+        ],
+        "resultStatus": "PRELIMINARY",
+        "resultTeamSamples": [
+          40,
+          38
         ]
       },
       "provenance": {
@@ -6091,6 +6004,57 @@
           "data/sources/champions-pilot-match-stats-2025-27.json": "6dcffd5933ca2b5ba1f074575202beb70e8201534b676dfaa7da3c8f0076d096",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
         }
+      },
+      "resultModel": {
+        "modelId": "champions-european-result:2a6abdc81a48332727ce2b7d3d1577c53e355483addbe5668623afecdb4cc782",
+        "type": "EUROPEAN_RATING_RESULT",
+        "status": "PRELIMINARY",
+        "probabilities": {
+          "home": 49.3260148567902,
+          "draw": 19.298904526578315,
+          "away": 31.37508061663148
+        },
+        "samples": [
+          40,
+          38
+        ],
+        "features": {
+          "home": {
+            "rating": 1605.08751624772,
+            "raw": 1605.08751624772,
+            "prior": 1500,
+            "appearances": 40,
+            "peerClubs": 10,
+            "lastDate": "2026-10-20"
+          },
+          "away": {
+            "rating": 1606.4910446441293,
+            "raw": 1606.4910446441293,
+            "prior": 1500,
+            "appearances": 38,
+            "peerClubs": 10,
+            "lastDate": "2026-10-21"
+          },
+          "gap": 78.59647160359077
+        },
+        "cutoff": "2026-11-04",
+        "asOf": "2026-11-04T16:42:09.550Z",
+        "statisticallyValidated": false,
+        "policyPath": "data/sources/champions-european-result-policy.json",
+        "inputHashes": {
+          "data/sources/champions-european-result-policy.json": "fb2ee93341ff5d0b987dbe719c9d700abff4dadb7f8a42b952d07ae00710f807",
+          "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+          "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8",
+          "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+          "data/normalized/champions-league-2026-27.json": "d69b8a82a4b009f0d1015826f30f0db91891a42008a168cafeefbe22a45b84ad"
+        },
+        "missing": []
+      },
+      "verdict": {
+        "outcome": "1",
+        "probabilityPct": 49.3260148567902,
+        "label": "Borussia Dortmund",
+        "status": "PRELIMINARY"
       }
     },
     {
@@ -6175,90 +6139,22 @@
         }
       },
       "probabilities": {
-        "home": 57.1473242258858,
-        "draw": 24.943481179791423,
-        "away": 17.909194594322773
+        "home": 55.20877914372675,
+        "draw": 17.86965318776992,
+        "away": 26.921567668503332
       },
       "scoreForecast": {
-        "primary": {
-          "score": "2-1",
-          "outcome": "1",
-          "label": "Risultato esatto centrale",
-          "probabilityPct": 9.2,
-          "conditionalProbabilityPct": 16.1,
-          "isAbsoluteMode": false
-        },
-        "modal": {
-          "score": "1-0",
-          "outcome": "1",
-          "label": "Moda assoluta",
-          "probabilityPct": 15,
-          "conditionalProbabilityPct": 26.2,
-          "isAbsoluteMode": true
-        },
-        "alternatives": [
-          {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Moda assoluta",
-            "probabilityPct": 15,
-            "conditionalProbabilityPct": 26.2,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "2-0",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 12,
-            "conditionalProbabilityPct": 20.9,
-            "isAbsoluteMode": false
-          }
-        ],
-        "display": [
-          {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Risultato esatto centrale",
-            "probabilityPct": 9.2,
-            "conditionalProbabilityPct": 16.1,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Moda assoluta",
-            "probabilityPct": 15,
-            "conditionalProbabilityPct": 26.2,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "2-0",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 12,
-            "conditionalProbabilityPct": 20.9,
-            "isAbsoluteMode": false
-          }
-        ],
-        "coherentWithVerdict": true,
-        "forcedOutcomeScenarios": false,
-        "selection": {
-          "type": "rounded-expected-goals",
-          "expectedHome": 1.6,
-          "expectedAway": 0.8
-        },
-        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
+        "primary": null,
+        "modal": null,
+        "alternatives": [],
+        "display": [],
+        "status": "N/D_EUROPEAN_RESULT_HAS_NO_SCORE_MATRIX"
       },
       "confidence": {
-        "value": 69,
-        "level": "moderata"
+        "value": null
       },
       "surprise": {
-        "value": 50,
-        "level": "medio",
-        "upsetOutcome": "2",
-        "upsetProbabilityPct": 17.9,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
+        "value": null
       },
       "teamProjections": [
         {
@@ -6576,6 +6472,11 @@
         "latestMatchDates": [
           "2026-10-10",
           "2026-10-24"
+        ],
+        "resultStatus": "PRELIMINARY",
+        "resultTeamSamples": [
+          33,
+          19
         ]
       },
       "provenance": {
@@ -6599,6 +6500,57 @@
           "data/sources/champions-pilot-match-stats-2025-27.json": "6dcffd5933ca2b5ba1f074575202beb70e8201534b676dfaa7da3c8f0076d096",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
         }
+      },
+      "resultModel": {
+        "modelId": "champions-european-result:2a6abdc81a48332727ce2b7d3d1577c53e355483addbe5668623afecdb4cc782",
+        "type": "EUROPEAN_RATING_RESULT",
+        "status": "PRELIMINARY",
+        "probabilities": {
+          "home": 55.20877914372675,
+          "draw": 17.86965318776992,
+          "away": 26.921567668503332
+        },
+        "samples": [
+          33,
+          19
+        ],
+        "features": {
+          "home": {
+            "rating": 1507.3790142896996,
+            "raw": 1507.3790142896996,
+            "prior": 1500,
+            "appearances": 33,
+            "peerClubs": 4,
+            "lastDate": "2026-10-20"
+          },
+          "away": {
+            "rating": 1462.6158951576294,
+            "raw": 1462.6158951576294,
+            "prior": 1500,
+            "appearances": 19,
+            "peerClubs": 9,
+            "lastDate": "2026-10-20"
+          },
+          "gap": 124.76311913207019
+        },
+        "cutoff": "2026-11-04",
+        "asOf": "2026-11-04T16:42:09.550Z",
+        "statisticallyValidated": false,
+        "policyPath": "data/sources/champions-european-result-policy.json",
+        "inputHashes": {
+          "data/sources/champions-european-result-policy.json": "fb2ee93341ff5d0b987dbe719c9d700abff4dadb7f8a42b952d07ae00710f807",
+          "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+          "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8",
+          "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+          "data/normalized/champions-league-2026-27.json": "d69b8a82a4b009f0d1015826f30f0db91891a42008a168cafeefbe22a45b84ad"
+        },
+        "missing": []
+      },
+      "verdict": {
+        "outcome": "1",
+        "probabilityPct": 55.20877914372675,
+        "label": "Porto",
+        "status": "PRELIMINARY"
       }
     },
     {
@@ -6683,90 +6635,22 @@
         }
       },
       "probabilities": {
-        "home": 44.8460681350571,
-        "draw": 20.66771378479656,
-        "away": 34.48621808014633
+        "home": 41.580604715979,
+        "draw": 21.290420400562983,
+        "away": 37.128974883458014
       },
       "scoreForecast": {
-        "primary": {
-          "score": "2-2",
-          "outcome": "X",
-          "label": "Risultato esatto centrale",
-          "probabilityPct": 7.3,
-          "conditionalProbabilityPct": 35.2,
-          "isAbsoluteMode": false
-        },
-        "modal": {
-          "score": "2-1",
-          "outcome": "1",
-          "label": "Moda assoluta",
-          "probabilityPct": 7.9,
-          "conditionalProbabilityPct": 17.5,
-          "isAbsoluteMode": true
-        },
-        "alternatives": [
-          {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Moda assoluta",
-            "probabilityPct": 7.9,
-            "conditionalProbabilityPct": 17.5,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 7.4,
-            "conditionalProbabilityPct": 35.9,
-            "isAbsoluteMode": false
-          }
-        ],
-        "display": [
-          {
-            "score": "2-2",
-            "outcome": "X",
-            "label": "Risultato esatto centrale",
-            "probabilityPct": 7.3,
-            "conditionalProbabilityPct": 35.2,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Moda assoluta",
-            "probabilityPct": 7.9,
-            "conditionalProbabilityPct": 17.5,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 7.4,
-            "conditionalProbabilityPct": 35.9,
-            "isAbsoluteMode": false
-          }
-        ],
-        "coherentWithVerdict": false,
-        "forcedOutcomeScenarios": false,
-        "selection": {
-          "type": "rounded-expected-goals",
-          "expectedHome": 2.1,
-          "expectedAway": 1.8
-        },
-        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
+        "primary": null,
+        "modal": null,
+        "alternatives": [],
+        "display": [],
+        "status": "N/D_EUROPEAN_RESULT_HAS_NO_SCORE_MATRIX"
       },
       "confidence": {
-        "value": 45,
-        "level": "prudente"
+        "value": null
       },
       "surprise": {
-        "value": 68,
-        "level": "alto",
-        "upsetOutcome": "2",
-        "upsetProbabilityPct": 34.5,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
+        "value": null
       },
       "teamProjections": [
         {
@@ -7084,6 +6968,11 @@
         "latestMatchDates": [
           "2026-10-25",
           "2026-10-10"
+        ],
+        "resultStatus": "PRELIMINARY",
+        "resultTeamSamples": [
+          31,
+          37
         ]
       },
       "provenance": {
@@ -7107,6 +6996,57 @@
           "data/sources/champions-pilot-match-stats-2025-27.json": "6dcffd5933ca2b5ba1f074575202beb70e8201534b676dfaa7da3c8f0076d096",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
         }
+      },
+      "resultModel": {
+        "modelId": "champions-european-result:2a6abdc81a48332727ce2b7d3d1577c53e355483addbe5668623afecdb4cc782",
+        "type": "EUROPEAN_RATING_RESULT",
+        "status": "PRELIMINARY",
+        "probabilities": {
+          "home": 41.580604715979,
+          "draw": 21.290420400562983,
+          "away": 37.128974883458014
+        },
+        "samples": [
+          31,
+          37
+        ],
+        "features": {
+          "home": {
+            "rating": 1514.91547852634,
+            "raw": 1514.91547852634,
+            "prior": 1500,
+            "appearances": 31,
+            "peerClubs": 6,
+            "lastDate": "2026-10-20"
+          },
+          "away": {
+            "rating": 1575.244341569351,
+            "raw": 1575.244341569351,
+            "prior": 1500,
+            "appearances": 37,
+            "peerClubs": 6,
+            "lastDate": "2026-10-21"
+          },
+          "gap": 19.671136956988903
+        },
+        "cutoff": "2026-11-04",
+        "asOf": "2026-11-04T16:42:09.550Z",
+        "statisticallyValidated": false,
+        "policyPath": "data/sources/champions-european-result-policy.json",
+        "inputHashes": {
+          "data/sources/champions-european-result-policy.json": "fb2ee93341ff5d0b987dbe719c9d700abff4dadb7f8a42b952d07ae00710f807",
+          "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+          "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8",
+          "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+          "data/normalized/champions-league-2026-27.json": "d69b8a82a4b009f0d1015826f30f0db91891a42008a168cafeefbe22a45b84ad"
+        },
+        "missing": []
+      },
+      "verdict": {
+        "outcome": "1",
+        "probabilityPct": 41.580604715979,
+        "label": "PSV Eindhoven",
+        "status": "PRELIMINARY"
       }
     },
     {
@@ -7191,90 +7131,22 @@
         }
       },
       "probabilities": {
-        "home": 41.14516259213607,
-        "draw": 22.69485052717081,
-        "away": 36.159986880693125
+        "home": 30.429995171258838,
+        "draw": 18.990254392607973,
+        "away": 50.579750436133196
       },
       "scoreForecast": {
-        "primary": {
-          "score": "2-2",
-          "outcome": "X",
-          "label": "Risultato esatto centrale",
-          "probabilityPct": 6.9,
-          "conditionalProbabilityPct": 30.5,
-          "isAbsoluteMode": false
-        },
-        "modal": {
-          "score": "1-1",
-          "outcome": "X",
-          "label": "Moda assoluta",
-          "probabilityPct": 9.7,
-          "conditionalProbabilityPct": 42.8,
-          "isAbsoluteMode": true
-        },
-        "alternatives": [
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Moda assoluta",
-            "probabilityPct": 9.7,
-            "conditionalProbabilityPct": 42.8,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.5,
-            "conditionalProbabilityPct": 20.7,
-            "isAbsoluteMode": false
-          }
-        ],
-        "display": [
-          {
-            "score": "2-2",
-            "outcome": "X",
-            "label": "Risultato esatto centrale",
-            "probabilityPct": 6.9,
-            "conditionalProbabilityPct": 30.5,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Moda assoluta",
-            "probabilityPct": 9.7,
-            "conditionalProbabilityPct": 42.8,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.5,
-            "conditionalProbabilityPct": 20.7,
-            "isAbsoluteMode": false
-          }
-        ],
-        "coherentWithVerdict": false,
-        "forcedOutcomeScenarios": false,
-        "selection": {
-          "type": "rounded-expected-goals",
-          "expectedHome": 1.7,
-          "expectedAway": 1.6
-        },
-        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
+        "primary": null,
+        "modal": null,
+        "alternatives": [],
+        "display": [],
+        "status": "N/D_EUROPEAN_RESULT_HAS_NO_SCORE_MATRIX"
       },
       "confidence": {
-        "value": 33,
-        "level": "prudente"
+        "value": null
       },
       "surprise": {
-        "value": 90,
-        "level": "alto",
-        "upsetOutcome": "1",
-        "upsetProbabilityPct": 41.1,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
+        "value": null
       },
       "teamProjections": [
         {
@@ -7592,6 +7464,11 @@
         "latestMatchDates": [
           "2026-10-17",
           "2026-10-24"
+        ],
+        "resultStatus": "PRELIMINARY",
+        "resultTeamSamples": [
+          19,
+          33
         ]
       },
       "provenance": {
@@ -7615,6 +7492,57 @@
           "data/sources/champions-pilot-match-stats-2025-27.json": "6dcffd5933ca2b5ba1f074575202beb70e8201534b676dfaa7da3c8f0076d096",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
         }
+      },
+      "resultModel": {
+        "modelId": "champions-european-result:2a6abdc81a48332727ce2b7d3d1577c53e355483addbe5668623afecdb4cc782",
+        "type": "EUROPEAN_RATING_RESULT",
+        "status": "PRELIMINARY",
+        "probabilities": {
+          "home": 30.429995171258838,
+          "draw": 18.990254392607973,
+          "away": 50.579750436133196
+        },
+        "samples": [
+          19,
+          33
+        ],
+        "features": {
+          "home": {
+            "rating": 1427.9451239811874,
+            "raw": 1427.9451239811874,
+            "prior": 1500,
+            "appearances": 19,
+            "peerClubs": 10,
+            "lastDate": "2026-10-21"
+          },
+          "away": {
+            "rating": 1596.21504347436,
+            "raw": 1596.21504347436,
+            "prior": 1500,
+            "appearances": 33,
+            "peerClubs": 11,
+            "lastDate": "2026-10-20"
+          },
+          "gap": -88.26991949317267
+        },
+        "cutoff": "2026-11-04",
+        "asOf": "2026-11-04T16:42:09.550Z",
+        "statisticallyValidated": false,
+        "policyPath": "data/sources/champions-european-result-policy.json",
+        "inputHashes": {
+          "data/sources/champions-european-result-policy.json": "fb2ee93341ff5d0b987dbe719c9d700abff4dadb7f8a42b952d07ae00710f807",
+          "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+          "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8",
+          "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+          "data/normalized/champions-league-2026-27.json": "d69b8a82a4b009f0d1015826f30f0db91891a42008a168cafeefbe22a45b84ad"
+        },
+        "missing": []
+      },
+      "verdict": {
+        "outcome": "2",
+        "probabilityPct": 50.579750436133196,
+        "label": "Manchester City",
+        "status": "PRELIMINARY"
       }
     },
     {
@@ -7699,90 +7627,22 @@
         }
       },
       "probabilities": {
-        "home": 39.38715232970406,
-        "draw": 25.308995142261743,
-        "away": 35.3038525280342
+        "home": null,
+        "draw": null,
+        "away": null
       },
       "scoreForecast": {
-        "primary": {
-          "score": "1-1",
-          "outcome": "X",
-          "label": "Risultato esatto centrale",
-          "probabilityPct": 11.9,
-          "conditionalProbabilityPct": 47.2,
-          "isAbsoluteMode": true
-        },
-        "modal": {
-          "score": "1-1",
-          "outcome": "X",
-          "label": "Moda assoluta",
-          "probabilityPct": 11.9,
-          "conditionalProbabilityPct": 47.2,
-          "isAbsoluteMode": true
-        },
-        "alternatives": [
-          {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.8,
-            "conditionalProbabilityPct": 22.5,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.6,
-            "conditionalProbabilityPct": 21.8,
-            "isAbsoluteMode": false
-          }
-        ],
-        "display": [
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Risultato esatto centrale",
-            "probabilityPct": 11.9,
-            "conditionalProbabilityPct": 47.2,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.8,
-            "conditionalProbabilityPct": 22.5,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 8.6,
-            "conditionalProbabilityPct": 21.8,
-            "isAbsoluteMode": false
-          }
-        ],
-        "coherentWithVerdict": false,
-        "forcedOutcomeScenarios": false,
-        "selection": {
-          "type": "rounded-expected-goals",
-          "expectedHome": 1.4,
-          "expectedAway": 1.3
-        },
-        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
+        "primary": null,
+        "modal": null,
+        "alternatives": [],
+        "display": [],
+        "status": "N/D_EUROPEAN_RESULT_HAS_NO_SCORE_MATRIX"
       },
       "confidence": {
-        "value": 33,
-        "level": "prudente"
+        "value": null
       },
       "surprise": {
-        "value": 83,
-        "level": "alto",
-        "upsetOutcome": "1",
-        "upsetProbabilityPct": 39.4,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
+        "value": null
       },
       "teamProjections": [
         {
@@ -8100,6 +7960,11 @@
         "latestMatchDates": [
           "2026-10-30",
           "2026-10-18"
+        ],
+        "resultStatus": "INSUFFICIENT_DATA",
+        "resultTeamSamples": [
+          11,
+          3
         ]
       },
       "provenance": {
@@ -8123,6 +7988,59 @@
           "data/sources/champions-pilot-match-stats-2025-27.json": "6dcffd5933ca2b5ba1f074575202beb70e8201534b676dfaa7da3c8f0076d096",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
         }
+      },
+      "resultModel": {
+        "modelId": "champions-european-result:2a6abdc81a48332727ce2b7d3d1577c53e355483addbe5668623afecdb4cc782",
+        "type": "EUROPEAN_RATING_RESULT",
+        "status": "INSUFFICIENT_DATA",
+        "probabilities": {
+          "home": null,
+          "draw": null,
+          "away": null
+        },
+        "samples": [
+          11,
+          3
+        ],
+        "features": {
+          "home": {
+            "rating": 1485.8834760991024,
+            "raw": 1485.8834760991024,
+            "prior": 1500,
+            "appearances": 11,
+            "peerClubs": 10,
+            "lastDate": "2026-10-21"
+          },
+          "away": {
+            "rating": 1514.0802114189387,
+            "raw": 1514.0802114189387,
+            "prior": 1500,
+            "appearances": 3,
+            "peerClubs": 9,
+            "lastDate": "2026-10-21"
+          },
+          "gap": 51.80326468016369
+        },
+        "cutoff": "2026-11-04",
+        "asOf": "2026-11-04T16:42:09.550Z",
+        "statisticallyValidated": false,
+        "policyPath": "data/sources/champions-european-result-policy.json",
+        "inputHashes": {
+          "data/sources/champions-european-result-policy.json": "fb2ee93341ff5d0b987dbe719c9d700abff4dadb7f8a42b952d07ae00710f807",
+          "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+          "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8",
+          "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+          "data/normalized/champions-league-2026-27.json": "d69b8a82a4b009f0d1015826f30f0db91891a42008a168cafeefbe22a45b84ad"
+        },
+        "missing": [
+          "INSUFFICIENT_EUROPEAN_APPEARANCES"
+        ]
+      },
+      "verdict": {
+        "outcome": "N/D",
+        "probabilityPct": null,
+        "label": "Dati insufficienti",
+        "status": "INSUFFICIENT_DATA"
       }
     },
     {
@@ -8207,90 +8125,22 @@
         }
       },
       "probabilities": {
-        "home": 12.371240559219304,
-        "draw": 18.163351068068074,
-        "away": 69.46540837271262
+        "home": 11.098069853959823,
+        "draw": 12.588805041180425,
+        "away": 76.31312510485975
       },
       "scoreForecast": {
-        "primary": {
-          "score": "1-2",
-          "outcome": "2",
-          "label": "Risultato esatto centrale",
-          "probabilityPct": 9.7,
-          "conditionalProbabilityPct": 13.9,
-          "isAbsoluteMode": false
-        },
-        "modal": {
-          "score": "0-2",
-          "outcome": "2",
-          "label": "Moda assoluta",
-          "probabilityPct": 11.7,
-          "conditionalProbabilityPct": 16.8,
-          "isAbsoluteMode": true
-        },
-        "alternatives": [
-          {
-            "score": "0-2",
-            "outcome": "2",
-            "label": "Moda assoluta",
-            "probabilityPct": 11.7,
-            "conditionalProbabilityPct": 16.8,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 10.4,
-            "conditionalProbabilityPct": 14.9,
-            "isAbsoluteMode": false
-          }
-        ],
-        "display": [
-          {
-            "score": "1-2",
-            "outcome": "2",
-            "label": "Risultato esatto centrale",
-            "probabilityPct": 9.7,
-            "conditionalProbabilityPct": 13.9,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "0-2",
-            "outcome": "2",
-            "label": "Moda assoluta",
-            "probabilityPct": 11.7,
-            "conditionalProbabilityPct": 16.8,
-            "isAbsoluteMode": true
-          },
-          {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 10.4,
-            "conditionalProbabilityPct": 14.9,
-            "isAbsoluteMode": false
-          }
-        ],
-        "coherentWithVerdict": true,
-        "forcedOutcomeScenarios": false,
-        "selection": {
-          "type": "rounded-expected-goals",
-          "expectedHome": 0.8,
-          "expectedAway": 2.2
-        },
-        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
+        "primary": null,
+        "modal": null,
+        "alternatives": [],
+        "display": [],
+        "status": "N/D_EUROPEAN_RESULT_HAS_NO_SCORE_MATRIX"
       },
       "confidence": {
-        "value": 72,
-        "level": "alta"
+        "value": null
       },
       "surprise": {
-        "value": 38,
-        "level": "basso",
-        "upsetOutcome": "1",
-        "upsetProbabilityPct": 12.4,
-        "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
+        "value": null
       },
       "teamProjections": [
         {
@@ -8608,6 +8458,11 @@
         "latestMatchDates": [
           "2026-10-13",
           "2026-10-18"
+        ],
+        "resultStatus": "PRELIMINARY",
+        "resultTeamSamples": [
+          27,
+          42
         ]
       },
       "provenance": {
@@ -8631,6 +8486,57 @@
           "data/sources/champions-pilot-match-stats-2025-27.json": "6dcffd5933ca2b5ba1f074575202beb70e8201534b676dfaa7da3c8f0076d096",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
         }
+      },
+      "resultModel": {
+        "modelId": "champions-european-result:2a6abdc81a48332727ce2b7d3d1577c53e355483addbe5668623afecdb4cc782",
+        "type": "EUROPEAN_RATING_RESULT",
+        "status": "PRELIMINARY",
+        "probabilities": {
+          "home": 11.098069853959823,
+          "draw": 12.588805041180425,
+          "away": 76.31312510485975
+        },
+        "samples": [
+          27,
+          42
+        ],
+        "features": {
+          "home": {
+            "rating": 1380.9009944039883,
+            "raw": 1380.9009944039883,
+            "prior": 1500,
+            "appearances": 27,
+            "peerClubs": 4,
+            "lastDate": "2026-10-20"
+          },
+          "away": {
+            "rating": 1795.8417082857131,
+            "raw": 1795.8417082857131,
+            "prior": 1500,
+            "appearances": 42,
+            "peerClubs": 11,
+            "lastDate": "2026-10-21"
+          },
+          "gap": -334.94071388172483
+        },
+        "cutoff": "2026-11-04",
+        "asOf": "2026-11-04T16:42:09.550Z",
+        "statisticallyValidated": false,
+        "policyPath": "data/sources/champions-european-result-policy.json",
+        "inputHashes": {
+          "data/sources/champions-european-result-policy.json": "fb2ee93341ff5d0b987dbe719c9d700abff4dadb7f8a42b952d07ae00710f807",
+          "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+          "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8",
+          "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+          "data/normalized/champions-league-2026-27.json": "d69b8a82a4b009f0d1015826f30f0db91891a42008a168cafeefbe22a45b84ad"
+        },
+        "missing": []
+      },
+      "verdict": {
+        "outcome": "2",
+        "probabilityPct": 76.31312510485975,
+        "label": "Arsenal",
+        "status": "PRELIMINARY"
       }
     },
     {
@@ -8654,7 +8560,11 @@
         "away": null
       },
       "scoreForecast": {
-        "display": []
+        "primary": null,
+        "modal": null,
+        "alternatives": [],
+        "display": [],
+        "status": "N/D_EUROPEAN_RESULT_HAS_NO_SCORE_MATRIX"
       },
       "confidence": {
         "value": null
@@ -8702,6 +8612,11 @@
         "latestMatchDates": [
           "2026-10-30",
           null
+        ],
+        "resultStatus": "INSUFFICIENT_DATA",
+        "resultTeamSamples": [
+          3,
+          3
         ]
       },
       "provenance": {
@@ -8725,6 +8640,59 @@
           "data/sources/champions-pilot-match-stats-2025-27.json": "6dcffd5933ca2b5ba1f074575202beb70e8201534b676dfaa7da3c8f0076d096",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
         }
+      },
+      "resultModel": {
+        "modelId": "champions-european-result:2a6abdc81a48332727ce2b7d3d1577c53e355483addbe5668623afecdb4cc782",
+        "type": "EUROPEAN_RATING_RESULT",
+        "status": "INSUFFICIENT_DATA",
+        "probabilities": {
+          "home": null,
+          "draw": null,
+          "away": null
+        },
+        "samples": [
+          3,
+          3
+        ],
+        "features": {
+          "home": {
+            "rating": 1484.9382595088707,
+            "raw": 1484.9382595088707,
+            "prior": 1500,
+            "appearances": 3,
+            "peerClubs": 3,
+            "lastDate": "2026-10-21"
+          },
+          "away": {
+            "rating": 1480.355196368241,
+            "raw": 1480.355196368241,
+            "prior": 1500,
+            "appearances": 3,
+            "peerClubs": 1,
+            "lastDate": "2026-10-20"
+          },
+          "gap": 84.58306314062975
+        },
+        "cutoff": "2026-11-04",
+        "asOf": "2026-11-04T16:42:09.550Z",
+        "statisticallyValidated": false,
+        "policyPath": "data/sources/champions-european-result-policy.json",
+        "inputHashes": {
+          "data/sources/champions-european-result-policy.json": "fb2ee93341ff5d0b987dbe719c9d700abff4dadb7f8a42b952d07ae00710f807",
+          "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+          "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8",
+          "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+          "data/normalized/champions-league-2026-27.json": "d69b8a82a4b009f0d1015826f30f0db91891a42008a168cafeefbe22a45b84ad"
+        },
+        "missing": [
+          "INSUFFICIENT_EUROPEAN_APPEARANCES"
+        ]
+      },
+      "verdict": {
+        "outcome": "N/D",
+        "probabilityPct": null,
+        "label": "Dati insufficienti",
+        "status": "INSUFFICIENT_DATA"
       }
     }
   ],

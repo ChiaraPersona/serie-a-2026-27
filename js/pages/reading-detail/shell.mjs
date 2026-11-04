@@ -1,6 +1,6 @@
 import {imageSource} from '../../core/image-source.mjs?v=20261022-assets-v1';
 import {installForecasts} from './forecasts.mjs?v=20261025-clean-copy';
-import {installScenario} from './scenario.mjs?v=20261104-reading-clean-v1';
+import {installScenario} from './scenario.mjs?v=20261104-european-result-v1';
 import {loadEvidence,readArtifact} from './evidence.mjs?v=20261104-tactical-profiles-v3';
 import {installPeople} from './people.mjs?v=20261025-player-history';
 import {installTacticsHistory} from './tactics-history.mjs?v=20261104-tactical-profiles-v3';

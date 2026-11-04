@@ -21,7 +21,12 @@ async function test(){
   const volumeMarkets=m.selections.filter(l=>l.catalogOrigin==='champions-md04-team-volumes'&&l.suggestionAnalysis?.suggested);
   assert.equal(m.forecastCoverage.marginalVolumeProbabilitiesAvailable,volumeMarkets.length>0,'Volume probabilities require explicit shared count model markets');
   if(volumeMarkets.length)assert.equal(m.forecastCoverage.marginalVolumeProbabilityStatus,'PRELIMINARY_NOT_CALIBRATED');
-  if(scenario.status==='preliminary')assert(Math.abs(Object.values(scenario.probabilities).reduce((a,b)=>a+b,0)-100)<1e-8);
+  if(scenario.resultModel){
+   assert.equal(scenario.resultModel.statisticallyValidated,false);assert.equal(scenario.scoreForecast.primary,null);assert.deepEqual(scenario.scoreForecast.display,[]);
+   if(scenario.resultModel.status==='PRELIMINARY')assert(Math.abs(Object.values(scenario.probabilities).reduce((a,b)=>a+b,0)-100)<1e-8);
+   else assert(Object.values(scenario.probabilities).every(p=>p===null));
+  }
+  else if(scenario.status==='preliminary')assert(Math.abs(Object.values(scenario.probabilities).reduce((a,b)=>a+b,0)-100)<1e-8);
   else {assert.equal(m.selections.length,0);assert(Object.values(scenario.probabilities).every(p=>p===null));}
   for(const t of fixture.teams){
    assert.equal(t.players.filter(p=>p.projectedRole==='starter').length,11);

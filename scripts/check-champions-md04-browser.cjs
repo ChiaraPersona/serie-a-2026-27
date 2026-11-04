@@ -54,12 +54,20 @@ async function run(){
     await page.goto(base+'/champions-league.html?match='+m.matchId);
     await page.waitForSelector(m.suggestions.length?'#lettura-pronostici [data-shared-forecast-id]':'[data-md3-probable-player]',{state:'attached'}).catch(async e=>{fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({errors,text:await page.locator('#app').innerText()},null,2));throw e;});
     assert.equal(await page.locator('#lettura-pronostici [data-shared-forecast-id]').count(),m.suggestions.length,m.matchId);
+    if(m.resultModel){
+     assert.equal(await page.locator('[data-european-result]').count(),1,'European result panel '+m.matchId);
+     for(const [label,key]of [['1','home'],['X','draw'],['2','away']]){
+      const value=m.forecastCoverage.result[key],expected=Number.isFinite(value)?value.toLocaleString('it-IT',{maximumFractionDigits:1})+'%':'—';
+      assert.equal(await page.locator(`[data-result-outcome="${label}"]`).innerText(),expected,'Same published 1X2 probability '+m.matchId);
+     }
+     assert.equal(await page.locator('.rd-score-grid article').filter({hasText:'Risultato previsto'}).count(),0,'No inherited Poisson score');
+    }
     assert.equal(await page.locator('[data-md3-probable-player][data-projected-role="starter"]').count(),22);
     if(m===target){
      if(volumePick)assert((await page.evaluate(()=>localStorage.getItem('serie-a-2026-27:personal-betslip:v1'))).includes(volumePick.selectionId),'Team market survives navigation to reading');
      const button=page.locator(`[data-rd-pick="${pick}"]`);assert.equal(await button.getAttribute('aria-pressed'),'true');
      await page.locator('[data-player-lineup-filter="bench"]').scrollIntoViewIfNeeded();
-     await page.locator('[data-player-lineup-filter="bench"]').click();assert(await page.locator('[data-player-card][data-player-lineup="bench"]:visible').count()>0);
+     await page.locator('[data-player-lineup-filter="bench"]').click();await page.locator('[data-player-card][data-player-lineup="bench"]').first().waitFor({state:'visible',timeout:10000});assert(await page.locator('[data-player-card][data-player-lineup="bench"]:visible').count()>0);
      await page.locator('[data-player-lineup-filter="starter"]').click();
      await page.screenshot({path:path.join(out,`reading-${width}.png`)});
     }

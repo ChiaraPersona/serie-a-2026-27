@@ -4,6 +4,8 @@ Il builder `scripts/build-champions-md04.cjs` pubblica soltanto le fixture futur
 
 ## Catena
 
+Dal 4 novembre 2026, l'esito delle sole fixture future viene aggiornato dal rating europeo dopo l'integrazione tecnica condivisa: `scripts/champions/european-result-policy.cjs`. La policy interna registra l'autorizzazione esplicita alla pubblicazione preliminare, mantenendo falsa l'approvazione statistica. I risultati esatti del precedente Poisson non sono trasferiti al rating. Gol, volumi e mercati individuali continuano a usare i calcoli già esistenti e restano separati dall'1X2. Lens–Como e Viking–Sabah hanno esito N/D per meno di sei precedenti europei di almeno una squadra. Le gare concluse del 3 novembre non cambiano.
+
 Rose registrate, database giocatori e storici già verificati vengono uniti per ID canonico e ID provider, senza modificare le rose globali o i database MD3. L'alias squadra `bod-glimt` viene ricondotto a `bodo-glimt` con la normalizzazione esistente. I correttivi di identità già documentati sono applicati soltanto in memoria.
 
 Gli undici canonici entrano nell'adattatore `champions/shared-scenario.cjs`, che richiama il motore condiviso Serie A con formule e pesi invariati. La modifica non applica formazioni a fixture diverse. Le altre fixture della proiezione `data/generated/champions-shared-scenarios.json` restano identiche.

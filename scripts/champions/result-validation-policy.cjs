@@ -1,4 +1,12 @@
 'use strict';
+function authorizedEuropeanResult(leg){
+ const e=leg.betSelection?.evaluation,p=leg.publication;
+ return e?.status==='PRELIMINARY_EUROPEAN_RESULT'&&e.validation?.approvable===false
+  &&typeof e.provenance?.modelId==='string'&&e.provenance.modelId.startsWith('champions-european-result:')
+  &&p?.userAuthorizedResultModel===e.provenance.modelId&&p.approvalGate==='USER_AUTHORIZED_PRELIMINARY_EUROPEAN_RESULT'
+  &&Number.isFinite(e.modelProbabilityPct)&&['1','2','1X','X2'].includes(leg.selection)
+  &&leg.betSelection?.quote?.decimal>=1.08;
+}
 // Apply after preliminary ranking and draw replacement. Keep diagnostic
 // probabilities and exact provider contracts; never rewrite historical picks.
 function applyResultValidationPolicy(catalog, fixtureIds){
@@ -7,6 +15,7 @@ function applyResultValidationPolicy(catalog, fixtureIds){
   if(!fixtureIds.has(match.matchId))continue;
   for(const leg of match.selections){
    if(!['result','double-chance'].includes(leg.suggestionAnalysis?.family))continue;
+   if(authorizedEuropeanResult(leg))continue;
    const evaluation=leg.betSelection?.evaluation;
    if(evaluation?.validation?.approvable===true&&leg.qualifiedSelection===true&&leg.publication?.status==='APPROVED')continue;
    if(leg.suggestionAnalysis?.suggested)removed.push({matchId:match.matchId,selectionId:leg.selectionId});
@@ -24,4 +33,4 @@ function applyResultValidationPolicy(catalog, fixtureIds){
  Object.assign(catalog.summary,{selections:selected.length,teamSelections:selected.filter(l=>l.marketScope!=='player').length,playerSelections:selected.filter(l=>l.marketScope==='player').length,approvedSelections:selected.filter(l=>l.qualifiedSelection).length});
  return removed;
 }
-module.exports={applyResultValidationPolicy};
+module.exports={applyResultValidationPolicy,authorizedEuropeanResult};

@@ -21,6 +21,9 @@ export function createDataService(release,{deduplicate=false}={}){
       // Preserve observed match reports, including substitutes. Public contracts
       // use the official-starter filter even after the fixture has finished.
       if(name==='matches.json'||name==='champions-league-2026-27.json')return data;
+      // Descriptive lineup projections include official substitutes. Operational
+      // contracts are loaded separately and continue through the starter policy.
+      if(name==='champions-md04-probable-individuals-2026-27.json')return data;
       if(name==='schedina-champions-md03-ui.json')return {...globalThis.officialStarterPolicy.filter({...data,fixtures:[]}),fixtures:data.fixtures};
       return globalThis.officialStarterPolicy.filter(data);
     },

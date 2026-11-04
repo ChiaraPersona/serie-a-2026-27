@@ -49,7 +49,10 @@ async function refreshPublicOddsMinimum(){
  out.minimumSelectionOdds=1.08;
  out.resultPreference={excluded:['X'],allowed:['1','2','1X','X2'],replacement:'EXISTING_PRELIMINARY_PORTFOLIO_ONLY'};require('./champions/md04-user-publication-exceptions.cjs').applyUserPublicationExceptions(out,read(oddsPath),read('data/normalized/official-starter-registry.json'));
  const futureIds=new Set(read('data/normalized/champions-league-2026-27.json').fixtures.filter(f=>eligible(f,new Date().toISOString())).map(f=>f.id));
- require('./champions/result-validation-policy.cjs').applyResultValidationPolicy(out,futureIds);write(catalogPath,out);
+ require('./champions/result-validation-policy.cjs').applyResultValidationPolicy(out,futureIds);
+ const shared=read('data/generated/champions-shared-scenarios.json');
+ await require('./champions/european-result-policy.cjs').applyEuropeanResults({scenarios:shared,catalog:out,calendar:read('data/normalized/champions-league-2026-27.json'),odds:read(oddsPath),fixtureIds:futureIds});
+ write('data/generated/champions-shared-scenarios.json',shared);write(catalogPath,out);
  const report=read('output/champions-md04/build-report.json');report.summary=out.summary;write('output/champions-md04/build-report.json',report);
  console.log(JSON.stringify(out.summary));
 }
@@ -128,14 +131,15 @@ async function buildTeamCatalog(scenarios,odds){
     if(family==='result'){if(!['1','X','2'].includes(name))continue;predicate=(h,a)=>name==='1'?h>a:name==='2'?a>h:h===a;target='1x2:'+name;}
     else if(family==='double-chance'){if(!['1X','X2','12'].includes(name))continue;predicate=(h,a)=>name==='1X'?h>=a:name==='X2'?a>=h:h!==a;target='double-chance:'+name;}
     else{if(!['OVER','UNDER'].includes(name)||market.threshold===null||!Number.isFinite(Number(market.threshold)))continue;predicate=({home,away})=>name==='OVER'?home+away>Number(market.threshold):home+away<Number(market.threshold);target='goals:'+name.toLowerCase()+':'+market.threshold;}
-    const p=family==='result'?f.probabilities[{1:'home',X:'draw',2:'away'}[name]]:family==='double-chance'?({ '1X':f.probabilities.home+f.probabilities.draw,'X2':f.probabilities.draw+f.probabilities.away,'12':f.probabilities.home+f.probabilities.away })[name]:matrixProbability(matrix,predicate)*100;
+    const hasResult=Object.values(f.probabilities).every(Number.isFinite);
+    const p=family==='result'?f.probabilities[{1:'home',X:'draw',2:'away'}[name]]:family==='double-chance'?(hasResult?({ '1X':f.probabilities.home+f.probabilities.draw,'X2':f.probabilities.draw+f.probabilities.away,'12':f.probabilities.home+f.probabilities.away })[name]:null):matrixProbability(matrix,predicate)*100;
     const selectionId=`sisal:${event.providerEventId}:${market.providerMarketId}:${selection.providerSelectionId}`;
     const m={...market,canonicalPlayerIds:[],forecastCompatibility:'EXACT_SHARED_SCENARIO_CONTRACT',modifiers:{periodScope:'full-match',replacementIncluded:false,woodworkIncluded:false}};
     const leg=createChampionsSelection({...f,oddsEvent:{providerEventId:event.providerEventId,retrievedAt:event.retrievedAt||odds.retrievedAt}},m,{...selection,selectionId,quoteAvailability:'AVAILABLE_AT_SNAPSHOT'});
-    Object.assign(leg,{selection:name,odds:selection.odds,threshold:market.threshold,marketScope:'match',marketFamily:{result:'Risultato','double-chance':'Doppia chance',goals:'Gol'}[family],modelProbabilityPct:p,modelProbability:p/100,providerMarketId:market.providerMarketId,providerSelectionId:selection.providerSelectionId,catalogOrigin:'champions-md04-shared-scenario',suggestionAnalysis:{suggested:family==='result'&&name===f.scoreForecast.primary.outcome,family,rank:null},context:{competition:'champions',season:'2026-27',matchday:4,forecastPolicy:'SERIE_A_CURRENT'}});
+    Object.assign(leg,{selection:name,odds:selection.odds,threshold:market.threshold,marketScope:'match',marketFamily:{result:'Risultato','double-chance':'Doppia chance',goals:'Gol'}[family],modelProbabilityPct:p,modelProbability:Number.isFinite(p)?p/100:null,providerMarketId:market.providerMarketId,providerSelectionId:selection.providerSelectionId,catalogOrigin:'champions-md04-shared-scenario',suggestionAnalysis:{suggested:family==='result'&&name===(f.verdict?.outcome||f.scoreForecast?.primary?.outcome),family,rank:null},context:{competition:'champions',season:'2026-27',matchday:4,forecastPolicy:'SERIE_A_CURRENT'}});
     leg.betSelection.market.selection=name;
     leg.betSelection.compatibility.modelTarget=target;
-    leg.betSelection.evaluation={status:'PRELIMINARY',modelProbabilityPct:p,fairOdds:100/p,expectedValuePct:(p/100*selection.odds-1)*100,provenance:{source:'data/generated/champions-shared-scenarios.json#'+f.fixtureId,modelTarget:target,modelVersion:f.engineVersion}};
+    leg.betSelection.evaluation={status:Number.isFinite(p)?'PRELIMINARY':'NOT_MODELLED',modelProbabilityPct:p,fairOdds:p>0?100/p:null,expectedValuePct:Number.isFinite(p)?(p/100*selection.odds-1)*100:null,provenance:{source:'data/generated/champions-shared-scenarios.json#'+f.fixtureId,modelTarget:target,modelVersion:f.engineVersion}};
     if(family==='goals')leg.betSelection.evaluation.provenance.adapterVersion='MD04_GOALS_SCORE_OBJECT_V1';
     legs.push(leg);
    }
@@ -231,6 +235,7 @@ async function build(){
  require('./champions/md04-user-publication-exceptions.cjs').applyUserPublicationExceptions(out,odds,read('data/normalized/official-starter-registry.json'),ids);
  await require('./champions/md04-team-volume-markets.cjs').addTeamVolumeMarkets(out,odds,{fixtureIds:ids,asOf});
  require('./champions/result-validation-policy.cjs').applyResultValidationPolicy(out,ids);
+ await require('./champions/european-result-policy.cjs').applyEuropeanResults({scenarios:shared,catalog:out,calendar,odds,asOf,fixtureIds:ids});
  write(catalogPath,out);write(sharedPath,shared);
  write('data/technical-archive/champions-md04/excluded-player-quotes.json',{excludedQuotes:[...(saved?.archive.excludedQuotes||[]).filter(l=>!ids.has(l.matchId)),...excludedQuotes],candidateExclusions:integration.summary.excluded,identityConflicts:identities.conflicts,previousScopeArchive:saved?.archive||null});
  write('output/champions-md04/build-report.json',{generatedAt:asOf,protectedBefore,summary:out.summary,coverage:out.coverage,unquotedExcluded:excludedQuotes.length,fixtureIds:[...ids],untouchedSharedFixtures:previous.fixtures.filter(f=>!ids.has(f.fixtureId)).map(f=>({fixtureId:f.fixtureId,sha256:crypto.createHash('sha256').update(JSON.stringify(f)).digest('hex')}))});

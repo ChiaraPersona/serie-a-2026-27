@@ -10,7 +10,7 @@ function run({ capture = false, matchday = 4 } = {}) {
   const calendar = read(files.calendar), catalog = read(files.catalog), scenarios = read(files.scenarios), history = read(files.history);
   const actuals = collectActuals(now);
   for (const row of actuals.teams) row.goals = row.score?.[row.side] ?? null;
-  const receipts = Object.fromEntries([...Object.values(files), 'data/sources/champions-pilot-match-stats-2025-27.json', 'scripts/predictions/engine.js', 'scripts/md06-statistical-models.js', 'scripts/champions/shared-scenario.cjs', 'scripts/champions/market-prospective.cjs', 'scripts/champions/md04-team-volume-markets.cjs', 'scripts/champions/event-validation.cjs'].map(p => [p, hash(p)]));
+  const receipts = Object.fromEntries([...Object.values(files), 'data/sources/champions-pilot-match-stats-2025-27.json', 'scripts/predictions/engine.js', 'scripts/md06-statistical-models.js', 'scripts/champions/shared-scenario.cjs', 'scripts/champions/market-prospective.cjs', 'scripts/champions/md04-team-volume-markets.cjs', 'scripts/champions/event-validation.cjs', 'scripts/champions/european-result-policy.cjs', 'scripts/research/european-rating-model.cjs', 'data/sources/champions-european-result-policy.json', 'data/sources/champions-team-history-map-2026-27.json', 'data/normalized/champions-team-strength-2026-27.json'].map(p => [p, hash(p)]));
   const countModelId = 'champions-md04-counts:' + digest(Object.fromEntries(['scripts/predictions/engine.js', 'scripts/md06-statistical-models.js', 'scripts/champions/shared-scenario.cjs', 'scripts/champions/md04-team-volume-markets.cjs'].map(p => [p, receipts[p]])));
   const captureResults = [];
   if (capture) for (const fixture of calendar.fixtures.filter(f => f.matchday === matchday)) {
