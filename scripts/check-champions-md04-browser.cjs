@@ -6,6 +6,7 @@ const out=path.resolve(root,outIndex<0?'output/champions-md04/browser':process.a
 assert(out.startsWith(path.join(root,'output')+path.sep),'Browser evidence must remain inside output/');
 fs.mkdirSync(out,{recursive:true});
 const catalog=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/schedina-champions-md04.json')));
+const playerHistory=JSON.parse(fs.readFileSync(path.join(root,'data/generated/champions-player-match-history.json')));
 const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp'};
 const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));if(!file.startsWith(root+path.sep))return res.writeHead(403).end();fs.readFile(file,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':types[path.extname(file)]||'application/octet-stream'});res.end(e?'Missing':b);});});
 async function run(){
@@ -63,12 +64,26 @@ async function run(){
      assert.equal(await page.locator('.rd-score-grid article').filter({hasText:'Risultato previsto'}).count(),0,'No inherited Poisson score');
     }
     assert.equal(await page.locator('[data-md3-probable-player][data-projected-role="starter"]').count(),22);
+    const displayedHistory=await page.locator('[data-md3-probable-player]').evaluateAll(rows=>rows.map(row=>({team:row.closest('[data-md3-probable-team]').dataset.md3ProbableTeam,player:row.dataset.playerId,sections:row.querySelectorAll('[data-player-match-history]').length,dates:[...row.querySelectorAll('[data-player-match-history] time')].map(t=>t.dateTime)})));
+    const fixtureDate=catalog.marketCatalog.matches.find(x=>x.matchId===m.matchId).selections[0]?.context?.date||JSON.parse(fs.readFileSync(path.join(root,'data/normalized/champions-league-2026-27.json'))).fixtures.find(f=>f.id===m.matchId).date;
+    for(const row of displayedHistory){
+     assert.equal(row.sections,1,'History for every starter and reserve');
+     const expected=(playerHistory.players[row.team+':'+row.player]||[]).filter(r=>r.date<fixtureDate&&r.availableAt.slice(0,10)<=fixtureDate).slice(0,5).map(r=>r.date);
+     assert.deepEqual(row.dates,expected,'Exact player opponent log '+row.player);
+    }
     if(m===target){
      if(volumePick)assert((await page.evaluate(()=>localStorage.getItem('serie-a-2026-27:personal-betslip:v1'))).includes(volumePick.selectionId),'Team market survives navigation to reading');
      const button=page.locator(`[data-rd-pick="${pick}"]`);assert.equal(await button.getAttribute('aria-pressed'),'true');
      await page.locator('[data-player-lineup-filter="bench"]').scrollIntoViewIfNeeded();
      await page.locator('[data-player-lineup-filter="bench"]').click();await page.locator('[data-player-card][data-player-lineup="bench"]').first().waitFor({state:'visible',timeout:10000});assert(await page.locator('[data-player-card][data-player-lineup="bench"]:visible').count()>0);
      await page.locator('[data-player-lineup-filter="starter"]').click();
+     const mbappe=page.locator('[data-player-card][data-player-id="kylian-mbappe"]');
+     if(await mbappe.count()){
+      await mbappe.locator(':scope > summary').click();
+      const log=mbappe.locator('[data-player-match-history]');await log.evaluate(el=>el.scrollIntoView({block:'center'}));
+      assert.equal(await log.locator('li').count(),5);
+      await log.screenshot({path:path.join(out,`player-history-${width}.png`)});
+     }
      await page.screenshot({path:path.join(out,`reading-${width}.png`)});
     }
     await check(m.matchId);

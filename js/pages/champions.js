@@ -4,7 +4,7 @@ import {championsShirtNumber} from '../components/champions-shirt-numbers.mjs?v=
 import {renderLineupField} from '../components/lineup-field.mjs?v=20261022-assets-v1';
 import {isReadingPilot} from './reading-detail/view-model.mjs?v=20261022-assets-v1';
 export function createPage(deps){
-  const {esc,load,loadDerived}=deps;
+  const {esc,load,loadDerived,loadGenerated}=deps;
   const dayLabel=value=>new Intl.DateTimeFormat("it-IT",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Europe/Rome"}).format(new Date(`${value}T12:00:00+01:00`));
   const matchdayLabel=number=>`${number}ª giornata`;
   const shortDate=value=>new Intl.DateTimeFormat("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"Europe/Rome"}).format(new Date(`${value}T12:00:00Z`));
@@ -468,7 +468,8 @@ export function createPage(deps){
       const shared=await load('../generated/champions-shared-scenarios.json');
       const prediction=shared.fixtures.find(f=>f.fixtureId===requestedMatchId);
       if(prediction){
-        const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261104-european-result-v1');
+        const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261104-player-history-v1');
+        const playerMatchHistory=loadGenerated?await loadGenerated('champions-player-match-history.json'):null;
         let probableFixture,probableMarkup;
         if(requestedCalendarFixture.matchday===4){
           const individuals=await load('champions-md04-probable-individuals-2026-27.json');
@@ -478,7 +479,7 @@ export function createPage(deps){
             probableMarkup=md3ProbableMarkup(probableFixture);
           }
         }
-        await mountChampionsReading({fixture:requestedCalendarFixture,prediction,probableFixture,probableMarkup,branding,analysis:{match:requestedCalendarFixture,matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:refereeReadingPanel(requestedCalendarFixture.refereeAssignment),extend:probableFixture?async context=>appendSharedSchedina(4,requestedMatchId,context.shell):undefined});
+        await mountChampionsReading({fixture:requestedCalendarFixture,prediction,probableFixture,probableMarkup,playerMatchHistory,branding,analysis:{match:requestedCalendarFixture,matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:refereeReadingPanel(requestedCalendarFixture.refereeAssignment),extend:probableFixture?async context=>appendSharedSchedina(4,requestedMatchId,context.shell):undefined});
         return;
       }
     }
@@ -489,8 +490,9 @@ export function createPage(deps){
       const sevenOfficial=await loadDerived('champions-md03/official-individuals-seven-v2-2026-10-20.json');
       const todayOfficial=await loadDerived('champions-md03/official-individuals-2026-10-21.json');
       const probableFixture=todayOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||sevenOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||officialProbables.fixtures.find(f=>f.fixtureId===requestedMatchId)||probables.fixtures.find(f=>f.fixtureId===requestedMatchId);
-      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261104-european-result-v1');
-      await mountChampionsReading({fixture:requestedCalendarFixture,prediction:fixture.forecast,profile,probableFixture,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:md3RefereeMarkup(requestedCalendarFixture,profile,branding),probableMarkup:md3ProbableMarkup(probableFixture),extend:({shell})=>appendSharedSchedina(3,requestedMatchId,shell)});
+      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261104-player-history-v1');
+      const playerMatchHistory=loadGenerated?await loadGenerated('champions-player-match-history.json'):null;
+      await mountChampionsReading({fixture:requestedCalendarFixture,prediction:fixture.forecast,profile,probableFixture,playerMatchHistory,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:md3RefereeMarkup(requestedCalendarFixture,profile,branding),probableMarkup:md3ProbableMarkup(probableFixture),extend:({shell})=>appendSharedSchedina(3,requestedMatchId,shell)});
       return;
     }
     const [md2Pilot,md2Integration,md2Schedina,md2RefereeHistory]=requestedCalendarFixture?.matchday===2?await Promise.all([load("champions-pilot-predictions-md02-2026-27.json"),load("champions-md02-ui-2026-27.json"),load("schedina-champions-md02.json"),load("champions-referee-history-2026-10-13.json")]):[null,null,null,null];

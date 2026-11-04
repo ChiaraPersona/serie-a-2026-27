@@ -1,9 +1,10 @@
 import {esc,number} from './format.mjs?v=20261022-assets-v1';
 import {createReadingView} from './view-model.mjs?v=20261022-assets-v1';
 import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261104-european-result-v1';
+import {recentPlayerMatches,playerHistoryMarkup} from './champions-player-history.mjs';
 
 // Adapt existing MD3 artifacts for the shared presentation; never recalculate them.
-export async function mountChampionsReading({fixture,prediction,probableFixture,branding,analysis,refereeMarkup,probableMarkup,extend}){
+export async function mountChampionsReading({fixture,prediction,probableFixture,branding,analysis,refereeMarkup,probableMarkup,playerMatchHistory,extend}){
  const side=name=>({name,...branding.get(name)});
  const model=createReadingView({competition:'champions',fixture,home:side(fixture.homeTeam),away:side(fixture.awayTeam),prediction:{...prediction,scoreForecast:{...prediction.scoreForecast,display:prediction.scoreForecast?.display||[prediction.scoreForecast?.primary,...(prediction.scoreForecast?.alternatives||[])].filter(Boolean)}},quality:prediction.dataQuality,analysis});
  const prepared=await prepareReadingShell(model);
@@ -36,6 +37,11 @@ export async function mountChampionsReading({fixture,prediction,probableFixture,
        columns.querySelectorAll('.rd-row-identity > small').forEach(note=>note.closest('details').querySelector('.rd-player-expanded').prepend(note));
        const note=draft.querySelector('.rd-section-content > p');if(note)context.groups.get('formazioni').lastElementChild.prepend(note);
        columns.querySelectorAll('[data-md3-probable-player]').forEach(row=>{row.dataset.playerCard='';row.dataset.playerLineup=row.dataset.projectedRole;});
+       columns.querySelectorAll('[data-md3-probable-player]').forEach(row=>{
+         const teamId=row.closest('[data-md3-probable-team]')?.dataset.md3ProbableTeam;
+         const recent=recentPlayerMatches(playerMatchHistory,teamId,row.dataset.playerId,fixture.date);
+         row.querySelector('.rd-player-expanded')?.insertAdjacentHTML('beforeend',playerHistoryMarkup(recent));
+       });
        const filter=active=>{
          columns.querySelectorAll('[data-player-card]').forEach(row=>row.hidden=row.dataset.playerLineup!==active);
          toolbar.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.playerLineupFilter===active)));
