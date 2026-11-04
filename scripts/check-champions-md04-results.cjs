@@ -8,8 +8,15 @@ try{browser=await chromium.launch({channel:'msedge',headless:true});
 for(const width of [1440,390]){
  const page=await browser.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.route('https://fonts.googleapis.com/**',r=>r.abort());await page.route('https://fonts.gstatic.com/**',r=>r.abort());
+ await page.goto(`http://127.0.0.1:${server.address().port}/schedina.html`);
+ const archiveBack=page.locator('[data-champions-matchday="4"] .team-flip-back');await archiveBack.waitFor({state:'attached'});
+ const metrics=await archiveBack.locator('.betting-archive-performance strong').allTextContents();assert.equal(metrics.length,2);assert(metrics.every(v=>v.includes('%')&&!v.includes('—')),'CL4 back must show verified Successo and Guadagno');
+ await page.goto(`http://127.0.0.1:${server.address().port}/champions-league.html`);
+ await page.waitForSelector('a[href*="match=ucl-2026-27-md04-10"]');
+ for(let i=1;i<=9;i++)assert(await page.locator(`a[href*="match=ucl-2026-27-md04-${String(i).padStart(2,'0')}"]`).count()>0,`Finished MD4 reading ${i} must remain clickable`);
  await page.goto(`http://127.0.0.1:${server.address().port}/schedina.html?competizione=champions&giornata=4`);
  await page.waitForSelector('[data-champions-workspace="4"]');await page.locator('[data-match-open-all]').first().click();
+ assert.equal(await page.locator('[data-audit-economics]').count(),0,'Champions pages omit the partial performance panel');
  const rows=page.locator('.betting-match-body > .betting-market-list [data-selection-row]');
  const states=await rows.evaluateAll(rows=>rows.reduce((a,r)=>(a[r.dataset.settlement||'upcoming']=(a[r.dataset.settlement||'upcoming']||0)+1,a),{}));
  assert.equal(states.won,61);assert.equal(states.lost,75);assert.equal(states.unavailable||0,0);assert(states.upcoming>0);

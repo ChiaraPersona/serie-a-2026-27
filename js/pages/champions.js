@@ -548,7 +548,7 @@ export function createPage(deps){
     // Le Letture MD3 esistono nel calendario e vengono gestite da render()
     // anche se non sono presenti negli archivi pilot MD1/MD2.
     const sharedScenarios=await load('../generated/champions-shared-scenarios.json');
-    const pilotByFixture=new Map([...pilot.fixtures,...md2Summary.fixtures,...sharedScenarios.fixtures.filter(p=>data.fixtures.some(f=>f.id===p.fixtureId&&f.status==='scheduled'))].map(fixture=>[fixture.fixtureId,fixture]));
+    const pilotByFixture=new Map([...pilot.fixtures,...md2Summary.fixtures,...sharedScenarios.fixtures.filter(p=>data.fixtures.some(f=>f.id===p.fixtureId&&(f.status==='scheduled'||f.matchday===4&&f.status==='finished')))].map(fixture=>[fixture.fixtureId,fixture]));
     for(const fixture of data.fixtures){
       if(fixture.matchday===3)pilotByFixture.set(fixture.id,{fixtureId:fixture.id});
     }
