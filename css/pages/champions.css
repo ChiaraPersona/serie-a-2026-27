@@ -74,6 +74,26 @@ body[data-page="champions"],body[data-reading-detail-theme="champions"],body[dat
     radial-gradient(ellipse at 0% 55%,#102747 0,transparent 40rem);
 }
 @media(max-width:600px){:root{--ds-page-gutter:16px}}
+/* team-match-history.css: original cascade position */
+.team-match-history{min-width:0;max-width:100%;margin:24px 0;padding:20px;border:1px solid #dbe2e8;border-radius:12px;background:#fff;color:#17283b}
+.team-match-history h3{margin:0 0 8px;font-size:20px}
+.team-match-history p{font-size:13px;line-height:1.5;color:#526174}
+.team-history-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+.team-history-scroll table{border-collapse:collapse;width:100%;min-width:980px;font-size:13px}
+.team-history-scroll th,.team-history-scroll td{padding:10px;text-align:left;border-bottom:1px solid #e1e7ed;white-space:nowrap}
+.team-history-scroll thead th{background:#eff3f7;font-weight:700}
+.team-history-scroll:focus-visible{outline:2px solid #174fa5;outline-offset:3px}
+.reading-competition-context{margin-top:24px;padding-top:20px;border-top:1px solid #dbe2e8;min-width:0}
+.reading-competition-context p{font-size:13px;line-height:1.6;color:#526174}
+.competition-context-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.competition-context-grid article{min-width:0;padding:16px;background:#f3f6f9;border-radius:10px}
+.competition-context-grid dl{margin:10px 0}
+.competition-context-grid dl>div{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid #dbe2e8;font-size:13px}
+.competition-context-grid dd{margin:0;text-align:right;white-space:nowrap}
+.competition-context-grid h5{font-size:14px;margin:18px 0 6px}
+@media(max-width:600px){.competition-context-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.team-match-history{padding:12px;margin:16px 0}
+.team-match-history h3{font-size:18px}}
 /* base.css: original cascade position */
 :root{--bg:#07110f;--surface:#101b18;--surface2:#162521;--line:#284039;--text:#f4f7f5;--muted:#9db0a9;--accent:#27d17f;--gold:#f2c14e;--danger:#ff6b6b;--max:var(--ds-content-max);--page-gutter:24px;--container-width:min(var(--max),calc(100% - 2 * var(--page-gutter)));color-scheme:dark;font-family:Inter,Segoe UI,Arial,sans-serif}
 *{box-sizing:border-box}

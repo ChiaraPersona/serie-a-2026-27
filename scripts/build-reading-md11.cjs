@@ -64,6 +64,7 @@ for(const fixture of round){
  },internalSources:[{label:lineups.provider,url:lineups.sourceUrl,rawSnapshot:lineups.rawSnapshot,retrievedAt:lineups.importedAt},...fixture.sources.filter(s=>s.sourceType==='aia-figc-designations')]};
  write(`data/sources/readings/${fixture.id}.json`,source);
 }
+require('./build-reading-competition-context.cjs').build(11);
 execFileSync(process.execPath,['scripts/build-readings.js','--matchday','11'],{cwd:root,stdio:'inherit'});
 write('reports/md11-reading-refresh/data-audit.json',{generatedAt:candidate.generatedAt,coverage:lineups.coverage,conflicts,unresolved,oddsRetrievedAt:odds.retrievedAt,marketTotals:marketCatalog.totals,fixtures:candidate.predictions.map(p=>({matchId:p.matchId,dataCutoff:p.futureDataDiagnostics?.dataCutoff,lineupResolved:p.dataQuality.lineupResolved,outfieldPlayersModeled:p.dataQuality.outfieldPlayersModeled,teamVolumes:p.teamProjections.map(t=>({teamId:t.teamId,shots:!!t.shotsTotal,sot:!!t.shotsOnTarget,fouls:!!t.fouls,cards:!!t.cards,corners:!!t.corners})),missing:p.dataQuality.missing,playerMarkets:p.playerMarkets}))});
 console.log('MD11: aggiornati solo previsioni, catalogo Lettura e diagnostica della giornata.');

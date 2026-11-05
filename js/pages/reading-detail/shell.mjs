@@ -6,6 +6,7 @@ import {installPeople} from './people.mjs?v=20261025-player-history';
 import {installTacticsHistory} from './tactics-history.mjs?v=20261104-tactical-profiles-v3';
 import {loadHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
 import {mountRefereeHistory} from './referee-history.mjs?v=20261104-tactical-profiles-v3';
+import {teamMatchHistoryMarkup} from '../../components/team-match-history.mjs?v=20261105';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
   ['scenario','Scenario','01','M4 16l5-5 4 3 7-10'],
@@ -127,6 +128,12 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     undo.push(installScenario(model,groups.get('scenario').lastElementChild));
     undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));
     undo.push(installTacticsHistory(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild]))));
+    if(model.competition==='serie-a'){
+      const history=await readArtifact('data/generated/serie-a-team-history.json');
+      const node=document.createElement('div');
+      node.innerHTML=[model.home,model.away].map(team=>teamMatchHistoryMarkup(history,team.id,{name:team.name,before:model.fixture.date})).join('');
+      groups.get('storico').lastElementChild.append(node);undo.push(()=>node.remove());
+    }
     if(options.extend){root.replaceChildren(shell);document.body.dataset.readingDetailTheme=model.theme;await options.extend({shell,groups,evidence});}
     // An unavailable informational archive must not prevent the existing reading from mounting.
     try{undo.push(mountRefereeHistory(model,groups.get('disciplina').lastElementChild,refereeHistory,[...(evidence.directory?.teams||[]),...refereeTeams]));}catch(error){console.warn('Storico arbitrale non disponibile',error);}

@@ -9,6 +9,7 @@
   const { renderLineupField } = await import(`${base}js/components/lineup-field.mjs?v=20261022-assets-v1`);
   const {shirtNumberAt}=await import(`${base}js/pages/reading-detail/shirt-numbers.mjs?v=20261022-assets-v1`);
   const {imageSource}=await import(`${base}js/core/image-source.mjs?v=20261022-assets-v1`);
+  const {teamMatchHistoryMarkup}=await import(`${base}js/components/team-match-history.mjs?v=20261105`);
   let numbering,officialNumbers,probableNumbers;
   const numberFor=(team,lineup,name)=>{
     const date=lineup.status==='official'?numberingMatches.find(m=>m.id===lineup.matchId)?.date:lineup.source?.retrievedAt;
@@ -482,6 +483,8 @@ ${fullSeasonRoster(team, combinedPlayerStats)}
       ]);
       numbering=numberData;officialNumbers=officialData;probableNumbers=probableData;numberingMatches=matches;
       teamPage(team, objectiveDataset, calculateStandings(teams, matches), teams, matches, teamStyleProfiles);
+      const history=await load('data/generated/serie-a-team-history.json');
+      root.querySelector('[data-editorial-section="statistics"]').insertAdjacentHTML('afterend',teamMatchHistoryMarkup(history,team.id,{name:team.name}));
     } catch (error) {
       root.innerHTML = `<div class="data-warning"><strong>Errore di caricamento</strong><p>${esc(error.message)}. Apri il sito tramite server locale, non con file://.</p></div>`;
     }

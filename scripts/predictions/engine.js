@@ -2115,6 +2115,7 @@ function predictMatch(input) {
     engineVersion: ENGINE_VERSION,
     playerMarketModelVersion: PLAYER_MARKET_MODEL_VERSION,
     teamMatchupProfileVersion: 2,
+    ...(input.competitionContext?{competitionContext:input.competitionContext}:{}),
     probabilities: {
       final: probabilityObject(final),
       marketNoMargin: market ? probabilityObject(market.probabilities) : null,

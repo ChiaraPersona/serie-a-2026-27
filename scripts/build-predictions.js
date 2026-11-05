@@ -11,6 +11,8 @@ const { buildProfiles } = require("./build-team-matchup-profiles");
 const { compareCanonicalMatches } = require("./predictions/future-readiness");
 
 const root = path.resolve(__dirname, "..");
+const {buildCompetitionContext}=require('./predictions/competition-context.cjs');
+const competitionHistory=require('./build-serie-a-team-history.cjs').build();
 const read = relative => storageReadJson(path.join(root, relative));
 const matches = read("data/normalized/matches.json");
 const readings = read("data/normalized/readings.json");
@@ -323,6 +325,7 @@ const generatedPredictions = targetMatches.map(match => {
   const awayTeam = teamForMatch(teamById.get(match.awayTeam), match);
   const predictionGeneratedAt = generatedAt;
   const prediction = predictMatch({
+    competitionContext:buildCompetitionContext(competitionHistory,match),
     match,
     reading: readingByMatch.get(match.id),
     homeVenue: homeByTeam.get(match.homeTeam),

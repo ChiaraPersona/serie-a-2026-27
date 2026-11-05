@@ -7,6 +7,7 @@ const read=f=>JSON.parse(fs.readFileSync(path.join(root,f),'utf8'));
 const write=(f,data)=>{const file=path.join(root,'data/generated/readings',f),text=JSON.stringify(data)+'\n';fs.mkdirSync(path.dirname(file),{recursive:true});if(!fs.existsSync(file)||fs.readFileSync(file,'utf8')!==text)fs.writeFileSync(file,text);};
 const pick=(o,keys)=>Object.fromEntries(keys.filter(k=>k in o).map(k=>[k,o[k]]));
 function build({matchday=null}={}){
+ const teamHistory=require('./build-serie-a-team-history.cjs').build();
  const matches=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'),teams=read('data/normalized/teams.json');
  const spatialFile='data/normalized/serie-a-shot-events-2026-27.json';
  const spatial=fs.existsSync(path.join(root,spatialFile))?read(spatialFile):null;
@@ -27,6 +28,7 @@ function build({matchday=null}={}){
   const forecastDataset=source?{matchday:day,marketCatalog:{matches:(catalog?.matches||[]).filter(m=>m.matchId===id).map(m=>({matchId:m.matchId,selections:m.selections.filter(l=>l.suggestionAnalysis?.suggested===true)}))}}:null;
   write(`catalogs/${id}.json`,{forecastDataset,finishedIds});
   const artifacts={};
+  artifacts['data/generated/serie-a-team-history.json']={...teamHistory,teams:Object.fromEntries(ids.map(teamId=>[teamId,(teamHistory.teams[teamId]||[]).filter(row=>!match.date||row.date.slice(0,10)<match.date.slice(0,10)).slice(0,10)]))};
   if(spatial)artifacts['data/generated/reading-spatial-matchup.json']=spatialMatchup(match,matches,spatial,technical);
   const add=(f,project=x=>x)=>{const d=artifact(f);if(d!==null)artifacts[f]=project(d)};
   for(const team of ids)add(`data/teams/${team}.json`,d=>pick(d,['id','coach','squad']));
