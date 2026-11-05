@@ -4,6 +4,53 @@ Confronto eseguito il 4 novembre 2026 sulle nove partite MD4 concluse il 3 novem
 
 ## Risultato principale
 
+### Simulazione delle proposte operative, comprese le doppie chance
+
+Applicando alle probabilità ricostruite le regole attuali di proposta, i contratti prepartita archiviati e la quota minima 1,08, il risultato rimane sette scelte corrette su nove, contro cinque delle proposte precedenti. Non sono ricalcolati altri mercati o liquidazioni.
+
+| Partita | Risultato | Nuova proposta | Quota archiviata | Esito |
+| --- | --- | --- | ---: | --- |
+| Shakhtar–Sporting | 0–1 | 1X | 1,80 | Errata |
+| Galatasaray–Stuttgart | 2–0 | 1X | 1,38 | Corretta |
+| Atlético–Bayern | 0–2 | X2 | 1,44 | Corretta |
+| Barcelona–Aston Villa | 3–0 | 1 | 1,24 | Corretta |
+| Feyenoord–Inter | 0–3 | X2 | 1,25 | Corretta |
+| Bodø/Glimt–Lille | 0–0 | 1 | 1,80 | Errata |
+| LASK–Slovan | 4–0 | 1 | 1,38 | Corretta |
+| Manchester United–Roma | 3–2 | 1X | 1,45 | Corretta |
+| Villarreal–PSG | 0–6 | 2 | 1,57 | Corretta |
+
+Per Barcelona–Villa la prima opzione sarebbe 1X, ma la quota 1,05 è inferiore al minimo: viene usata l'alternativa 1 già quotata a 1,24. Tutte le quote riportate sono snapshot del 2 novembre antecedenti al kickoff, non quotazioni attuali.
+
+Il catalogo dei contratti è recuperato dai commit precedenti al kickoff di ciascuna gara, senza usare le eventuali modifiche successive. Dettagli in `output/champions-european-rating-research/yesterday-operational-picks-2026-11-03.json`, riproducibili con `node scripts/research/yesterday-european-operational-picks.cjs`. Le probabilità del rating rimangono una ricostruzione effettuata dopo i risultati con gli input delle sole date precedenti; non si tratta di previsioni originali pubblicate ieri né di rendimento certificato.
+
+### Pronostici individuali e totale delle proposte
+
+Il rating europeo applicato riguarda esiti e doppie chance; tiri, SOT, minuti, soglie e contratti individuali restano invariati. Sono state controllate le selezioni individuali nei cataloghi Git precedenti al kickoff: gli stessi 66 contratti DUO compaiono ancora nell'archivio corrente, con ID esatti.
+
+| Partita | DUO corretti | DUO errati |
+| --- | ---: | ---: |
+| Shakhtar–Sporting | 2 | 4 |
+| Galatasaray–Stuttgart | 5 | 6 |
+| Atlético–Bayern | 3 | 4 |
+| Barcelona–Aston Villa | 6 | 1 |
+| Feyenoord–Inter | 2 | 5 |
+| Bodø/Glimt–Lille | 0 | 7 |
+| LASK–Slovan | 4 | 0 |
+| Manchester United–Roma | 5 | 4 |
+| Villarreal–PSG | 5 | 3 |
+| Totale | 32 | 34 |
+
+Per famiglia: tiri 18 corretti e 16 errati; SOT, con pali/traverse quando compresi nel contratto, 14 corretti e 18 errati. Questi conteggi non cambiano nel controfattuale europeo. Sono verifiche statistiche, non liquidazioni certificate dal bookmaker.
+
+Ogni record è riconciliato per selection ID, provider selection ID, player ID canonico, soglia e direzione. Sono sommati giocatore e suo sostituto documentato. Per i contratti SOT+pali/traverse, un totale SOT già superiore alla soglia prova il successo anche se il dato woodwork manca; per stabilire un insuccesso servono invece i woodwork osservati di tutti i partecipanti. Tutti i 66 esiti registrati sono supportati dai dati del contratto, senza casi N/D nell'audit.
+
+L'insieme delle proposte originarie delle nove fixture comprende 136 contratti, con 61 corretti e 75 errati. Sostituendo soltanto le nove proposte di esito con quelle europee simulate, il totale diventerebbe 63 corretti e 73 errati; individuali e altri mercati rimarrebbero quelli originali. Il 7/9 riguarda dunque le sole proposte di esito/doppia chance.
+
+Riproduzione: `node scripts/research/yesterday-individual-contracts.cjs`. Evidenza completa in `output/champions-european-rating-research/yesterday-individual-contracts-2026-11-03.json`; il comando verifica anche la conservazione degli input operativi. Nessuna sostituzione retroattiva o modifica ai risultati originali.
+
+### Dettaglio dei soli esiti prevalenti
+
 Due esiti prevalenti errati passano dalla parte corretta: LASK–Slovan e Manchester United–Roma. Il conteggio delle vittorie dell'esito con probabilità maggiore passa da 5/9 a 7/9, senza nuovi errori di esito prevalente su queste nove fixture. Questo conteggio non misura il rendimento di una schedina o la bontà della quota.
 
 | Partita e risultato | Scenario pubblicato: probabilità della vittoria poi avvenuta | Rating europeo: stessa probabilità | Effetto |

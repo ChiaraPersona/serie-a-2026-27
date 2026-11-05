@@ -1,6 +1,11 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'output/champions-md04-results');
+const catalog=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/schedina-champions-md04.json')));
+const results=JSON.parse(fs.readFileSync(path.join(root,'data/sources/champions-results-md04-2026-27.json')));
+assert.equal(results.fixtures.length,18);
+const expected={};
+for(const match of catalog.marketCatalog.matches)for(const id of match.suggestions){const record=results.fixtures.find(f=>f.fixtureId===match.matchId).verifiedSelections.find(r=>r.selectionId===id);assert(record);expected[record.settlement.status]=(expected[record.settlement.status]||0)+1;}
 const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp'};
 const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(root+path.sep))return res.writeHead(403).end();fs.readFile(file,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':types[path.extname(file)]||'application/octet-stream'});res.end(e?'Missing':b)})});
 (async()=>{fs.mkdirSync(out,{recursive:true});await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;const report=[];
@@ -12,14 +17,15 @@ for(const width of [1440,390]){
  const archiveBack=page.locator('[data-champions-matchday="4"] .team-flip-back');await archiveBack.waitFor({state:'attached'});
  const metrics=await archiveBack.locator('.betting-archive-performance strong').allTextContents();assert.equal(metrics.length,2);assert(metrics.every(v=>v.includes('%')&&!v.includes('—')),'CL4 back must show verified Successo and Guadagno');
  await page.goto(`http://127.0.0.1:${server.address().port}/champions-league.html`);
- await page.waitForSelector('a[href*="match=ucl-2026-27-md04-10"]');
+ await page.locator('[data-champions-day="4"]').click();
+ await page.waitForSelector('a[href*="match=ucl-2026-27-md04-10"]',{state:'attached'});
  for(let i=1;i<=9;i++)assert(await page.locator(`a[href*="match=ucl-2026-27-md04-${String(i).padStart(2,'0')}"]`).count()>0,`Finished MD4 reading ${i} must remain clickable`);
  await page.goto(`http://127.0.0.1:${server.address().port}/schedina.html?competizione=champions&giornata=4`);
  await page.waitForSelector('[data-champions-workspace="4"]');await page.locator('[data-match-open-all]').first().click();
  assert.equal(await page.locator('[data-audit-economics]').count(),0,'Champions pages omit the partial performance panel');
  const rows=page.locator('.betting-match-body > .betting-market-list [data-selection-row]');
  const states=await rows.evaluateAll(rows=>rows.reduce((a,r)=>(a[r.dataset.settlement||'upcoming']=(a[r.dataset.settlement||'upcoming']||0)+1,a),{}));
- assert.equal(states.won,61);assert.equal(states.lost,75);assert.equal(states.unavailable||0,0);assert(states.upcoming>0);
+ assert.deepEqual(states,expected);assert.equal(states.upcoming||0,0);
  assert.equal(await rows.locator('[data-personal-pick]').count(),0);
  const colors=await rows.evaluateAll(rows=>Object.fromEntries(['won','lost'].map(state=>{const row=rows.find(r=>r.dataset.settlement===state);return [state,getComputedStyle(row).background]})));
  assert.notEqual(colors.won,colors.lost);
@@ -32,6 +38,12 @@ for(const width of [1440,390]){
  assert.equal(await page.locator('[data-rd-pick]:enabled').count(),0);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);assert.deepEqual(errors,[]);
  await page.locator('[data-shared-forecast-id][data-outcome]').first().scrollIntoViewIfNeeded();
  await page.screenshot({path:path.join(out,`reading-${width}.png`)});
+ await page.goto(`http://127.0.0.1:${server.address().port}/champions-league.html?match=ucl-2026-27-md04-10`);
+ await page.waitForSelector('[data-shared-forecast-id][data-outcome]',{state:'attached'});
+ assert.equal(await page.locator('[data-rd-pick]:enabled').count(),0);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
+ assert.deepEqual(errors,[]);
+ await page.screenshot({path:path.join(out,`reading-wednesday-${width}.png`)});
  report.push({width,states,colors,reading,errors});await page.close();
 }
 fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));
