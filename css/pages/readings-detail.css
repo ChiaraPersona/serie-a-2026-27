@@ -6230,6 +6230,28 @@ body[data-reading-detail-theme="champions"] .rd-compact-forecast-table [data-pub
 .rd-shell .rd-compact-forecast-table tr[data-outcome="lost"] td{background:color-mix(in srgb,#c9323a 18%,var(--ds-color-surface))}
 .rd-shell .rd-compact-forecast-table tr:is([data-outcome="pending"],[data-outcome="unavailable"],[data-outcome="void"]) td{background:var(--ds-color-surface-soft)}
 .rd-shell .rd-compact-forecast-table .rd-outcome{display:block;font-size:11px}
+.rd-shell .rd-tactical-column[data-tactical-team]{display:flex;flex-direction:column;grid-row:auto;gap:12px}
+.rd-shell .rd-tactical-column[data-tactical-team]>dl,.rd-shell .rd-tactical-column[data-tactical-team]>details{flex:none}
 body[data-reading-detail-theme="champions"] .rd-shell .rd-diverging-row[data-statistic="fouls"]{--rd-home:var(--rd-accent)}
 body[data-reading-detail-theme="champions"] .rf-history tbody tr:hover,
 body[data-reading-detail-theme="champions"] .rf-history tbody tr:hover td{background:transparent;color:inherit}
+.rd-shell .rd-tactical-column[data-tactical-team]{gap:16px;padding:20px;border:1px solid var(--rd-line);border-radius:16px;background:var(--rd-soft);align-self:start}
+.rd-shell .rd-tactical-column[data-tactical-team]>p{margin:0}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-team h3{font-size:22px;line-height:1.25}
+.rd-shell .rd-tactical-column[data-tactical-team]>.rd-footnote:not(.rd-tactical-baseline){align-self:flex-start;padding:5px 10px;border:1px solid var(--rd-line);border-radius:7px;font-size:11px;line-height:1.5}
+.rd-shell .rd-tactical-column[data-tactical-team]>.rd-tactical-reading{font-size:13px;line-height:1.65;color:var(--rd-muted)}
+.rd-shell .rd-tactical-column[data-tactical-team]>.rd-tactical-baseline{border-top:1px solid var(--rd-line);padding-top:14px;font-size:10px;line-height:1.6}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px;row-gap:0}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics>div{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:5px 6px;padding:11px 0;min-width:0}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics dt{grid-column:1 / -1;font-size:11px;line-height:1.4;overflow-wrap:anywhere}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics dd{font-size:22px;line-height:1.25;letter-spacing:-.025em}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics small{font-size:10px;line-height:1.4;color:var(--rd-muted);white-space:nowrap}
+.rd-shell .rd-tactical-column[data-tactical-team]>.rd-disclosure{margin:0;padding:0 0 12px}
+.rd-shell .rd-tactical-column[data-tactical-team]>.rd-disclosure>summary{padding:10px 0;min-height:24px;font-size:11px;line-height:1.6;overflow-wrap:anywhere}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-directions{padding-top:4px}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-directions h4{margin:0 0 14px;font-size:11px;line-height:1.5;letter-spacing:.02em}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-channels{margin:0;gap:10px}
+@media(max-width:600px){.rd-shell .rd-tactical-column[data-tactical-team]{padding:16px;gap:14px}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-team h3{font-size:20px}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics{column-gap:16px}
+.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics dd{font-size:21px}}

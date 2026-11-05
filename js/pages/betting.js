@@ -421,7 +421,7 @@ export function createPage(deps){
   async function buildArchiveMarkup(){
     compactForecasts=true;
     recordedOutcomes=(await load("card-settlement-records.json")).records;
-    const [champions,championsMd02Operational,md1,md2,md3,md4,md5,md6,md7,md8,md9,md10,matches,audit]=await Promise.all([load("schedina-champions-md01.json"),load("schedina-champions-md02.json"),load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("schedina-md04.json"),load("schedina-md05.json"),load("schedina-md06.json"),load("schedina-md07.json"),load("schedina-md08.json"),load("schedina-md09.json"),load("schedina-md10.json"),load("matches.json"),load("champions-md02-audit-display.json")]);
+    const [champions,championsMd02Operational,md1,md2,md3,md4,md5,md6,md7,md8,md9,md10,md11,matches,audit]=await Promise.all([load("schedina-champions-md01.json"),load("schedina-champions-md02.json"),load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("schedina-md04.json"),load("schedina-md05.json"),load("schedina-md06.json"),load("schedina-md07.json"),load("schedina-md08.json"),load("schedina-md09.json"),load("schedina-md10.json"),load("schedina-md11.json"),load("matches.json"),load("champions-md02-audit-display.json")]);
     const championsMd02=championsAuditDisplay(championsMd02Operational,audit);
     const matchById=new Map((Array.isArray(matches)?matches:matches.matches||[]).map(match=>[match.id,match]));
     const {settleMd3}=await import("./champions-md3-approved.mjs?v=20261022-assets-v1");
@@ -429,7 +429,7 @@ export function createPage(deps){
     const championsMd03={...settleMd3({...md3Workspace.source,slips:[{legs:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).map(leg=>({...leg,fixtureId:leg.matchId}))}]},{fixtures:md3Workspace.fixtures}),availableForecasts:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).length};
     const championsCalendar=await load('champions-league-2026-27.json');
     const firstDate=fixtures=>fixtures.map(f=>f.date).filter(Boolean).sort()[0]||'';
-    const cards=[md1,md2,md3,md4,md5,md6,md7,md8,md9,md10].map((data,index)=>{
+    const cards=[md1,md2,md3,md4,md5,md6,md7,md8,md9,md10,md11].map((data,index)=>{
       const number=index+1;
       return {date:firstDate([...matchById.values()].filter(m=>m.matchday===number)),html:archiveCard(data,number,matchById)};
     });
@@ -458,7 +458,7 @@ export function createPage(deps){
       mountChampionsWorkspace(workspace);
       return;
     }
-    if(["1","2","3","4","5","6","7","8","9","10"].includes(matchday)){
+    if(["1","2","3","4","5","6","7","8","9","10","11"].includes(matchday)){
       const number=Number(matchday),file=number===1?"schedina.json":`schedina-md${String(number).padStart(2,"0")}.json`;
       const [data,matches,outcomes]=await Promise.all([load(file),load("matches.json"),load("card-settlement-records.json")]);
       recordedOutcomes=outcomes.records;

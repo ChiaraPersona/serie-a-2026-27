@@ -1,0 +1,18 @@
+const fs=require('fs'),zlib=require('zlib'),assert=require('assert/strict');
+const {readJsonFile:read,writeSisalDataset:write}=require('../../scripts/sisal/dataset-store.cjs');
+const file='data/normalized/odds/sisal/serie-a.json';
+const before=JSON.parse(zlib.gunzipSync(fs.readFileSync('output/sisal-md11-2026-11-05/before.json.gz')));
+const current=read(file);
+const ids=new Set(read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'&&m.matchday===11).map(m=>m.id));
+const updated=current.events.filter(e=>ids.has(e.canonicalMatchId));
+assert(updated.length>0,'Nessuna quota MD11 acquisita');
+const updatedIds=new Set(updated.map(e=>e.canonicalMatchId));
+const retained=before.events.filter(e=>!updatedIds.has(e.canonicalMatchId));
+const events=[...updated,...retained];
+const markets=events.flatMap(e=>e.markets);
+const output={...current,events,rawFiles:[...new Set(events.map(e=>e.rawFile||before.rawFile).filter(Boolean))],summary:{events:events.length,matchEvents:events.filter(e=>e.eventType==='MATCH').length,antepostEvents:events.filter(e=>e.eventType==='ANTEPOST').length,matchedEvents:events.filter(e=>e.eventType==='MATCH'&&e.canonicalMatchId).length,unmatchedEvents:events.filter(e=>e.eventType==='MATCH'&&!e.canonicalMatchId).length,markets:markets.length,playerMarkets:markets.filter(m=>m.marketScope==='player').length,selections:markets.reduce((s,m)=>s+m.selections.length,0)}};
+write(file,output);
+assert.deepEqual(read(file).events.filter(e=>!updatedIds.has(e.canonicalMatchId)),retained);
+const report={retrievedAt:current.retrievedAt,fixtures:updated.map(e=>({matchId:e.canonicalMatchId,markets:e.markets.length,quotes:e.markets.reduce((s,m)=>s+m.selections.length,0),playerMarkets:e.markets.filter(m=>m.marketScope==='player').length})),otherEventsPreserved:retained.length};
+fs.writeFileSync('output/sisal-md11-2026-11-05/report.json',JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify(report));

@@ -64,7 +64,7 @@ if (refreshOdds) {
 run("scripts/validate-sisal-odds.js");
 
 if (!validateOnly) {
-  if (matchday === 9 || matchday === 10) {
+  if (matchday === 9 || matchday === 10 || matchday === 11) {
     const code = String(matchday).padStart(2, "0");
     run(`scripts/build-reading-md${code}.cjs`);
     run("scripts/generate-mycombo-md01.js", ["--matchday", String(matchday)]);
