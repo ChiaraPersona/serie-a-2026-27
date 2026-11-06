@@ -20,16 +20,27 @@ export function scenarioMarkup(model){
   const formatted=values.map(value=>['cards','fouls'].includes(key)?(finite(value)?value.toLocaleString('it-IT',{minimumFractionDigits:1,maximumFractionDigits:1}):'—'):number(value,2));
   return `<article class="rd-diverging-row" data-statistic="${key}" aria-label="${esc(label)}${key==='cards'?' (ammonizioni)':''}: ${esc(sides[0].name)} ${formatted[0]}; ${esc(sides[1].name)} ${formatted[1]}"><div class="rd-diverging-top"><strong>${label}</strong>${formatted.map((value,i)=>`<b class="is-${i?'away':'home'}">${value}</b>`).join('')}</div><div class="rd-diverging-track" aria-hidden="true">${values.map((value,i)=>`<span class="rd-diverging-half is-${i?'away':'home'}" data-available="${finite(value)}"><em style="width:${widths[i]}%"></em></span>`).join('')}</div></article>`;
  }).join('');
- const chart=`<div class="rd-diverging" role="group" aria-label="Confronto delle previsioni, scala condivisa per ciascun indicatore"><div class="rd-diverging-teams">${sides.map((side,i)=>`<span class="is-${i?'away':'home'}">${esc(side.name)}</span>`).join('')}</div><div class="rd-diverging-rows">${comparisons}</div></div>`;
+ const xgot=model.prediction?.expectedGoals?.components?.xgot;
+ const xgotNote=xgot?.applied?'<p class="rd-footnote" data-xgot-model>xGOT attivo nei gol attesi · contributo sperimentale 10%. Validazione non conclusiva.</p>':'';
+ const chart=`${xgotNote}<div class="rd-diverging" role="group" aria-label="Confronto delle previsioni, scala condivisa per ciascun indicatore"><div class="rd-diverging-teams">${sides.map((side,i)=>`<span class="is-${i?'away':'home'}">${esc(side.name)}</span>`).join('')}</div><div class="rd-diverging-rows">${comparisons}</div></div>`;
  const scores=model.prediction?.scoreForecast?.display||model.prediction?.exactScores||[];
  const scoreBlock=scores.length?`<div class="rd-score-grid">${scores.slice(0,3).map((s,i)=>`<article><small>${i?'Alternativa':'Risultato previsto'}</small><strong>${esc(s.score)}</strong><span>${pct(s.probabilityPct)} · ${esc(s.label||'')}</span></article>`).join('')}</div>`:missing('Risultati esatti non disponibili.');
  const european=model.prediction?.resultModel?.type==='EUROPEAN_RATING_RESULT';
- const resultBlock=european?`<div data-european-result><p><strong>Probabilità 1X2 · rating europeo</strong> · Stima preliminare</p><div class="rd-score-grid">${[['1','home'],['X','draw'],['2','away']].map(([label,key])=>`<article><small>${label}</small><strong data-result-outcome="${label}">${pct(model.prediction.probabilities?.[key])}</strong></article>`).join('')}</div><p>Gol attesi e volumi sono stime separate. ${model.prediction.resultModel.status==='INSUFFICIENT_DATA'?'Storico europeo insufficiente: esito N/D.':'Validazione del modello da completare.'}</p></div>`:'';
+ const resultBlock=european?`<div data-european-result><p><strong>Probabilità 1X2 · rating europeo${model.prediction.resultModel.xgot?.applied?' + xGOT sperimentale':''}</strong> · Stima preliminare</p><div class="rd-score-grid">${[['1','home'],['X','draw'],['2','away']].map(([label,key])=>`<article><small>${label}</small><strong data-result-outcome="${label}">${pct(model.prediction.probabilities?.[key])}</strong></article>`).join('')}</div><p>Gol attesi e volumi sono stime separate. ${model.prediction.resultModel.status==='INSUFFICIENT_DATA'?'Storico europeo insufficiente: esito N/D.':'Validazione del modello da completare.'}</p></div>`:'';
  const confidence=model.prediction?.confidence?.value??model.prediction?.confidenceScore,surprise=model.prediction?.surprise?.value;
  return `${resultBlock}<div class="rd-context-strip"><span>Confidenza <b>${number(confidence)}${finite(confidence)?'/100':''}</b></span><span>Fattore sorpresa <b>${number(surprise)}${finite(surprise)?'/100':''}</b></span>${model.competition!=='champions'&&(model.quality?.label||model.quality?.status)?`<span>${esc(model.quality.label||model.quality.status)}</span>`:''}</div>${chart}${scoreBlock}`;
 }
 export function installScenario(model,group){
  const original=[...group.children];const content=document.createElement('div');content.className='rd-scenario';content.innerHTML=scenarioMarkup(model);
  group.replaceChildren(content);
+ import('../../components/xgot-statistics.mjs?v=20261106-xgot').then(async({loadXgotStatistics})=>{
+  const data=await loadXgotStatistics();if(!content.isConnected)return;
+  const year=Number(model.fixture?.date?.slice(0,4))-(Number(model.fixture?.date?.slice(5,7))<7?1:0),start=`${year}-07-01`;
+  const samples=[model.home,model.away].map(side=>(data?.teamMatches?.[side.id]||[]).filter(r=>r.date>=start&&r.date<model.fixture.date));
+  const values=samples.map(rows=>rows.length?rows.reduce((n,r)=>n+r.xgot,0)/rows.length:null);
+  const node=document.createElement('div');node.dataset.xgotObserved='';node.className='rd-player-kpis';
+  node.innerHTML=`<h4>xGOT osservato / gara · campione corrente</h4>${samples.map((rows,i)=>`<div><dt>${esc([model.home,model.away][i].name)}</dt><dd>${number(values[i],2)}</dd><small>${rows.length} gare coperte prima della partita</small></div>`).join('')}`;
+  content.append(node);
+ });
  return ()=>group.replaceChildren(...original);
 }

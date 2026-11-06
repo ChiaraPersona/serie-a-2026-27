@@ -1,6 +1,8 @@
 # xGOT: riconciliazione e confronto fuori campione
 
-Verifica del 6 novembre 2026. Esito: **uso operativo non approvato**.
+Verifica del 6 novembre 2026. Esito statistico: **uso operativo non approvato**.
+Successiva attivazione sperimentale richiesta esplicitamente dall'utente:
+[stato operativo](xgot-operational.md). L'esito del confronto rimane invariato.
 Lo storico è ora collegato agli archivi storici di fixture e squadre. La
 sperimentazione non dimostra un miglioramento abbastanza solido da attivare
 xGOT nelle previsioni. Nessuna formula o peso del motore operativo è modificato.
@@ -43,10 +45,13 @@ tutti presenze con minuti o xGOT disponibili. Non si inventano nuovi ID per
 completare la copertura. Per i giocatori assenti dalle attuali anagrafiche resta
 disponibile l'identità esterna FotMob, con stato canonico `unresolved`.
 
-Sono inoltre isolati **1.327 valori individuali pubblicati** discordanti rispetto
+Sono inoltre isolati **44 valori individuali offensivi pubblicati** discordanti rispetto
 alla somma degli eventi del giocatore. La relativa xGOT utilizzabile resta null;
 questo non comporta una correzione del valore originale. Nessuno zero viene
 dedotto per giocatori senza eventi e senza valore esplicito pubblicato.
+Il precedente conteggio di 1.327 comprendeva valori di xGOT affrontato dai
+portieri, erroneamente trattati dall'estrattore come xGOT offensivo. La correzione
+non modifica nessuna delle previsioni del confronto v1, verificate identiche.
 Le restanti lacune delle identità individuali restano visibili: il punto 2 non
 certifica la completezza di ogni giocatore storico.
 
@@ -138,3 +143,7 @@ Evidenze: `data/normalized/xgot-reconciled-history.json`,
 `data/analysis/xgot/reconciliation.json`,
 `data/analysis/xgot/validation/report.json`,
 `data/analysis/xgot/validation/held-out-predictions.json`.
+
+Sviluppi successivi, nuova diagnosi, storico esteso e catture prospettiche sono
+documentati in [xgot-v2-progress.md](xgot-v2-progress.md). Il confronto v1 rimane
+separato e non viene presentato come una nuova verifica indipendente.

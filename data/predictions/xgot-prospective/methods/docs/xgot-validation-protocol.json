@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "status": "research-only-no-automatic-promotion",
+  "developmentSeason": "2024-25",
+  "heldOutTestSeason": "2025-26",
+  "historyCutoff": "Strictly earlier UTC calendar date; embargo same-day fixtures",
+  "minimumTeamMatches": 6,
+  "minimumMatchesPerVenue": 2,
+  "historyWindowDays": 550,
+  "candidateWeights": [0, 0.05, 0.1, 0.2, 0.3],
+  "weightSelection": "Lowest 1X2 log loss on development only; ties prefer zero or smaller weight",
+  "xgotPriorMatches": 8,
+  "bootstrapReplicates": 2000,
+  "bootstrapUnit": "UTC calendar week blocks; paired model differences",
+  "researchSuccessGate": {
+    "minimumDevelopmentFixtures": 50,
+    "minimumTestFixtures": 100,
+    "selectedWeightPositive": true,
+    "testPairedLogLoss95CIUpperBelow": 0,
+    "testBrierMustNotWorsen": true,
+    "testECE10MaximumWorsening": 0.01
+  },
+  "productionApprovalRequires": [
+    "Prospective frozen pre-match inputs and predictions",
+    "Full production context replay including lineup and matchup inputs",
+    "Independent validation of provider model versions and historical availability",
+    "Separate validation of every individual or DUO market before any operational use"
+  ]
+}

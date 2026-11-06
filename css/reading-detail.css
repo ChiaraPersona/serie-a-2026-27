@@ -588,3 +588,30 @@ body[data-reading-detail-theme="champions"] .rf-history tbody tr:hover td{backgr
  .rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics{column-gap:16px}
  .rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics dd{font-size:21px}
 }
+/* Serie A tactical cards: independent flow replaces the legacy four-row subgrid. */
+.rd-shell .rd-tactical-comparison:has(.rd-tactical-serie-a){align-items:start;gap:24px}
+.rd-shell .rd-tactical-serie-a{display:flex;flex-direction:column;grid-row:auto;gap:20px;min-width:0;padding:24px;border:1px solid var(--rd-line);border-radius:16px;background:var(--rd-paper,#fff)}
+.rd-shell .rd-tactical-serie-a .rd-tactical-team{padding-bottom:16px;border-bottom:2px solid var(--rd-home)}
+.rd-shell .rd-tactical-serie-a[data-tactical-side="away"] .rd-tactical-team{border-color:var(--rd-away)}
+.rd-shell .rd-tactical-serie-a .rd-tactical-team h3{font-size:26px;line-height:1.2}
+.rd-shell .rd-tactical-serie-a .rd-tactical-current{min-width:0}
+.rd-shell .rd-sample-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.rd-shell .rd-sample-heading h4{margin:0;font-size:14px;font-weight:700}
+.rd-shell .rd-sample-heading span,.rd-shell .rd-sample-dates{color:var(--rd-muted);font-size:11px;line-height:1.6}
+.rd-shell .rd-sample-dates{margin:5px 0 14px}
+.rd-shell .rd-tactical-serie-a .rd-tactical-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 16px;margin:0}
+.rd-shell .rd-tactical-serie-a .rd-tactical-metrics>div{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:5px;min-width:0;padding:14px 0;border-bottom:1px solid var(--rd-line)}
+.rd-shell .rd-tactical-serie-a .rd-tactical-metrics dt{font-size:11px;line-height:1.5;min-height:33px;overflow-wrap:anywhere}
+.rd-shell .rd-tactical-serie-a .rd-tactical-metrics dd{margin:0;font-size:25px;line-height:1.15;font-variant-numeric:tabular-nums}
+.rd-shell .rd-tactical-serie-a .rd-tactical-metrics small{font-size:10px;line-height:1.5;color:var(--rd-muted)}
+.rd-shell .rd-tactical-serie-a .rd-tactical-extra{margin:0;padding:0;border:1px solid var(--rd-line);border-radius:10px;background:var(--rd-soft)}
+.rd-shell .rd-tactical-extra>summary{display:flex;justify-content:space-between;gap:10px;cursor:pointer;padding:14px;font-size:12px;font-weight:600;list-style:none}
+.rd-shell .rd-tactical-extra>summary:after{content:'+';margin-left:auto}
+.rd-shell .rd-tactical-extra[open]>summary:after{content:'−'}
+.rd-shell .rd-tactical-extra>summary span{font-size:11px;color:var(--rd-muted);font-weight:400}
+.rd-shell .rd-tactical-extra>.rd-tactical-current{padding:0 14px 14px}
+.rd-shell .rd-tactical-serie-a .rd-tactical-directions{margin:0;padding-top:4px}
+.rd-shell .rd-tactical-serie-a .rd-tactical-directions h4{margin:0 0 14px;font-size:12px}
+.rd-shell .rd-tactical-serie-a .rd-channels{margin:0;gap:12px}
+@media(max-width:1000px){.rd-shell .rd-tactical-serie-a .rd-tactical-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.rd-shell .rd-tactical-comparison:has(.rd-tactical-serie-a){grid-template-columns:minmax(0,1fr);gap:20px}.rd-shell .rd-tactical-serie-a{padding:18px;gap:18px}.rd-shell .rd-tactical-serie-a+.rd-tactical-serie-a{padding-top:18px}.rd-shell .rd-tactical-serie-a .rd-tactical-team h3{font-size:24px}.rd-shell .rd-tactical-serie-a .rd-tactical-metrics dt{min-height:0}.rd-shell .rd-tactical-serie-a .rd-tactical-metrics dd{font-size:23px}}

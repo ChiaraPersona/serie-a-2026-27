@@ -544,6 +544,10 @@ export function createPage(deps){
       const currentTeam={...requestedTeam,players:currentPlayers,squadAsOf:requestedTeam.rosterVerifiedAt||squads.snapshotDate};
       document.querySelector("#app").innerHTML=`<div class="champions-team-detail">`+championsTeamDetail(currentTeam,profiles.get(requestedTeam.team),histories.get(requestedTeam.team),teamPilot,squads,attackByTeam.get(requestedTeam.team),data,branding)+`</div>`;
       mountChampionsTeamControls();
+      if(typeof document.createElement==='function'){
+        const {loadXgotStatistics,xgotTeamMarkup}=await import('../components/xgot-statistics.mjs?v=20261106-xgot');
+        document.querySelector('.champions-team-detail')?.insertAdjacentHTML('beforeend',xgotTeamMarkup(await loadXgotStatistics(),md3TeamId));
+      }
       return;
     }
     const md2Summary=await load("champions-pilot-predictions-md02-2026-27.json");

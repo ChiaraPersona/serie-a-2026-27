@@ -325,6 +325,8 @@ const generatedPredictions = targetMatches.map(match => {
   const awayTeam = teamForMatch(teamById.get(match.awayTeam), match);
   const predictionGeneratedAt = generatedAt;
   const prediction = predictMatch({
+    xgotContext: require('./predictions/xgot-operational.cjs').contextFor({ homeTeamId: match.homeTeam, awayTeamId: match.awayTeam,
+      date: match.date, generatedAt: predictionGeneratedAt, eligible: match.status === 'scheduled' && require('./predictions/snapshot-core.js').toKickoffUtc(match) > Date.parse(predictionGeneratedAt) }),
     competitionContext:buildCompetitionContext(competitionHistory,match),
     match,
     reading: readingByMatch.get(match.id),
@@ -422,6 +424,8 @@ const generatedPredictions = targetMatches.map(match => {
   return validation ? {
     ...prediction,
     modelValidation: {
+      ...(prediction.expectedGoals.components.xgot ? { xgot: { applied: prediction.expectedGoals.components.xgot.applied,
+        status: prediction.expectedGoals.components.xgot.status, statisticallyValidated: false } } : {}),
       season: backtest.season,
       method: backtest.methodology.type,
       matches: validation.metrics.matches,
@@ -497,6 +501,7 @@ const output = {
   },
   engine: {
     version: ENGINE_VERSION,
+    xgot: read('data/sources/xgot-operational-policy.json'),
     playerMarketModelVersion: PLAYER_MARKET_MODEL_VERSION,
     teamMatchupProfileVersion: teamMatchupProfiles.schemaVersion,
     principle: "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",

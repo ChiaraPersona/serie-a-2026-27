@@ -1,7 +1,9 @@
 # xG sui Tiri in porta (xGOT)
 
-Supporto iniziale: calcoli descrittivi disponibili in `scripts/predictions/xgot.cjs`.
-Nessun collegamento ai motori previsionali, alle selezioni o alle quote.
+Calcoli descrittivi disponibili in `scripts/predictions/xgot.cjs`.
+Successivamente attivato nelle selezioni operative su richiesta esplicita,
+come contributo sperimentale al 10%: [stato operativo](xgot-operational.md).
+L'attivazione non equivale a validazione statistica.
 
 xGOT è una metrica post-tiro: valuta la probabilità di gol di un tiro nello specchio
 considerando la qualità dell'occasione e dell'esecuzione. Non è la somma degli xG

@@ -3,7 +3,7 @@ const { normalizePlayerName } = require("../player-identity");
 const { attachBetSelection, selectionIdFor } = require("../betting-selection-contract");
 const { rankShooterCandidates } = require('./rank-shooter-candidates');
 
-const ENGINE_VERSION = "4.13.0";
+const ENGINE_VERSION = "4.14.0";
 const PLAYER_MARKET_MODEL_VERSION = 2;
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
@@ -234,7 +234,7 @@ function xgExpectedGoals(homeProfile, awayProfile, summary) {
   };
 }
 
-function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRecent, awayRecent, homeXgProfile, awayXgProfile, xgLeagueSummary, homeTeam, awayTeam, homeSquad, awaySquad, homeObjective, awayObjective, headToHead, leagueSummary }) {
+function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRecent, awayRecent, homeXgProfile, awayXgProfile, xgLeagueSummary, homeTeam, awayTeam, homeSquad, awaySquad, homeObjective, awayObjective, headToHead, leagueSummary, xgotContext }) {
   const leagueHome = leagueSummary?.homeGoalsPerMatch || 1.28;
   const leagueAway = leagueSummary?.awayGoalsPerMatch || 1.15;
   const leagueOverall = (leagueHome + leagueAway) / 2;
@@ -277,17 +277,27 @@ function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRec
   }
   home = clamp(home, 0.28, 3.5);
   away = clamp(away, 0.24, 3.3);
+  const unadjusted = { home: round(home, 2), away: round(away, 2) };
+  const xgotApplied = xgotContext?.status === "experimental-user-authorized" &&
+    xgotContext.weight > 0 && xgotContext.weight <= 0.1 && xgotContext.factors?.length === 2 &&
+    xgotContext.factors.every(v => Number.isFinite(v) && v > 0);
+  if (xgotApplied) {
+    home = clamp(home * xgotContext.factors[0] ** xgotContext.weight, 0.28, 3.5);
+    away = clamp(away * xgotContext.factors[1] ** xgotContext.weight, 0.24, 3.3);
+  }
   return {
     home: round(home, 2),
     away: round(away, 2),
     total: round(home + away, 2),
-    method: "Forze relative attacco/difesa, forma recente corretta per avversario, xG Understat al 25% quando coperti entrambi i club, matchup, probabili XI, obiettivi e correttivo H2H limitato; quote escluse.",
+    method: "Forze relative attacco/difesa, forma recente corretta per avversario, xG Understat al 25% quando coperti entrambi i club, matchup, probabili XI, obiettivi e correttivo H2H limitato; quote escluse." + (xgotApplied ? " xGOT: contributo sperimentale al 10%, attivato su richiesta; validazione non conclusiva." : ""),
     components: {
       home: { attackStrength: round(homeAttackStrength, 3), defenceWeakness: round(homeDefenceWeakness, 3), lineup: homeLineup },
       away: { attackStrength: round(awayAttackStrength, 3), defenceWeakness: round(awayDefenceWeakness, 3), lineup: awayLineup },
       recentForm: { home: homeRecent, away: awayRecent },
       objectiveFactors: { home: round(objectiveFactors.home, 3), away: round(objectiveFactors.away, 3) },
       headToHead: headToHeadFactors,
+      ...(xgotContext ? { xgot: { ...xgotContext, applied: xgotApplied, statisticallyValidated: false,
+        status: xgotApplied ? "experimental-user-authorized" : xgotContext.status, unadjusted } } : {}),
       xg: {
         weight: xgWeight,
         status: xgExpected ? "used" : "fallback-goals",
@@ -2071,6 +2081,8 @@ function predictScenario(input) {
     objectives: objectiveProbabilities(input.homeObjective, input.awayObjective)
   };
   const final = parts.historical;
+  const volumeFinal = expected.components.xgot?.applied
+    ? technicalProbabilities(scoreMatrix(expected.components.xgot.unadjusted.home, expected.components.xgot.unadjusted.away, 7)) : final;
   const crossCompetition = input.crossCompetitionBaseline ?? (input.homeProfile?.competition !== "Serie A" || input.awayProfile?.competition !== "Serie A");
   const completedSections = Object.values(input.reading?.sections || {}).filter(section => section?.content).length;
   const lineupsComplete = input.homeTeam?.probableLineup?.players?.length === 11 && input.awayTeam?.probableLineup?.players?.length === 11;
@@ -2084,8 +2096,8 @@ function predictScenario(input) {
   const matrices = sensitivityMatrices(expected, matrix, null);
   const forecast = scoreForecast(matrix, final);
   const teamProjections = [
-    teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, input.homeDiscipline, input.homeVolume, input.awayVolume, "home", final[0], final[2], expected.home, input.awayTeamMatchupProfile, input.homeTeamMatchupProfile),
-    teamProjection(input.awayTeam, input.awayProfile, input.homeProfile, input.awaySquad, input.awayDiscipline, input.awayVolume, input.homeVolume, "away", final[2], final[0], expected.away, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile)
+    teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, input.homeDiscipline, input.homeVolume, input.awayVolume, "home", volumeFinal[0], volumeFinal[2], expected.home, input.awayTeamMatchupProfile, input.homeTeamMatchupProfile),
+    teamProjection(input.awayTeam, input.awayProfile, input.homeProfile, input.awaySquad, input.awayDiscipline, input.awayVolume, input.homeVolume, "away", volumeFinal[2], volumeFinal[0], expected.away, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile)
   ];
   const matchProjection = {
     shotsTotal: combineVolumeMetric(teamProjections[0].shotsTotal, teamProjections[1].shotsTotal),

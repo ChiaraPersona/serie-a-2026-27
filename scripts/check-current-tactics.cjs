@@ -8,12 +8,13 @@ const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL
  fs.mkdirSync('output/current-tactics',{recursive:true});
  for(const width of [1440,390,320])for(const match of matches){
   await page.setViewportSize({width,height:1000});await page.goto(`http://127.0.0.1:${server.address().port}/lettura.html?match=${match.id}`);await page.waitForSelector('.rd-tactical-current');
-  assert.equal(await page.locator('.rd-tactical-current').count(),2);
-  assert.equal(await page.locator('.rd-tactical-current dd').count(),18);
+  assert.equal(await page.locator('.rd-tactical-serie-a').count(),2);
+  assert.equal(await page.locator('.rd-tactical-serie-a>.rd-tactical-current').count(),2);
+  assert.equal(await page.locator('.rd-tactical-serie-a>.rd-tactical-current dd').count(),18);
   for(const expanded of [false,true]){
    await page.locator('#lettura-tattica .rd-disclosure').evaluateAll((nodes,open)=>nodes.forEach(n=>n.open=open),expanded);
    assert(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),match.id+' '+width);
-   assert.equal(await page.locator('.rd-tactical-current .rd-tactical-metrics>div').evaluateAll(nodes=>nodes.filter(n=>n.scrollWidth>n.clientWidth+1).length),0);
+   assert.equal(await page.locator('.rd-tactical-current .rd-tactical-metrics>div').evaluateAll(nodes=>nodes.filter(n=>n.offsetParent&&n.scrollWidth>n.clientWidth+1).length),0);
   }
   if(match===matches[0])await page.locator('#lettura-tattica').screenshot({path:`output/current-tactics/${width}.png`,style:'.site-header,.rd-nav{visibility:hidden!important}'});
  }

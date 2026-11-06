@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "production": false,
+  "retrospectiveStatus": "Exploratory: 2024/25 and 2025/26 were already inspected in v1; neither is a new confirmatory test",
+  "historyWindowDays": 550,
+  "maximumTeamAppearances": 20,
+  "minimumTeamAppearances": 6,
+  "priorExposure": { "quality": 30, "execution": 8 },
+  "weight": 0.1,
+  "weightPolicy": "Fixed before v2 evaluation; no search on 2025/26",
+  "primaryCandidate": "execution",
+  "secondaryCandidate": "quality",
+  "features": {
+    "quality": "Attack and opposition defence xGOT/SOT relative to their competition; shrink to ratio 1",
+    "execution": "Attack and opposition defence xGOT/xG relative to their competition; shrink to ratio 1"
+  },
+  "domesticPolicy": "Only acquired provider leagues; normalize each observation against earlier same-competition data before combining with UCL. Missing countries remain uncovered.",
+  "prospectivePolicy": "First valid capture per fixture is immutable; require not started and all history acquired by capture time. No backdating or automatic promotion.",
+  "prospectiveMinimumFixtures": 100,
+  "prospectiveMinimumWeeks": 6,
+  "maximumBaselineAgeHours": 72,
+  "metrics": ["1X2 log loss", "multiclass Brier", "ECE10"],
+  "individualOrDuoUse": false
+}

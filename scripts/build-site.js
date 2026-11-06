@@ -5,6 +5,7 @@ const {iconLinks} = require('./site-icons');
 const presentationOnly = process.argv.includes('--presentation-only');
 const root = path.resolve(__dirname, "..");
 require('./build-serie-a-team-history.cjs').build();
+if(fs.existsSync(path.join(root,'data/normalized/xgot-team-research-v2.json')))require('./build-xgot-operational-stats.cjs').build();
 const writeHtml = (file, html) => {
   if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== html) fs.writeFileSync(file, html);
 };

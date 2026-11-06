@@ -5,7 +5,7 @@ const {attackingCoordinates,zoneFor,minuteCompatible}=require('./shot-events/nor
 const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
 async function main(){
  const dataset=read('data/normalized/serie-a-shot-events-2026-27.json'),fixtures=read('data/normalized/matches.json').filter(f=>f.competition==='serie-a');
- const europe=require('./build-serie-a-team-history.cjs').europeanFixtures(read('data/normalized/teams.json'),read('data/normalized/champions-league-2026-27.json'));
+ const europe=require('./build-serie-a-team-history.cjs').europeanFixtures(read('data/normalized/teams.json'),read('data/normalized/champions-league-2026-27.json'),require('./build-serie-a-team-history.cjs').loadEuropeanResults());
  const history=[...fixtures,...europe];
  const byId=new Map(history.map(f=>[f.id,f]));
  const future=fixtures.find(f=>f.id==='inter-como-2026-27-md-11');

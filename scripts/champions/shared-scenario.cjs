@@ -89,6 +89,7 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,ca
    const fouls=rows[i].map(r=>r.for.foulsCommitted).filter(finite);
    input[side+'Discipline']={rows:fouls.length?[{appearances:fouls.length,foulsAwardedAgainstPerAppearance:mean(fouls)}]:[]};
   });
+  input.xgotContext=require('../predictions/xgot-operational.cjs').contextFor({homeTeamId:teams[0]?.id,awayTeamId:teams[1]?.id,date:f.date,generatedAt:asOf,eligible:true,competition:'champions-league'});
   const result=covered?predictScenario(input):null;
   const projections=result?result.teamProjections.map((p,i)=>{
    const copy={...p};

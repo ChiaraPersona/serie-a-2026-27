@@ -9,7 +9,7 @@ function vocabulary(page){
   for(const m of text.matchAll(/(?:from\s*|import\s*\(?\s*)['"]([^'"?]+)(?:\?[^'"]*)?['"]/g))if(m[1].startsWith('.'))visit(path.posix.normalize(path.posix.join(path.posix.dirname(file),m[1])));
  }
  visit(entries[page]||entries.home);for(const file of ['js/core/app.js','js/core/utils.js','js/components/match-card.js','js/public-presentation.js','scripts/build-site.js','scripts/standings.js','scripts/objective-metrics.js'])visit(file);
- if(page==='team-detail'){visit('js/components/lineup-field.mjs');visit('js/components/team-match-history.mjs');}
+ if(page==='team-detail'){visit('js/components/lineup-field.mjs');visit('js/components/team-match-history.mjs');visit('js/components/xgot-statistics.mjs');}
  // Detail modules are dynamically imported and contain all shared interaction states.
  if(['readings','champions'].includes(page))for(const f of fs.readdirSync(path.join(root,'js/pages/reading-detail')).filter(f=>/\.(mjs|js)$/.test(f)))visit('js/pages/reading-detail/'+f);
  const tokens=new Set(texts.join('\n').match(/[A-Za-z_][\w-]*/g)||[]);

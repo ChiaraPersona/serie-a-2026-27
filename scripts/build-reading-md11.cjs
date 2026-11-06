@@ -31,7 +31,7 @@ fs.mkdirSync(path.join(root,'output/md11-reading-refresh'),{recursive:true});
 execFileSync(process.execPath,['--experimental-require-module','scripts/build-predictions.js'],{cwd:root,stdio:'inherit',env:{...process.env,SERIE_A_PREDICTION_PREVIEW_MATCHDAY:'11',SERIE_A_PREDICTION_OUTPUT:output}});
 const candidate=read(output);assert.equal(candidate.predictions.length,10);
 const latest=new Map(candidate.predictions.map(p=>[p.matchId,p]));
-const predictionsData={...before,generatedAt:candidate.generatedAt,predictions:before.predictions.map(p=>latest.get(p.matchId)||p)};
+const predictionsData={...before,engine:candidate.engine,generatedAt:candidate.generatedAt,predictions:before.predictions.map(p=>latest.get(p.matchId)||p)};
 for(const p of candidate.predictions)if(!before.predictions.some(q=>q.matchId===p.matchId))predictionsData.predictions.push(p);
 assert.deepEqual(predictionsData.predictions.filter(p=>!ids.has(p.matchId)),before.predictions.filter(p=>!ids.has(p.matchId)));
 const statistical=require('./md06-statistical-models'),{buildMd06MarketCatalog}=require('./md06-market-catalog');

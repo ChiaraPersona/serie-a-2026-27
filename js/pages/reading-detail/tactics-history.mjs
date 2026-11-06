@@ -23,19 +23,20 @@ export function currentTacticalSample(model,evidence,side,competition='serie-a')
 function currentTacticsMarkup(model,evidence,side,competition='serie-a'){
  const s=currentTacticalSample(model,evidence,side,competition);
  if(competition!=='serie-a'&&!s.matches)return '';
- const label=competition==='serie-a'?'Serie A':'Champions League';
+ const label=({'serie-a':'Serie A','champions-league':'Champions League','europa-league':'Europa League','conference-league':'Conference League'})[competition];
  if(!s.matches)return missing('Stagione corrente: campione precedente alla gara N/D.');
- return `<div class="rd-tactical-current"><p class="rd-footnote rd-tactical-baseline">${label} ${esc((model.fixture.season||evidence.analysis.match?.season)?.replace('-','/'))} · ${s.matches} gare · ${esc(s.from)}–${esc(s.to)}</p><p class="rd-footnote">Volumi osservati; campione descrittivo precedente alla partita.</p><dl class="rd-player-kpis rd-tactical-metrics">${s.metrics.map(([label,m,suffix])=>`<div><dt>${label}</dt><dd>${m.n?number(m.mean)+suffix:'N/D'}</dd><small>${m.n?`n=${m.n}`:'N/D'}</small></div>`).join('')}</dl></div>`;
+ const body=`<div class="rd-tactical-current"><header class="rd-sample-heading"><h4>${label}</h4><span>${s.matches} gare · ${esc((model.fixture.season||evidence.analysis.match?.season)?.replace('-','/'))}</span></header><p class="rd-sample-dates">${esc(s.from)} – ${esc(s.to)}</p><dl class="rd-player-kpis rd-tactical-metrics">${s.metrics.map(([label,m,suffix])=>`<div><dt>${label}</dt><dd>${m.n?number(m.mean)+suffix:'N/D'}</dd><small>${m.n?`n=${m.n}`:'N/D'}</small></div>`).join('')}</dl></div>`;
+ return competition==='serie-a'?body:`<details class="rd-tactical-extra rd-disclosure"><summary>${label}<span>${s.matches} gare</span></summary>${body}</details>`;
 }
 export function tacticsMarkup(model,evidence){
  if(model.competition==='champions'&&evidence.championsTactics)return championsTacticsMarkup(model,evidence);
  const sides=[model.home,model.away],profiles=sides.map((_,i)=>profileFor(model,evidence,i));
  const panels=sides.map((side,i)=>{
   const p=profiles[i],channels=evidence.analysis.attackChannels?.profiles?.find(p=>p.team===side.name)?.attackChannels||model.prediction?.teamProjections?.[i]?.attackChannels||p?.attackChannels;
+  if(model.competition==='serie-a')return `<article class="rd-tactical-column rd-tactical-serie-a" data-tactical-side="${i?'away':'home'}"><header class="rd-tactical-team"><span>${i?'Ospite':'Casa'}</span><h3>${esc(side.name)}</h3></header>${['serie-a','champions-league','europa-league','conference-league'].map(c=>currentTacticsMarkup(model,evidence,side,c)).join('')}<div class="rd-tactical-directions"><h4>Direzioni d’attacco</h4>${attackMarkup(channels)}</div></article>`;
   return `<article class="rd-tactical-column" data-tactical-side="${i?'away':'home'}"><header class="rd-tactical-team"><span>${i?'Ospite':'Casa'}</span><h3>${esc(side.name)}</h3></header><p class="rd-footnote rd-tactical-baseline">Baseline ${esc(p?.season||'storica')} · ${esc(p?.competition||'Campione N/D')} · ${number(p?.summary?.appearances,0)} gare</p><dl class="rd-player-kpis rd-tactical-metrics"><div><dt>Possesso</dt><dd>${number(p?.summary?.possessionPct)}${finite(p?.summary?.possessionPct)?'%':''}</dd></div><div><dt>Tiri / gara</dt><dd>${number(p?.summary?.shotsPerGame)}</dd></div><div><dt>Gol / gara</dt><dd>${number(p?.derived?.goalsPerGame)}</dd></div></dl><div class="rd-tactical-directions">${attackMarkup(channels)}</div></article>`;
  });
- const updated=model.competition==='serie-a'?panels.map((html,i)=>html.replace('</header>','</header>'+currentTacticsMarkup(model,evidence,sides[i])+currentTacticsMarkup(model,evidence,sides[i],'champions-league')).replace('<p class="rd-footnote rd-tactical-baseline">Baseline','<details class="rd-disclosure"><summary>Baseline storica 2025/26</summary><p class="rd-footnote rd-tactical-baseline">Baseline').replace('<div class="rd-tactical-directions">','</details><div class="rd-tactical-directions">')):panels;
- return `<div class="rd-tactical-comparison" aria-label="Confronto tattico Casa e Ospite">${updated.join('')}</div>`;
+ return `<div class="rd-tactical-comparison" aria-label="Confronto tattico Casa e Ospite">${panels.join('')}</div>`;
 }
 function championsTacticsMarkup(model,evidence){
  const sampleLabel=s=>`${s.competitionLabel}${s.id.endsWith('historical')?' · storico':''} ${s.season.replace('-','/')} · ${s.matches} gare`;
@@ -59,8 +60,7 @@ function timeline(model,evidence,side){
 export function installTacticsHistory(model,evidence,containers){
  const oldTactics=[...containers.tattica.childNodes],oldHistory=[...containers.storico.childNodes];
  const tactical=document.createElement('div');tactical.innerHTML=tacticsMarkup(model,evidence);
- const recent=document.createElement('div');recent.className='rd-recent-form';recent.innerHTML='<h3>Andamento recente</h3><div class="rd-two-col">'+[model.home,model.away].map(side=>recentFormMarkup(model,evidence,side)).join('')+'</div>';
- containers.tattica.replaceChildren(tactical,recent);
+ containers.tattica.replaceChildren(tactical);
  const undoSpatial=installSpatialMatchup(model,evidence.spatial,containers);
  const history=document.createElement('div');
  history.innerHTML=historyMarkup(evidence.historyRows||selectHistoryRows(model,evidence.analysis.history));

@@ -5,11 +5,11 @@ non è una certificazione indipendente del modello o dei valori pubblicati.
 
 | Competizione | Stagione | Partite calendario / acquisite | Partite con xGOT di entrambe le squadre | Valori xGOT individuali pubblicati |
 |---|---|---:|---:|---:|
-| Serie A | 2024/25 | 380 / 380 | 380 | 3.135 |
-| Champions League | 2024/25 | 189 / 189 | 189 | 1.728 |
-| Serie A | 2025/26 | 380 / 380 | 380 | 3.113 |
-| Champions League | 2025/26 | 189 / 189 | 189 | 1.774 |
-| Totale | | 1.138 / 1.138 | 1.138 | 9.750 |
+| Serie A | 2024/25 | 380 / 380 | 380 | 2.388 |
+| Champions League | 2024/25 | 189 / 189 | 189 | 1.356 |
+| Serie A | 2025/26 | 380 / 380 | 380 | 2.378 |
+| Champions League | 2025/26 | 189 / 189 | 189 | 1.397 |
+| Totale | | 1.138 / 1.138 | 1.138 | 7.519 |
 
 Champions comprende fase campionato, spareggi, eliminazione diretta e finale;
 le qualificazioni preliminari sono escluse. I calendari restituiscono esattamente
@@ -45,9 +45,14 @@ Endpoint di acquisizione:
 Sono presenti 2.276 valori squadra e 28.868 eventi di tiro. In 100 eventi l'xGOT
 non è pubblicato: 94 autogol e 6 altri eventi. Questi campi restano `null`, senza
 imputazione. La presenza di xGOT per entrambe le squadre non implica completezza
-dei valori per ogni giocatore o tiro. Il conteggio dei 9.750 valori individuali
+dei valori per ogni giocatore o tiro. Il conteggio corretto dei 7.519 valori individuali
 comprende soltanto le osservazioni esplicite, compresi gli zeri pubblicati;
 nessuno zero viene dedotto per gli altri giocatori.
+
+Correzione dell'estrattore: il precedente conteggio di 9.750 includeva 2.231
+valori di xGOT affrontato dai portieri. Ora `xgotFaced` è separato dall'xGOT
+offensivo; si accettano esclusivamente le chiavi esatte del relativo campo.
+Le previsioni del confronto v1, basate sui totali squadra, sono rimaste identiche.
 
 I totali squadra sono estratti dal periodo `All` del provider. Non vengono
 etichettati come soli 90 minuti: in Champions 4 partite nel 2024/25 e 3 nel

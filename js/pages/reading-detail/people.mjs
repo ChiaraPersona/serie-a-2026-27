@@ -2,6 +2,7 @@ import {esc,number,pct,finite,metric,missing} from './format.mjs?v=20261022-asse
 import {lineupPositions} from '../../components/lineup-field.mjs?v=20261022-assets-v1';
 import {renderLineupKit} from '../../components/lineup-kit.mjs?v=20261024-solid-goalkeepers';
 import {individualPlayers} from './evidence.mjs?v=20261022-assets-v1';
+import {loadXgotStatistics,playerXgotMarkup} from '../../components/xgot-statistics.mjs?v=20261106-xgot';
 const label=s=>s==='official'?'Ufficiale':s==='probable'?'Probabile':s==='reference'?'Riferimento':'Da confermare';
 function preserve(container,content,title){
  const original=[...container.childNodes];
@@ -50,6 +51,7 @@ export function installPeople(model,evidence,containers,shell){
  undo.push(preserve(containers.formazioni,formations));
  const players=document.createElement('div');players.innerHTML=playersMarkup(model,evidence);
  undo.push(preserve(containers.giocatori,players));
+ loadXgotStatistics().then(stats=>{if(!players.isConnected)return;for(const row of players.querySelectorAll('[data-player-id]'))row.querySelector('.rd-player-expanded')?.insertAdjacentHTML('beforeend',playerXgotMarkup(stats,row.dataset.playerId,model.fixture.date))});
  let active='starter';const buttons=[...players.querySelectorAll('[data-player-lineup-filter]')];
  const filter=()=>{const note=players.querySelector('[data-bench-scenario-note]');if(note)note.hidden=active!=='bench';let visible=0;players.querySelectorAll('[data-player-card]').forEach(card=>{card.hidden=card.dataset.playerLineup!==active;if(!card.hidden)visible++});buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.playerLineupFilter===active)));const empty=players.querySelector('[data-player-empty]');empty.hidden=visible>0;empty.textContent=visible?'':active==='bench'?'Nessun panchinaro identificato nelle formazioni per i giocatori presenti.':'Nessun titolare identificato nelle formazioni per i giocatori presenti.';};
  buttons.forEach(b=>b.addEventListener('click',()=>{active=b.dataset.playerLineupFilter;filter()}));filter();mountMarketLinks(players,shell);

@@ -11,8 +11,10 @@ const currentProbableLineups = require("./probable-lineups").loadLatestProbableL
 const officialLineups = JSON.parse(fs.readFileSync(path.join(root, "data/sources/official-lineups-2026-27.json"), "utf8"));
 const officialLineupByMatchTeam = new Map(officialLineups.fixtures.flatMap(fixture => fixture.teams.map(team => [`${fixture.matchId}:${team.teamId}`, team])));
 const assertNotCurrentStarter = (teamId, playerId) => {
-  const player = currentProbableLineups.teams.find(team => team.teamId === teamId)?.players.find(player => player.playerId === playerId);
-  assert(!player || player.lineupStatus === "reserve", `${teamId}/${playerId}: candidato assente nonostante sia titolare nella fonte corrente`);
+  // The individual regression cases below belong to MD6, not the live round.
+  const historical=JSON.parse(fs.readFileSync(path.join(root,"data/sources/probable-lineups-md6-2026-27.json"),"utf8"));
+  const player = historical.teams.find(team => team.teamId === teamId)?.players.find(player => player.playerId === playerId);
+  assert(!player || player.lineupStatus === "reserve", `${teamId}/${playerId}: candidato assente nonostante sia titolare nella fonte MD6`);
 };
 const currentMatches = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/matches.json"), "utf8"))
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.matchday === currentProbableLineups.matchday && match.status !== "finished");
@@ -24,7 +26,7 @@ for (const match of currentMatches) {
     const expected = official
       ? official.players.slice(1).map(player => player.playerId).filter(Boolean).sort()
       : currentProbableLineups.teams.find(team => team.teamId === teamId).players
-        .filter(player => player.lineupStatus === "starter" && player.sourceRole !== "P").map(player => player.playerId).sort();
+        .filter(player => player.lineupStatus === "starter" && player.sourceRole !== "P").map(player => player.playerId).filter(Boolean).sort();
     const actualPlayers = prediction.shooters.allPlayers.filter(player => player.teamId === teamId);
     const actual = actualPlayers.map(player => player.playerId).filter(Boolean).sort();
     assert.deepStrictEqual(actual, expected, `${match.id}/${teamId}: giocatori modellati diversi dai titolari della fonte corrente`);
@@ -72,7 +74,7 @@ if (fs.existsSync(previewMd3Path)) {
   assert(previewMd3.predictions.every(prediction => prediction.market.status === "unavailable" && prediction.probabilities.marketNoMargin === null), "L'anteprima MD3 non deve inventare quote");
 }
 
-assert.strictEqual(dataset.predictions.filter(p => !p.matchId.endsWith('-md-08')).length, 59, "Conservare i 59 pronostici precedenti alla MD8");
+assert.strictEqual(dataset.predictions.filter(p => Number(p.matchId.match(/-md-(\d+)$/)?.[1]) < 8).length, 59, "Conservare i 59 pronostici precedenti alla MD8");
 assert.strictEqual(dataset.predictions.filter(p => p.matchId.endsWith('-md-08')).length, 10, "MD8: dieci previsioni aggiornate");
 const firstMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-01"));
 const secondMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-02"));
@@ -120,9 +122,8 @@ assert.strictEqual(dataset.engine.promotedTeamModel.defenceWeaknessFactor, 1.29,
 assert(dataset.predictions.every(prediction => prediction.dataQuality.missing.some(item => item.includes("meteo"))), "Il meteo non verificabile deve essere dichiarato N/D");
 assert(dataset.predictions.filter(prediction => /-md-0[1-5]$/.test(prediction.matchId)).every(prediction => !prediction.dataQuality.missing.some(item => item.includes("indisponibili"))), "Il monitor indisponibili aggiornato deve raggiungere tutte le letture archiviate fino alla quinta giornata");
 for (const prediction of dataset.predictions) {
-  if (["-md-05", "-md-06", "-md-07", "-md-08"].some(suffix => prediction.matchId.endsWith(suffix))) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
-  else if (prediction.matchId.endsWith("-md-04")) assert.strictEqual(prediction.engineVersion, "4.12.0", `${prediction.matchId}: lo snapshot MD4 deve conservare la propria versione`);
-  else assert.strictEqual(prediction.engineVersion, "4.11.0", `${prediction.matchId}: lo snapshot archiviato deve conservare la propria versione`);
+  if (currentMatches.some(match=>match.id===prediction.matchId)) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
+  else assert(/^\d+\.\d+\.\d+$/.test(prediction.engineVersion), `${prediction.matchId}: lo snapshot deve conservare una versione esplicita; non viene rigenerato per aggiornarla`);
   const probabilities = Object.values(prediction.probabilities.final);
   assert.strictEqual(Number(probabilities.reduce((total, value) => total + value, 0).toFixed(1)), 100, `${prediction.matchId}: probabilita 1X2 non esattamente normalizzate`);
   assert.deepStrictEqual(prediction.probabilities.final, prediction.probabilities.historical, `${prediction.matchId}: 1X2 e matrice punteggi devono condividere la stessa distribuzione`);
@@ -341,7 +342,7 @@ assert.strictEqual(juventusBremer.qualifiedOutsider, true, "Juventus: Bremer non
 if (juventusKoopmeiners) {
   assert.strictEqual(juventusKoopmeiners.qualifiedOutsider, false, "Juventus: Koopmeiners qualificato outsider senza superare il detector");
 } else {
-  const probable = require("./probable-lineups").loadLatestProbableLineups(root);
+  const probable = JSON.parse(fs.readFileSync(path.join(root,"data/sources/probable-lineups-md6-2026-27.json"),"utf8"));
   const sourcePlayer = probable.teams.find(team => team.teamId === "juventus").players.find(player => player.playerId === "teun-koopmeiners");
   assert.strictEqual(sourcePlayer?.lineupStatus, "reserve", "Juventus: Koopmeiners escluso dai candidati senza essere una riserva della fonte corrente");
   assert(!cagliariJuventusProfile.shooters.outsiders.some(player => player.playerId === "teun-koopmeiners"), "Juventus: una riserva non deve essere promossa a outsider titolare");

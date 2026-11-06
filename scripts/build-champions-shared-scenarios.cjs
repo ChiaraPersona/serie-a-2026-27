@@ -13,12 +13,12 @@ async function build({asOf=new Date().toISOString(),matchday=null}={}){
  await require('./champions/european-result-policy.cjs').applyEuropeanResults({scenarios:output,calendar:inputs.calendar,asOf});
  const file=path.join(root,'data/generated/champions-shared-scenarios.json');
  const previous=fs.existsSync(file)?storageReadJson(file):null;
- // This file is a forward-only projection, never an archive of betting contracts.
+ // Update future forecasts; retain completed rows unchanged for historical readings.
  const updated=new Set(output.fixtures.map(f=>f.fixtureId));
- output.fixtures=[...(previous?.fixtures||[]).filter(p=>!updated.has(p.fixtureId)&&inputs.calendar.fixtures.some(f=>f.id===p.fixtureId&&eligible(f,asOf))),...output.fixtures];
+ output.fixtures=[...(previous?.fixtures||[]).filter(p=>!updated.has(p.fixtureId)&&inputs.calendar.fixtures.some(f=>f.id===p.fixtureId)),...output.fixtures];
  output.inputs=Object.fromEntries(Object.entries(paths).map(([k,p])=>[k,{path:p,sha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex')}]));
  fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,JSON.stringify(output,null,2)+'\n');
- console.log(`Scenario Champions condiviso: MD${day??'N/D'}, ${output.fixtures.length} gare future; ${output.fixtures.filter(f=>f.status==='preliminary').length} con base gol sufficiente`);
+ console.log(`Scenario Champions condiviso: MD${day??'N/D'}, ${output.fixtures.filter(f=>inputs.calendar.fixtures.some(c=>c.id===f.fixtureId&&eligible(c,asOf))).length} gare future; righe concluse conservate per le letture storiche`);
  return output;
 }
 if(require.main===module){const i=process.argv.indexOf('--matchday');build({matchday:i<0?null:Number(process.argv[i+1])}).catch(e=>{console.error(e);process.exitCode=1;});}

@@ -20,7 +20,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
     const section=page.locator('[data-spatial-fixture]');assert.equal(await section.count(),1);
     if(id==='inter-como-2026-27-md-11'){
      assert.match(await section.innerText(),/Champions League: 0\/4 gare con coordinate/);
-     assert.match(await page.locator('.rd-recent-form').innerText(),/Champions League/);
+     assert.equal(await page.locator('.rd-recent-form').count(),0);
      assert.match(await page.locator('.rd-tactical-current').allTextContents().then(t=>t.join(' ')),/Champions League/);
     }
     assert.equal(await page.locator('#lettura-scenario .rd-spatial-synthesis').count(),0);

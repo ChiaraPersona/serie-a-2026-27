@@ -9,7 +9,7 @@ const pick=(o,keys)=>Object.fromEntries(keys.filter(k=>k in o).map(k=>[k,o[k]]))
 function build({matchday=null}={}){
  const teamHistory=require('./build-serie-a-team-history.cjs').build();
  const matches=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'),teams=read('data/normalized/teams.json');
- const historyMatches=[...matches,...require('./build-serie-a-team-history.cjs').europeanFixtures(teams,read('data/normalized/champions-league-2026-27.json'))];
+ const historyMatches=[...matches,...require('./build-serie-a-team-history.cjs').europeanFixtures(teams,read('data/normalized/champions-league-2026-27.json'),require('./build-serie-a-team-history.cjs').loadEuropeanResults())];
  const spatialFile='data/normalized/serie-a-shot-events-2026-27.json';
  const spatial=fs.existsSync(path.join(root,spatialFile))?read(spatialFile):null;
  const technicalFile='data/normalized/serie-a-technical-context-2026-27.json';

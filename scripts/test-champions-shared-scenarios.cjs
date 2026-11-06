@@ -14,7 +14,10 @@ for(let i=0;i<styles.profiles.length;i++){
  const h=styles.profiles[i],a=styles.profiles[(i+1)%styles.profiles.length];
  const input={match:{id:'regression-'+i},homeTeam:{id:h.teamId},awayTeam:{id:a.teamId},homeSquad:{players:[]},awaySquad:{players:[]},homeProfile:h,awayProfile:a,
  homeVolume:volumes.profiles.find(p=>p.teamId===h.teamId),awayVolume:volumes.profiles.find(p=>p.teamId===a.teamId),reading:{sections:{}},generatedAt:'2026-10-24T00:00:00Z'};
- assert.deepEqual(predictMatch(input),previous.exports.predictMatch(input),'Serie A regression '+i);
+ const current=predictMatch(input),legacy=previous.exports.predictMatch(input);
+ // The xGOT release changes version metadata; inputs without xGOT must retain every forecast value.
+ legacy.engineVersion=current.engineVersion;
+ assert.deepEqual(current,legacy,'Serie A regression '+i);
 }
 const inputs={calendar:read('data/normalized/champions-league-2026-27.json'),source:read('data/sources/champions-pilot-match-stats-2025-27.json'),styles,odds:read('data/normalized/odds/sisal/champions-league.json'),asOf:'2026-10-24T00:00:00Z',matchday:4};
 // This frozen pre-match regression uses the calendar state at the historical cutoff.

@@ -88,7 +88,7 @@ async function applyEuropeanResults({scenarios,catalog=null,calendar,odds=null,a
  for(const f of scenarios.fixtures){
   const official=calendar.fixtures.find(m=>m.id===f.fixtureId);
   if(!official||official.matchday<context.policy.minimumMatchday||!isFuture(official,asOf)||fixtureIds&&!fixtureIds.has(f.fixtureId))continue;
-  const result=resultForFixture(official,context);applyScenario(f,result);
+  const result=require('./xgot-result.cjs').withEuropeanXgot(resultForFixture(official,context),f.expectedGoals);applyScenario(f,result);
   const match=catalog?.marketCatalog.matches.find(m=>m.matchId===f.fixtureId);
   const selected=match?await applyCatalogMatch(match,result,odds):null;
   updates.push({fixtureId:f.fixtureId,status:result.status,probabilities:result.probabilities,selected});
