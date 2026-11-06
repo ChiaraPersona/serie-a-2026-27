@@ -1,0 +1,1948 @@
+{
+  "generatedAt": "2026-11-06T16:35:18.025Z",
+  "role": "RESEARCH_ONLY",
+  "operationalChanges": false,
+  "limitations": [
+    "Baseline-only comparison, not a replay of full historical XI, tactical, possession or opponent interactions.",
+    "Historical proxy uses fixed .34 accuracy when missing own venue history; published case is replayed exactly only for the cap operation.",
+    "Candidates declared after observing the symptom; MD9-10 is a descriptive temporal check, not an untouched holdout.",
+    "100 side forecasts correspond to 50 dependent match clusters; no statistical superiority claim.",
+    "Current overall means mix venues and opponents. Venue pooling and opponent-strength normalization remain to validate.",
+    "No direct Serie B to Serie A equivalence in candidate baselines."
+  ],
+  "diagnosis": {
+    "actualMean": 6.6,
+    "homeMean": 7.166666666666667,
+    "awayMean": 5.75,
+    "rows": [
+      {
+        "matchId": "frosinone-juventus-2026-27-md-01",
+        "matchday": 1,
+        "venue": "home",
+        "own": 2,
+        "against": 5
+      },
+      {
+        "matchId": "fiorentina-frosinone-2026-27-md-02",
+        "matchday": 2,
+        "venue": "away",
+        "own": 6,
+        "against": 4
+      },
+      {
+        "matchId": "frosinone-venezia-2026-27-md-03",
+        "matchday": 3,
+        "venue": "home",
+        "own": 8,
+        "against": 4
+      },
+      {
+        "matchId": "genoa-frosinone-2026-27-md-04",
+        "matchday": 4,
+        "venue": "away",
+        "own": 6,
+        "against": 5
+      },
+      {
+        "matchId": "frosinone-como-2026-27-md-05",
+        "matchday": 5,
+        "venue": "home",
+        "own": 6,
+        "against": 8
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "matchday": 6,
+        "venue": "away",
+        "own": 1,
+        "against": 8
+      },
+      {
+        "matchId": "frosinone-sassuolo-2026-27-md-07",
+        "matchday": 7,
+        "venue": "home",
+        "own": 10,
+        "against": 6
+      },
+      {
+        "matchId": "atalanta-frosinone-2026-27-md-08",
+        "matchday": 8,
+        "venue": "away",
+        "own": 10,
+        "against": 9
+      },
+      {
+        "matchId": "frosinone-lecce-2026-27-md-09",
+        "matchday": 9,
+        "venue": "home",
+        "own": 9,
+        "against": 6
+      },
+      {
+        "matchId": "frosinone-torino-2026-27-md-10",
+        "matchday": 10,
+        "venue": "home",
+        "own": 8,
+        "against": 3
+      }
+    ],
+    "updatedSotProfile": {
+      "historicalPerGame": 6,
+      "current": {
+        "mean": 6.6,
+        "median": 7,
+        "variance": 8.64,
+        "standardDeviation": 2.939,
+        "min": 1,
+        "max": 10,
+        "sampleSize": 10
+      },
+      "robustCurrentPerGame": 6.44,
+      "shrunkPerGame": 6.2,
+      "shrinkage": {
+        "value": 6.2,
+        "historicalWeight": 0.545,
+        "currentWeight": 0.455,
+        "priorEquivalentMatches": 12
+      },
+      "signalPersistence": {
+        "baseline": 6,
+        "elevatedThreshold": 7.5,
+        "elevatedThresholdMultiplier": 1.25,
+        "matchesAboveBaseline": 5,
+        "shareAboveBaseline": 0.5,
+        "matchesAboveElevatedThreshold": 5,
+        "shareAboveElevatedThreshold": 0.5,
+        "longestRun": 4,
+        "sampleSize": 10,
+        "level": "low"
+      },
+      "rawValues": [
+        2,
+        6,
+        8,
+        6,
+        6,
+        1,
+        10,
+        10,
+        9,
+        8
+      ],
+      "modelStatus": "separate-from-total-shots"
+    },
+    "publishedSot": {
+      "min": 2.1,
+      "central": 4.1,
+      "max": 6.4,
+      "interval": "p20-p80",
+      "sd": 1.79,
+      "sampleSize": 57,
+      "dataStatus": "partial-history",
+      "inputs": [
+        {
+          "source": "lineup-accuracy-prior",
+          "weightPct": 56.3,
+          "mean": 3.52,
+          "matches": 38
+        },
+        {
+          "source": "home-opponent-against",
+          "weightPct": 43.7,
+          "mean": 4.11,
+          "matches": 19
+        }
+      ]
+    },
+    "legacySot": {
+      "min": 2,
+      "central": 3.9,
+      "max": 6,
+      "interval": "p20-p80",
+      "sd": 1.79,
+      "sampleSize": 57,
+      "dataStatus": "partial-history",
+      "inputs": [
+        {
+          "source": "lineup-accuracy-prior",
+          "weightPct": 56.3,
+          "mean": 3.52,
+          "matches": 38
+        },
+        {
+          "source": "home-opponent-against",
+          "weightPct": 43.7,
+          "mean": 4.11,
+          "matches": 19
+        }
+      ]
+    },
+    "capReplay": {
+      "target6_2": 4.1,
+      "target8": 4.1
+    },
+    "candidate": {
+      "central": 5.826466444349405,
+      "own": {
+        "value": 5.8669142857142855,
+        "historical": null,
+        "observed": 6.6,
+        "matches": 10,
+        "priorEquivalentMatches": 4,
+        "currentWeight": 0.7142857142857143
+      },
+      "opponent": {
+        "value": 4.693636363636364,
+        "historical": 4.105,
+        "observed": 5.4,
+        "matches": 10,
+        "priorEquivalentMatches": 12,
+        "currentWeight": 0.45454545454545453
+      },
+      "recentMean": 7.717911442526245
+    },
+    "approximateSameContext": 6.0149
+  },
+  "evaluation": {
+    "all": {
+      "legacy_proxy": {
+        "teamForecasts": 100,
+        "matchClusters": 50,
+        "mae": 2.08,
+        "rmse": 2.6508,
+        "bias": -0.894
+      },
+      "cap20_only_proxy": {
+        "teamForecasts": 100,
+        "matchClusters": 50,
+        "mae": 2.078,
+        "rmse": 2.6336,
+        "bias": -0.754
+      },
+      "current_raw_k12_weak4": {
+        "teamForecasts": 100,
+        "matchClusters": 50,
+        "mae": 1.9812,
+        "rmse": 2.5357,
+        "bias": -0.5031
+      },
+      "current_robust_k12_weak4": {
+        "teamForecasts": 100,
+        "matchClusters": 50,
+        "mae": 1.9943,
+        "rmse": 2.5637,
+        "bias": -0.6019
+      },
+      "current_raw_k12_weak12": {
+        "teamForecasts": 100,
+        "matchClusters": 50,
+        "mae": 1.9965,
+        "rmse": 2.5565,
+        "bias": -0.5514
+      },
+      "season_mean": {
+        "teamForecasts": 100,
+        "matchClusters": 50,
+        "mae": 2.1951,
+        "rmse": 2.7568,
+        "bias": -0.1488
+      }
+    },
+    "md6to8": {
+      "legacy_proxy": {
+        "teamForecasts": 60,
+        "matchClusters": 30,
+        "mae": 2.195,
+        "rmse": 2.851,
+        "bias": -1.0517
+      },
+      "cap20_only_proxy": {
+        "teamForecasts": 60,
+        "matchClusters": 30,
+        "mae": 2.22,
+        "rmse": 2.8442,
+        "bias": -0.92
+      },
+      "current_raw_k12_weak4": {
+        "teamForecasts": 60,
+        "matchClusters": 30,
+        "mae": 2.1187,
+        "rmse": 2.7595,
+        "bias": -0.7183
+      },
+      "current_robust_k12_weak4": {
+        "teamForecasts": 60,
+        "matchClusters": 30,
+        "mae": 2.1368,
+        "rmse": 2.7915,
+        "bias": -0.8113
+      },
+      "current_raw_k12_weak12": {
+        "teamForecasts": 60,
+        "matchClusters": 30,
+        "mae": 2.1384,
+        "rmse": 2.7895,
+        "bias": -0.7637
+      },
+      "season_mean": {
+        "teamForecasts": 60,
+        "matchClusters": 30,
+        "mae": 2.4409,
+        "rmse": 3.0405,
+        "bias": -0.3647
+      }
+    },
+    "md9to10": {
+      "legacy_proxy": {
+        "teamForecasts": 40,
+        "matchClusters": 20,
+        "mae": 1.9075,
+        "rmse": 2.3182,
+        "bias": -0.6575
+      },
+      "cap20_only_proxy": {
+        "teamForecasts": 40,
+        "matchClusters": 20,
+        "mae": 1.865,
+        "rmse": 2.2813,
+        "bias": -0.505
+      },
+      "current_raw_k12_weak4": {
+        "teamForecasts": 40,
+        "matchClusters": 20,
+        "mae": 1.7749,
+        "rmse": 2.1569,
+        "bias": -0.1802
+      },
+      "current_robust_k12_weak4": {
+        "teamForecasts": 40,
+        "matchClusters": 20,
+        "mae": 1.7805,
+        "rmse": 2.1778,
+        "bias": -0.2878
+      },
+      "current_raw_k12_weak12": {
+        "teamForecasts": 40,
+        "matchClusters": 20,
+        "mae": 1.7835,
+        "rmse": 2.1604,
+        "bias": -0.2331
+      },
+      "season_mean": {
+        "teamForecasts": 40,
+        "matchClusters": 20,
+        "mae": 1.8264,
+        "rmse": 2.2655,
+        "bias": 0.175
+      }
+    },
+    "promotedTeams": {
+      "legacy_proxy": {
+        "teamForecasts": 15,
+        "matchClusters": 15,
+        "mae": 2.2733,
+        "rmse": 2.9718,
+        "bias": -1.4333
+      },
+      "cap20_only_proxy": {
+        "teamForecasts": 15,
+        "matchClusters": 15,
+        "mae": 2.02,
+        "rmse": 2.7434,
+        "bias": -0.9933
+      },
+      "current_raw_k12_weak4": {
+        "teamForecasts": 15,
+        "matchClusters": 15,
+        "mae": 1.8893,
+        "rmse": 2.5583,
+        "bias": -0.6458
+      },
+      "current_robust_k12_weak4": {
+        "teamForecasts": 15,
+        "matchClusters": 15,
+        "mae": 1.9423,
+        "rmse": 2.5948,
+        "bias": -0.7995
+      },
+      "current_raw_k12_weak12": {
+        "teamForecasts": 15,
+        "matchClusters": 15,
+        "mae": 1.9495,
+        "rmse": 2.6162,
+        "bias": -0.7968
+      },
+      "season_mean": {
+        "teamForecasts": 15,
+        "matchClusters": 15,
+        "mae": 1.9308,
+        "rmse": 2.6076,
+        "bias": -0.0345
+      }
+    },
+    "otherTeams": {
+      "legacy_proxy": {
+        "teamForecasts": 85,
+        "matchClusters": 50,
+        "mae": 2.0459,
+        "rmse": 2.59,
+        "bias": -0.7988
+      },
+      "cap20_only_proxy": {
+        "teamForecasts": 85,
+        "matchClusters": 50,
+        "mae": 2.0882,
+        "rmse": 2.6137,
+        "bias": -0.7118
+      },
+      "current_raw_k12_weak4": {
+        "teamForecasts": 85,
+        "matchClusters": 50,
+        "mae": 1.9974,
+        "rmse": 2.5317,
+        "bias": -0.4779
+      },
+      "current_robust_k12_weak4": {
+        "teamForecasts": 85,
+        "matchClusters": 50,
+        "mae": 2.0035,
+        "rmse": 2.5582,
+        "bias": -0.5671
+      },
+      "current_raw_k12_weak12": {
+        "teamForecasts": 85,
+        "matchClusters": 50,
+        "mae": 2.0047,
+        "rmse": 2.5458,
+        "bias": -0.5081
+      },
+      "season_mean": {
+        "teamForecasts": 85,
+        "matchClusters": 50,
+        "mae": 2.2417,
+        "rmse": 2.7823,
+        "bias": -0.169
+      }
+    }
+  },
+  "uncertainty": {
+    "model": "current_raw_k12_weak4",
+    "comparison": "MAE candidate minus legacy proxy; negative is better",
+    "seed": 11062026,
+    "repetitions": 2000,
+    "percentile95": [
+      -0.2012,
+      -0.0035
+    ],
+    "note": "Descriptive interval only; excludes model selection, input revision and proxy uncertainty."
+  },
+  "checks": [
+    "Exact published cap replay",
+    "10 canonical current fixtures and mean 6.6",
+    "Target round outcome perturbation excluded",
+    "No-current-data fallback finite",
+    "All experimental predictions finite"
+  ],
+  "forecasts": [
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "atalanta",
+      "venue": "home",
+      "observed": 11,
+      "predictions": {
+        "legacy_proxy": 4.9,
+        "cap20_only_proxy": 4.9,
+        "current_raw_k12_weak4": 4.472433470401134,
+        "current_robust_k12_weak4": 4.346681836414206,
+        "current_raw_k12_weak12": 4.292556346218127,
+        "season_mean": 3.4
+      }
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "venezia",
+      "venue": "away",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 3.5,
+        "cap20_only_proxy": 3.8,
+        "current_raw_k12_weak4": 4.103293285440119,
+        "current_robust_k12_weak4": 4.030352108969531,
+        "current_raw_k12_weak12": 4.060257991322473,
+        "season_mean": 4.4
+      }
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "cagliari",
+      "venue": "home",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 3.7,
+        "cap20_only_proxy": 3.7,
+        "current_raw_k12_weak4": 3.5486171884203204,
+        "current_robust_k12_weak4": 3.4144995413614962,
+        "current_raw_k12_weak12": 3.5486171884203204,
+        "season_mean": 4.2
+      }
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "juventus",
+      "venue": "away",
+      "observed": 10,
+      "predictions": {
+        "legacy_proxy": 5.3,
+        "cap20_only_proxy": 5.8,
+        "current_raw_k12_weak4": 5.008045195642419,
+        "current_robust_k12_weak4": 4.93275107799536,
+        "current_raw_k12_weak12": 5.008045195642419,
+        "season_mean": 5.8
+      }
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "como",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 5.7,
+        "cap20_only_proxy": 5.7,
+        "current_raw_k12_weak4": 5.891277591637182,
+        "current_robust_k12_weak4": 5.853630532813651,
+        "current_raw_k12_weak12": 5.891277591637182,
+        "season_mean": 7.2
+      }
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "roma",
+      "venue": "away",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 4.3,
+        "cap20_only_proxy": 4.8,
+        "current_raw_k12_weak4": 4.567712134333638,
+        "current_robust_k12_weak4": 4.492418016686578,
+        "current_raw_k12_weak12": 4.567712134333638,
+        "season_mean": 7
+      }
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "genoa",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 4,
+        "cap20_only_proxy": 3.5,
+        "current_raw_k12_weak4": 4.202811278180916,
+        "current_robust_k12_weak4": 4.169870101710328,
+        "current_raw_k12_weak12": 4.202811278180916,
+        "season_mean": 3
+      }
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "fiorentina",
+      "venue": "away",
+      "observed": 3,
+      "predictions": {
+        "legacy_proxy": 3.3,
+        "cap20_only_proxy": 3.7,
+        "current_raw_k12_weak4": 4.14325652995056,
+        "current_robust_k12_weak4": 4.009138882891737,
+        "current_raw_k12_weak12": 4.14325652995056,
+        "season_mean": 5.6
+      }
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "inter",
+      "venue": "home",
+      "observed": 6,
+      "predictions": {
+        "legacy_proxy": 6.2,
+        "cap20_only_proxy": 6.2,
+        "current_raw_k12_weak4": 6.289312604802639,
+        "current_robust_k12_weak4": 6.188136134214403,
+        "current_raw_k12_weak12": 6.289312604802639,
+        "season_mean": 7.4
+      }
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "parma",
+      "venue": "away",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 2.7,
+        "cap20_only_proxy": 2.7,
+        "current_raw_k12_weak4": 2.908189228737209,
+        "current_robust_k12_weak4": 2.854071581678385,
+        "current_raw_k12_weak12": 2.908189228737209,
+        "season_mean": 2.8
+      }
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lazio",
+      "venue": "home",
+      "observed": 7,
+      "predictions": {
+        "legacy_proxy": 4.4,
+        "cap20_only_proxy": 4,
+        "current_raw_k12_weak4": 4.319062527163036,
+        "current_robust_k12_weak4": 4.225729193829702,
+        "current_raw_k12_weak12": 4.248989324548656,
+        "season_mean": 3.8
+      }
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "monza",
+      "venue": "away",
+      "observed": 6,
+      "predictions": {
+        "legacy_proxy": 4.3,
+        "cap20_only_proxy": 4.8,
+        "current_raw_k12_weak4": 5.2138386977104485,
+        "current_robust_k12_weak4": 4.997368109475155,
+        "current_raw_k12_weak12": 4.982568109475155,
+        "season_mean": 6
+      }
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lecce",
+      "venue": "home",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 3.2,
+        "cap20_only_proxy": 2.8,
+        "current_raw_k12_weak4": 3.3817553391699766,
+        "current_robust_k12_weak4": 3.2899906332876236,
+        "current_raw_k12_weak12": 3.3817553391699766,
+        "season_mean": 3.4
+      }
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "bologna",
+      "venue": "away",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 3.8,
+        "cap20_only_proxy": 3.8,
+        "current_raw_k12_weak4": 3.9634061440338266,
+        "current_robust_k12_weak4": 3.9304649675632386,
+        "current_raw_k12_weak12": 3.9634061440338266,
+        "season_mean": 3.2
+      }
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "napoli",
+      "venue": "home",
+      "observed": 8,
+      "predictions": {
+        "legacy_proxy": 4.6,
+        "cap20_only_proxy": 4.5,
+        "current_raw_k12_weak4": 4.712408841212358,
+        "current_robust_k12_weak4": 4.576722566702554,
+        "current_raw_k12_weak12": 4.605734331408438,
+        "season_mean": 4.2
+      }
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "frosinone",
+      "venue": "away",
+      "observed": 1,
+      "predictions": {
+        "legacy_proxy": 3.6,
+        "cap20_only_proxy": 4.1,
+        "current_raw_k12_weak4": 4.6003712684957545,
+        "current_robust_k12_weak4": 4.487430092025166,
+        "current_raw_k12_weak12": 4.416159503789872,
+        "season_mean": 5.6
+      }
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "sassuolo",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 4,
+        "cap20_only_proxy": 4.4,
+        "current_raw_k12_weak4": 4.7416956801978785,
+        "current_robust_k12_weak4": 4.725225091962585,
+        "current_raw_k12_weak12": 4.7416956801978785,
+        "season_mean": 7
+      }
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "milan",
+      "venue": "away",
+      "observed": 6,
+      "predictions": {
+        "legacy_proxy": 4.2,
+        "cap20_only_proxy": 4.2,
+        "current_raw_k12_weak4": 4.3951822753888585,
+        "current_robust_k12_weak4": 4.336358745977094,
+        "current_raw_k12_weak12": 4.3951822753888585,
+        "season_mean": 4.2
+      }
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "torino",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 3.8,
+        "cap20_only_proxy": 3.7,
+        "current_raw_k12_weak4": 4.125891773626988,
+        "current_robust_k12_weak4": 4.027068244215222,
+        "current_raw_k12_weak12": 4.125891773626988,
+        "season_mean": 3
+      }
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "udinese",
+      "venue": "away",
+      "observed": 1,
+      "predictions": {
+        "legacy_proxy": 4.1,
+        "cap20_only_proxy": 4.1,
+        "current_raw_k12_weak4": 4.3913715166008185,
+        "current_robust_k12_weak4": 4.35372445777729,
+        "current_raw_k12_weak12": 4.3913715166008185,
+        "season_mean": 4.8
+      }
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "bologna",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 3.4,
+        "cap20_only_proxy": 3.4,
+        "current_raw_k12_weak4": 3.3755326053228516,
+        "current_robust_k12_weak4": 3.336643716433963,
+        "current_raw_k12_weak12": 3.3755326053228516,
+        "season_mean": 3.5
+      }
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "inter",
+      "venue": "away",
+      "observed": 8,
+      "predictions": {
+        "legacy_proxy": 5,
+        "cap20_only_proxy": 5.5,
+        "current_raw_k12_weak4": 5.2549561726513465,
+        "current_robust_k12_weak4": 5.135511728206902,
+        "current_raw_k12_weak12": 5.2549561726513465,
+        "season_mean": 7.166666666666667
+      }
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "fiorentina",
+      "venue": "home",
+      "observed": 7,
+      "predictions": {
+        "legacy_proxy": 3.8,
+        "cap20_only_proxy": 3.8,
+        "current_raw_k12_weak4": 4.212669622074223,
+        "current_robust_k12_weak4": 4.073780733185334,
+        "current_raw_k12_weak12": 4.212669622074223,
+        "season_mean": 5.166666666666667
+      }
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "como",
+      "venue": "away",
+      "observed": 8,
+      "predictions": {
+        "legacy_proxy": 4.4,
+        "cap20_only_proxy": 4.9,
+        "current_raw_k12_weak4": 4.950016699131075,
+        "current_robust_k12_weak4": 4.886127810242186,
+        "current_raw_k12_weak12": 4.950016699131075,
+        "season_mean": 6.666666666666667
+      }
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "frosinone",
+      "venue": "home",
+      "observed": 10,
+      "predictions": {
+        "legacy_proxy": 4.6,
+        "cap20_only_proxy": 5.2,
+        "current_raw_k12_weak4": 4.880899249982844,
+        "current_robust_k12_weak4": 4.771454805538399,
+        "current_raw_k12_weak12": 4.785003249982844,
+        "season_mean": 4.833333333333333
+      }
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "sassuolo",
+      "venue": "away",
+      "observed": 6,
+      "predictions": {
+        "legacy_proxy": 4.1,
+        "cap20_only_proxy": 4.6,
+        "current_raw_k12_weak4": 5.109605729492895,
+        "current_robust_k12_weak4": 5.109605729492895,
+        "current_raw_k12_weak12": 4.95724217393734,
+        "season_mean": 6.5
+      }
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "juventus",
+      "venue": "home",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 6,
+        "cap20_only_proxy": 6,
+        "current_raw_k12_weak4": 5.937692376701438,
+        "current_robust_k12_weak4": 5.8682479322569945,
+        "current_raw_k12_weak12": 5.937692376701438,
+        "season_mean": 6.5
+      }
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lazio",
+      "venue": "away",
+      "observed": 3,
+      "predictions": {
+        "legacy_proxy": 3.8,
+        "cap20_only_proxy": 4.1,
+        "current_raw_k12_weak4": 3.4992064686547497,
+        "current_robust_k12_weak4": 3.4158731353214167,
+        "current_raw_k12_weak12": 3.4992064686547497,
+        "season_mean": 4.333333333333333
+      }
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "milan",
+      "venue": "home",
+      "observed": 6,
+      "predictions": {
+        "legacy_proxy": 4.4,
+        "cap20_only_proxy": 4.4,
+        "current_raw_k12_weak4": 4.997704996398651,
+        "current_robust_k12_weak4": 4.933816107509762,
+        "current_raw_k12_weak12": 4.997704996398651,
+        "season_mean": 4.5
+      }
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "atalanta",
+      "venue": "away",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 4.1,
+        "cap20_only_proxy": 4.1,
+        "current_raw_k12_weak4": 4.258662904018766,
+        "current_robust_k12_weak4": 4.139218459574321,
+        "current_raw_k12_weak12": 4.258662904018766,
+        "season_mean": 4.666666666666667
+      }
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "monza",
+      "venue": "home",
+      "observed": 6,
+      "predictions": {
+        "legacy_proxy": 4.6,
+        "cap20_only_proxy": 5,
+        "current_raw_k12_weak4": 5.416931041629233,
+        "current_robust_k12_weak4": 5.1335977082959,
+        "current_raw_k12_weak12": 5.181035041629234,
+        "season_mean": 6
+      }
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "cagliari",
+      "venue": "away",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 4,
+        "cap20_only_proxy": 4,
+        "current_raw_k12_weak4": 3.9973195690421597,
+        "current_robust_k12_weak4": 3.8623195690421595,
+        "current_raw_k12_weak12": 3.891622680153271,
+        "season_mean": 3.8333333333333335
+      }
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "parma",
+      "venue": "home",
+      "observed": 8,
+      "predictions": {
+        "legacy_proxy": 3.1,
+        "cap20_only_proxy": 2.7,
+        "current_raw_k12_weak4": 3.353031094397555,
+        "current_robust_k12_weak4": 3.3085866499531105,
+        "current_raw_k12_weak12": 3.353031094397555,
+        "season_mean": 2.6666666666666665
+      }
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "torino",
+      "venue": "away",
+      "observed": 3,
+      "predictions": {
+        "legacy_proxy": 3.7,
+        "cap20_only_proxy": 3.7,
+        "current_raw_k12_weak4": 3.925788119933242,
+        "current_robust_k12_weak4": 3.9063436754887975,
+        "current_raw_k12_weak12": 3.925788119933242,
+        "season_mean": 3.1666666666666665
+      }
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "roma",
+      "venue": "home",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 5.1,
+        "cap20_only_proxy": 5.1,
+        "current_raw_k12_weak4": 5.220850639068954,
+        "current_robust_k12_weak4": 5.1125173057356195,
+        "current_raw_k12_weak12": 5.220850639068954,
+        "season_mean": 6.166666666666667
+      }
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "genoa",
+      "venue": "away",
+      "observed": 1,
+      "predictions": {
+        "legacy_proxy": 3.3,
+        "cap20_only_proxy": 3.6,
+        "current_raw_k12_weak4": 3.335344965166236,
+        "current_robust_k12_weak4": 3.3159005207217915,
+        "current_raw_k12_weak12": 3.335344965166236,
+        "season_mean": 3.1666666666666665
+      }
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "udinese",
+      "venue": "home",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 4,
+        "cap20_only_proxy": 3.9,
+        "current_raw_k12_weak4": 4.525256896616741,
+        "current_robust_k12_weak4": 4.461368007727852,
+        "current_raw_k12_weak12": 4.525256896616741,
+        "season_mean": 4.166666666666667
+      }
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lecce",
+      "venue": "away",
+      "observed": 11,
+      "predictions": {
+        "legacy_proxy": 2.9,
+        "cap20_only_proxy": 2.9,
+        "current_raw_k12_weak4": 3.4126242548829753,
+        "current_robust_k12_weak4": 3.295957588216309,
+        "current_raw_k12_weak12": 3.4126242548829753,
+        "season_mean": 3.6666666666666665
+      }
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "venezia",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 3.6,
+        "cap20_only_proxy": 4,
+        "current_raw_k12_weak4": 3.891817794075382,
+        "current_robust_k12_weak4": 3.8079289051864933,
+        "current_raw_k12_weak12": 3.855921794075382,
+        "season_mean": 4.333333333333333
+      }
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "napoli",
+      "venue": "away",
+      "observed": 10,
+      "predictions": {
+        "legacy_proxy": 4.7,
+        "cap20_only_proxy": 4.7,
+        "current_raw_k12_weak4": 5.0414073495413625,
+        "current_robust_k12_weak4": 4.981407349541363,
+        "current_raw_k12_weak12": 4.780154905096918,
+        "season_mean": 4.833333333333333
+      }
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "atalanta",
+      "venue": "home",
+      "observed": 9,
+      "predictions": {
+        "legacy_proxy": 4.9,
+        "cap20_only_proxy": 4.9,
+        "current_raw_k12_weak4": 4.955766001730555,
+        "current_robust_k12_weak4": 4.807153561539168,
+        "current_raw_k12_weak12": 4.798207724218594,
+        "season_mean": 4.571428571428571
+      }
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "frosinone",
+      "venue": "away",
+      "observed": 10,
+      "predictions": {
+        "legacy_proxy": 3.4,
+        "cap20_only_proxy": 3.8,
+        "current_raw_k12_weak4": 4.796133795082399,
+        "current_robust_k12_weak4": 4.630009393168525,
+        "current_raw_k12_weak12": 4.61078374723551,
+        "season_mean": 5.571428571428571
+      }
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "cagliari",
+      "venue": "home",
+      "observed": 1,
+      "predictions": {
+        "legacy_proxy": 4,
+        "cap20_only_proxy": 4,
+        "current_raw_k12_weak4": 3.890341354409509,
+        "current_robust_k12_weak4": 3.7513939859884564,
+        "current_raw_k12_weak12": 3.890341354409509,
+        "season_mean": 4
+      }
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "bologna",
+      "venue": "away",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 3.9,
+        "cap20_only_proxy": 3.9,
+        "current_raw_k12_weak4": 3.9812312981963824,
+        "current_robust_k12_weak4": 3.9185997192490136,
+        "current_raw_k12_weak12": 3.9812312981963824,
+        "season_mean": 3.5714285714285716
+      }
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "como",
+      "venue": "home",
+      "observed": 6,
+      "predictions": {
+        "legacy_proxy": 5.7,
+        "cap20_only_proxy": 5.7,
+        "current_raw_k12_weak4": 6.31592076447758,
+        "current_robust_k12_weak4": 6.248026027635474,
+        "current_raw_k12_weak12": 6.31592076447758,
+        "season_mean": 6.857142857142857
+      }
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "sassuolo",
+      "venue": "away",
+      "observed": 1,
+      "predictions": {
+        "legacy_proxy": 3.7,
+        "cap20_only_proxy": 4.1,
+        "current_raw_k12_weak4": 4.447695113348415,
+        "current_robust_k12_weak4": 4.405063534401046,
+        "current_raw_k12_weak12": 4.447695113348415,
+        "season_mean": 6.428571428571429
+      }
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "genoa",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 3.4,
+        "cap20_only_proxy": 3.4,
+        "current_raw_k12_weak4": 4.305822169118815,
+        "current_robust_k12_weak4": 4.2645303030901065,
+        "current_raw_k12_weak12": 4.000895470554222,
+        "season_mean": 2.857142857142857
+      }
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "venezia",
+      "venue": "away",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 3.9,
+        "cap20_only_proxy": 4.3,
+        "current_raw_k12_weak4": 4.095841176807523,
+        "current_robust_k12_weak4": 3.9595732342237913,
+        "current_raw_k12_weak12": 4.06551505240561,
+        "season_mean": 4.285714285714286
+      }
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "inter",
+      "venue": "home",
+      "observed": 11,
+      "predictions": {
+        "legacy_proxy": 6.3,
+        "cap20_only_proxy": 6.3,
+        "current_raw_k12_weak4": 6.531374774790455,
+        "current_robust_k12_weak4": 6.421901090579929,
+        "current_raw_k12_weak12": 6.531374774790455,
+        "season_mean": 7.285714285714286
+      }
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "fiorentina",
+      "venue": "away",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 3.1,
+        "cap20_only_proxy": 3.5,
+        "current_raw_k12_weak4": 3.957819309341853,
+        "current_robust_k12_weak4": 3.83308246723659,
+        "current_raw_k12_weak12": 3.957819309341853,
+        "season_mean": 5.428571428571429
+      }
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lazio",
+      "venue": "home",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 4.2,
+        "cap20_only_proxy": 4,
+        "current_raw_k12_weak4": 4.493642607910968,
+        "current_robust_k12_weak4": 4.451537344753073,
+        "current_raw_k12_weak12": 4.493642607910968,
+        "season_mean": 4.142857142857143
+      }
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "parma",
+      "venue": "away",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 2.9,
+        "cap20_only_proxy": 2.8,
+        "current_raw_k12_weak4": 3.663287645895674,
+        "current_robust_k12_weak4": 3.5406560669483054,
+        "current_raw_k12_weak12": 3.663287645895674,
+        "season_mean": 3.4285714285714284
+      }
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lecce",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 3,
+        "cap20_only_proxy": 3,
+        "current_raw_k12_weak4": 3.740541709208175,
+        "current_robust_k12_weak4": 3.5431732881555438,
+        "current_raw_k12_weak12": 3.740541709208175,
+        "season_mean": 4.714285714285714
+      }
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "juventus",
+      "venue": "away",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 5.2,
+        "cap20_only_proxy": 5.8,
+        "current_raw_k12_weak4": 5.268449741739069,
+        "current_robust_k12_weak4": 5.157923425949595,
+        "current_raw_k12_weak12": 5.268449741739069,
+        "season_mean": 5.857142857142857
+      }
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "napoli",
+      "venue": "home",
+      "observed": 9,
+      "predictions": {
+        "legacy_proxy": 4.9,
+        "cap20_only_proxy": 4.9,
+        "current_raw_k12_weak4": 5.0792643484327105,
+        "current_robust_k12_weak4": 5.0040011905379735,
+        "current_raw_k12_weak12": 5.0792643484327105,
+        "season_mean": 5.571428571428571
+      }
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "roma",
+      "venue": "away",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 4.5,
+        "cap20_only_proxy": 5,
+        "current_raw_k12_weak4": 4.415485921969815,
+        "current_robust_k12_weak4": 4.316538553548762,
+        "current_raw_k12_weak12": 4.415485921969815,
+        "season_mean": 6
+      }
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "torino",
+      "venue": "home",
+      "observed": 7,
+      "predictions": {
+        "legacy_proxy": 3.7,
+        "cap20_only_proxy": 3.7,
+        "current_raw_k12_weak4": 4.041165725130132,
+        "current_robust_k12_weak4": 3.983892997857405,
+        "current_raw_k12_weak12": 3.9371959643645824,
+        "season_mean": 3.142857142857143
+      }
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "monza",
+      "venue": "away",
+      "observed": 3,
+      "predictions": {
+        "legacy_proxy": 4.2,
+        "cap20_only_proxy": 4.7,
+        "current_raw_k12_weak4": 5.1940783175895024,
+        "current_robust_k12_weak4": 4.963743389359837,
+        "current_raw_k12_weak12": 4.957053628594287,
+        "season_mean": 6
+      }
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "udinese",
+      "venue": "home",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 3.8,
+        "cap20_only_proxy": 3.8,
+        "current_raw_k12_weak4": 3.7012343943649704,
+        "current_robust_k12_weak4": 3.651760710154444,
+        "current_raw_k12_weak12": 3.7012343943649704,
+        "season_mean": 3.857142857142857
+      }
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "milan",
+      "venue": "away",
+      "observed": 7,
+      "predictions": {
+        "legacy_proxy": 4,
+        "cap20_only_proxy": 4.4,
+        "current_raw_k12_weak4": 4.448789079707924,
+        "current_robust_k12_weak4": 4.369841711286872,
+        "current_raw_k12_weak12": 4.448789079707924,
+        "season_mean": 4.714285714285714
+      }
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "fiorentina",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 4,
+        "cap20_only_proxy": 3.9,
+        "current_raw_k12_weak4": 4.9527708435619555,
+        "current_robust_k12_weak4": 4.839270843561956,
+        "current_raw_k12_weak12": 4.9527708435619555,
+        "season_mean": 5
+      }
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "atalanta",
+      "venue": "away",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 4.1,
+        "cap20_only_proxy": 4.1,
+        "current_raw_k12_weak4": 4.871587197538539,
+        "current_robust_k12_weak4": 4.7380871975385395,
+        "current_raw_k12_weak12": 4.871587197538539,
+        "season_mean": 5.125
+      }
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "frosinone",
+      "venue": "home",
+      "observed": 9,
+      "predictions": {
+        "legacy_proxy": 4.3,
+        "cap20_only_proxy": 4.9,
+        "current_raw_k12_weak4": 5.631989576737459,
+        "current_robust_k12_weak4": 5.5229895767374595,
+        "current_raw_k12_weak12": 5.3810935767374595,
+        "season_mean": 6.125
+      }
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lecce",
+      "venue": "away",
+      "observed": 6,
+      "predictions": {
+        "legacy_proxy": 2.9,
+        "cap20_only_proxy": 3.1,
+        "current_raw_k12_weak4": 4.3688327644653455,
+        "current_robust_k12_weak4": 4.204666097798679,
+        "current_raw_k12_weak12": 4.173691431132013,
+        "season_mean": 4.625
+      }
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "genoa",
+      "venue": "home",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 3.4,
+        "cap20_only_proxy": 3.4,
+        "current_raw_k12_weak4": 3.30517290625301,
+        "current_robust_k12_weak4": 3.23817290625301,
+        "current_raw_k12_weak12": 3.30517290625301,
+        "season_mean": 3
+      }
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "juventus",
+      "venue": "away",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 5.1,
+        "cap20_only_proxy": 5.6,
+        "current_raw_k12_weak4": 4.707637475258376,
+        "current_robust_k12_weak4": 4.560137475258376,
+        "current_raw_k12_weak12": 4.707637475258376,
+        "season_mean": 5.375
+      }
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "milan",
+      "venue": "home",
+      "observed": 3,
+      "predictions": {
+        "legacy_proxy": 4.6,
+        "cap20_only_proxy": 4.6,
+        "current_raw_k12_weak4": 4.732943940628294,
+        "current_robust_k12_weak4": 4.665943940628295,
+        "current_raw_k12_weak12": 4.732943940628294,
+        "season_mean": 5
+      }
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "bologna",
+      "venue": "away",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 3.8,
+        "cap20_only_proxy": 3.8,
+        "current_raw_k12_weak4": 3.7963209064136105,
+        "current_robust_k12_weak4": 3.778820906413611,
+        "current_raw_k12_weak12": 3.7963209064136105,
+        "season_mean": 3.75
+      }
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "monza",
+      "venue": "home",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 3.6,
+        "cap20_only_proxy": 4,
+        "current_raw_k12_weak4": 4.556170479435342,
+        "current_robust_k12_weak4": 4.305670479435342,
+        "current_raw_k12_weak12": 4.365274479435342,
+        "season_mean": 5.625
+      }
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "napoli",
+      "venue": "away",
+      "observed": 7,
+      "predictions": {
+        "legacy_proxy": 4.8,
+        "cap20_only_proxy": 5.1,
+        "current_raw_k12_weak4": 5.339679594153501,
+        "current_robust_k12_weak4": 5.2700129274868335,
+        "current_raw_k12_weak12": 5.214538260820167,
+        "season_mean": 6
+      }
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "parma",
+      "venue": "home",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 3.1,
+        "cap20_only_proxy": 2.8,
+        "current_raw_k12_weak4": 4.088226493639048,
+        "current_robust_k12_weak4": 3.9247264936390485,
+        "current_raw_k12_weak12": 4.088226493639048,
+        "season_mean": 3.5
+      }
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "udinese",
+      "venue": "away",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 3.9,
+        "cap20_only_proxy": 3.9,
+        "current_raw_k12_weak4": 4.156507984843214,
+        "current_robust_k12_weak4": 4.1165079848432145,
+        "current_raw_k12_weak12": 4.156507984843214,
+        "season_mean": 4
+      }
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "roma",
+      "venue": "home",
+      "observed": 8,
+      "predictions": {
+        "legacy_proxy": 5,
+        "cap20_only_proxy": 5,
+        "current_raw_k12_weak4": 5.257661613951773,
+        "current_robust_k12_weak4": 5.146161613951772,
+        "current_raw_k12_weak12": 5.257661613951773,
+        "season_mean": 5.75
+      }
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "cagliari",
+      "venue": "away",
+      "observed": 8,
+      "predictions": {
+        "legacy_proxy": 3.6,
+        "cap20_only_proxy": 3.6,
+        "current_raw_k12_weak4": 3.3839084406644417,
+        "current_robust_k12_weak4": 3.209908440664442,
+        "current_raw_k12_weak12": 3.3839084406644417,
+        "season_mean": 3.625
+      }
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "sassuolo",
+      "venue": "home",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 4.1,
+        "cap20_only_proxy": 4.5,
+        "current_raw_k12_weak4": 4.505164706396318,
+        "current_robust_k12_weak4": 4.469664706396318,
+        "current_raw_k12_weak12": 4.505164706396318,
+        "season_mean": 5.75
+      }
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lazio",
+      "venue": "away",
+      "observed": 8,
+      "predictions": {
+        "legacy_proxy": 4.1,
+        "cap20_only_proxy": 4.1,
+        "current_raw_k12_weak4": 4.470900078260782,
+        "current_robust_k12_weak4": 4.399400078260782,
+        "current_raw_k12_weak12": 4.470900078260782,
+        "season_mean": 4.25
+      }
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "torino",
+      "venue": "home",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 3.7,
+        "cap20_only_proxy": 3.7,
+        "current_raw_k12_weak4": 3.8358664442362937,
+        "current_robust_k12_weak4": 3.7228664442362938,
+        "current_raw_k12_weak12": 3.8358664442362937,
+        "season_mean": 3.625
+      }
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "como",
+      "venue": "away",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 4.6,
+        "cap20_only_proxy": 5.2,
+        "current_raw_k12_weak4": 5.141602069537661,
+        "current_robust_k12_weak4": 5.0876020695376605,
+        "current_raw_k12_weak12": 5.141602069537661,
+        "season_mean": 6.75
+      }
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "venezia",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 3.5,
+        "cap20_only_proxy": 3.8,
+        "current_raw_k12_weak4": 3.8347876022144662,
+        "current_robust_k12_weak4": 3.718287602214466,
+        "current_raw_k12_weak12": 3.793891602214466,
+        "season_mean": 4.375
+      }
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "inter",
+      "venue": "away",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 5.7,
+        "cap20_only_proxy": 6.4,
+        "current_raw_k12_weak4": 6.511079911266405,
+        "current_robust_k12_weak4": 6.405413244599739,
+        "current_raw_k12_weak12": 6.245938577933073,
+        "season_mean": 7.75
+      }
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "atalanta",
+      "venue": "home",
+      "observed": 6,
+      "predictions": {
+        "legacy_proxy": 4.7,
+        "cap20_only_proxy": 4.7,
+        "current_raw_k12_weak4": 5.035419038351153,
+        "current_robust_k12_weak4": 4.924466657398772,
+        "current_raw_k12_weak12": 5.035419038351153,
+        "season_mean": 5.111111111111111
+      }
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "parma",
+      "venue": "away",
+      "observed": 3,
+      "predictions": {
+        "legacy_proxy": 2.8,
+        "cap20_only_proxy": 2.8,
+        "current_raw_k12_weak4": 3.471819391450686,
+        "current_robust_k12_weak4": 3.3461051057364,
+        "current_raw_k12_weak12": 3.471819391450686,
+        "season_mean": 3.3333333333333335
+      }
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "bologna",
+      "venue": "home",
+      "observed": 5,
+      "predictions": {
+        "legacy_proxy": 3.7,
+        "cap20_only_proxy": 3.7,
+        "current_raw_k12_weak4": 4.3197733828196005,
+        "current_robust_k12_weak4": 4.292850305896524,
+        "current_raw_k12_weak12": 4.1793405623067805,
+        "season_mean": 3.888888888888889
+      }
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "monza",
+      "venue": "away",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 3.7,
+        "cap20_only_proxy": 4.1,
+        "current_raw_k12_weak4": 4.610896568855342,
+        "current_robust_k12_weak4": 4.384486312445086,
+        "current_raw_k12_weak12": 4.430340085338859,
+        "season_mean": 5.555555555555555
+      }
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "como",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 5.7,
+        "cap20_only_proxy": 5.7,
+        "current_raw_k12_weak4": 6.122132519418111,
+        "current_robust_k12_weak4": 6.073780871066463,
+        "current_raw_k12_weak12": 5.909904827110419,
+        "season_mean": 6.555555555555555
+      }
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "venezia",
+      "venue": "away",
+      "observed": 1,
+      "predictions": {
+        "legacy_proxy": 3.5,
+        "cap20_only_proxy": 3.8,
+        "current_raw_k12_weak4": 3.817400295879346,
+        "current_robust_k12_weak4": 3.7045797830588327,
+        "current_raw_k12_weak12": 3.7818987574178076,
+        "season_mean": 4.333333333333333
+      }
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "frosinone",
+      "venue": "home",
+      "observed": 8,
+      "predictions": {
+        "legacy_proxy": 4.2,
+        "cap20_only_proxy": 4.8,
+        "current_raw_k12_weak4": 5.667978255118468,
+        "current_robust_k12_weak4": 5.58977312691334,
+        "current_raw_k12_weak12": 5.38192726610748,
+        "season_mean": 6.444444444444445
+      }
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "torino",
+      "venue": "away",
+      "observed": 3,
+      "predictions": {
+        "legacy_proxy": 3.7,
+        "cap20_only_proxy": 3.7,
+        "current_raw_k12_weak4": 4.480011016662864,
+        "current_robust_k12_weak4": 4.384516511168359,
+        "current_raw_k12_weak12": 4.288296144867992,
+        "season_mean": 3.7777777777777777
+      }
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "juventus",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 5.4,
+        "cap20_only_proxy": 5.4,
+        "current_raw_k12_weak4": 4.894426545515691,
+        "current_robust_k12_weak4": 4.7468074978966435,
+        "current_raw_k12_weak12": 4.894426545515691,
+        "season_mean": 5.222222222222222
+      }
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "napoli",
+      "venue": "away",
+      "observed": 1,
+      "predictions": {
+        "legacy_proxy": 4,
+        "cap20_only_proxy": 4.4,
+        "current_raw_k12_weak4": 4.588282410270592,
+        "current_robust_k12_weak4": 4.487806219794401,
+        "current_raw_k12_weak12": 4.588282410270592,
+        "season_mean": 6.111111111111111
+      }
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lazio",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 4.6,
+        "cap20_only_proxy": 4.2,
+        "current_raw_k12_weak4": 5.029502889916631,
+        "current_robust_k12_weak4": 4.929026699440441,
+        "current_raw_k12_weak12": 5.029502889916631,
+        "season_mean": 4.666666666666667
+      }
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "cagliari",
+      "venue": "away",
+      "observed": 3,
+      "predictions": {
+        "legacy_proxy": 4.2,
+        "cap20_only_proxy": 4.2,
+        "current_raw_k12_weak4": 4.094074588219088,
+        "current_robust_k12_weak4": 3.9788364929809927,
+        "current_raw_k12_weak12": 4.094074588219088,
+        "season_mean": 4.111111111111111
+      }
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lecce",
+      "venue": "home",
+      "observed": 7,
+      "predictions": {
+        "legacy_proxy": 3.4,
+        "cap20_only_proxy": 3.2,
+        "current_raw_k12_weak4": 4.374454441533951,
+        "current_robust_k12_weak4": 4.171597298676808,
+        "current_raw_k12_weak12": 4.374454441533951,
+        "season_mean": 4.777777777777778
+      }
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "genoa",
+      "venue": "away",
+      "observed": 3,
+      "predictions": {
+        "legacy_proxy": 3.3,
+        "cap20_only_proxy": 3.3,
+        "current_raw_k12_weak4": 3.8035902974131823,
+        "current_robust_k12_weak4": 3.7445426783655633,
+        "current_raw_k12_weak12": 3.8035902974131823,
+        "season_mean": 2.888888888888889
+      }
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "milan",
+      "venue": "home",
+      "observed": 4,
+      "predictions": {
+        "legacy_proxy": 4.2,
+        "cap20_only_proxy": 4.5,
+        "current_raw_k12_weak4": 4.2307632852142625,
+        "current_robust_k12_weak4": 4.151715666166643,
+        "current_raw_k12_weak12": 4.2307632852142625,
+        "season_mean": 4.777777777777778
+      }
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "inter",
+      "venue": "away",
+      "observed": 8,
+      "predictions": {
+        "legacy_proxy": 5.1,
+        "cap20_only_proxy": 5.6,
+        "current_raw_k12_weak4": 5.426499317507064,
+        "current_robust_k12_weak4": 5.3112612222689695,
+        "current_raw_k12_weak12": 5.426499317507064,
+        "season_mean": 7.111111111111111
+      }
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "sassuolo",
+      "venue": "home",
+      "observed": 2,
+      "predictions": {
+        "legacy_proxy": 4.4,
+        "cap20_only_proxy": 4.4,
+        "current_raw_k12_weak4": 4.806461754067918,
+        "current_robust_k12_weak4": 4.730747468353633,
+        "current_raw_k12_weak12": 4.806461754067918,
+        "season_mean": 5.333333333333333
+      }
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "fiorentina",
+      "venue": "away",
+      "observed": 6,
+      "predictions": {
+        "legacy_proxy": 3.8,
+        "cap20_only_proxy": 3.9,
+        "current_raw_k12_weak4": 4.506715063149375,
+        "current_robust_k12_weak4": 4.383381729816041,
+        "current_raw_k12_weak12": 4.506715063149375,
+        "season_mean": 4.888888888888889
+      }
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "udinese",
+      "venue": "home",
+      "observed": 7,
+      "predictions": {
+        "legacy_proxy": 3.9,
+        "cap20_only_proxy": 3.9,
+        "current_raw_k12_weak4": 4.1619102588209325,
+        "current_robust_k12_weak4": 4.063815020725695,
+        "current_raw_k12_weak12": 4.1619102588209325,
+        "season_mean": 4.111111111111111
+      }
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "roma",
+      "venue": "away",
+      "observed": 9,
+      "predictions": {
+        "legacy_proxy": 4.5,
+        "cap20_only_proxy": 5,
+        "current_raw_k12_weak4": 4.901569047249978,
+        "current_robust_k12_weak4": 4.762045237726168,
+        "current_raw_k12_weak12": 4.901569047249978,
+        "season_mean": 6
+      }
+    }
+  ]
+}

@@ -4,6 +4,7 @@ const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 const { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, WEIGHTS, predictMatch } = require("./predictions/engine");
+const { currentSotVolume } = require('./predictions/current-sot-volume.cjs');
 const { DECISION_LAYER_VERSION, PROFILE_LIMITS, enrichPrediction } = require("./predictions/decision-layer");
 const { loadPlayerIdentities } = require("./player-identity");
 const { aggregateDisciplinaryFeatures,historicalDisciplinaryFeatures } = require("./disciplinary-features");
@@ -341,8 +342,8 @@ const generatedPredictions = targetMatches.map(match => {
     xgLeagueSummary,
     homeDiscipline: disciplineByTeam.get(match.homeTeam),
     awayDiscipline: disciplineByTeam.get(match.awayTeam),
-    homeVolume: volumeByTeam.get(match.homeTeam),
-    awayVolume: volumeByTeam.get(match.awayTeam),
+    homeVolume: match.status === 'scheduled' ? currentSotVolume({ matches, historicalProfiles: volumeProfiles.profiles, teamId: match.homeTeam, targetMatch: match }) : volumeByTeam.get(match.homeTeam),
+    awayVolume: match.status === 'scheduled' ? currentSotVolume({ matches, historicalProfiles: volumeProfiles.profiles, teamId: match.awayTeam, targetMatch: match }) : volumeByTeam.get(match.awayTeam),
     homeObjective: objectiveByTeam.get(match.homeTeam),
     awayObjective: objectiveByTeam.get(match.awayTeam),
     headToHead: headToHeadByMatch.get(match.id) || headToHeadByPair.get(pairKey(match.homeTeam, match.awayTeam)),
@@ -584,7 +585,8 @@ const output = {
       recentDecay: 0.82,
       venueSplit: true,
       interval: "p20-p80 storico; per il totale varianze squadra trattate come indipendenti",
-      fallback: "Profilo WhoScored, precisione della probabile formazione e stile offensivo quando manca lo storico Serie A della squadra."
+      fallback: "Profilo WhoScored, precisione della probabile formazione e stile offensivo quando manca lo storico Serie A della squadra.",
+      currentSotBaseline: { version: 1, scope: 'Serie A scheduled fixtures with prior completed current-season observations', historicalPriorEquivalentMatches: 12, missingComparableHistoryPriorEquivalentMatches: 4, recentSeason: 'current', ownResidualBoost: false, opponentResidualBoost: false, validationStatus: 'user-authorized-adaptation-preliminary-baseline-replay', report: 'docs/reports/team-sot-baseline-audit-2026-11-06.md', prospectiveCalibration: false }
     },
     playerVolumeModel: "Tiri e tiri in porta dei titolari: frequenze per 90 minuti 2025/26 regolarizzate verso una prior di ruolo, poi scalate sul volume previsto della squadra; i falli/90 restano visibili come base disciplinare e i dati mancanti usano una baseline dichiarata.",
     limitations: [`Quote Sisal datate per singolo evento; ultimo aggiornamento disponibile ${String(odds.retrievedAt).slice(0, 10)}. Le gare senza snapshot vengono pronosticate senza confronto mercato.`, "La forma recente della seconda giornata include il risultato concluso della prima e completa il campione con le gare 2025/26, sempre con taglio temporale per giornata.", "Gli xG Understat 2025/26 coprono 17 squadre su 20; negli incontri con una neopromossa non coperta resta attivo il fallback sui gol.", "Le indisponibilita derivano dal monitor editoriale aggiornato e i casi da valutare non sono trasformati in assenze certe; arbitri e meteo saranno integrati soltanto quando verificati.", "Per la seconda giornata le formazioni ufficiali della prima sono usate soltanto come riferimento tecnico, non come distinte confermate.", "Il backtest pluristagionale non include probabili XI, indisponibili e tattica per assenza di snapshot storici.", "Il correttivo H2H e limitato al 5% per lato: il vantaggio fuori campione e positivo ma modesto, quindi non deve dominare il pronostico."]

@@ -1,0 +1,50 @@
+'use strict';
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const { currentSotVolume } = require('./predictions/current-sot-volume.cjs');
+const read = p => JSON.parse(fs.readFileSync(p, 'utf8'));
+const matches = read('data/normalized/matches.json');
+const historicalProfiles = read('data/normalized/team-volume-profiles-2025-26.json').profiles;
+const fixtures = matches.filter(m => m.competition === 'serie-a' && m.season === '2026-27' && m.matchday === 11);
+const before = JSON.stringify(historicalProfiles);
+for (const targetMatch of fixtures) for (const teamId of [targetMatch.homeTeam, targetMatch.awayTeam]) {
+  const profile = currentSotVolume({ matches, historicalProfiles, teamId, targetMatch });
+  assert.equal(profile.currentSotBaseline.ownMatches, 10);
+  assert(profile.currentSotBaseline.matchIds.every(id => matches.find(m => m.id === id).matchday < 11));
+  for (const venue of ['home', 'away']) for (const field of ['for', 'against']) {
+    const metric = profile.venues[venue].shotsOnTarget[field];
+    assert(Number.isFinite(metric.mean) && metric.mean >= 0);
+    assert(metric.p20 <= metric.p80);
+    assert(Number.isFinite(metric.sd) && metric.sd >= 0);
+  }
+  const old = historicalProfiles.find(p => p.teamId === teamId);
+  assert.deepEqual(profile.venues.home.totalShots, old?.venues.home.totalShots);
+  assert.deepEqual(profile.venues.away.wonCorners, old?.venues.away.wonCorners);
+}
+assert.equal(JSON.stringify(historicalProfiles), before);
+const targetMatch = fixtures.find(m => m.awayTeam === 'frosinone');
+const make = input => currentSotVolume({ matches: input, historicalProfiles, teamId: 'frosinone', targetMatch });
+const frosinone = make(matches);
+assert.equal(frosinone.venues.away.shotsOnTarget.for.currentMean, 6.6);
+assert.equal(frosinone.venues.away.shotsOnTarget.for.priorEquivalentMatches, 4);
+const future = structuredClone(matches);
+future.find(m => m.id === targetMatch.id).teamStats = { home: { shotsOnTarget: 999 }, away: { shotsOnTarget: 999 } };
+assert.deepEqual(make(future), frosinone);
+const altered = structuredClone(matches);
+altered.find(m => m.id === 'frosinone-torino-2026-27-md-10').teamStats.home.shotsOnTarget += 2;
+assert(make(altered).venues.away.shotsOnTarget.for.mean > frosinone.venues.away.shotsOnTarget.for.mean);
+const opening = { ...targetMatch, matchday: 1 };
+assert.equal(currentSotVolume({ matches, historicalProfiles, teamId: 'frosinone', targetMatch: opening }), undefined);
+const missing = structuredClone(matches);
+for (const m of missing) if (m.homeTeam === 'frosinone') delete m.teamStats?.home?.shotsOnTarget;
+assert(make(missing).currentSotBaseline.ownMatches < 10, 'Missing SOT must not become zero');
+const { applyOwnOffensiveVolumeProfile } = require('./predictions/engine');
+const sot = { central: 5.8, min: 3, max: 9 };
+applyOwnOffensiveVolumeProfile({ offense: { teamOffensiveAllocation: { enabled: true, teamSotMaxAdjustmentPct: 6 }, teamSotVolume: { shrunkPerGame: 8 } } }, { central: 12, min: 8, max: 16 }, sot, { central: 5, min: 3, max: 8 }, true);
+assert.equal(sot.central, 5.8, 'Current SOT integrated in baseline must not get a second own-volume boost');
+const { applyOpponentTeamVolumeInteraction } = require('./predictions/engine');
+const opponentProfile = require('./build-team-matchup-profiles').buildProfiles({ asOfMatchday: 11 }).profiles.find(p => p.teamId === 'cagliari');
+const opponentSot = { central: 5.8, min: 3, max: 9 };
+applyOpponentTeamVolumeInteraction(null, opponentProfile, { central: 12, min: 8, max: 16 }, opponentSot, { central: 5, min: 3, max: 8 }, true);
+assert.equal(opponentSot.central, 5.8, 'Current concessions must not get a second SOT correction');
+console.log('OK SOT correnti: 20 squadre, cutoff, sensibilita, mancanti, storico immutato, tiri/corner preservati.');

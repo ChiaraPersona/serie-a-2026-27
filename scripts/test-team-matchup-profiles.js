@@ -59,7 +59,7 @@ assert.strictEqual(atalanta.vulnerabilities.positionalShotVulnerability.W.effect
 
 assert.strictEqual(bologna.sampleSize, 5);
 assert.strictEqual(bologna.tacticalContext.current.coach, "Raffaele Palladino");
-assert.strictEqual(bologna.tacticalContext.current.repositoryTeamCoach, "Domenico Tedesco", "La divergenza anagrafica del repository deve restare visibile");
+assert.strictEqual(bologna.tacticalContext.current.repositoryTeamCoach, "Raffaele Palladino", "L'anagrafica corrente deve riflettere l'allenatore aggiornato del Bologna");
 assert.strictEqual(bologna.tacticalContext.historicalPrior.formation, "4231");
 const tedesco = bologna.tacticalContext.currentSeasonRegimes.find(era => era.id === "tedesco");
 const palladino = bologna.tacticalContext.currentSeasonRegimes.find(era => era.id === "palladino");
