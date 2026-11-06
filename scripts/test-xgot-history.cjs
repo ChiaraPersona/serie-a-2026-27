@@ -24,7 +24,6 @@ for (const [change, reason] of [
   [d => { d.content.shotmap.shots[0].expectedGoalsOnTarget = null; }, "invalid-shot-xgot"],
   [d => { d.content.shotmap.shots[0].expectedGoalsOnTarget = 0.3; }, "xgot-total-mismatch"],
   [d => { d.content.shotmap.shots[0].isBlocked = true; }, "sot-count-mismatch"],
-  [d => { d.content.shotmap.shots[0].isSavedOffLine = true; }, "sot-count-mismatch"],
   [d => { d.content.shotmap.shots[0].playerId = 0; }, "invalid-provider-player-id"],
   [d => { d.content.shotmap.shots[0].period = "ExtraFirstHalf"; }, "unsupported-extra-time"],
   [d => { delete d.content.stats; }, "xgot-total-mismatch"]
@@ -32,6 +31,10 @@ for (const [change, reason] of [
   const d = example(); change(d);
   assert(reconcile(d).reasons.some(r => r.includes(reason)), reason);
 }
+const lineClearance = example();
+lineClearance.content.shotmap.shots[0].isSavedOffLine = true;
+lineClearance.content.shotmap.shots[0].isBlocked = true;
+assert.deepEqual(reconcile(lineClearance).reasons, [], "Last-line blocks count as SOT");
 const history = read("data/normalized/xgot-history.json");
 const audit = read("data/analysis/xgot/history-audit.json");
 for (const input of audit.identityInputs) {

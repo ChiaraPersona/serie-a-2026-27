@@ -1,0 +1,1137 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "4.13.0",
+  "protocol": {
+    "schemaVersion": 1,
+    "status": "research-only-no-automatic-promotion",
+    "developmentSeason": "2024-25",
+    "heldOutTestSeason": "2025-26",
+    "historyCutoff": "Strictly earlier UTC calendar date; embargo same-day fixtures",
+    "minimumTeamMatches": 6,
+    "minimumMatchesPerVenue": 2,
+    "historyWindowDays": 550,
+    "candidateWeights": [
+      0,
+      0.05,
+      0.1,
+      0.2,
+      0.3
+    ],
+    "weightSelection": "Lowest 1X2 log loss on development only; ties prefer zero or smaller weight",
+    "xgotPriorMatches": 8,
+    "bootstrapReplicates": 2000,
+    "bootstrapUnit": "UTC calendar week blocks; paired model differences",
+    "researchSuccessGate": {
+      "minimumDevelopmentFixtures": 50,
+      "minimumTestFixtures": 100,
+      "selectedWeightPositive": true,
+      "testPairedLogLoss95CIUpperBelow": 0,
+      "testBrierMustNotWorsen": true,
+      "testECE10MaximumWorsening": 0.01
+    },
+    "productionApprovalRequires": [
+      "Prospective frozen pre-match inputs and predictions",
+      "Full production context replay including lineup and matchup inputs",
+      "Independent validation of provider model versions and historical availability",
+      "Separate validation of every individual or DUO market before any operational use"
+    ]
+  },
+  "inputs": [
+    {
+      "path": "docs/xgot-validation-protocol.json",
+      "sha256": "c9785a3ec9a4f5364392029925c1c8d8e7ecd753e86523a77a7f50b88617c3cd"
+    },
+    {
+      "path": "data/analysis/xgot/reconciliation.json",
+      "sha256": "1d051e48075d3920fcc69679e948a7ba36c72cd58df06a10ddc507b632b606f2"
+    },
+    {
+      "path": "data/normalized/xgot-reconciled-history.json",
+      "sha256": "c09ada26c69b9a56fe99e76514d70b1d4447e5a79c91aa1df2cf7ecf6a63bc69"
+    },
+    {
+      "path": "data/normalized/understat-serie-a-xg.json",
+      "sha256": "1956fb080041bfc47945bfb8cade24fa432e2e13ceb6ffa92c064f79458a7655"
+    },
+    {
+      "path": "scripts/predictions/engine.js",
+      "sha256": "5bbf729cb37ee7469f64b22bbbbe74e680281d183893fba2575edb542263cbfa"
+    },
+    {
+      "path": "scripts/research/xgot/run.cjs",
+      "sha256": "fc52202f13b303c00b7224a8be82810478662efad55f776a3ea37cc8a17bf5ac"
+    }
+  ],
+  "mode": "retrospective-technical-core-replay-not-original-production-forecasts",
+  "predictiveUseApproved": false,
+  "operationalGate": "Not passed: no historical as-of snapshots, full contextual replay or prospective frozen validation",
+  "individualAndDuoMarketsValidated": false,
+  "competitions": [
+    {
+      "competition": "serie-a",
+      "totalRegulationFixtures": 760,
+      "developmentFixtures": 318,
+      "testFixtures": 355,
+      "omittedForInsufficientPriorData": 87,
+      "baselineUnderstatUsedInTest": 355,
+      "selectedWeight": 0.1,
+      "developmentRanking": [
+        {
+          "weight": 0.1,
+          "metrics": {
+            "n": 318,
+            "logLoss": 0.9823396143685537,
+            "brier": 0.5846459331380256,
+            "over25LogLoss": 0.7045062243093446,
+            "bttsLogLoss": 0.7091649227502694,
+            "ece10": 0.040828249277164795,
+            "calibrationBins": [
+              {
+                "bin": 0,
+                "n": 2,
+                "predicted": 0.08549651597373958,
+                "observed": 0
+              },
+              {
+                "bin": 1,
+                "n": 94,
+                "predicted": 0.16605499314473854,
+                "observed": 0.09574468085106383
+              },
+              {
+                "bin": 2,
+                "n": 420,
+                "predicted": 0.25153708158302773,
+                "observed": 0.2523809523809524
+              },
+              {
+                "bin": 3,
+                "n": 179,
+                "predicted": 0.34821708165276527,
+                "observed": 0.27932960893854747
+              },
+              {
+                "bin": 4,
+                "n": 121,
+                "predicted": 0.4454123838105387,
+                "observed": 0.5537190082644629
+              },
+              {
+                "bin": 5,
+                "n": 89,
+                "predicted": 0.543416347211345,
+                "observed": 0.5393258426966292
+              },
+              {
+                "bin": 6,
+                "n": 38,
+                "predicted": 0.6322536249548932,
+                "observed": 0.7368421052631579
+              },
+              {
+                "bin": 7,
+                "n": 11,
+                "predicted": 0.7235286036872371,
+                "observed": 0.9090909090909091
+              },
+              {
+                "bin": 8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 9,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          }
+        },
+        {
+          "weight": 0.05,
+          "metrics": {
+            "n": 318,
+            "logLoss": 0.9824202528423389,
+            "brier": 0.5847484721378128,
+            "over25LogLoss": 0.7050689072298555,
+            "bttsLogLoss": 0.7091158502529468,
+            "ece10": 0.040387726590179834,
+            "calibrationBins": [
+              {
+                "bin": 0,
+                "n": 2,
+                "predicted": 0.08141832373326174,
+                "observed": 0
+              },
+              {
+                "bin": 1,
+                "n": 97,
+                "predicted": 0.164686642487025,
+                "observed": 0.09278350515463918
+              },
+              {
+                "bin": 2,
+                "n": 417,
+                "predicted": 0.25103576253459803,
+                "observed": 0.2565947242206235
+              },
+              {
+                "bin": 3,
+                "n": 176,
+                "predicted": 0.34731536712959016,
+                "observed": 0.2784090909090909
+              },
+              {
+                "bin": 4,
+                "n": 124,
+                "predicted": 0.44554170452315917,
+                "observed": 0.5483870967741935
+              },
+              {
+                "bin": 5,
+                "n": 88,
+                "predicted": 0.5449582405718265,
+                "observed": 0.5454545454545454
+              },
+              {
+                "bin": 6,
+                "n": 38,
+                "predicted": 0.6341349478473556,
+                "observed": 0.6842105263157895
+              },
+              {
+                "bin": 7,
+                "n": 12,
+                "predicted": 0.7293764075137408,
+                "observed": 0.9166666666666666
+              },
+              {
+                "bin": 8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 9,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          }
+        },
+        {
+          "weight": 0.2,
+          "metrics": {
+            "n": 318,
+            "logLoss": 0.9824755619793165,
+            "brier": 0.5846691396691448,
+            "over25LogLoss": 0.7036661994902937,
+            "bttsLogLoss": 0.7093780981757435,
+            "ece10": 0.04043731594852141,
+            "calibrationBins": [
+              {
+                "bin": 0,
+                "n": 1,
+                "predicted": 0.08313856985631235,
+                "observed": 0
+              },
+              {
+                "bin": 1,
+                "n": 87,
+                "predicted": 0.16716020807780588,
+                "observed": 0.09195402298850575
+              },
+              {
+                "bin": 2,
+                "n": 427,
+                "predicted": 0.2521198759439233,
+                "observed": 0.24824355971896955
+              },
+              {
+                "bin": 3,
+                "n": 186,
+                "predicted": 0.34950180648797874,
+                "observed": 0.2903225806451613
+              },
+              {
+                "bin": 4,
+                "n": 120,
+                "predicted": 0.4474896319137433,
+                "observed": 0.525
+              },
+              {
+                "bin": 5,
+                "n": 89,
+                "predicted": 0.5452117081195688,
+                "observed": 0.5955056179775281
+              },
+              {
+                "bin": 6,
+                "n": 37,
+                "predicted": 0.6345789401188443,
+                "observed": 0.7567567567567568
+              },
+              {
+                "bin": 7,
+                "n": 7,
+                "predicted": 0.7156259508381799,
+                "observed": 0.8571428571428571
+              },
+              {
+                "bin": 8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 9,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          }
+        },
+        {
+          "weight": 0,
+          "metrics": {
+            "n": 318,
+            "logLoss": 0.982601059921062,
+            "brier": 0.5849272239368806,
+            "over25LogLoss": 0.7057292236654777,
+            "bttsLogLoss": 0.709105137769715,
+            "ece10": 0.04043838685891117,
+            "calibrationBins": [
+              {
+                "bin": 0,
+                "n": 2,
+                "predicted": 0.07751946950114068,
+                "observed": 0
+              },
+              {
+                "bin": 1,
+                "n": 102,
+                "predicted": 0.16400321341384053,
+                "observed": 0.09803921568627451
+              },
+              {
+                "bin": 2,
+                "n": 415,
+                "predicted": 0.25113236538867006,
+                "observed": 0.26024096385542167
+              },
+              {
+                "bin": 3,
+                "n": 171,
+                "predicted": 0.3474020106695127,
+                "observed": 0.27485380116959063
+              },
+              {
+                "bin": 4,
+                "n": 124,
+                "predicted": 0.4452737470372978,
+                "observed": 0.5403225806451613
+              },
+              {
+                "bin": 5,
+                "n": 89,
+                "predicted": 0.5455377488396959,
+                "observed": 0.550561797752809
+              },
+              {
+                "bin": 6,
+                "n": 39,
+                "predicted": 0.6377932569349439,
+                "observed": 0.6666666666666666
+              },
+              {
+                "bin": 7,
+                "n": 12,
+                "predicted": 0.7375180443483894,
+                "observed": 0.9166666666666666
+              },
+              {
+                "bin": 8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 9,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          }
+        },
+        {
+          "weight": 0.3,
+          "metrics": {
+            "n": 318,
+            "logLoss": 0.9830024510535775,
+            "brier": 0.5849953419188164,
+            "over25LogLoss": 0.7031943092043718,
+            "bttsLogLoss": 0.709744507286789,
+            "ece10": 0.04435274029705428,
+            "calibrationBins": [
+              {
+                "bin": 0,
+                "n": 1,
+                "predicted": 0.09628307345638641,
+                "observed": 0
+              },
+              {
+                "bin": 1,
+                "n": 82,
+                "predicted": 0.1698558240773429,
+                "observed": 0.07317073170731707
+              },
+              {
+                "bin": 2,
+                "n": 431,
+                "predicted": 0.252947225317234,
+                "observed": 0.2505800464037123
+              },
+              {
+                "bin": 3,
+                "n": 189,
+                "predicted": 0.34979652043475395,
+                "observed": 0.2857142857142857
+              },
+              {
+                "bin": 4,
+                "n": 119,
+                "predicted": 0.44615566429543196,
+                "observed": 0.5294117647058824
+              },
+              {
+                "bin": 5,
+                "n": 93,
+                "predicted": 0.5447402309703621,
+                "observed": 0.6236559139784946
+              },
+              {
+                "bin": 6,
+                "n": 35,
+                "predicted": 0.6356843379245144,
+                "observed": 0.7428571428571429
+              },
+              {
+                "bin": 7,
+                "n": 4,
+                "predicted": 0.7103563798867512,
+                "observed": 0.75
+              },
+              {
+                "bin": 8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 9,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          }
+        }
+      ],
+      "baseline": {
+        "n": 355,
+        "logLoss": 1.0057771689668538,
+        "brier": 0.6005190506992945,
+        "over25LogLoss": 0.704820124386352,
+        "bttsLogLoss": 0.6975476946608932,
+        "ece10": 0.03204847276379951,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 1,
+            "n": 79,
+            "predicted": 0.17008060948391665,
+            "observed": 0.12658227848101267
+          },
+          {
+            "bin": 2,
+            "n": 508,
+            "predicted": 0.25665936474872936,
+            "observed": 0.24606299212598426
+          },
+          {
+            "bin": 3,
+            "n": 177,
+            "predicted": 0.34366533774854735,
+            "observed": 0.2994350282485876
+          },
+          {
+            "bin": 4,
+            "n": 166,
+            "predicted": 0.44374665376030975,
+            "observed": 0.4819277108433735
+          },
+          {
+            "bin": 5,
+            "n": 102,
+            "predicted": 0.5449279531830592,
+            "observed": 0.6274509803921569
+          },
+          {
+            "bin": 6,
+            "n": 31,
+            "predicted": 0.63514814530301,
+            "observed": 0.7096774193548387
+          },
+          {
+            "bin": 7,
+            "n": 2,
+            "predicted": 0.7088607618232213,
+            "observed": 0.5
+          },
+          {
+            "bin": 8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "candidate": {
+        "n": 355,
+        "logLoss": 1.0044976083809032,
+        "brier": 0.5998223098532314,
+        "over25LogLoss": 0.7038118357392293,
+        "bttsLogLoss": 0.6970724680014173,
+        "ece10": 0.03363560641697593,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 1,
+            "n": 80,
+            "predicted": 0.1703130980975282,
+            "observed": 0.1125
+          },
+          {
+            "bin": 2,
+            "n": 506,
+            "predicted": 0.2569635614012908,
+            "observed": 0.24703557312252963
+          },
+          {
+            "bin": 3,
+            "n": 175,
+            "predicted": 0.3419706388193689,
+            "observed": 0.29714285714285715
+          },
+          {
+            "bin": 4,
+            "n": 169,
+            "predicted": 0.4430258790765986,
+            "observed": 0.4970414201183432
+          },
+          {
+            "bin": 5,
+            "n": 105,
+            "predicted": 0.5466881163321753,
+            "observed": 0.6
+          },
+          {
+            "bin": 6,
+            "n": 28,
+            "predicted": 0.6362647787191709,
+            "observed": 0.75
+          },
+          {
+            "bin": 7,
+            "n": 2,
+            "predicted": 0.7087443533973837,
+            "observed": 0.5
+          },
+          {
+            "bin": 8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "pairedLogLossCI": {
+        "meanDelta": -0.00127956058594991,
+        "lower95": -0.003080475399922148,
+        "upper95": 0.000651754305907007,
+        "blocks": 36,
+        "replicates": 2000
+      },
+      "gates": {
+        "developmentSample": true,
+        "testSample": true,
+        "positiveWeight": true,
+        "logLossImprovement": false,
+        "brierNonWorsening": true,
+        "calibrationNonWorsening": true
+      },
+      "retrospectiveResearchGatePassed": false,
+      "predictiveUseApproved": false
+    },
+    {
+      "competition": "champions-league",
+      "totalRegulationFixtures": 371,
+      "developmentFixtures": 8,
+      "testFixtures": 63,
+      "omittedForInsufficientPriorData": 300,
+      "baselineUnderstatUsedInTest": 0,
+      "selectedWeight": 0.3,
+      "developmentRanking": [
+        {
+          "weight": 0.3,
+          "metrics": {
+            "n": 8,
+            "logLoss": 1.0771230199021655,
+            "brier": 0.6606548833800446,
+            "over25LogLoss": 0.6732375564485398,
+            "bttsLogLoss": 0.6630058109209607,
+            "ece10": 0.23398928367501115,
+            "calibrationBins": [
+              {
+                "bin": 0,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 1,
+                "n": 2,
+                "predicted": 0.18713797270424215,
+                "observed": 0.5
+              },
+              {
+                "bin": 2,
+                "n": 12,
+                "predicted": 0.2502363624283326,
+                "observed": 0.16666666666666666
+              },
+              {
+                "bin": 3,
+                "n": 3,
+                "predicted": 0.3743013239522724,
+                "observed": 0.3333333333333333
+              },
+              {
+                "bin": 4,
+                "n": 4,
+                "predicted": 0.4544631626228455,
+                "observed": 1
+              },
+              {
+                "bin": 5,
+                "n": 2,
+                "predicted": 0.5282035142559046,
+                "observed": 0
+              },
+              {
+                "bin": 6,
+                "n": 1,
+                "predicted": 0.6257240545915158,
+                "observed": 0
+              },
+              {
+                "bin": 7,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 9,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          }
+        },
+        {
+          "weight": 0.2,
+          "metrics": {
+            "n": 8,
+            "logLoss": 1.0894159306503262,
+            "brier": 0.6703863303261596,
+            "over25LogLoss": 0.6700108699984783,
+            "bttsLogLoss": 0.6621061909045473,
+            "ece10": 0.18322544495507911,
+            "calibrationBins": [
+              {
+                "bin": 0,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 1,
+                "n": 2,
+                "predicted": 0.1887136735336019,
+                "observed": 0.5
+              },
+              {
+                "bin": 2,
+                "n": 12,
+                "predicted": 0.24900890181878313,
+                "observed": 0.16666666666666666
+              },
+              {
+                "bin": 3,
+                "n": 4,
+                "predicted": 0.3807587060810417,
+                "observed": 0.5
+              },
+              {
+                "bin": 4,
+                "n": 2,
+                "predicted": 0.4504162445738401,
+                "observed": 1
+              },
+              {
+                "bin": 5,
+                "n": 3,
+                "predicted": 0.5293419549009185,
+                "observed": 0.3333333333333333
+              },
+              {
+                "bin": 6,
+                "n": 1,
+                "predicted": 0.6225726529327962,
+                "observed": 0
+              },
+              {
+                "bin": 7,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 9,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          }
+        },
+        {
+          "weight": 0.1,
+          "metrics": {
+            "n": 8,
+            "logLoss": 1.1024441636141606,
+            "brier": 0.6806482504456824,
+            "over25LogLoss": 0.6666425348251273,
+            "bttsLogLoss": 0.661474773341799,
+            "ece10": 0.14350341367338007,
+            "calibrationBins": [
+              {
+                "bin": 0,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 1,
+                "n": 3,
+                "predicted": 0.19181908457121466,
+                "observed": 0.3333333333333333
+              },
+              {
+                "bin": 2,
+                "n": 10,
+                "predicted": 0.24744400223549498,
+                "observed": 0.2
+              },
+              {
+                "bin": 3,
+                "n": 5,
+                "predicted": 0.36528648157093974,
+                "observed": 0.4
+              },
+              {
+                "bin": 4,
+                "n": 2,
+                "predicted": 0.43803468717554783,
+                "observed": 1
+              },
+              {
+                "bin": 5,
+                "n": 3,
+                "predicted": 0.5427253833347798,
+                "observed": 0.3333333333333333
+              },
+              {
+                "bin": 6,
+                "n": 1,
+                "predicted": 0.619424791721271,
+                "observed": 0
+              },
+              {
+                "bin": 7,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 9,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          }
+        },
+        {
+          "weight": 0.05,
+          "metrics": {
+            "n": 8,
+            "logLoss": 1.1092365732505773,
+            "brier": 0.685971405790855,
+            "over25LogLoss": 0.6649069843863338,
+            "bttsLogLoss": 0.6612590968190898,
+            "ece10": 0.1444428088773022,
+            "calibrationBins": [
+              {
+                "bin": 0,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 1,
+                "n": 3,
+                "predicted": 0.1901758070716668,
+                "observed": 0.3333333333333333
+              },
+              {
+                "bin": 2,
+                "n": 10,
+                "predicted": 0.24672109595700306,
+                "observed": 0.2
+              },
+              {
+                "bin": 3,
+                "n": 5,
+                "predicted": 0.36647591199149254,
+                "observed": 0.4
+              },
+              {
+                "bin": 4,
+                "n": 2,
+                "predicted": 0.43188965614995534,
+                "observed": 1
+              },
+              {
+                "bin": 5,
+                "n": 3,
+                "predicted": 0.5494168241232399,
+                "observed": 0.3333333333333333
+              },
+              {
+                "bin": 6,
+                "n": 1,
+                "predicted": 0.6178522745878765,
+                "observed": 0
+              },
+              {
+                "bin": 7,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 9,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          }
+        },
+        {
+          "weight": 0,
+          "metrics": {
+            "n": 8,
+            "logLoss": 1.116215949361093,
+            "brier": 0.6914189223242713,
+            "over25LogLoss": 0.6631382333838023,
+            "bttsLogLoss": 0.6611097794527332,
+            "ece10": 0.14535392867999944,
+            "calibrationBins": [
+              {
+                "bin": 0,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 1,
+                "n": 3,
+                "predicted": 0.18858035937406978,
+                "observed": 0.3333333333333333
+              },
+              {
+                "bin": 2,
+                "n": 10,
+                "predicted": 0.24596507985442698,
+                "observed": 0.2
+              },
+              {
+                "bin": 3,
+                "n": 4,
+                "predicted": 0.35748069420563294,
+                "observed": 0.5
+              },
+              {
+                "bin": 4,
+                "n": 3,
+                "predicted": 0.42002966696508853,
+                "observed": 0.6666666666666666
+              },
+              {
+                "bin": 5,
+                "n": 3,
+                "predicted": 0.5561052002798882,
+                "observed": 0.3333333333333333
+              },
+              {
+                "bin": 6,
+                "n": 1,
+                "predicted": 0.6162807447760589,
+                "observed": 0
+              },
+              {
+                "bin": 7,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "bin": 9,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          }
+        }
+      ],
+      "baseline": {
+        "n": 63,
+        "logLoss": 1.0167409293606804,
+        "brier": 0.6117666561753785,
+        "over25LogLoss": 0.6252180024816826,
+        "bttsLogLoss": 0.625042212334127,
+        "ece10": 0.024254553706664926,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 1,
+            "n": 32,
+            "predicted": 0.1700453034463094,
+            "observed": 0.15625
+          },
+          {
+            "bin": 2,
+            "n": 69,
+            "predicted": 0.2313725909452451,
+            "observed": 0.2608695652173913
+          },
+          {
+            "bin": 3,
+            "n": 30,
+            "predicted": 0.3503369521885767,
+            "observed": 0.3333333333333333
+          },
+          {
+            "bin": 4,
+            "n": 24,
+            "predicted": 0.4476348291457605,
+            "observed": 0.4583333333333333
+          },
+          {
+            "bin": 5,
+            "n": 20,
+            "predicted": 0.5578865321285894,
+            "observed": 0.55
+          },
+          {
+            "bin": 6,
+            "n": 11,
+            "predicted": 0.6381013414645248,
+            "observed": 0.6363636363636364
+          },
+          {
+            "bin": 7,
+            "n": 3,
+            "predicted": 0.721217216886358,
+            "observed": 0.3333333333333333
+          },
+          {
+            "bin": 8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "candidate": {
+        "n": 63,
+        "logLoss": 1.0163194691126654,
+        "brier": 0.610388847163861,
+        "over25LogLoss": 0.6300884985540431,
+        "bttsLogLoss": 0.6227663190711469,
+        "ece10": 0.03470824976846945,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 1,
+            "n": 28,
+            "predicted": 0.1724449402105685,
+            "observed": 0.17857142857142858
+          },
+          {
+            "bin": 2,
+            "n": 73,
+            "predicted": 0.23533307217290267,
+            "observed": 0.2465753424657534
+          },
+          {
+            "bin": 3,
+            "n": 30,
+            "predicted": 0.3471653275423432,
+            "observed": 0.3333333333333333
+          },
+          {
+            "bin": 4,
+            "n": 24,
+            "predicted": 0.4468867013563309,
+            "observed": 0.375
+          },
+          {
+            "bin": 5,
+            "n": 22,
+            "predicted": 0.5449753005439666,
+            "observed": 0.6363636363636364
+          },
+          {
+            "bin": 6,
+            "n": 9,
+            "predicted": 0.6358712433771729,
+            "observed": 0.6666666666666666
+          },
+          {
+            "bin": 7,
+            "n": 3,
+            "predicted": 0.7132296480993746,
+            "observed": 0.3333333333333333
+          },
+          {
+            "bin": 8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "pairedLogLossCI": {
+        "meanDelta": -0.0004214602480146208,
+        "lower95": -0.020120733155374187,
+        "upper95": 0.018866282160178376,
+        "blocks": 16,
+        "replicates": 2000
+      },
+      "gates": {
+        "developmentSample": false,
+        "testSample": false,
+        "positiveWeight": true,
+        "logLossImprovement": false,
+        "brierNonWorsening": true,
+        "calibrationNonWorsening": false
+      },
+      "retrospectiveResearchGatePassed": false,
+      "predictiveUseApproved": false
+    }
+  ]
+}

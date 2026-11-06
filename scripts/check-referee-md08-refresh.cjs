@@ -19,8 +19,10 @@ const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+new URL
    assert.deepEqual(await panel.locator('[data-referee-history-date]').evaluateAll(nodes=>nodes.map(n=>n.dataset.refereeHistoryDate)),entry.rows.map(r=>r.date));
    const fmt=(v,d=1)=>Number.isFinite(v)?v.toLocaleString('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
    const metrics=['yellowCards','dismissals','fouls','totalCards'];
-   const expected=['recent','seasonal'].flatMap(s=>metrics.map(k=>fmt(entry.analysis[s][k].average)));
-   assert.deepEqual(await panel.locator('.rf-averages dd').allTextContents(),expected);
+   const expected=metrics.map(k=>fmt(entry.analysis.recent[k].average));
+   assert.deepEqual(await panel.locator('.rf-average-card > .rf-averages:first-child dd').allTextContents(),expected);
+   const seasonal=metrics.map(k=>fmt(entry.analysis.seasonal[k].average,k==='dismissals'?2:1));
+   assert.deepEqual(await panel.locator('.rf-indicators .rf-indicator > strong').allTextContents(),seasonal);
    const text=await panel.innerText();assert(!/https?:|Calciotel|OFStats|ESPN|StatMuse|NaN/.test(text));assert.equal(await panel.locator('a').count(),0);
    assert(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1));
    if(entry.fixtureId.startsWith('torino-')||entry.fixtureId.startsWith('napoli-'))await panel.screenshot({path:path.join(dest,`${entry.fixtureId}-${width}.png`)});

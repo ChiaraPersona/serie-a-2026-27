@@ -35,10 +35,10 @@ FotMob di `data/raw/champions-season-shots/2026-10-20/fotmob/matches/` e scrive:
 - `data/analysis/xgot/history-audit.json`: evidenze di acquisizione, hash SHA-256
   degli archivi e degli input identità, incongruenze e partite in quarantena.
 
-Importazione verificata il 6 novembre 2026: 502 archivi ispezionati, 60 partite
-concluse candidate nelle due competizioni, 42 approvate (17 Serie A, 25 Champions)
-e 18 in quarantena. Sono disponibili 629 osservazioni individuali di tiratori,
-492 con player ID canonico; 29 partite hanno fixture ID canonico. Le altre
+Importazione aggiornata il 6 novembre 2026: 502 archivi ispezionati, 60 partite
+concluse candidate nelle due competizioni, 53 approvate (22 Serie A, 31 Champions)
+e 7 in quarantena. Sono disponibili 811 osservazioni individuali di tiratori,
+622 con player ID canonico; 35 partite hanno fixture ID canonico. Le altre
 identità restano esplicitamente irrisolte: non utilizzarle in join operativi.
 La copertura è parziale e non certifica un'intera stagione né uno storico
 verificato da un secondo fornitore indipendente.
@@ -46,8 +46,11 @@ verificato da un secondo fornitore indipendente.
 I controlli richiedono ID evento univoci, valori numerici per tiro tra 0 e 1,
 conteggi squadra coerenti con la shotmap, zero xGOT sugli eventi fuori dallo
 scope SOT e somma xGOT coerente con il totale pubblicato a due decimali
-(tolleranza 0.005001). Tiri bloccati, salvataggi sulla linea e autogol non sono
-conteggiati come SOT. Periodi diversi dai due tempi regolamentari sono esclusi.
+(tolleranza 0.005001). Tiri bloccati ordinari e autogol non sono conteggiati come
+SOT; i salvataggi sulla linea sono invece inclusi, secondo la definizione Opta.
+Questo corregge il filtro iniziale, che aveva escluso erroneamente tali eventi.
+Riferimento interno: https://www.statsperform.com/opta-event-definitions/.
+Periodi diversi dai due tempi regolamentari sono esclusi.
 In caso di una discrepanza si esclude l'intera partita, mantenendo l'evidenza.
 Il primo controllo esplorativo aveva usato una tolleranza 0.011 e confrontato
 soltanto i totali: le 54 partite inizialmente indicate non erano ancora approvate.
@@ -64,7 +67,15 @@ Test: `node scripts/test-xgot-history.cjs`. È di sola lettura e verifica anche 
 hash degli input, la conservazione giocatori/squadra e casi sintetici di rifiuto.
 Il builder non modifica sito, selezioni, quote o motori e non accede alla rete.
 
-## Estensione e attivazione da completare
+## Estensione acquisita, riconciliazione e attivazione da completare
+
+Il punto 1 è completato per le stagioni 2024/25 e 2025/26: 1.138 referti completi
+acquisiti con xGOT squadra presente in ogni partita. I nuovi archivi rimangono
+separati dallo storico riconciliato sopra descritto. Copertura, comandi, valori
+individuali e limiti sono descritti in [xgot-seasons.md](xgot-seasons.md).
+La riconciliazione e il confronto retrospettivo sono ora documentati in
+[xgot-validation-results.md](xgot-validation-results.md). Nessuna promozione
+operativa è stata approvata.
 
 Prima dell'integrazione operativa acquisire uno storico verificato per Serie A e
 Champions, con fixture ID e player/team ID canonici, competizione, stagione,

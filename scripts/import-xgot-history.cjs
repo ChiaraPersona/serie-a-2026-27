@@ -18,7 +18,8 @@ const read = file => {
   return JSON.parse(bytes.toString("utf8"));
 };
 const numeric = v => typeof v === "number" && Number.isFinite(v) && v >= 0;
-const onTarget = s => s.isOnTarget === true && !s.isBlocked && !s.isSavedOffLine && !s.isOwnGoal;
+// Last-line clearances are SOT under Opta's definition, even when also marked blocked.
+const onTarget = s => s.isOnTarget === true && (!s.isBlocked || s.isSavedOffLine) && !s.isOwnGoal;
 const fields = p => (p?.stats || []).flatMap(g => Object.values(g.stats || {}));
 const playerStat = (p, key) => fields(p).find(s => s.key === key)?.stat?.value;
 

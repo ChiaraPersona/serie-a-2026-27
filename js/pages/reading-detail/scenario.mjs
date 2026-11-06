@@ -1,5 +1,5 @@
 import {esc,number,finite,pct,missing} from './format.mjs?v=20261022-assets-v1';
-import {competitionContextMarkup} from '../../components/competition-context.mjs?v=20261105';
+
 // One display scale per metric, shared by both sides; never a share of the total.
 export function comparisonWidths(values){
  const max=Math.max(0,...values.filter(finite));
@@ -26,7 +26,7 @@ export function scenarioMarkup(model){
  const european=model.prediction?.resultModel?.type==='EUROPEAN_RATING_RESULT';
  const resultBlock=european?`<div data-european-result><p><strong>Probabilità 1X2 · rating europeo</strong> · Stima preliminare</p><div class="rd-score-grid">${[['1','home'],['X','draw'],['2','away']].map(([label,key])=>`<article><small>${label}</small><strong data-result-outcome="${label}">${pct(model.prediction.probabilities?.[key])}</strong></article>`).join('')}</div><p>Gol attesi e volumi sono stime separate. ${model.prediction.resultModel.status==='INSUFFICIENT_DATA'?'Storico europeo insufficiente: esito N/D.':'Validazione del modello da completare.'}</p></div>`:'';
  const confidence=model.prediction?.confidence?.value??model.prediction?.confidenceScore,surprise=model.prediction?.surprise?.value;
- return `${resultBlock}<div class="rd-context-strip"><span>Confidenza <b>${number(confidence)}${finite(confidence)?'/100':''}</b></span><span>Fattore sorpresa <b>${number(surprise)}${finite(surprise)?'/100':''}</b></span>${model.competition!=='champions'&&(model.quality?.label||model.quality?.status)?`<span>${esc(model.quality.label||model.quality.status)}</span>`:''}</div>${chart}${scoreBlock}${competitionContextMarkup(model.prediction?.competitionContext,Object.fromEntries(sides.map(s=>[s.id,s.name])))}`;
+ return `${resultBlock}<div class="rd-context-strip"><span>Confidenza <b>${number(confidence)}${finite(confidence)?'/100':''}</b></span><span>Fattore sorpresa <b>${number(surprise)}${finite(surprise)?'/100':''}</b></span>${model.competition!=='champions'&&(model.quality?.label||model.quality?.status)?`<span>${esc(model.quality.label||model.quality.status)}</span>`:''}</div>${chart}${scoreBlock}`;
 }
 export function installScenario(model,group){
  const original=[...group.children];const content=document.createElement('div');content.className='rd-scenario';content.innerHTML=scenarioMarkup(model);
