@@ -4,7 +4,8 @@ const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
 const { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, WEIGHTS, predictMatch } = require("./predictions/engine");
-const { currentSotVolume } = require('./predictions/current-sot-volume.cjs');
+const { currentTeamVolume, withDisciplineHistory } = require('./predictions/current-sot-volume.cjs');
+const { currentGoalInputs } = require('./predictions/current-goal-inputs.cjs');
 const { DECISION_LAYER_VERSION, PROFILE_LIMITS, enrichPrediction } = require("./predictions/decision-layer");
 const { loadPlayerIdentities } = require("./player-identity");
 const { aggregateDisciplinaryFeatures,historicalDisciplinaryFeatures } = require("./disciplinary-features");
@@ -107,6 +108,7 @@ for (const team of probableLineupSource.teams) for (const entry of team.players)
   if (player) player.identityAliases = [...new Set([...(player.identityAliases || []), entry.sourceName, entry.currentName].filter(Boolean))];
 }
 const volumeByTeam = byId(volumeProfiles.profiles);
+const currentVolumePriors = withDisciplineHistory(volumeProfiles.profiles, historicalMatches);
 const teamMatchupSnapshots = new Map();
 const teamMatchupsForTarget = match => {
   const key = `md-${match.matchday}`;
@@ -324,6 +326,10 @@ const generatedPredictions = targetMatches.map(match => {
   const teamMatchupByTeam = matchupSnapshot.byTeam;
   const homeTeam = teamForMatch(teamById.get(match.homeTeam), match);
   const awayTeam = teamForMatch(teamById.get(match.awayTeam), match);
+  const goalInputs = teamId => currentGoalInputs({ matches, historicalMatches, teamId, targetMatch: match, profile: styleByTeam.get(teamId), historicalXg: xgProfiles.get(teamId), xgLeagueSummary });
+  const currentHome = match.status === 'scheduled' ? goalInputs(match.homeTeam) : null;
+  const currentAway = match.status === 'scheduled' ? goalInputs(match.awayTeam) : null;
+  const venueInput = (historical, current, venue) => current?.venueRates ? { ...historical, currentGoalRates: { for: current.venueRates[venue].for.mean, against: current.venueRates[venue].against.mean } } : historical;
   const predictionGeneratedAt = generatedAt;
   const prediction = predictMatch({
     xgotContext: require('./predictions/xgot-operational.cjs').contextFor({ homeTeamId: match.homeTeam, awayTeamId: match.awayTeam,
@@ -331,19 +337,19 @@ const generatedPredictions = targetMatches.map(match => {
     competitionContext:buildCompetitionContext(competitionHistory,match),
     match,
     reading: readingByMatch.get(match.id),
-    homeVenue: homeByTeam.get(match.homeTeam),
-    awayVenue: awayByTeam.get(match.awayTeam),
-    homeProfile: styleByTeam.get(match.homeTeam),
-    awayProfile: styleByTeam.get(match.awayTeam),
+    homeVenue: venueInput(homeByTeam.get(match.homeTeam), currentHome, 'home'),
+    awayVenue: venueInput(awayByTeam.get(match.awayTeam), currentAway, 'away'),
+    homeProfile: currentHome?.profile || styleByTeam.get(match.homeTeam),
+    awayProfile: currentAway?.profile || styleByTeam.get(match.awayTeam),
     homeRecent: recentForm(match.homeTeam, match),
     awayRecent: recentForm(match.awayTeam, match),
-    homeXgProfile: xgProfiles.get(match.homeTeam),
-    awayXgProfile: xgProfiles.get(match.awayTeam),
+    homeXgProfile: currentHome?.xg || xgProfiles.get(match.homeTeam),
+    awayXgProfile: currentAway?.xg || xgProfiles.get(match.awayTeam),
     xgLeagueSummary,
     homeDiscipline: disciplineByTeam.get(match.homeTeam),
     awayDiscipline: disciplineByTeam.get(match.awayTeam),
-    homeVolume: match.status === 'scheduled' ? currentSotVolume({ matches, historicalProfiles: volumeProfiles.profiles, teamId: match.homeTeam, targetMatch: match }) : volumeByTeam.get(match.homeTeam),
-    awayVolume: match.status === 'scheduled' ? currentSotVolume({ matches, historicalProfiles: volumeProfiles.profiles, teamId: match.awayTeam, targetMatch: match }) : volumeByTeam.get(match.awayTeam),
+    homeVolume: match.status === 'scheduled' ? currentTeamVolume({ matches, historicalProfiles: currentVolumePriors, teamId: match.homeTeam, targetMatch: match }) : volumeByTeam.get(match.homeTeam),
+    awayVolume: match.status === 'scheduled' ? currentTeamVolume({ matches, historicalProfiles: currentVolumePriors, teamId: match.awayTeam, targetMatch: match }) : volumeByTeam.get(match.awayTeam),
     homeObjective: objectiveByTeam.get(match.homeTeam),
     awayObjective: objectiveByTeam.get(match.awayTeam),
     headToHead: headToHeadByMatch.get(match.id) || headToHeadByPair.get(pairKey(match.homeTeam, match.awayTeam)),
@@ -380,7 +386,7 @@ const generatedPredictions = targetMatches.map(match => {
       : null,
     generatedAt: predictionGeneratedAt
   });
-  prediction.cardDataContract = {schemaVersion:1,targetVersion:"card-targets-v1",modelState:"DATA_ONLY_LEGACY_HEURISTIC",calibratedProbability:null,teamEstimateTarget:"HISTORICAL_YELLOW_CARD_BASELINE_FIXED_DISPERSION_NOT_ALL_DISCIPLINARY_EVENTS"};
+  prediction.cardDataContract = {schemaVersion:1,targetVersion:"card-targets-v1",modelState:"DATA_ONLY_LEGACY_HEURISTIC",calibratedProbability:null,teamEstimateTarget: currentHome?.diagnostics && currentAway?.diagnostics ? "CURRENT_REGULARIZED_YELLOW_CARD_COUNTS_NOT_ALL_DISCIPLINARY_EVENTS" : "HISTORICAL_YELLOW_CARD_BASELINE_FIXED_DISPERSION_NOT_ALL_DISCIPLINARY_EVENTS"};
   for (const candidate of prediction.likelyBooked || []) {
     if (match.refereeAssignment?.referee?.slug && candidate.refereeFactorSource === "NO_DESIGNATION_AVAILABLE") candidate.refereeFactorSource = "DESIGNATED_REFEREE_EVIDENCE_UNAVAILABLE";
     const player = squadsByTeam.get(candidate.teamId)?.players.find(p => p.id === candidate.playerId);
@@ -425,6 +431,7 @@ const generatedPredictions = targetMatches.map(match => {
   return validation ? {
     ...prediction,
     modelValidation: {
+      ...(prediction.expectedGoals.components.currentGoalBaselines ? { currentTeamAdaptation: { status: 'USER_AUTHORIZED_PROSPECTIVE_VALIDATION_PENDING', statisticallyValidated: false, note: 'Historical metrics below describe the prior core, not validation of the current-season input adaptation.', version: 1 } } : {}),
       ...(prediction.expectedGoals.components.xgot ? { xgot: { applied: prediction.expectedGoals.components.xgot.applied,
         status: prediction.expectedGoals.components.xgot.status, statisticallyValidated: false } } : {}),
       season: backtest.season,
@@ -586,7 +593,8 @@ const output = {
       venueSplit: true,
       interval: "p20-p80 storico; per il totale varianze squadra trattate come indipendenti",
       fallback: "Profilo WhoScored, precisione della probabile formazione e stile offensivo quando manca lo storico Serie A della squadra.",
-      currentSotBaseline: { version: 1, scope: 'Serie A scheduled fixtures with prior completed current-season observations', historicalPriorEquivalentMatches: 12, missingComparableHistoryPriorEquivalentMatches: 4, recentSeason: 'current', ownResidualBoost: false, opponentResidualBoost: false, validationStatus: 'user-authorized-adaptation-preliminary-baseline-replay', report: 'docs/reports/team-sot-baseline-audit-2026-11-06.md', prospectiveCalibration: false }
+      currentSotBaseline: { version: 1, scope: 'Serie A scheduled fixtures with prior completed current-season observations', historicalPriorEquivalentMatches: 12, missingComparableHistoryPriorEquivalentMatches: 4, recentSeason: 'current', ownResidualBoost: false, opponentResidualBoost: false, validationStatus: 'user-authorized-adaptation-preliminary-baseline-replay', report: 'docs/reports/team-sot-baseline-audit-2026-11-06.md', prospectiveCalibration: false },
+      currentTeamBaseline: { version: 1, metrics: ['totalShots', 'shotsOnTarget', 'wonCorners', 'fouls', 'yellowCards', 'goals', 'expectedGoals'], historicalPriorEquivalentMatches: 12, missingComparableHistoryPriorEquivalentMatches: 4, recentSeason: 'current', residualVolumeBoosts: false, exactScores: 'same-Poisson-matrix-as-expected-goals-and-1X2', validationStatus: 'user-authorized-adaptation-prospective-validation-pending' }
     },
     playerVolumeModel: "Tiri e tiri in porta dei titolari: frequenze per 90 minuti 2025/26 regolarizzate verso una prior di ruolo, poi scalate sul volume previsto della squadra; i falli/90 restano visibili come base disciplinare e i dati mancanti usano una baseline dichiarata.",
     limitations: [`Quote Sisal datate per singolo evento; ultimo aggiornamento disponibile ${String(odds.retrievedAt).slice(0, 10)}. Le gare senza snapshot vengono pronosticate senza confronto mercato.`, "La forma recente della seconda giornata include il risultato concluso della prima e completa il campione con le gare 2025/26, sempre con taglio temporale per giornata.", "Gli xG Understat 2025/26 coprono 17 squadre su 20; negli incontri con una neopromossa non coperta resta attivo il fallback sui gol.", "Le indisponibilita derivano dal monitor editoriale aggiornato e i casi da valutare non sono trasformati in assenze certe; arbitri e meteo saranno integrati soltanto quando verificati.", "Per la seconda giornata le formazioni ufficiali della prima sono usate soltanto come riferimento tecnico, non come distinte confermate.", "Il backtest pluristagionale non include probabili XI, indisponibili e tattica per assenza di snapshot storici.", "Il correttivo H2H e limitato al 5% per lato: il vantaggio fuori campione e positivo ma modesto, quindi non deve dominare il pronostico."]

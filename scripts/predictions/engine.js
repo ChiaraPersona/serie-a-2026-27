@@ -3,7 +3,7 @@ const { normalizePlayerName } = require("../player-identity");
 const { attachBetSelection, selectionIdFor } = require("../betting-selection-contract");
 const { rankShooterCandidates } = require('./rank-shooter-candidates');
 
-const ENGINE_VERSION = "4.15.0";
+const ENGINE_VERSION = "4.16.0";
 const PLAYER_MARKET_MODEL_VERSION = 2;
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
@@ -115,6 +115,7 @@ function scoreMatrix(homeGoals, awayGoals, maxGoals = 7, calibration = null) {
 }
 
 function profileGoals(profile, fallbackFor, fallbackAgainst) {
+  if (profile?.currentGoalRates) return profile.currentGoalRates;
   const formationAppearances = profile?.formation?.appearances || 0;
   const formationFor = Number.isFinite(profile?.formation?.goalsFor) && formationAppearances ? profile.formation.goalsFor / formationAppearances : null;
   const formationAgainst = Number.isFinite(profile?.formation?.goalsAgainst) && formationAppearances ? profile.formation.goalsAgainst / formationAppearances : null;
@@ -235,6 +236,7 @@ function xgExpectedGoals(homeProfile, awayProfile, summary) {
 }
 
 function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRecent, awayRecent, homeXgProfile, awayXgProfile, xgLeagueSummary, homeTeam, awayTeam, homeSquad, awaySquad, homeObjective, awayObjective, headToHead, leagueSummary, xgotContext }) {
+  const venueRate = (venue, type) => venue?.currentGoalRates?.[type] ?? (venue?.played > 0 ? venue[type === 'for' ? 'goalsFor' : 'goalsAgainst'] / venue.played : null);
   const leagueHome = leagueSummary?.homeGoalsPerMatch || 1.28;
   const leagueAway = leagueSummary?.awayGoalsPerMatch || 1.15;
   const leagueOverall = (leagueHome + leagueAway) / 2;
@@ -244,22 +246,22 @@ function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRec
   const headToHeadFactors = headToHeadGoalFactors(headToHead, homeTeam?.id, leagueSummary);
 
   const homeAttackStrength = weightedGeometric([
-    { value: homeVenue ? regressedRatio(homeVenue.goalsFor / homeVenue.played, leagueHome) : null, weight: WEIGHTS.venueHistorical },
+    { value: homeVenue ? regressedRatio(venueRate(homeVenue, 'for'), leagueHome) : null, weight: WEIGHTS.venueHistorical },
     { value: regressedRatio(divisionAdjustedRate(homeProfile, "for", leagueOverall), leagueOverall, 0.62), weight: WEIGHTS.overallHistorical },
     { value: homeRecent ? regressedRatio(homeRecent.goalsFor, leagueOverall, 0.48) : null, weight: WEIGHTS.recentForm }
   ]);
   const homeDefenceWeakness = weightedGeometric([
-    { value: homeVenue ? regressedRatio(homeVenue.goalsAgainst / homeVenue.played, leagueAway) : null, weight: WEIGHTS.venueHistorical },
+    { value: homeVenue ? regressedRatio(venueRate(homeVenue, 'against'), leagueAway) : null, weight: WEIGHTS.venueHistorical },
     { value: regressedRatio(divisionAdjustedRate(homeProfile, "against", leagueOverall), leagueOverall, 0.62), weight: WEIGHTS.overallHistorical },
     { value: homeRecent ? regressedRatio(homeRecent.goalsAgainst, leagueOverall, 0.48) : null, weight: WEIGHTS.recentForm }
   ]);
   const awayAttackStrength = weightedGeometric([
-    { value: awayVenue ? regressedRatio(awayVenue.goalsFor / awayVenue.played, leagueAway) : null, weight: WEIGHTS.venueHistorical },
+    { value: awayVenue ? regressedRatio(venueRate(awayVenue, 'for'), leagueAway) : null, weight: WEIGHTS.venueHistorical },
     { value: regressedRatio(divisionAdjustedRate(awayProfile, "for", leagueOverall), leagueOverall, 0.62), weight: WEIGHTS.overallHistorical },
     { value: awayRecent ? regressedRatio(awayRecent.goalsFor, leagueOverall, 0.48) : null, weight: WEIGHTS.recentForm }
   ]);
   const awayDefenceWeakness = weightedGeometric([
-    { value: awayVenue ? regressedRatio(awayVenue.goalsAgainst / awayVenue.played, leagueHome) : null, weight: WEIGHTS.venueHistorical },
+    { value: awayVenue ? regressedRatio(venueRate(awayVenue, 'against'), leagueHome) : null, weight: WEIGHTS.venueHistorical },
     { value: regressedRatio(divisionAdjustedRate(awayProfile, "against", leagueOverall), leagueOverall, 0.62), weight: WEIGHTS.overallHistorical },
     { value: awayRecent ? regressedRatio(awayRecent.goalsAgainst, leagueOverall, 0.48) : null, weight: WEIGHTS.recentForm }
   ]);
@@ -289,11 +291,12 @@ function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRec
     home: round(home, 2),
     away: round(away, 2),
     total: round(home + away, 2),
-    method: "Forze relative attacco/difesa, forma recente corretta per avversario, xG Understat al 25% quando coperti entrambi i club, matchup, probabili XI, obiettivi e correttivo H2H limitato; quote escluse." + (xgotApplied ? " xGOT: contributo sperimentale al 10%, attivato su richiesta; validazione non conclusiva." : ""),
+    method: (homeProfile?.currentGoalBaseline || awayProfile?.currentGoalBaseline ? "Tassi di gol e xG correnti regolarizzati verso lo storico comparabile; forma recente corretta per avversario, xG al 25% quando coperti entrambi i club, matchup, undici previsto, obiettivi e correttivo H2H limitato; quote escluse. Adattamento corrente in validazione prospettica." : "Forze relative attacco/difesa, forma recente corretta per avversario, xG Understat al 25% quando coperti entrambi i club, matchup, probabili XI, obiettivi e correttivo H2H limitato; quote escluse.") + (xgotApplied ? " xGOT: contributo sperimentale al 10%, attivato su richiesta; validazione non conclusiva." : ""),
     components: {
       home: { attackStrength: round(homeAttackStrength, 3), defenceWeakness: round(homeDefenceWeakness, 3), lineup: homeLineup },
       away: { attackStrength: round(awayAttackStrength, 3), defenceWeakness: round(awayDefenceWeakness, 3), lineup: awayLineup },
       recentForm: { home: homeRecent, away: awayRecent },
+      ...(homeProfile?.currentGoalBaseline || awayProfile?.currentGoalBaseline ? { currentGoalBaselines: { home: homeProfile?.currentGoalBaseline ?? null, away: awayProfile?.currentGoalBaseline ?? null } } : {}),
       objectiveFactors: { home: round(objectiveFactors.home, 3), away: round(objectiveFactors.away, 3) },
       headToHead: headToHeadFactors,
       ...(xgotContext ? { xgot: { ...xgotContext, applied: xgotApplied, statisticallyValidated: false,
@@ -303,7 +306,7 @@ function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRec
         status: xgExpected ? "used" : "fallback-goals",
         homeRaw: xgExpected ? round(xgExpected.home * homeContext, 3) : null,
         awayRaw: xgExpected ? round(xgExpected.away * awayContext, 3) : null,
-        source: xgExpected ? "Understat 2025-26" : null
+        source: xgExpected ? homeXgProfile?.currentGoalBaseline || awayXgProfile?.currentGoalBaseline ? 'current-observed-xg-with-historical-prior' : "Understat 2025-26" : null
       }
     }
   };
@@ -1335,6 +1338,8 @@ function volumePrior(metric, profile, players, channels) {
 }
 
 function volumeMetric(profile, opponentProfile, volumeProfile, opponentVolumeProfile, venue, metric, context, prior) {
+  const currentBaseline = volumeProfile?.currentVolumeBaseline?.[metric] ?? (metric === 'shotsOnTarget' ? volumeProfile?.currentSotBaseline : null);
+  const opponentBaseline = opponentVolumeProfile?.currentVolumeBaseline?.[metric] ?? (metric === 'shotsOnTarget' ? opponentVolumeProfile?.currentSotBaseline : null);
   const opponentVenue = venue === "home" ? "away" : "home";
   const teamVenue = volumeProfile?.venues?.[venue]?.[metric]?.for || null;
   const opponentVenueAgainst = opponentVolumeProfile?.venues?.[opponentVenue]?.[metric]?.against || null;
@@ -1350,7 +1355,7 @@ function volumeMetric(profile, opponentProfile, volumeProfile, opponentVolumePro
   const rawP20 = sum(normalized.map(source => source.stats.p20 * source.weight));
   const rawP80 = sum(normalized.map(source => source.stats.p80 * source.weight));
   const rawVariance = sum(normalized.map(source => source.weight * ((source.stats.sd || 0) ** 2 + (source.mean - rawMean) ** 2)));
-  const limits = metric === "totalShots" ? [4, 24] : metric === "shotsOnTarget" ? [0, 12] : [0, 12];
+  const limits = metric === "totalShots" ? [4, 24] : metric === 'fouls' ? [0, 35] : metric === 'yellowCards' ? [0, 10] : [0, 12];
   const central = clamp(rawMean * context, limits[0], limits[1]);
   const p20 = clamp(rawP20 * context, limits[0], limits[1]);
   const p80 = clamp(rawP80 * context, limits[0], limits[1]);
@@ -1360,10 +1365,10 @@ function volumeMetric(profile, opponentProfile, volumeProfile, opponentVolumePro
     max: Math.ceil(Math.max(p80, central)),
     interval: "p20-p80",
     sd: round(Math.sqrt(rawVariance) * context, 2),
-    sampleSize: metric === 'shotsOnTarget' && volumeProfile?.currentSotBaseline ? new Set([...(volumeProfile.currentSotBaseline.matchIds || []), ...(opponentVolumeProfile?.currentSotBaseline?.matchIds || [])]).size : sum(normalized.map(source => source.stats.matches || 0)),
-    dataStatus: metric === 'shotsOnTarget' && volumeProfile?.currentSotBaseline ? 'current-season-regularized' : teamVenue?.matches && opponentVenueAgainst?.matches ? "venue-history" : "partial-history",
+    sampleSize: currentBaseline ? new Set([...(currentBaseline.matchIds || []), ...(opponentBaseline?.matchIds || [])]).size : sum(normalized.map(source => source.stats.matches || 0)),
+    dataStatus: currentBaseline ? 'current-season-regularized' : teamVenue?.matches && opponentVenueAgainst?.matches ? "venue-history" : "partial-history",
     inputs: normalized.map(source => ({ source: source.id, weightPct: round(source.weight * 100, 1), mean: round(source.mean, 2), matches: source.stats.matches || 0 })),
-    ...(metric === 'shotsOnTarget' && volumeProfile?.currentSotBaseline ? { currentSeasonBaseline: volumeProfile.currentSotBaseline, priorDiagnostics: { own: teamVenue, opponent: opponentVenueAgainst } } : {})
+    ...(currentBaseline ? { currentSeasonBaseline: currentBaseline, priorDiagnostics: { own: teamVenue, opponent: opponentVenueAgainst } } : {})
   };
 }
 
@@ -1415,6 +1420,7 @@ function disciplineBaseline(profile, disciplineProfile, teamMatchupProfile) {
 }
 
 function applyOpponentTeamVolumeInteraction(profile, opponentTeamMatchupProfile, shotsTotal, shotsOnTarget, corners, currentOpponentSotIncluded = false) {
+  const included = currentOpponentSotIncluded && typeof currentOpponentSotIncluded === 'object' ? currentOpponentSotIncluded : { shotsOnTarget: currentOpponentSotIncluded };
   const policy = opponentTeamMatchupProfile?.modelPolicy?.interactionPolicy;
   if (!policy?.enabled) return { abilityToExploit: null, shotsAdjustmentPct: 0, shotsOnTargetAdjustmentPct: 0, metricEvidence: null, method: "inactive" };
   const ability = opponentAbilityToExploit(profile, { shotsTotal, shotsOnTarget, corners });
@@ -1468,10 +1474,10 @@ function applyOpponentTeamVolumeInteraction(profile, opponentTeamMatchupProfile,
   };
   const shotsEvidence = activeVulnerabilityMetric(opponentTeamMatchupProfile.vulnerabilities?.signals?.totalShotVulnerability, opponentTeamMatchupProfile.shotDefense?.shotsAllowed, shotsStability, shotsPersistence, shotsConfidence, policy.teamShotMaxAdjustmentPct || 0);
   const sotEvidence = activeVulnerabilityMetric(opponentTeamMatchupProfile.vulnerabilities?.signals?.sotVulnerability, opponentTeamMatchupProfile.shotDefense?.shotsOnTargetAllowed, sotStability, sotPersistence, sotConfidence, policy.teamSotMaxAdjustmentPct || 0);
-  const shotsAdjustmentPct = suppression
+  const shotsAdjustmentPct = included.totalShots ? 0 : suppression
     ? -policy.teamShotMaxAdjustmentPct * shotsConfidence * maturity * shotsStability * (0.75 + 0.25 * shotsPersistence) * strengthResistance
     : shotsEvidence.adjustmentPct;
-  const shotsOnTargetAdjustmentPct = currentOpponentSotIncluded ? 0 : suppression
+  const shotsOnTargetAdjustmentPct = included.shotsOnTarget ? 0 : suppression
     ? -policy.teamSotMaxAdjustmentPct * sotConfidence * maturity * sotStability * (0.75 + 0.25 * sotPersistence) * strengthResistance
     : sotEvidence.adjustmentPct;
   const scaleMetric = (metric, pct) => {
@@ -1487,6 +1493,7 @@ function applyOpponentTeamVolumeInteraction(profile, opponentTeamMatchupProfile,
 }
 
 function applyOwnOffensiveVolumeProfile(ownTeamMatchupProfile, shotsTotal, shotsOnTarget, corners, currentSotIncluded = false) {
+  const included = currentSotIncluded && typeof currentSotIncluded === 'object' ? currentSotIncluded : { shotsOnTarget: currentSotIncluded };
   const allocation = ownTeamMatchupProfile?.offense?.teamOffensiveAllocation;
   const inactiveCapDiagnostics = { shots: { capHit: false }, shotsOnTarget: { capHit: false }, corners: { capHit: false } };
   if (!allocation?.enabled) return { shotsAdjustmentPct: 0, shotsOnTargetAdjustmentPct: 0, cornersAdjustmentPct: 0, capDiagnostics: inactiveCapDiagnostics, method: "inactive" };
@@ -1495,9 +1502,9 @@ function applyOwnOffensiveVolumeProfile(ownTeamMatchupProfile, shotsTotal, shots
     const cappedPct = clamp(uncappedPct, -maxPct, maxPct);
     return { uncappedPct, cappedPct, capHit: Math.abs(uncappedPct - cappedPct) > 1e-9, capPct: maxPct, capSide: uncappedPct > maxPct ? "upper" : uncappedPct < -maxPct ? "lower" : null };
   };
-  const shotsCap = desiredAdjustment(shotsTotal, ownTeamMatchupProfile.offense.teamShotVolume?.shrunkPerGame, allocation.teamShotMaxAdjustmentPct || 0);
-  const sotCap = desiredAdjustment(shotsOnTarget, currentSotIncluded ? shotsOnTarget.central : ownTeamMatchupProfile.offense.teamSotVolume?.shrunkPerGame, currentSotIncluded ? 0 : allocation.teamSotMaxAdjustmentPct || 0);
-  const cornersCap = desiredAdjustment(corners, ownTeamMatchupProfile.offense.teamSetPieceOpportunityVolume?.shrunkCornersPerGame, allocation.cornerMaxAdjustmentPct ?? allocation.teamShotMaxAdjustmentPct ?? 0);
+  const shotsCap = desiredAdjustment(shotsTotal, included.totalShots ? shotsTotal.central : ownTeamMatchupProfile.offense.teamShotVolume?.shrunkPerGame, included.totalShots ? 0 : allocation.teamShotMaxAdjustmentPct || 0);
+  const sotCap = desiredAdjustment(shotsOnTarget, included.shotsOnTarget ? shotsOnTarget.central : ownTeamMatchupProfile.offense.teamSotVolume?.shrunkPerGame, included.shotsOnTarget ? 0 : allocation.teamSotMaxAdjustmentPct || 0);
+  const cornersCap = desiredAdjustment(corners, included.wonCorners ? corners.central : ownTeamMatchupProfile.offense.teamSetPieceOpportunityVolume?.shrunkCornersPerGame, included.wonCorners ? 0 : allocation.cornerMaxAdjustmentPct ?? allocation.teamShotMaxAdjustmentPct ?? 0);
   const shotsAdjustmentPct = shotsCap.cappedPct;
   const shotsOnTargetAdjustmentPct = sotCap.cappedPct;
   const cornersAdjustmentPct = cornersCap.cappedPct;
@@ -1522,7 +1529,7 @@ function teamProjection(team, profile, opponentProfile, squad, disciplineProfile
   const gameState = clamp(1 + (opponentProbability - outcomeProbability) * 0.16, 0.9, 1.1);
   const wideShare = (channels.left + channels.right) / 100;
   const shotsContext = clamp(1 + (matchup - 1) * 0.55 + (gameState - 1) * 0.65 + (possession - 50) * 0.002, 0.86, 1.14);
-  const historicalShots = volumeProfile?.venues?.[venue]?.totalShots?.for?.mean || profile?.summary?.shotsPerGame || 10.5;
+  const historicalShots = (volumeProfile?.currentVolumeBaseline?.totalShots ? volumeProfile.shotContextHistoricalMeans?.[venue] : volumeProfile?.venues?.[venue]?.totalShots?.for?.mean) || profile?.summary?.shotsPerGame || 10.5;
   const historicalOnTarget = (volumeProfile?.currentSotBaseline ? volumeProfile.sotContextHistoricalMeans?.[venue] : volumeProfile?.venues?.[venue]?.shotsOnTarget?.for?.mean) ?? historicalShots * 0.34;
   const lineupAccuracyFactor = clamp(shotAccuracy(players) / clamp(historicalOnTarget / historicalShots, 0.2, 0.55), 0.9, 1.1);
   const onTargetContext = clamp(shotsContext * lineupAccuracyFactor, 0.82, 1.2);
@@ -1533,13 +1540,20 @@ function teamProjection(team, profile, opponentProfile, squad, disciplineProfile
   shotsOnTarget.max = Math.min(shotsOnTarget.max, shotsTotal.max);
   const corners = volumeMetric(profile, opponentProfile, volumeProfile, opponentVolumeProfile, venue, "wonCorners", cornerContext, volumePrior("wonCorners", profile, players, channels));
   const legacyVolumeProjection = ownTeamMatchupProfile?.offense?.teamOffensiveAllocation?.enabled ? { shotsTotal: { ...shotsTotal }, shotsOnTarget: { ...shotsOnTarget }, corners: { ...corners } } : null;
-  const ownOffensiveInteraction = applyOwnOffensiveVolumeProfile(ownTeamMatchupProfile, shotsTotal, shotsOnTarget, corners, Boolean(volumeProfile?.currentSotBaseline?.currentIncluded));
+  const ownIncluded = Object.fromEntries(Object.entries(volumeProfile?.currentVolumeBaseline || {}).map(([key, value]) => [key, Boolean(value.currentIncluded)]));
+  if (volumeProfile?.currentSotBaseline?.currentIncluded) ownIncluded.shotsOnTarget = true;
+  const opponentIncluded = Object.fromEntries(Object.entries(opponentVolumeProfile?.currentVolumeBaseline || {}).map(([key, value]) => [key, Boolean(value.againstMatches)]));
+  if (opponentVolumeProfile?.currentSotBaseline?.againstMatches) opponentIncluded.shotsOnTarget = true;
+  const ownOffensiveInteraction = applyOwnOffensiveVolumeProfile(ownTeamMatchupProfile, shotsTotal, shotsOnTarget, corners, ownIncluded);
   if (volumeProfile?.currentSotBaseline?.currentIncluded) ownOffensiveInteraction.sotAdjustmentStatus = 'current-evidence-already-in-baseline';
-  const opponentMatchupInteraction = applyOpponentTeamVolumeInteraction(profile, opponentTeamMatchupProfile, shotsTotal, shotsOnTarget, corners, Boolean(opponentVolumeProfile?.currentSotBaseline?.againstMatches));
+  const opponentMatchupInteraction = applyOpponentTeamVolumeInteraction(profile, opponentTeamMatchupProfile, shotsTotal, shotsOnTarget, corners, opponentIncluded);
   if (opponentVolumeProfile?.currentSotBaseline?.againstMatches) opponentMatchupInteraction.sotAdjustmentStatus = 'current-concessions-already-in-baseline';
   shotsOnTarget.central = Math.min(shotsOnTarget.central, shotsTotal.central);
   shotsOnTarget.max = Math.min(shotsOnTarget.max, shotsTotal.max);
   const discipline = disciplineBaseline(profile, disciplineProfile, ownTeamMatchupProfile);
+  const currentDiscipline = metric => volumeMetric(profile, opponentProfile, volumeProfile, opponentVolumeProfile, venue, metric, 1, volumeProfile.venues[venue][metric].for);
+  const fouls = ownIncluded.fouls ? currentDiscipline('fouls') : discipline.fouls;
+  const cards = ownIncluded.yellowCards ? currentDiscipline('yellowCards') : discipline.yellowCards == null ? null : rangeMetric(discipline.yellowCards, 0.85, 0);
   return {
     teamId: team.id,
     venue,
@@ -1550,11 +1564,11 @@ function teamProjection(team, profile, opponentProfile, squad, disciplineProfile
     legacyVolumeProjection,
     ownOffensiveInteraction,
     opponentMatchupInteraction,
-    fouls: discipline.fouls,
-    ...(discipline.basis ? { foulsBasis: discipline.basis } : {}),
-    cards: discipline.yellowCards == null ? null : rangeMetric(discipline.yellowCards, 0.85, 0),
+    fouls,
+    ...(ownIncluded.fouls ? { foulsBasis: { method: 'current-season-regularized-produced-and-opponent-induced', season: volumeProfile.currentVolumeBaseline.fouls.season, sampleSize: volumeProfile.currentVolumeBaseline.fouls.ownMatches, asOfMatchdayExclusive: volumeProfile.currentVolumeBaseline.fouls.matchdayExclusive } } : discipline.basis ? { foulsBasis: discipline.basis } : {}),
+    cards,
     expectedGoals: expectedGoal,
-    basis: volumeProfile?.currentSotBaseline ? "SOT: produzione e concessioni correnti regolarizzate verso lo storico per sede; 45% squadra, 35% avversaria e 20% ultime otto gare correnti. Tiri e corner mantengono il modello storico. Matchup, possesso e undici previsto; intervalli descrittivi p20-p80, non calibrati prospetticamente." : "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
+    basis: volumeProfile?.currentVolumeBaseline ? "Produzione e concessioni correnti regolarizzate verso lo storico per sede; 45% squadra, 35% avversaria e 20% ultime otto gare correnti. Matchup, possesso e undici previsto per i volumi offensivi; falli e gialli come conteggi descrittivi. Intervalli p20-p80 non calibrati prospetticamente." : "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
   };
 }
 

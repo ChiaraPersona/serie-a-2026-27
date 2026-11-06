@@ -1,0 +1,5448 @@
+{
+  "role": "DIAGNOSTIC_NOT_CERTIFIED_VALIDATION",
+  "scope": "50 fixtures MD6-10; prior completed rounds only; counts neutral context, goals neutral lineups and unadjusted common recent goals; not original published pre-match replay",
+  "selectionBias": "Post-hoc analysis after MD11 model adaptation; no untouched holdout; 12/4 prior strengths not optimized",
+  "missingSnapshotLimit": "Historical XI, tactics, injuries and bookmaker snapshots not reconstructed",
+  "volumeResults": {
+    "totalShots": {
+      "baseline": {
+        "n": 100,
+        "mae": 4.516,
+        "rmse": 5.723041149598699,
+        "bias": -2.1180000000000003
+      },
+      "candidate": {
+        "n": 100,
+        "mae": 4.070999999999999,
+        "rmse": 5.152756543831658,
+        "bias": -0.7949999999999997
+      }
+    },
+    "shotsOnTarget": {
+      "baseline": {
+        "n": 100,
+        "mae": 2.083000000000001,
+        "rmse": 2.6629494925739774,
+        "bias": -0.9729999999999995
+      },
+      "candidate": {
+        "n": 100,
+        "mae": 1.9759999999999993,
+        "rmse": 2.5317977802344322,
+        "bias": -0.5040000000000001
+      }
+    },
+    "wonCorners": {
+      "baseline": {
+        "n": 100,
+        "mae": 2.1320000000000006,
+        "rmse": 2.6893121797217963,
+        "bias": -0.4360000000000001
+      },
+      "candidate": {
+        "n": 100,
+        "mae": 2.168,
+        "rmse": 2.7371518043396867,
+        "bias": -0.3340000000000001
+      }
+    },
+    "fouls": {
+      "baseline": {
+        "n": 100,
+        "mae": 3.278947368421052,
+        "rmse": 4.104585639099039,
+        "bias": 1.9710526315789472
+      },
+      "candidate": {
+        "n": 100,
+        "mae": 3.088,
+        "rmse": 3.7561948831230785,
+        "bias": 1.3119999999999996
+      }
+    },
+    "yellowCards": {
+      "baseline": {
+        "n": 100,
+        "mae": 1.0039210526315794,
+        "rmse": 1.2028364158160894,
+        "bias": 0.20171052631578942
+      },
+      "candidate": {
+        "n": 100,
+        "mae": 0.992,
+        "rmse": 1.2006664815842907,
+        "bias": 0.1899999999999999
+      }
+    }
+  },
+  "goalResults": {
+    "baseline": {
+      "goalAbsoluteError": 1.0544,
+      "outcomeLogLoss": 0.9047756955995889,
+      "outcomeBrier": 0.5272074197532342,
+      "scoreLogLoss": 3.341999516699336,
+      "exactCentralHit": 0.06
+    },
+    "candidate": {
+      "goalAbsoluteError": 1.0433999999999999,
+      "outcomeLogLoss": 0.8889216832086022,
+      "outcomeBrier": 0.5162866478842133,
+      "scoreLogLoss": 3.2489013860056857,
+      "exactCentralHit": 0.1
+    }
+  },
+  "evaluations": [
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "atalanta",
+      "metric": "totalShots",
+      "observed": 22,
+      "baseline": 16.4,
+      "candidate": 14.2
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "atalanta",
+      "metric": "shotsOnTarget",
+      "observed": 11,
+      "baseline": 4.9,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "atalanta",
+      "metric": "wonCorners",
+      "observed": 8,
+      "baseline": 6.1,
+      "candidate": 5.1
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "atalanta",
+      "metric": "fouls",
+      "observed": 14,
+      "baseline": 11.842105263157896,
+      "candidate": 10.8
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "atalanta",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.5263157894736843,
+      "candidate": 1.3
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "venezia",
+      "metric": "totalShots",
+      "observed": 19,
+      "baseline": 10.3,
+      "candidate": 13.2
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "venezia",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 3.2,
+      "candidate": 4.1
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "venezia",
+      "metric": "wonCorners",
+      "observed": 7,
+      "baseline": 4,
+      "candidate": 3.7
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "venezia",
+      "metric": "fouls",
+      "observed": 6,
+      "baseline": 12.673684210526316,
+      "candidate": 11.6
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "venezia",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.7973684210526315,
+      "candidate": 2
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "cagliari",
+      "metric": "totalShots",
+      "observed": 4,
+      "baseline": 11.9,
+      "candidate": 10.3
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "cagliari",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 3.7,
+      "candidate": 3.5
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "cagliari",
+      "metric": "wonCorners",
+      "observed": 1,
+      "baseline": 4.4,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "cagliari",
+      "metric": "fouls",
+      "observed": 8,
+      "baseline": 13.789473684210526,
+      "candidate": 11.5
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "cagliari",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 2.026315789473684,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "juventus",
+      "metric": "totalShots",
+      "observed": 22,
+      "baseline": 14,
+      "candidate": 15.1
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "juventus",
+      "metric": "shotsOnTarget",
+      "observed": 10,
+      "baseline": 4.9,
+      "candidate": 5
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "juventus",
+      "metric": "wonCorners",
+      "observed": 9,
+      "baseline": 5.1,
+      "candidate": 5.4
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "juventus",
+      "metric": "fouls",
+      "observed": 8,
+      "baseline": 12.131578947368421,
+      "candidate": 13.5
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "juventus",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.3157894736842106,
+      "candidate": 1.5
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "como",
+      "metric": "totalShots",
+      "observed": 19,
+      "baseline": 14.6,
+      "candidate": 17
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "como",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 5.4,
+      "candidate": 5.9
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "como",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 5,
+      "candidate": 4.9
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "como",
+      "metric": "fouls",
+      "observed": 9,
+      "baseline": 13.421052631578947,
+      "candidate": 10.9
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "como",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 2.0789473684210527,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "roma",
+      "metric": "totalShots",
+      "observed": 9,
+      "baseline": 10.5,
+      "candidate": 13.7
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "roma",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 4,
+      "candidate": 4.6
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "roma",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 4.1,
+      "candidate": 4
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "roma",
+      "metric": "fouls",
+      "observed": 9,
+      "baseline": 13.763157894736842,
+      "candidate": 13.4
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "roma",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 1.736842105263158,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "genoa",
+      "metric": "totalShots",
+      "observed": 10,
+      "baseline": 12.8,
+      "candidate": 12.9
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "genoa",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 4.2,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "genoa",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 4.3,
+      "candidate": 4.3
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "genoa",
+      "metric": "fouls",
+      "observed": 11,
+      "baseline": 12.368421052631579,
+      "candidate": 12.4
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "genoa",
+      "metric": "yellowCards",
+      "observed": 5,
+      "baseline": 1.605263157894737,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "fiorentina",
+      "metric": "totalShots",
+      "observed": 13,
+      "baseline": 10.3,
+      "candidate": 13.1
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "fiorentina",
+      "metric": "shotsOnTarget",
+      "observed": 3,
+      "baseline": 3.1,
+      "candidate": 4.1
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "fiorentina",
+      "metric": "wonCorners",
+      "observed": 4,
+      "baseline": 3.6,
+      "candidate": 4
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "fiorentina",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 12.5,
+      "candidate": 12.9
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "fiorentina",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 2.1052631578947367,
+      "candidate": 2.1
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "inter",
+      "metric": "totalShots",
+      "observed": 19,
+      "baseline": 16.2,
+      "candidate": 19.1
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "inter",
+      "metric": "shotsOnTarget",
+      "observed": 6,
+      "baseline": 5.7,
+      "candidate": 6.3
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "inter",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 6.5,
+      "candidate": 6.9
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "inter",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 13.131578947368421,
+      "candidate": 11.4
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "inter",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.6842105263157894,
+      "candidate": 1.5
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "parma",
+      "metric": "totalShots",
+      "observed": 9,
+      "baseline": 8.9,
+      "candidate": 8.9
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "parma",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 2.7,
+      "candidate": 2.9
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "parma",
+      "metric": "wonCorners",
+      "observed": 1,
+      "baseline": 3.2,
+      "candidate": 3.4
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "parma",
+      "metric": "fouls",
+      "observed": 9,
+      "baseline": 10.868421052631579,
+      "candidate": 10.7
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "parma",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.5526315789473684,
+      "candidate": 1.5
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lazio",
+      "metric": "totalShots",
+      "observed": 17,
+      "baseline": 11.7,
+      "candidate": 12.3
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lazio",
+      "metric": "shotsOnTarget",
+      "observed": 7,
+      "baseline": 4.8,
+      "candidate": 4.3
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lazio",
+      "metric": "wonCorners",
+      "observed": 7,
+      "baseline": 4.4,
+      "candidate": 4.3
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lazio",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 10.578947368421053,
+      "candidate": 11.9
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lazio",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 2,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "monza",
+      "metric": "totalShots",
+      "observed": 14,
+      "baseline": 11.2,
+      "candidate": 13.4
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "monza",
+      "metric": "shotsOnTarget",
+      "observed": 6,
+      "baseline": 4,
+      "candidate": 5.2
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "monza",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 4,
+      "candidate": 4.1
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "monza",
+      "metric": "fouls",
+      "observed": 9,
+      "baseline": 12.673684210526316,
+      "candidate": 13.5
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "monza",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.7973684210526315,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lecce",
+      "metric": "totalShots",
+      "observed": 19,
+      "baseline": 10.8,
+      "candidate": 10.2
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lecce",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 3.5,
+      "candidate": 3.4
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lecce",
+      "metric": "wonCorners",
+      "observed": 10,
+      "baseline": 4.3,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lecce",
+      "metric": "fouls",
+      "observed": 17,
+      "baseline": 12.631578947368421,
+      "candidate": 13
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "lecce",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 1.8157894736842106,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "bologna",
+      "metric": "totalShots",
+      "observed": 10,
+      "baseline": 11.1,
+      "candidate": 12.3
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "bologna",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 3.8,
+      "candidate": 4
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "bologna",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 4,
+      "candidate": 3.9
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "bologna",
+      "metric": "fouls",
+      "observed": 8,
+      "baseline": 13.18421052631579,
+      "candidate": 13.9
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "bologna",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.6578947368421053,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "napoli",
+      "metric": "totalShots",
+      "observed": 19,
+      "baseline": 13.8,
+      "candidate": 15
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "napoli",
+      "metric": "shotsOnTarget",
+      "observed": 8,
+      "baseline": 5,
+      "candidate": 4.7
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "napoli",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 6,
+      "candidate": 5.9
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "napoli",
+      "metric": "fouls",
+      "observed": 8,
+      "baseline": 11.18421052631579,
+      "candidate": 11.3
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "napoli",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.236842105263158,
+      "candidate": 1.3
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "frosinone",
+      "metric": "totalShots",
+      "observed": 17,
+      "baseline": 10.6,
+      "candidate": 14.7
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "frosinone",
+      "metric": "shotsOnTarget",
+      "observed": 1,
+      "baseline": 3.4,
+      "candidate": 4.6
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "frosinone",
+      "metric": "wonCorners",
+      "observed": 4,
+      "baseline": 3.6,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "frosinone",
+      "metric": "fouls",
+      "observed": 12,
+      "baseline": 12.673684210526316,
+      "candidate": 14.3
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "frosinone",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.7973684210526315,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "sassuolo",
+      "metric": "totalShots",
+      "observed": 10,
+      "baseline": 11.4,
+      "candidate": 13
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "sassuolo",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 3.7,
+      "candidate": 4.7
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "sassuolo",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 4,
+      "candidate": 4.1
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "sassuolo",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 11.973684210526315,
+      "candidate": 10.6
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "sassuolo",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 2.1578947368421053,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "milan",
+      "metric": "totalShots",
+      "observed": 11,
+      "baseline": 11.9,
+      "candidate": 12.4
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "milan",
+      "metric": "shotsOnTarget",
+      "observed": 6,
+      "baseline": 4.1,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "milan",
+      "metric": "wonCorners",
+      "observed": 5,
+      "baseline": 4,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "milan",
+      "metric": "fouls",
+      "observed": 11,
+      "baseline": 10.105263157894736,
+      "candidate": 11.1
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "milan",
+      "metric": "yellowCards",
+      "observed": 4,
+      "baseline": 1.5789473684210527,
+      "candidate": 1.6
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "torino",
+      "metric": "totalShots",
+      "observed": 12,
+      "baseline": 13.4,
+      "candidate": 12.8
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "torino",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 4.1,
+      "candidate": 4.1
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "torino",
+      "metric": "wonCorners",
+      "observed": 4,
+      "baseline": 4.6,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "torino",
+      "metric": "fouls",
+      "observed": 4,
+      "baseline": 13.947368421052632,
+      "candidate": 11
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "torino",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.894736842105263,
+      "candidate": 1.5
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "udinese",
+      "metric": "totalShots",
+      "observed": 15,
+      "baseline": 11.8,
+      "candidate": 13
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "udinese",
+      "metric": "shotsOnTarget",
+      "observed": 1,
+      "baseline": 4.2,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "udinese",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 4.5,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "udinese",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 13.578947368421053,
+      "candidate": 11.9
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "teamId": "udinese",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.868421052631579,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "bologna",
+      "metric": "totalShots",
+      "observed": 11,
+      "baseline": 12.1,
+      "candidate": 12.3
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "bologna",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 3.4,
+      "candidate": 3.4
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "bologna",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 4.1,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "bologna",
+      "metric": "fouls",
+      "observed": 8,
+      "baseline": 13.18421052631579,
+      "candidate": 12.4
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "bologna",
+      "metric": "yellowCards",
+      "observed": 4,
+      "baseline": 1.6578947368421053,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "inter",
+      "metric": "totalShots",
+      "observed": 17,
+      "baseline": 13,
+      "candidate": 16.2
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "inter",
+      "metric": "shotsOnTarget",
+      "observed": 8,
+      "baseline": 4.6,
+      "candidate": 5.3
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "inter",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 4.8,
+      "candidate": 5
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "inter",
+      "metric": "fouls",
+      "observed": 11,
+      "baseline": 13.131578947368421,
+      "candidate": 11.7
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "inter",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 1.6842105263157894,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "fiorentina",
+      "metric": "totalShots",
+      "observed": 19,
+      "baseline": 12.8,
+      "candidate": 14.5
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "fiorentina",
+      "metric": "shotsOnTarget",
+      "observed": 7,
+      "baseline": 3.7,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "fiorentina",
+      "metric": "wonCorners",
+      "observed": 10,
+      "baseline": 4.7,
+      "candidate": 4.8
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "fiorentina",
+      "metric": "fouls",
+      "observed": 12,
+      "baseline": 12.5,
+      "candidate": 11.5
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "fiorentina",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 2.1052631578947367,
+      "candidate": 2.1
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "como",
+      "metric": "totalShots",
+      "observed": 16,
+      "baseline": 12.6,
+      "candidate": 15.7
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "como",
+      "metric": "shotsOnTarget",
+      "observed": 8,
+      "baseline": 4.1,
+      "candidate": 5
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "como",
+      "metric": "wonCorners",
+      "observed": 5,
+      "baseline": 4.4,
+      "candidate": 4.7
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "como",
+      "metric": "fouls",
+      "observed": 12,
+      "baseline": 13.421052631578947,
+      "candidate": 12.4
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "como",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 2.0789473684210527,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "frosinone",
+      "metric": "totalShots",
+      "observed": 21,
+      "baseline": 12.6,
+      "candidate": 15.6
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "frosinone",
+      "metric": "shotsOnTarget",
+      "observed": 10,
+      "baseline": 4.3,
+      "candidate": 4.9
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "frosinone",
+      "metric": "wonCorners",
+      "observed": 5,
+      "baseline": 4.5,
+      "candidate": 5
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "frosinone",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 12.673684210526316,
+      "candidate": 14.2
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "frosinone",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.7973684210526315,
+      "candidate": 2
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "sassuolo",
+      "metric": "totalShots",
+      "observed": 14,
+      "baseline": 10.8,
+      "candidate": 14.6
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "sassuolo",
+      "metric": "shotsOnTarget",
+      "observed": 6,
+      "baseline": 3.8,
+      "candidate": 5.1
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "sassuolo",
+      "metric": "wonCorners",
+      "observed": 4,
+      "baseline": 3.5,
+      "candidate": 4.6
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "sassuolo",
+      "metric": "fouls",
+      "observed": 11,
+      "baseline": 11.973684210526315,
+      "candidate": 11.3
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "sassuolo",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 2.1578947368421053,
+      "candidate": 2
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "juventus",
+      "metric": "totalShots",
+      "observed": 9,
+      "baseline": 17.6,
+      "candidate": 17.3
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "juventus",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 5.6,
+      "candidate": 5.9
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "juventus",
+      "metric": "wonCorners",
+      "observed": 5,
+      "baseline": 6,
+      "candidate": 6
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "juventus",
+      "metric": "fouls",
+      "observed": 7,
+      "baseline": 12.131578947368421,
+      "candidate": 12.7
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "juventus",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.3157894736842106,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lazio",
+      "metric": "totalShots",
+      "observed": 9,
+      "baseline": 9.9,
+      "candidate": 10.8
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lazio",
+      "metric": "shotsOnTarget",
+      "observed": 3,
+      "baseline": 3.5,
+      "candidate": 3.5
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lazio",
+      "metric": "wonCorners",
+      "observed": 7,
+      "baseline": 3.3,
+      "candidate": 3.5
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lazio",
+      "metric": "fouls",
+      "observed": 7,
+      "baseline": 10.578947368421053,
+      "candidate": 11
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lazio",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 2,
+      "candidate": 2
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "milan",
+      "metric": "totalShots",
+      "observed": 11,
+      "baseline": 14.4,
+      "candidate": 14.4
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "milan",
+      "metric": "shotsOnTarget",
+      "observed": 6,
+      "baseline": 4.8,
+      "candidate": 5
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "milan",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 4.5,
+      "candidate": 4.7
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "milan",
+      "metric": "fouls",
+      "observed": 3,
+      "baseline": 10.105263157894736,
+      "candidate": 10.1
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "milan",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.5789473684210527,
+      "candidate": 1.5
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "atalanta",
+      "metric": "totalShots",
+      "observed": 12,
+      "baseline": 12.3,
+      "candidate": 12.3
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "atalanta",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 4.1,
+      "candidate": 4.3
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "atalanta",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 4.2,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "atalanta",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 11.842105263157896,
+      "candidate": 11.7
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "atalanta",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.5263157894736843,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "monza",
+      "metric": "totalShots",
+      "observed": 14,
+      "baseline": 12.1,
+      "candidate": 14.8
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "monza",
+      "metric": "shotsOnTarget",
+      "observed": 6,
+      "baseline": 4.3,
+      "candidate": 5.4
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "monza",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 4.7,
+      "candidate": 5
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "monza",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 12.673684210526316,
+      "candidate": 12.4
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "monza",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.7973684210526315,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "cagliari",
+      "metric": "totalShots",
+      "observed": 16,
+      "baseline": 12.6,
+      "candidate": 10.8
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "cagliari",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 4,
+      "candidate": 4
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "cagliari",
+      "metric": "wonCorners",
+      "observed": 7,
+      "baseline": 4,
+      "candidate": 3.6
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "cagliari",
+      "metric": "fouls",
+      "observed": 14,
+      "baseline": 13.789473684210526,
+      "candidate": 11.4
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "cagliari",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 2.026315789473684,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "parma",
+      "metric": "totalShots",
+      "observed": 25,
+      "baseline": 12.5,
+      "candidate": 11.8
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "parma",
+      "metric": "shotsOnTarget",
+      "observed": 8,
+      "baseline": 3.4,
+      "candidate": 3.4
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "parma",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 4.1,
+      "candidate": 4
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "parma",
+      "metric": "fouls",
+      "observed": 7,
+      "baseline": 10.868421052631579,
+      "candidate": 11.2
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "parma",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 1.5526315789473684,
+      "candidate": 1.5
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "torino",
+      "metric": "totalShots",
+      "observed": 9,
+      "baseline": 11.9,
+      "candidate": 12.1
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "torino",
+      "metric": "shotsOnTarget",
+      "observed": 3,
+      "baseline": 3.8,
+      "candidate": 3.9
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "torino",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 3.7,
+      "candidate": 3.8
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "torino",
+      "metric": "fouls",
+      "observed": 16,
+      "baseline": 13.947368421052632,
+      "candidate": 12.2
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "torino",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.894736842105263,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "roma",
+      "metric": "totalShots",
+      "observed": 15,
+      "baseline": 15.1,
+      "candidate": 16.2
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "roma",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 5.3,
+      "candidate": 5.2
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "roma",
+      "metric": "wonCorners",
+      "observed": 5,
+      "baseline": 5.9,
+      "candidate": 5.6
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "roma",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 13.763157894736842,
+      "candidate": 12.8
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "roma",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.736842105263158,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "genoa",
+      "metric": "totalShots",
+      "observed": 9,
+      "baseline": 9.6,
+      "candidate": 10.4
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "genoa",
+      "metric": "shotsOnTarget",
+      "observed": 1,
+      "baseline": 3.1,
+      "candidate": 3.3
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "genoa",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 3.5,
+      "candidate": 3.4
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "genoa",
+      "metric": "fouls",
+      "observed": 7,
+      "baseline": 12.368421052631579,
+      "candidate": 11.6
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "genoa",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 1.605263157894737,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "udinese",
+      "metric": "totalShots",
+      "observed": 14,
+      "baseline": 13.2,
+      "candidate": 14.1
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "udinese",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 4.3,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "udinese",
+      "metric": "wonCorners",
+      "observed": 1,
+      "baseline": 5.3,
+      "candidate": 5.3
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "udinese",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 13.578947368421053,
+      "candidate": 12
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "udinese",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.868421052631579,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lecce",
+      "metric": "totalShots",
+      "observed": 17,
+      "baseline": 9.8,
+      "candidate": 10.9
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lecce",
+      "metric": "shotsOnTarget",
+      "observed": 11,
+      "baseline": 2.9,
+      "candidate": 3.4
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lecce",
+      "metric": "wonCorners",
+      "observed": 4,
+      "baseline": 4.2,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lecce",
+      "metric": "fouls",
+      "observed": 11,
+      "baseline": 12.631578947368421,
+      "candidate": 12.8
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "lecce",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.8157894736842106,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "venezia",
+      "metric": "totalShots",
+      "observed": 9,
+      "baseline": 10.1,
+      "candidate": 13.5
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "venezia",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 3.3,
+      "candidate": 3.9
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "venezia",
+      "metric": "wonCorners",
+      "observed": 0,
+      "baseline": 3.7,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "venezia",
+      "metric": "fouls",
+      "observed": 7,
+      "baseline": 12.673684210526316,
+      "candidate": 11.2
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "venezia",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.7973684210526315,
+      "candidate": 2.1
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "napoli",
+      "metric": "totalShots",
+      "observed": 29,
+      "baseline": 12.9,
+      "candidate": 14.1
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "napoli",
+      "metric": "shotsOnTarget",
+      "observed": 10,
+      "baseline": 4.4,
+      "candidate": 5
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "napoli",
+      "metric": "wonCorners",
+      "observed": 12,
+      "baseline": 4.9,
+      "candidate": 4.6
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "napoli",
+      "metric": "fouls",
+      "observed": 6,
+      "baseline": 11.18421052631579,
+      "candidate": 10.8
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "matchday": 7,
+      "teamId": "napoli",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.236842105263158,
+      "candidate": 1.4
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "atalanta",
+      "metric": "totalShots",
+      "observed": 22,
+      "baseline": 16.4,
+      "candidate": 15.8
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "atalanta",
+      "metric": "shotsOnTarget",
+      "observed": 9,
+      "baseline": 4.9,
+      "candidate": 5
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "atalanta",
+      "metric": "wonCorners",
+      "observed": 8,
+      "baseline": 6.1,
+      "candidate": 5.8
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "atalanta",
+      "metric": "fouls",
+      "observed": 7,
+      "baseline": 11.842105263157896,
+      "candidate": 11.4
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "atalanta",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.5263157894736843,
+      "candidate": 1.4
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "frosinone",
+      "metric": "totalShots",
+      "observed": 24,
+      "baseline": 10.3,
+      "candidate": 15.3
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "frosinone",
+      "metric": "shotsOnTarget",
+      "observed": 10,
+      "baseline": 3.2,
+      "candidate": 4.8
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "frosinone",
+      "metric": "wonCorners",
+      "observed": 9,
+      "baseline": 4,
+      "candidate": 4.6
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "frosinone",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 12.673684210526316,
+      "candidate": 13.2
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "frosinone",
+      "metric": "yellowCards",
+      "observed": 4,
+      "baseline": 1.7973684210526315,
+      "candidate": 1.5
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "cagliari",
+      "metric": "totalShots",
+      "observed": 4,
+      "baseline": 12.1,
+      "candidate": 11.2
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "cagliari",
+      "metric": "shotsOnTarget",
+      "observed": 1,
+      "baseline": 4,
+      "candidate": 3.9
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "cagliari",
+      "metric": "wonCorners",
+      "observed": 1,
+      "baseline": 4.6,
+      "candidate": 4.6
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "cagliari",
+      "metric": "fouls",
+      "observed": 25,
+      "baseline": 13.789473684210526,
+      "candidate": 12.7
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "cagliari",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 2.026315789473684,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "bologna",
+      "metric": "totalShots",
+      "observed": 10,
+      "baseline": 11.2,
+      "candidate": 12.7
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "bologna",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 3.9,
+      "candidate": 4
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "bologna",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 4.2,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "bologna",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 13.18421052631579,
+      "candidate": 12.8
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "bologna",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.6578947368421053,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "como",
+      "metric": "totalShots",
+      "observed": 14,
+      "baseline": 16,
+      "candidate": 18
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "como",
+      "metric": "shotsOnTarget",
+      "observed": 6,
+      "baseline": 5.7,
+      "candidate": 6.3
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "como",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 5.2,
+      "candidate": 5.4
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "como",
+      "metric": "fouls",
+      "observed": 14,
+      "baseline": 13.421052631578947,
+      "candidate": 11.1
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "como",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 2.0789473684210527,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "sassuolo",
+      "metric": "totalShots",
+      "observed": 7,
+      "baseline": 9.6,
+      "candidate": 12.1
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "sassuolo",
+      "metric": "shotsOnTarget",
+      "observed": 1,
+      "baseline": 3.4,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "sassuolo",
+      "metric": "wonCorners",
+      "observed": 4,
+      "baseline": 3,
+      "candidate": 3.4
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "sassuolo",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 11.973684210526315,
+      "candidate": 11.3
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "sassuolo",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 2.1578947368421053,
+      "candidate": 2
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "genoa",
+      "metric": "totalShots",
+      "observed": 7,
+      "baseline": 11.3,
+      "candidate": 13
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "genoa",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 3.5,
+      "candidate": 4.3
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "genoa",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 3.8,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "genoa",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 12.368421052631579,
+      "candidate": 11.1
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "genoa",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.605263157894737,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "venezia",
+      "metric": "totalShots",
+      "observed": 19,
+      "baseline": 10.5,
+      "candidate": 13.1
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "venezia",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 3.6,
+      "candidate": 4.1
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "venezia",
+      "metric": "wonCorners",
+      "observed": 10,
+      "baseline": 4.2,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "venezia",
+      "metric": "fouls",
+      "observed": 11,
+      "baseline": 12.673684210526316,
+      "candidate": 11.9
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "venezia",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.7973684210526315,
+      "candidate": 2.4
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "inter",
+      "metric": "totalShots",
+      "observed": 33,
+      "baseline": 16.3,
+      "candidate": 17.9
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "inter",
+      "metric": "shotsOnTarget",
+      "observed": 11,
+      "baseline": 6.1,
+      "candidate": 6.5
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "inter",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 6.2,
+      "candidate": 6.1
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "inter",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 13.131578947368421,
+      "candidate": 11.8
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "inter",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.6842105263157894,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "fiorentina",
+      "metric": "totalShots",
+      "observed": 7,
+      "baseline": 9.6,
+      "candidate": 12.3
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "fiorentina",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 2.9,
+      "candidate": 4
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "fiorentina",
+      "metric": "wonCorners",
+      "observed": 1,
+      "baseline": 3.3,
+      "candidate": 3.5
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "fiorentina",
+      "metric": "fouls",
+      "observed": 14,
+      "baseline": 12.5,
+      "candidate": 11.1
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "fiorentina",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 2.1052631578947367,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lazio",
+      "metric": "totalShots",
+      "observed": 21,
+      "baseline": 12.9,
+      "candidate": 13.7
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lazio",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 4.6,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lazio",
+      "metric": "wonCorners",
+      "observed": 8,
+      "baseline": 5,
+      "candidate": 5.2
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lazio",
+      "metric": "fouls",
+      "observed": 5,
+      "baseline": 10.578947368421053,
+      "candidate": 12.2
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lazio",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 2,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "parma",
+      "metric": "totalShots",
+      "observed": 10,
+      "baseline": 10.1,
+      "candidate": 11.1
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "parma",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 3.2,
+      "candidate": 3.7
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "parma",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 3.4,
+      "candidate": 3.6
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "parma",
+      "metric": "fouls",
+      "observed": 12,
+      "baseline": 10.868421052631579,
+      "candidate": 11.5
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "parma",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.5526315789473684,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lecce",
+      "metric": "totalShots",
+      "observed": 16,
+      "baseline": 10.5,
+      "candidate": 10.7
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lecce",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 3.1,
+      "candidate": 3.7
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lecce",
+      "metric": "wonCorners",
+      "observed": 5,
+      "baseline": 4.1,
+      "candidate": 4.3
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lecce",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 12.631578947368421,
+      "candidate": 11.9
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "lecce",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.8157894736842106,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "juventus",
+      "metric": "totalShots",
+      "observed": 8,
+      "baseline": 13.8,
+      "candidate": 14.5
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "juventus",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 4.8,
+      "candidate": 5.3
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "juventus",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 4.9,
+      "candidate": 5.3
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "juventus",
+      "metric": "fouls",
+      "observed": 12,
+      "baseline": 12.131578947368421,
+      "candidate": 12.6
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "juventus",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.3157894736842106,
+      "candidate": 1.6
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "napoli",
+      "metric": "totalShots",
+      "observed": 15,
+      "baseline": 13,
+      "candidate": 14.3
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "napoli",
+      "metric": "shotsOnTarget",
+      "observed": 9,
+      "baseline": 4.8,
+      "candidate": 5.1
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "napoli",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 5.4,
+      "candidate": 5.4
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "napoli",
+      "metric": "fouls",
+      "observed": 6,
+      "baseline": 11.18421052631579,
+      "candidate": 10.5
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "napoli",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.236842105263158,
+      "candidate": 1.2
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "roma",
+      "metric": "totalShots",
+      "observed": 24,
+      "baseline": 11.7,
+      "candidate": 14
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "roma",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 4.2,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "roma",
+      "metric": "wonCorners",
+      "observed": 11,
+      "baseline": 4.2,
+      "candidate": 4
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "roma",
+      "metric": "fouls",
+      "observed": 11,
+      "baseline": 13.763157894736842,
+      "candidate": 12.4
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "roma",
+      "metric": "yellowCards",
+      "observed": 4,
+      "baseline": 1.736842105263158,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "torino",
+      "metric": "totalShots",
+      "observed": 17,
+      "baseline": 12.3,
+      "candidate": 11.7
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "torino",
+      "metric": "shotsOnTarget",
+      "observed": 7,
+      "baseline": 3.9,
+      "candidate": 4
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "torino",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 4.1,
+      "candidate": 4.1
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "torino",
+      "metric": "fouls",
+      "observed": 8,
+      "baseline": 13.947368421052632,
+      "candidate": 11.5
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "torino",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.894736842105263,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "monza",
+      "metric": "totalShots",
+      "observed": 7,
+      "baseline": 11.7,
+      "candidate": 14.1
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "monza",
+      "metric": "shotsOnTarget",
+      "observed": 3,
+      "baseline": 3.9,
+      "candidate": 5.2
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "monza",
+      "metric": "wonCorners",
+      "observed": 4,
+      "baseline": 4.5,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "monza",
+      "metric": "fouls",
+      "observed": 4,
+      "baseline": 12.673684210526316,
+      "candidate": 11.7
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "monza",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.7973684210526315,
+      "candidate": 1.5
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "udinese",
+      "metric": "totalShots",
+      "observed": 12,
+      "baseline": 12.6,
+      "candidate": 12.9
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "udinese",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 3.9,
+      "candidate": 3.7
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "udinese",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 4.8,
+      "candidate": 4.6
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "udinese",
+      "metric": "fouls",
+      "observed": 11,
+      "baseline": 13.578947368421053,
+      "candidate": 11.9
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "udinese",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.868421052631579,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "milan",
+      "metric": "totalShots",
+      "observed": 19,
+      "baseline": 10.9,
+      "candidate": 11.9
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "milan",
+      "metric": "shotsOnTarget",
+      "observed": 7,
+      "baseline": 3.7,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "milan",
+      "metric": "wonCorners",
+      "observed": 4,
+      "baseline": 3.7,
+      "candidate": 4
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "milan",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 10.105263157894736,
+      "candidate": 10.1
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "matchday": 8,
+      "teamId": "milan",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.5789473684210527,
+      "candidate": 1.6
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "fiorentina",
+      "metric": "totalShots",
+      "observed": 26,
+      "baseline": 13.8,
+      "candidate": 15.4
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "fiorentina",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 4.3,
+      "candidate": 5
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "fiorentina",
+      "metric": "wonCorners",
+      "observed": 8,
+      "baseline": 4.9,
+      "candidate": 5.3
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "fiorentina",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 12.5,
+      "candidate": 10.9
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "fiorentina",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 2.1052631578947367,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "atalanta",
+      "metric": "totalShots",
+      "observed": 10,
+      "baseline": 12.7,
+      "candidate": 13.6
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "atalanta",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 4.1,
+      "candidate": 4.9
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "atalanta",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 4.3,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "atalanta",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 11.842105263157896,
+      "candidate": 12.2
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "atalanta",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.5263157894736843,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "frosinone",
+      "metric": "totalShots",
+      "observed": 26,
+      "baseline": 12.1,
+      "candidate": 16.3
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "frosinone",
+      "metric": "shotsOnTarget",
+      "observed": 9,
+      "baseline": 4.1,
+      "candidate": 5.6
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "frosinone",
+      "metric": "wonCorners",
+      "observed": 10,
+      "baseline": 5.2,
+      "candidate": 5.2
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "frosinone",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 12.673684210526316,
+      "candidate": 13.6
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "frosinone",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.7973684210526315,
+      "candidate": 1.6
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lecce",
+      "metric": "totalShots",
+      "observed": 15,
+      "baseline": 9.2,
+      "candidate": 13.2
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lecce",
+      "metric": "shotsOnTarget",
+      "observed": 6,
+      "baseline": 2.7,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lecce",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 4.1,
+      "candidate": 4.7
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lecce",
+      "metric": "fouls",
+      "observed": 17,
+      "baseline": 12.631578947368421,
+      "candidate": 12.5
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lecce",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 1.8157894736842106,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "genoa",
+      "metric": "totalShots",
+      "observed": 14,
+      "baseline": 11.2,
+      "candidate": 10.7
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "genoa",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 3.4,
+      "candidate": 3.3
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "genoa",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 3.9,
+      "candidate": 3.9
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "genoa",
+      "metric": "fouls",
+      "observed": 5,
+      "baseline": 12.368421052631579,
+      "candidate": 11
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "genoa",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.605263157894737,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "juventus",
+      "metric": "totalShots",
+      "observed": 17,
+      "baseline": 13.5,
+      "candidate": 13.9
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "juventus",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 4.7,
+      "candidate": 4.7
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "juventus",
+      "metric": "wonCorners",
+      "observed": 9,
+      "baseline": 4.7,
+      "candidate": 5.3
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "juventus",
+      "metric": "fouls",
+      "observed": 8,
+      "baseline": 12.131578947368421,
+      "candidate": 13
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "juventus",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.3157894736842106,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "milan",
+      "metric": "totalShots",
+      "observed": 8,
+      "baseline": 13.7,
+      "candidate": 13.6
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "milan",
+      "metric": "shotsOnTarget",
+      "observed": 3,
+      "baseline": 4.4,
+      "candidate": 4.7
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "milan",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 4.5,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "milan",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 10.105263157894736,
+      "candidate": 11.6
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "milan",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.5789473684210527,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "bologna",
+      "metric": "totalShots",
+      "observed": 9,
+      "baseline": 10.8,
+      "candidate": 11.1
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "bologna",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 3.8,
+      "candidate": 3.8
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "bologna",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 3.7,
+      "candidate": 3.6
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "bologna",
+      "metric": "fouls",
+      "observed": 16,
+      "baseline": 13.18421052631579,
+      "candidate": 12.6
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "bologna",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.6578947368421053,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "monza",
+      "metric": "totalShots",
+      "observed": 12,
+      "baseline": 10.1,
+      "candidate": 12.8
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "monza",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 3.3,
+      "candidate": 4.6
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "monza",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 3.7,
+      "candidate": 4
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "monza",
+      "metric": "fouls",
+      "observed": 14,
+      "baseline": 12.673684210526316,
+      "candidate": 11.1
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "monza",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 1.7973684210526315,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "napoli",
+      "metric": "totalShots",
+      "observed": 16,
+      "baseline": 12.9,
+      "candidate": 14.6
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "napoli",
+      "metric": "shotsOnTarget",
+      "observed": 7,
+      "baseline": 4.4,
+      "candidate": 5.3
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "napoli",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 4.9,
+      "candidate": 5.1
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "napoli",
+      "metric": "fouls",
+      "observed": 6,
+      "baseline": 11.18421052631579,
+      "candidate": 10.1
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "napoli",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.236842105263158,
+      "candidate": 1.3
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "parma",
+      "metric": "totalShots",
+      "observed": 8,
+      "baseline": 12.8,
+      "candidate": 13.2
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "parma",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 3.4,
+      "candidate": 4.1
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "parma",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 4.3,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "parma",
+      "metric": "fouls",
+      "observed": 12,
+      "baseline": 10.868421052631579,
+      "candidate": 10.4
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "parma",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.5526315789473684,
+      "candidate": 1.5
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "udinese",
+      "metric": "totalShots",
+      "observed": 20,
+      "baseline": 11.7,
+      "candidate": 13.3
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "udinese",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 4.1,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "udinese",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 4.3,
+      "candidate": 4
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "udinese",
+      "metric": "fouls",
+      "observed": 14,
+      "baseline": 13.578947368421053,
+      "candidate": 12.6
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "udinese",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.868421052631579,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "roma",
+      "metric": "totalShots",
+      "observed": 20,
+      "baseline": 14.8,
+      "candidate": 16.8
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "roma",
+      "metric": "shotsOnTarget",
+      "observed": 8,
+      "baseline": 5.4,
+      "candidate": 5.3
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "roma",
+      "metric": "wonCorners",
+      "observed": 7,
+      "baseline": 5.7,
+      "candidate": 5.7
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "roma",
+      "metric": "fouls",
+      "observed": 8,
+      "baseline": 13.763157894736842,
+      "candidate": 12.2
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "roma",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.736842105263158,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "cagliari",
+      "metric": "totalShots",
+      "observed": 19,
+      "baseline": 11,
+      "candidate": 9.8
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "cagliari",
+      "metric": "shotsOnTarget",
+      "observed": 8,
+      "baseline": 3.6,
+      "candidate": 3.4
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "cagliari",
+      "metric": "wonCorners",
+      "observed": 8,
+      "baseline": 3.6,
+      "candidate": 3.1
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "cagliari",
+      "metric": "fouls",
+      "observed": 8,
+      "baseline": 13.789473684210526,
+      "candidate": 12.8
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "cagliari",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 2.026315789473684,
+      "candidate": 2.1
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "sassuolo",
+      "metric": "totalShots",
+      "observed": 9,
+      "baseline": 12.2,
+      "candidate": 12.9
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "sassuolo",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 3.8,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "sassuolo",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 4,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "sassuolo",
+      "metric": "fouls",
+      "observed": 7,
+      "baseline": 11.973684210526315,
+      "candidate": 11.5
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "sassuolo",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 2.1578947368421053,
+      "candidate": 2.2
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lazio",
+      "metric": "totalShots",
+      "observed": 16,
+      "baseline": 11.3,
+      "candidate": 13.1
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lazio",
+      "metric": "shotsOnTarget",
+      "observed": 8,
+      "baseline": 4.2,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lazio",
+      "metric": "wonCorners",
+      "observed": 1,
+      "baseline": 3.9,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lazio",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 10.578947368421053,
+      "candidate": 11.2
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "lazio",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 2,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "torino",
+      "metric": "totalShots",
+      "observed": 11,
+      "baseline": 11.7,
+      "candidate": 11.8
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "torino",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 3.7,
+      "candidate": 3.8
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "torino",
+      "metric": "wonCorners",
+      "observed": 5,
+      "baseline": 4.2,
+      "candidate": 4.1
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "torino",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 13.947368421052632,
+      "candidate": 11.4
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "torino",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.894736842105263,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "como",
+      "metric": "totalShots",
+      "observed": 18,
+      "baseline": 13.2,
+      "candidate": 15.9
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "como",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 4.3,
+      "candidate": 5.1
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "como",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 4.7,
+      "candidate": 4.9
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "como",
+      "metric": "fouls",
+      "observed": 3,
+      "baseline": 13.421052631578947,
+      "candidate": 11.3
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "como",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 2.0789473684210527,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "venezia",
+      "metric": "totalShots",
+      "observed": 12,
+      "baseline": 10.1,
+      "candidate": 12.7
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "venezia",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 3.2,
+      "candidate": 3.8
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "venezia",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 3.7,
+      "candidate": 3.9
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "venezia",
+      "metric": "fouls",
+      "observed": 5,
+      "baseline": 12.673684210526316,
+      "candidate": 11
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "venezia",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.7973684210526315,
+      "candidate": 2.1
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "inter",
+      "metric": "totalShots",
+      "observed": 16,
+      "baseline": 15.3,
+      "candidate": 18.4
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "inter",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 5.3,
+      "candidate": 6.5
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "inter",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 5.3,
+      "candidate": 5.2
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "inter",
+      "metric": "fouls",
+      "observed": 9,
+      "baseline": 13.131578947368421,
+      "candidate": 11.1
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "matchday": 9,
+      "teamId": "inter",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.6842105263157894,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "atalanta",
+      "metric": "totalShots",
+      "observed": 20,
+      "baseline": 16,
+      "candidate": 15.7
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "atalanta",
+      "metric": "shotsOnTarget",
+      "observed": 6,
+      "baseline": 4.7,
+      "candidate": 5
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "atalanta",
+      "metric": "wonCorners",
+      "observed": 8,
+      "baseline": 6.1,
+      "candidate": 6.1
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "atalanta",
+      "metric": "fouls",
+      "observed": 8,
+      "baseline": 11.842105263157896,
+      "candidate": 11.8
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "atalanta",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.5263157894736843,
+      "candidate": 1.3
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "parma",
+      "metric": "totalShots",
+      "observed": 6,
+      "baseline": 9.4,
+      "candidate": 11.4
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "parma",
+      "metric": "shotsOnTarget",
+      "observed": 3,
+      "baseline": 2.6,
+      "candidate": 3.5
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "parma",
+      "metric": "wonCorners",
+      "observed": 4,
+      "baseline": 3.5,
+      "candidate": 3.6
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "parma",
+      "metric": "fouls",
+      "observed": 10,
+      "baseline": 10.868421052631579,
+      "candidate": 10.6
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "parma",
+      "metric": "yellowCards",
+      "observed": 0,
+      "baseline": 1.5526315789473684,
+      "candidate": 1.4
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "bologna",
+      "metric": "totalShots",
+      "observed": 10,
+      "baseline": 13.5,
+      "candidate": 12.9
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "bologna",
+      "metric": "shotsOnTarget",
+      "observed": 5,
+      "baseline": 3.7,
+      "candidate": 4.3
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "bologna",
+      "metric": "wonCorners",
+      "observed": 5,
+      "baseline": 4.8,
+      "candidate": 4.7
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "bologna",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 13.18421052631579,
+      "candidate": 12.1
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "bologna",
+      "metric": "yellowCards",
+      "observed": 4,
+      "baseline": 1.6578947368421053,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "monza",
+      "metric": "totalShots",
+      "observed": 6,
+      "baseline": 9.8,
+      "candidate": 12
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "monza",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 3.4,
+      "candidate": 4.6
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "monza",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 4.1,
+      "candidate": 4.3
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "monza",
+      "metric": "fouls",
+      "observed": 19,
+      "baseline": 12.673684210526316,
+      "candidate": 12.5
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "monza",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 1.7973684210526315,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "como",
+      "metric": "totalShots",
+      "observed": 19,
+      "baseline": 16.4,
+      "candidate": 17.3
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "como",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 5.9,
+      "candidate": 6.1
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "como",
+      "metric": "wonCorners",
+      "observed": 8,
+      "baseline": 5.5,
+      "candidate": 5.1
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "como",
+      "metric": "fouls",
+      "observed": 5,
+      "baseline": 13.421052631578947,
+      "candidate": 10.5
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "como",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 2.0789473684210527,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "venezia",
+      "metric": "totalShots",
+      "observed": 7,
+      "baseline": 9.1,
+      "candidate": 12.5
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "venezia",
+      "metric": "shotsOnTarget",
+      "observed": 1,
+      "baseline": 3.2,
+      "candidate": 3.8
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "venezia",
+      "metric": "wonCorners",
+      "observed": 1,
+      "baseline": 3.3,
+      "candidate": 4
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "venezia",
+      "metric": "fouls",
+      "observed": 9,
+      "baseline": 12.673684210526316,
+      "candidate": 10.7
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "venezia",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.7973684210526315,
+      "candidate": 2
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "frosinone",
+      "metric": "totalShots",
+      "observed": 20,
+      "baseline": 12.2,
+      "candidate": 17.3
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "frosinone",
+      "metric": "shotsOnTarget",
+      "observed": 8,
+      "baseline": 4,
+      "candidate": 5.7
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "frosinone",
+      "metric": "wonCorners",
+      "observed": 7,
+      "baseline": 4.5,
+      "candidate": 5.2
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "frosinone",
+      "metric": "fouls",
+      "observed": 14,
+      "baseline": 12.673684210526316,
+      "candidate": 13
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "frosinone",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.7973684210526315,
+      "candidate": 1.5
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "torino",
+      "metric": "totalShots",
+      "observed": 12,
+      "baseline": 11.3,
+      "candidate": 13.3
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "torino",
+      "metric": "shotsOnTarget",
+      "observed": 3,
+      "baseline": 3.5,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "torino",
+      "metric": "wonCorners",
+      "observed": 7,
+      "baseline": 3.5,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "torino",
+      "metric": "fouls",
+      "observed": 13,
+      "baseline": 13.947368421052632,
+      "candidate": 11.7
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "torino",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 1.894736842105263,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "juventus",
+      "metric": "totalShots",
+      "observed": 18,
+      "baseline": 15.9,
+      "candidate": 15.4
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "juventus",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 5.2,
+      "candidate": 4.9
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "juventus",
+      "metric": "wonCorners",
+      "observed": 13,
+      "baseline": 5.3,
+      "candidate": 5.3
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "juventus",
+      "metric": "fouls",
+      "observed": 9,
+      "baseline": 12.131578947368421,
+      "candidate": 11.2
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "juventus",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 1.3157894736842106,
+      "candidate": 1.3
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "napoli",
+      "metric": "totalShots",
+      "observed": 8,
+      "baseline": 11.7,
+      "candidate": 13.2
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "napoli",
+      "metric": "shotsOnTarget",
+      "observed": 1,
+      "baseline": 3.7,
+      "candidate": 4.6
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "napoli",
+      "metric": "wonCorners",
+      "observed": 4,
+      "baseline": 4.4,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "napoli",
+      "metric": "fouls",
+      "observed": 12,
+      "baseline": 11.18421052631579,
+      "candidate": 9.4
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "napoli",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.236842105263158,
+      "candidate": 1.5
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lazio",
+      "metric": "totalShots",
+      "observed": 11,
+      "baseline": 12.6,
+      "candidate": 14.5
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lazio",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 5,
+      "candidate": 5
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lazio",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 4.7,
+      "candidate": 4.9
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lazio",
+      "metric": "fouls",
+      "observed": 7,
+      "baseline": 10.578947368421053,
+      "candidate": 11.2
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lazio",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 2,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "cagliari",
+      "metric": "totalShots",
+      "observed": 9,
+      "baseline": 12.4,
+      "candidate": 11.3
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "cagliari",
+      "metric": "shotsOnTarget",
+      "observed": 3,
+      "baseline": 4.2,
+      "candidate": 4.1
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "cagliari",
+      "metric": "wonCorners",
+      "observed": 2,
+      "baseline": 3.8,
+      "candidate": 3.7
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "cagliari",
+      "metric": "fouls",
+      "observed": 18,
+      "baseline": 13.789473684210526,
+      "candidate": 12.8
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "cagliari",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 2.026315789473684,
+      "candidate": 2
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lecce",
+      "metric": "totalShots",
+      "observed": 18,
+      "baseline": 12,
+      "candidate": 13.2
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lecce",
+      "metric": "shotsOnTarget",
+      "observed": 7,
+      "baseline": 3.7,
+      "candidate": 4.4
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lecce",
+      "metric": "wonCorners",
+      "observed": 6,
+      "baseline": 4.6,
+      "candidate": 4.8
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lecce",
+      "metric": "fouls",
+      "observed": 19,
+      "baseline": 12.631578947368421,
+      "candidate": 12.9
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "lecce",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.8157894736842106,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "genoa",
+      "metric": "totalShots",
+      "observed": 13,
+      "baseline": 10.8,
+      "candidate": 11.7
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "genoa",
+      "metric": "shotsOnTarget",
+      "observed": 3,
+      "baseline": 3.5,
+      "candidate": 3.8
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "genoa",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 4.1,
+      "candidate": 3.9
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "genoa",
+      "metric": "fouls",
+      "observed": 9,
+      "baseline": 12.368421052631579,
+      "candidate": 11.4
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "genoa",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.605263157894737,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "milan",
+      "metric": "totalShots",
+      "observed": 7,
+      "baseline": 13,
+      "candidate": 12.4
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "milan",
+      "metric": "shotsOnTarget",
+      "observed": 4,
+      "baseline": 3.9,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "milan",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 3.9,
+      "candidate": 3.8
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "milan",
+      "metric": "fouls",
+      "observed": 8,
+      "baseline": 10.105263157894736,
+      "candidate": 10.4
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "milan",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 1.5789473684210527,
+      "candidate": 1.7
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "inter",
+      "metric": "totalShots",
+      "observed": 19,
+      "baseline": 13.7,
+      "candidate": 16.5
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "inter",
+      "metric": "shotsOnTarget",
+      "observed": 8,
+      "baseline": 4.7,
+      "candidate": 5.4
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "inter",
+      "metric": "wonCorners",
+      "observed": 11,
+      "baseline": 4.8,
+      "candidate": 4.8
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "inter",
+      "metric": "fouls",
+      "observed": 14,
+      "baseline": 13.131578947368421,
+      "candidate": 11.3
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "inter",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.6842105263157894,
+      "candidate": 2
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "sassuolo",
+      "metric": "totalShots",
+      "observed": 7,
+      "baseline": 12.5,
+      "candidate": 13
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "sassuolo",
+      "metric": "shotsOnTarget",
+      "observed": 2,
+      "baseline": 4.3,
+      "candidate": 4.8
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "sassuolo",
+      "metric": "wonCorners",
+      "observed": 5,
+      "baseline": 4.1,
+      "candidate": 4
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "sassuolo",
+      "metric": "fouls",
+      "observed": 12,
+      "baseline": 11.973684210526315,
+      "candidate": 11.6
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "sassuolo",
+      "metric": "yellowCards",
+      "observed": 2,
+      "baseline": 2.1578947368421053,
+      "candidate": 1.9
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "fiorentina",
+      "metric": "totalShots",
+      "observed": 15,
+      "baseline": 11.4,
+      "candidate": 14.3
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "fiorentina",
+      "metric": "shotsOnTarget",
+      "observed": 6,
+      "baseline": 3.5,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "fiorentina",
+      "metric": "wonCorners",
+      "observed": 3,
+      "baseline": 4,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "fiorentina",
+      "metric": "fouls",
+      "observed": 15,
+      "baseline": 12.5,
+      "candidate": 12.2
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "fiorentina",
+      "metric": "yellowCards",
+      "observed": 3,
+      "baseline": 2.1052631578947367,
+      "candidate": 2
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "udinese",
+      "metric": "totalShots",
+      "observed": 15,
+      "baseline": 12.3,
+      "candidate": 13.3
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "udinese",
+      "metric": "shotsOnTarget",
+      "observed": 7,
+      "baseline": 4.2,
+      "candidate": 4.2
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "udinese",
+      "metric": "wonCorners",
+      "observed": 7,
+      "baseline": 4.6,
+      "candidate": 4.5
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "udinese",
+      "metric": "fouls",
+      "observed": 11,
+      "baseline": 13.578947368421053,
+      "candidate": 12
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "udinese",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.868421052631579,
+      "candidate": 1.8
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "roma",
+      "metric": "totalShots",
+      "observed": 14,
+      "baseline": 11.8,
+      "candidate": 14.9
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "roma",
+      "metric": "shotsOnTarget",
+      "observed": 9,
+      "baseline": 4.2,
+      "candidate": 4.9
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "roma",
+      "metric": "wonCorners",
+      "observed": 4,
+      "baseline": 4.8,
+      "candidate": 5
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "roma",
+      "metric": "fouls",
+      "observed": 9,
+      "baseline": 13.763157894736842,
+      "candidate": 12.1
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "matchday": 10,
+      "teamId": "roma",
+      "metric": "yellowCards",
+      "observed": 1,
+      "baseline": 1.736842105263158,
+      "candidate": 1.8
+    }
+  ],
+  "goalRows": [
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "baseline": {
+        "goalAbsoluteError": 0.6100000000000001,
+        "outcomeLogLoss": 0.5045686795174402,
+        "outcomeBrier": 0.23653731711658332,
+        "scoreLogLoss": 2.7825577523141334,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.545,
+        "outcomeLogLoss": 0.5378272811672067,
+        "outcomeBrier": 0.2596374691337812,
+        "scoreLogLoss": 2.7150240393993674,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "baseline": {
+        "goalAbsoluteError": 0.275,
+        "outcomeLogLoss": 1.363296554384318,
+        "outcomeBrier": 0.8612950244996143,
+        "scoreLogLoss": 2.108054104301202,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.22999999999999998,
+        "outcomeLogLoss": 1.3183877473467465,
+        "outcomeBrier": 0.8291023866731408,
+        "scoreLogLoss": 2.0726535296649162,
+        "exactCentralHit": 1
+      }
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "baseline": {
+        "goalAbsoluteError": 1.405,
+        "outcomeLogLoss": 1.3963208802849643,
+        "outcomeBrier": 0.8632252148562642,
+        "scoreLogLoss": 2.809708627170643,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.5150000000000001,
+        "outcomeLogLoss": 1.4201173736167187,
+        "outcomeBrier": 0.862647006241434,
+        "scoreLogLoss": 3.0296368588776383,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "baseline": {
+        "goalAbsoluteError": 0.495,
+        "outcomeLogLoss": 0.9792817290997943,
+        "outcomeBrier": 0.5917716271989987,
+        "scoreLogLoss": 2.4806909088934073,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.53,
+        "outcomeLogLoss": 1.0096897681210544,
+        "outcomeBrier": 0.6167712837611254,
+        "scoreLogLoss": 2.4975980697612377,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "baseline": {
+        "goalAbsoluteError": 0.795,
+        "outcomeLogLoss": 0.362878218925477,
+        "outcomeBrier": 0.14103290092142767,
+        "scoreLogLoss": 2.4081279632505916,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.7150000000000001,
+        "outcomeLogLoss": 0.3311222850097687,
+        "outcomeBrier": 0.12053364889008601,
+        "scoreLogLoss": 2.422073074781513,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "baseline": {
+        "goalAbsoluteError": 0.6499999999999999,
+        "outcomeLogLoss": 0.6216838611026843,
+        "outcomeBrier": 0.3215450119098162,
+        "scoreLogLoss": 2.80088766068785,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.77,
+        "outcomeLogLoss": 0.7261983826851092,
+        "outcomeBrier": 0.4020583990032817,
+        "scoreLogLoss": 2.8464278908037404,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "baseline": {
+        "goalAbsoluteError": 0.25,
+        "outcomeLogLoss": 0.6774118723540296,
+        "outcomeBrier": 0.3634158801897122,
+        "scoreLogLoss": 2.3701945371131576,
+        "exactCentralHit": 1
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.22999999999999998,
+        "outcomeLogLoss": 0.6770295899993186,
+        "outcomeBrier": 0.36304943337512396,
+        "scoreLogLoss": 2.363749113875797,
+        "exactCentralHit": 1
+      }
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "baseline": {
+        "goalAbsoluteError": 1.245,
+        "outcomeLogLoss": 0.7102431857727624,
+        "outcomeBrier": 0.3878392623639311,
+        "scoreLogLoss": 3.0692286915431453,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.445,
+        "outcomeLogLoss": 0.9258452061811198,
+        "outcomeBrier": 0.5506662210777962,
+        "scoreLogLoss": 3.4721752496155824,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "baseline": {
+        "goalAbsoluteError": 0.38,
+        "outcomeLogLoss": 1.4256394032754074,
+        "outcomeBrier": 0.9067767213317638,
+        "scoreLogLoss": 2.1706995344682887,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.485,
+        "outcomeLogLoss": 1.477558741311488,
+        "outcomeBrier": 0.9406954064655748,
+        "scoreLogLoss": 2.2373456580922584,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "baseline": {
+        "goalAbsoluteError": 0.625,
+        "outcomeLogLoss": 1.0995803508199689,
+        "outcomeBrier": 0.6891557296064761,
+        "scoreLogLoss": 2.5740577161794462,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.595,
+        "outcomeLogLoss": 1.0579924310180056,
+        "outcomeBrier": 0.6591990087340087,
+        "scoreLogLoss": 2.5582932367334887,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "bologna-inter-2026-27-md-07",
+      "baseline": {
+        "goalAbsoluteError": 0.6000000000000001,
+        "outcomeLogLoss": 0.5801231411291133,
+        "outcomeBrier": 0.29063311113296175,
+        "scoreLogLoss": 2.7652476020443886,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.52,
+        "outcomeLogLoss": 0.5212070248608079,
+        "outcomeBrier": 0.2475402169166046,
+        "scoreLogLoss": 2.67990275364604,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "fiorentina-como-2026-27-md-07",
+      "baseline": {
+        "goalAbsoluteError": 0.7000000000000001,
+        "outcomeLogLoss": 0.6665024217225832,
+        "outcomeBrier": 0.35504907231561345,
+        "scoreLogLoss": 2.9561535579623373,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.5900000000000001,
+        "outcomeLogLoss": 0.57229457606723,
+        "outcomeBrier": 0.28485648082458903,
+        "scoreLogLoss": 2.7539413091361213,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "frosinone-sassuolo-2026-27-md-07",
+      "baseline": {
+        "goalAbsoluteError": 1.6800000000000002,
+        "outcomeLogLoss": 0.9229060432947046,
+        "outcomeBrier": 0.547999573901192,
+        "scoreLogLoss": 4.760495091056155,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.52,
+        "outcomeLogLoss": 0.8198410826546525,
+        "outcomeBrier": 0.4723550836881827,
+        "scoreLogLoss": 4.315795365993815,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "juventus-lazio-2026-27-md-07",
+      "baseline": {
+        "goalAbsoluteError": 1.84,
+        "outcomeLogLoss": 1.5397386978134846,
+        "outcomeBrier": 0.9649987469479775,
+        "scoreLogLoss": 4.587596522975125,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.725,
+        "outcomeLogLoss": 1.3272356970366153,
+        "outcomeBrier": 0.8334210439110432,
+        "scoreLogLoss": 4.19520490415505,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "milan-atalanta-2026-27-md-07",
+      "baseline": {
+        "goalAbsoluteError": 1.12,
+        "outcomeLogLoss": 0.8592909779584648,
+        "outcomeBrier": 0.5010524351180387,
+        "scoreLogLoss": 3.570327594062994,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.08,
+        "outcomeLogLoss": 0.732003074319725,
+        "outcomeBrier": 0.40464391691375534,
+        "scoreLogLoss": 3.4743202910733313,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "monza-cagliari-2026-27-md-07",
+      "baseline": {
+        "goalAbsoluteError": 2.0349999999999997,
+        "outcomeLogLoss": 1.0351679757792542,
+        "outcomeBrier": 0.6321462536784815,
+        "scoreLogLoss": 4.77735401956302,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.96,
+        "outcomeLogLoss": 0.9270505883049249,
+        "outcomeBrier": 0.5545408325461856,
+        "scoreLogLoss": 4.45665426629989,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "parma-torino-2026-27-md-07",
+      "baseline": {
+        "goalAbsoluteError": 1.615,
+        "outcomeLogLoss": 1.1578066588826976,
+        "outcomeBrier": 0.7181033569478523,
+        "scoreLogLoss": 3.890610665489657,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.4849999999999999,
+        "outcomeLogLoss": 0.9814084850793516,
+        "outcomeBrier": 0.590972398707837,
+        "scoreLogLoss": 3.5715525332097697,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "roma-genoa-2026-27-md-07",
+      "baseline": {
+        "goalAbsoluteError": 0.4,
+        "outcomeLogLoss": 0.42248020419742116,
+        "outcomeBrier": 0.18048003274903507,
+        "scoreLogLoss": 2.0760806428254406,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.4600000000000001,
+        "outcomeLogLoss": 0.3516941368137986,
+        "outcomeBrier": 0.1343346782608312,
+        "scoreLogLoss": 2.0526242631666123,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "udinese-lecce-2026-27-md-07",
+      "baseline": {
+        "goalAbsoluteError": 1.775,
+        "outcomeLogLoss": 1.4347525387647004,
+        "outcomeBrier": 0.8988948340513319,
+        "scoreLogLoss": 4.407216942584214,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.7850000000000001,
+        "outcomeLogLoss": 1.3671951157837985,
+        "outcomeBrier": 0.8690404063175696,
+        "scoreLogLoss": 4.242027645552356,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "venezia-napoli-2026-27-md-07",
+      "baseline": {
+        "goalAbsoluteError": 0.92,
+        "outcomeLogLoss": 1.605383876419451,
+        "outcomeBrier": 1.0165929307843564,
+        "scoreLogLoss": 2.8195907888703506,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.11,
+        "outcomeLogLoss": 1.7694905251383966,
+        "outcomeBrier": 1.12699505100121,
+        "scoreLogLoss": 3.1788937387843976,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "atalanta-frosinone-2026-27-md-08",
+      "baseline": {
+        "goalAbsoluteError": 2.6849999999999996,
+        "outcomeLogLoss": 1.3773155806223234,
+        "outcomeBrier": 0.8663015705622251,
+        "scoreLogLoss": 6.948484254511221,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 2.44,
+        "outcomeLogLoss": 1.4367452832249763,
+        "outcomeBrier": 0.8718004674220007,
+        "scoreLogLoss": 5.918836783865436,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "cagliari-bologna-2026-27-md-08",
+      "baseline": {
+        "goalAbsoluteError": 0.855,
+        "outcomeLogLoss": 0.8258925496314033,
+        "outcomeBrier": 0.4750083660821942,
+        "scoreLogLoss": 2.56610184979831,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.9199999999999999,
+        "outcomeLogLoss": 0.9074284966679246,
+        "outcomeBrier": 0.5353152494591227,
+        "scoreLogLoss": 2.622683143875881,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "como-sassuolo-2026-27-md-08",
+      "baseline": {
+        "goalAbsoluteError": 0.535,
+        "outcomeLogLoss": 0.5267282510252276,
+        "outcomeBrier": 0.25190901948514777,
+        "scoreLogLoss": 2.2976389538464637,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.605,
+        "outcomeLogLoss": 0.5551503189331517,
+        "outcomeBrier": 0.27223331237800114,
+        "scoreLogLoss": 2.4759745471166337,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "genoa-venezia-2026-27-md-08",
+      "baseline": {
+        "goalAbsoluteError": 0.925,
+        "outcomeLogLoss": 0.8501366069278369,
+        "outcomeBrier": 0.4947478184907017,
+        "scoreLogLoss": 2.4179476922882635,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.995,
+        "outcomeLogLoss": 0.8769516338530907,
+        "outcomeBrier": 0.5163740030404637,
+        "scoreLogLoss": 2.532223660814794,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "inter-fiorentina-2026-27-md-08",
+      "baseline": {
+        "goalAbsoluteError": 0.385,
+        "outcomeLogLoss": 0.298044150498018,
+        "outcomeBrier": 0.1004339066920287,
+        "scoreLogLoss": 2.412765256933915,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.7050000000000001,
+        "outcomeLogLoss": 0.23438834386141816,
+        "outcomeBrier": 0.06595162030814297,
+        "scoreLogLoss": 2.5936252063066862,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "lazio-parma-2026-27-md-08",
+      "baseline": {
+        "goalAbsoluteError": 0.32500000000000007,
+        "outcomeLogLoss": 0.7585322161769454,
+        "outcomeBrier": 0.4240475892687756,
+        "scoreLogLoss": 2.425252525080079,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.21000000000000002,
+        "outcomeLogLoss": 0.5493432595684877,
+        "outcomeBrier": 0.2692823040531888,
+        "scoreLogLoss": 2.33889951025077,
+        "exactCentralHit": 1
+      }
+    },
+    {
+      "matchId": "lecce-juventus-2026-27-md-08",
+      "baseline": {
+        "goalAbsoluteError": 0.5800000000000001,
+        "outcomeLogLoss": 0.5586962254631949,
+        "outcomeBrier": 0.27574676276916205,
+        "scoreLogLoss": 2.2249209807121435,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.62,
+        "outcomeLogLoss": 0.595098965054567,
+        "outcomeBrier": 0.30179041889218206,
+        "scoreLogLoss": 2.3658969296514796,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "napoli-roma-2026-27-md-08",
+      "baseline": {
+        "goalAbsoluteError": 1.675,
+        "outcomeLogLoss": 1.34486633693149,
+        "outcomeBrier": 0.8214282991993315,
+        "scoreLogLoss": 4.550066355114914,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.67,
+        "outcomeLogLoss": 1.3490282671648712,
+        "outcomeBrier": 0.8252725335816034,
+        "scoreLogLoss": 4.543158289316807,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "torino-monza-2026-27-md-08",
+      "baseline": {
+        "goalAbsoluteError": 0.87,
+        "outcomeLogLoss": 0.7635622220645881,
+        "outcomeBrier": 0.4308051468132559,
+        "scoreLogLoss": 3.2183789678317645,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.6749999999999999,
+        "outcomeLogLoss": 0.923695316806207,
+        "outcomeBrier": 0.5592865970406886,
+        "scoreLogLoss": 3.1177273485657926,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "udinese-milan-2026-27-md-08",
+      "baseline": {
+        "goalAbsoluteError": 0.745,
+        "outcomeLogLoss": 0.7138524665161194,
+        "outcomeBrier": 0.3906725697083588,
+        "scoreLogLoss": 2.352466623524963,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.555,
+        "outcomeLogLoss": 0.5427709187913986,
+        "outcomeBrier": 0.26342432631637025,
+        "scoreLogLoss": 2.3281082174251044,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "fiorentina-atalanta-2026-27-md-09",
+      "baseline": {
+        "goalAbsoluteError": 0.575,
+        "outcomeLogLoss": 1.398518811442238,
+        "outcomeBrier": 0.8602333346110462,
+        "scoreLogLoss": 2.8431164472006514,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.28500000000000003,
+        "outcomeLogLoss": 1.5466736189079335,
+        "outcomeBrier": 0.9553515607216772,
+        "scoreLogLoss": 2.6918481573045425,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "frosinone-lecce-2026-27-md-09",
+      "baseline": {
+        "goalAbsoluteError": 1.7249999999999999,
+        "outcomeLogLoss": 0.6903937812269234,
+        "outcomeBrier": 0.37293600097320556,
+        "scoreLogLoss": 5.017765028908419,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.5499999999999998,
+        "outcomeLogLoss": 0.5466744290768941,
+        "outcomeBrier": 0.2660723887963954,
+        "scoreLogLoss": 4.14663398340883,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "genoa-juventus-2026-27-md-09",
+      "baseline": {
+        "goalAbsoluteError": 1.38,
+        "outcomeLogLoss": 1.5352117183038434,
+        "outcomeBrier": 0.9742497660803904,
+        "scoreLogLoss": 3.4530074774194994,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.4100000000000001,
+        "outcomeLogLoss": 1.6071497822918825,
+        "outcomeBrier": 1.0145225116949983,
+        "scoreLogLoss": 3.515222693004658,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "milan-bologna-2026-27-md-09",
+      "baseline": {
+        "goalAbsoluteError": 1.67,
+        "outcomeLogLoss": 1.182320921567852,
+        "outcomeBrier": 0.7371986094126224,
+        "scoreLogLoss": 5.064679994271521,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.645,
+        "outcomeLogLoss": 1.378899511495623,
+        "outcomeBrier": 0.8720941695827785,
+        "scoreLogLoss": 5.295884713866228,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "monza-napoli-2026-27-md-09",
+      "baseline": {
+        "goalAbsoluteError": 1.15,
+        "outcomeLogLoss": 0.6206803698228903,
+        "outcomeBrier": 0.32079193218241786,
+        "scoreLogLoss": 3.690317785133627,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.25,
+        "outcomeLogLoss": 0.7077671014461925,
+        "outcomeBrier": 0.38816266132320054,
+        "scoreLogLoss": 3.5416240952465,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "parma-udinese-2026-27-md-09",
+      "baseline": {
+        "goalAbsoluteError": 1.24,
+        "outcomeLogLoss": 1.316404559163288,
+        "outcomeBrier": 0.8124200094890175,
+        "scoreLogLoss": 2.4798832343473975,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.35,
+        "outcomeLogLoss": 1.3637452722792256,
+        "outcomeBrier": 0.8380992310919672,
+        "scoreLogLoss": 2.699803531646394,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "roma-cagliari-2026-27-md-09",
+      "baseline": {
+        "goalAbsoluteError": 1.605,
+        "outcomeLogLoss": 0.42076664548994214,
+        "outcomeBrier": 0.1790867948945456,
+        "scoreLogLoss": 4.358957764588706,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.56,
+        "outcomeLogLoss": 0.39392046231687494,
+        "outcomeBrier": 0.16110925246266555,
+        "scoreLogLoss": 4.272543725949531,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "sassuolo-lazio-2026-27-md-09",
+      "baseline": {
+        "goalAbsoluteError": 2.77,
+        "outcomeLogLoss": 0.9853571709770172,
+        "outcomeBrier": 0.5924426175900779,
+        "scoreLogLoss": 8.012208126219553,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 2.575,
+        "outcomeLogLoss": 0.7465893085156546,
+        "outcomeBrier": 0.4157749822989524,
+        "scoreLogLoss": 6.772634544700981,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "torino-como-2026-27-md-09",
+      "baseline": {
+        "goalAbsoluteError": 0.6749999999999999,
+        "outcomeLogLoss": 0.6431367823208605,
+        "outcomeBrier": 0.33762876485100546,
+        "scoreLogLoss": 2.8276121693036007,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.75,
+        "outcomeLogLoss": 0.710842430780573,
+        "outcomeBrier": 0.389020284340719,
+        "scoreLogLoss": 2.8892512513992306,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "venezia-inter-2026-27-md-09",
+      "baseline": {
+        "goalAbsoluteError": 0.785,
+        "outcomeLogLoss": 0.3577673426845417,
+        "outcomeBrier": 0.1362631652280872,
+        "scoreLogLoss": 2.3941366261562314,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.0350000000000001,
+        "outcomeLogLoss": 0.2846865513368873,
+        "outcomeBrier": 0.09254112125113721,
+        "scoreLogLoss": 2.5677371704751537,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "atalanta-parma-2026-27-md-10",
+      "baseline": {
+        "goalAbsoluteError": 1.8450000000000002,
+        "outcomeLogLoss": 1.6024329852561439,
+        "outcomeBrier": 0.9937131378983655,
+        "scoreLogLoss": 4.75102592098579,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.8850000000000002,
+        "outcomeLogLoss": 1.5645898421322844,
+        "outcomeBrier": 0.9887930521374154,
+        "scoreLogLoss": 4.5926776882528735,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "bologna-monza-2026-27-md-10",
+      "baseline": {
+        "goalAbsoluteError": 0.20500000000000007,
+        "outcomeLogLoss": 0.6705097956370183,
+        "outcomeBrier": 0.35804510473711926,
+        "scoreLogLoss": 2.3379866589087195,
+        "exactCentralHit": 1
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.30000000000000004,
+        "outcomeLogLoss": 0.7525026916970452,
+        "outcomeBrier": 0.4229071800072792,
+        "scoreLogLoss": 2.4002876714601573,
+        "exactCentralHit": 1
+      }
+    },
+    {
+      "matchId": "como-venezia-2026-27-md-10",
+      "baseline": {
+        "goalAbsoluteError": 1.025,
+        "outcomeLogLoss": 0.37832190610973415,
+        "outcomeBrier": 0.1504447242300195,
+        "scoreLogLoss": 2.2549694906131954,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.135,
+        "outcomeLogLoss": 0.3516279230195914,
+        "outcomeBrier": 0.13307579480319023,
+        "scoreLogLoss": 2.3997133665270978,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "frosinone-torino-2026-27-md-10",
+      "baseline": {
+        "goalAbsoluteError": 0.655,
+        "outcomeLogLoss": 0.6112049290237062,
+        "outcomeBrier": 0.3140558285485264,
+        "scoreLogLoss": 2.59572332000726,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.905,
+        "outcomeLogLoss": 0.5859094691321942,
+        "outcomeBrier": 0.29603762593491056,
+        "scoreLogLoss": 2.825821747017258,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "juventus-napoli-2026-27-md-10",
+      "baseline": {
+        "goalAbsoluteError": 0.8099999999999999,
+        "outcomeLogLoss": 0.7764199987070897,
+        "outcomeBrier": 0.43776750878535964,
+        "scoreLogLoss": 2.5155153769185525,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.9400000000000001,
+        "outcomeLogLoss": 0.9159741478989143,
+        "outcomeBrier": 0.5439119114095641,
+        "scoreLogLoss": 2.7236606792987996,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "lazio-cagliari-2026-27-md-10",
+      "baseline": {
+        "goalAbsoluteError": 0.21999999999999997,
+        "outcomeLogLoss": 0.68379789549386,
+        "outcomeBrier": 0.36820342671033957,
+        "scoreLogLoss": 2.339435026762728,
+        "exactCentralHit": 1
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.06499999999999995,
+        "outcomeLogLoss": 0.5014165019923393,
+        "outcomeBrier": 0.23344722596234058,
+        "scoreLogLoss": 2.3084053698246705,
+        "exactCentralHit": 1
+      }
+    },
+    {
+      "matchId": "lecce-genoa-2026-27-md-10",
+      "baseline": {
+        "goalAbsoluteError": 0.4049999999999999,
+        "outcomeLogLoss": 0.888851749399479,
+        "outcomeBrier": 0.5215578278664545,
+        "scoreLogLoss": 2.4544055778048754,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 0.405,
+        "outcomeLogLoss": 0.8764934549558213,
+        "outcomeBrier": 0.5140062080061731,
+        "scoreLogLoss": 2.425556423636861,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "milan-inter-2026-27-md-10",
+      "baseline": {
+        "goalAbsoluteError": 1.205,
+        "outcomeLogLoss": 1.214615016192513,
+        "outcomeBrier": 0.770589194287137,
+        "scoreLogLoss": 3.420099257196115,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.2449999999999999,
+        "outcomeLogLoss": 1.2229593243212937,
+        "outcomeBrier": 0.7851768148241366,
+        "scoreLogLoss": 3.356969786417577,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "sassuolo-fiorentina-2026-27-md-10",
+      "baseline": {
+        "goalAbsoluteError": 1.5299999999999998,
+        "outcomeLogLoss": 1.098214140750679,
+        "outcomeBrier": 0.6821411350636701,
+        "scoreLogLoss": 4.649485034906949,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.2200000000000002,
+        "outcomeLogLoss": 1.0624172660997138,
+        "outcomeBrier": 0.6654340644328863,
+        "scoreLogLoss": 4.105640056833018,
+        "exactCentralHit": 0
+      }
+    },
+    {
+      "matchId": "udinese-roma-2026-27-md-10",
+      "baseline": {
+        "goalAbsoluteError": 2.25,
+        "outcomeLogLoss": 0.7811743830539654,
+        "outcomeBrier": 0.4409560175296937,
+        "scoreLogLoss": 6.040741134315829,
+        "exactCentralHit": 0
+      },
+      "candidate": {
+        "goalAbsoluteError": 1.9700000000000002,
+        "outcomeLogLoss": 0.5034551542912364,
+        "outcomeBrier": 0.23500314819335533,
+        "scoreLogLoss": 4.94012521420161,
+        "exactCentralHit": 0
+      }
+    }
+  ]
+}
