@@ -6,7 +6,7 @@
  const protectedNode=n=>!!n.closest(legalSelector);
  const hide=n=>{if(!protectedNode(n)&&!n.querySelector(legalSelector)){n.hidden=true;n.style.setProperty('display','none','important');n.dataset.privateProvenance='';}};
  const style=document.createElement('style');
- style.textContent='[data-private-provenance]{display:none!important}';
+ style.textContent='[data-private-provenance],.reading-competition-context{display:none!important}';
  document.head.append(style);
  const provider=/^(?:fonte(?:\s.*)?|apri la fonte|snapshot provider|source|(?:UEFA(?:\.com)?|ESPN|WhoScored|StatMuse|Transfermarkt|Fantacalcio(?:\.it)?|Diretta(?:\.it)?|Lega (?:Calcio )?Serie A|AIA|FBref|FootyStats|Soccerbase|Sofascore)(?:\s*↗)?)$/i;
  const privateKey=/^(?:font[ei]|sources?(?:[a-z_].*)?|references?|referenceUrl|provider|provenienza|provenance|origine|retrievedAt|importedAt)$/i;

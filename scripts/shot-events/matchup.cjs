@@ -34,6 +34,7 @@ function spatialMatchup(fixture,fixtures,dataset,technicalDataset=null){
      minute:e.canonicalMinute??null,isGoal:e.isGoal,x:e.position.x,y:e.position.y})),xg:null};
   };
   return {teamId,expectedMatches:expected.length,matches:reports.length,excludedMatches:expected.length-reports.length,
+   competitionSamples:[...new Set(expected.map(f=>f.competition))].map(competition=>({competition,expectedMatches:expected.filter(f=>f.competition===competition).length,matches:reports.filter(m=>expected.some(f=>f.id===m.fixtureId&&f.competition===competition)).length})),
    ...(context?{continuity:publicContinuity(context),historyScope,outOfCycleMatches:allHistoricalMatches-expected.length}:{}),
    fixtureIds:reports.map(m=>m.fixtureId),for:totals(false),against:totals(true)};
  };

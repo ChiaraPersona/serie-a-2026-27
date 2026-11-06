@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 2,
+  "studyId": "xgot-prospective-v2",
+  "activatedAt": "2026-11-06T11:49:12.885Z",
+  "production": false,
+  "configuration": {
+    "schemaVersion": 2,
+    "production": false,
+    "retrospectiveStatus": "Exploratory: 2024/25 and 2025/26 were already inspected in v1; neither is a new confirmatory test",
+    "historyWindowDays": 550,
+    "maximumTeamAppearances": 20,
+    "minimumTeamAppearances": 6,
+    "priorExposure": {
+      "quality": 30,
+      "execution": 8
+    },
+    "weight": 0.1,
+    "weightPolicy": "Fixed before v2 evaluation; no search on 2025/26",
+    "primaryCandidate": "execution",
+    "secondaryCandidate": "quality",
+    "features": {
+      "quality": "Attack and opposition defence xGOT/SOT relative to their competition; shrink to ratio 1",
+      "execution": "Attack and opposition defence xGOT/xG relative to their competition; shrink to ratio 1"
+    },
+    "domesticPolicy": "Only acquired provider leagues; normalize each observation against earlier same-competition data before combining with UCL. Missing countries remain uncovered.",
+    "prospectivePolicy": "First valid capture per fixture is immutable; require not started and all history acquired by capture time. No backdating or automatic promotion.",
+    "prospectiveMinimumFixtures": 100,
+    "prospectiveMinimumWeeks": 6,
+    "maximumBaselineAgeHours": 72,
+    "metrics": [
+      "1X2 log loss",
+      "multiclass Brier",
+      "ECE10"
+    ],
+    "individualOrDuoUse": false
+  },
+  "methodHashes": {
+    "docs/xgot-protocol-v2.json": "ec142fe9a79cdbd525e00ef1b3c357cb00fe077f5f50965e7696cfbe33711f29",
+    "scripts/research/xgot/model-v2.cjs": "89e9e08ec6077ac4c151f1d9e08440498acfdd69f012d63d53487283a40e4320",
+    "scripts/research/xgot/prospective.cjs": "4d0b5a4671112ae86fca34264f6df21c1f4b0250bf7ffa9678d14b6527a96f5d",
+    "scripts/research/xgot/run.cjs": "fc52202f13b303c00b7224a8be82810478662efad55f776a3ea37cc8a17bf5ac",
+    "docs/xgot-validation-protocol.json": "c9785a3ec9a4f5364392029925c1c8d8e7ecd753e86523a77a7f50b88617c3cd",
+    "scripts/predictions/engine.js": "eee5560f062a239a195fa44fe27e66a1b605f8dc6b3f2bbf34f7ccb78516b234",
+    "scripts/predictions/snapshot-core.js": "5db2b3fcf07f1b4de7529e4d02218d605e8e8df41bc8ab9a7b728c1ba4eee593"
+  },
+  "clockPolicy": "LOCAL_SYSTEM_UTC; no external timestamp authority; no backdating or replacement",
+  "integrity": {
+    "sha256": "888fb93d44cd7cf3f53be7f986b0f56bce01b3054652f3351e8fc1a9b5613753",
+    "algorithm": "SHA-256"
+  }
+}

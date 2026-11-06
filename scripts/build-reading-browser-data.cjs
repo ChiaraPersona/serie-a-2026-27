@@ -9,6 +9,7 @@ const pick=(o,keys)=>Object.fromEntries(keys.filter(k=>k in o).map(k=>[k,o[k]]))
 function build({matchday=null}={}){
  const teamHistory=require('./build-serie-a-team-history.cjs').build();
  const matches=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'),teams=read('data/normalized/teams.json');
+ const historyMatches=[...matches,...require('./build-serie-a-team-history.cjs').europeanFixtures(teams,read('data/normalized/champions-league-2026-27.json'))];
  const spatialFile='data/normalized/serie-a-shot-events-2026-27.json';
  const spatial=fs.existsSync(path.join(root,spatialFile))?read(spatialFile):null;
  const technicalFile='data/normalized/serie-a-technical-context-2026-27.json';
@@ -29,7 +30,7 @@ function build({matchday=null}={}){
   write(`catalogs/${id}.json`,{forecastDataset,finishedIds});
   const artifacts={};
   artifacts['data/generated/serie-a-team-history.json']={...teamHistory,teams:Object.fromEntries(ids.map(teamId=>[teamId,(teamHistory.teams[teamId]||[]).filter(row=>!match.date||row.date.slice(0,10)<match.date.slice(0,10)).slice(0,10)]))};
-  if(spatial)artifacts['data/generated/reading-spatial-matchup.json']=spatialMatchup(match,matches,spatial,technical);
+  if(spatial)artifacts['data/generated/reading-spatial-matchup.json']=spatialMatchup(match,historyMatches,spatial,technical);
   const add=(f,project=x=>x)=>{const d=artifact(f);if(d!==null)artifacts[f]=project(d)};
   for(const team of ids)add(`data/teams/${team}.json`,d=>pick(d,['id','coach','squad']));
   add('data/sources/official-lineups-2026-27.json',d=>({...d,fixtures:d.fixtures.filter(f=>f.matchId===id)}));
@@ -44,7 +45,7 @@ function build({matchday=null}={}){
   for(const entry of artifacts['data/predictions/snapshots/manifest.json']?.snapshots||[])add(entry.snapshotFile,d=>({...d,snapshots:d.snapshots.filter(s=>s.matchId===id)}));
   add('data/normalized/card-settlement-records.json',d=>({...d,records:d.records.filter(r=>r.matchId===id||r.fixtureId===id||r.key?.includes(id))}));
   if(day===6&&source)artifacts['data/normalized/schedina-md06.json']={matchday:day,marketCatalog:{matches:(catalog?.matches||[]).filter(m=>m.matchId===id)}};
-  const history=matches.filter(m=>m.id===id||m.status==='finished'&&m.score&&m.date<match.date&&ids.some(t=>m.homeTeam===t||m.awayTeam===t));
+  const history=historyMatches.filter(m=>m.id===id||m.status==='finished'&&m.score&&m.date<match.date&&ids.some(t=>m.homeTeam===t||m.awayTeam===t));
   write(`matches/${id}.json`,{teams,matches:history,readings:readings.filter(r=>r.matchId===id),objectiveProfiles:objectives,teamDirectory:{...directory,officialLineups:Object.fromEntries(Object.entries(directory.officialLineups||{}).filter(([key])=>key.startsWith(id+':')))},teamStyleProfiles:{...styles,profiles:styles.profiles.filter(p=>ids.includes(p.teamId))},predictionDataset:{predictions:predictions.predictions.filter(p=>p.matchId===id).map(p=>withReadingDuels(p,duelSquads))},headToHeadData:{fixtures:h2h.fixtures.filter(f=>f.fixtureId===id||[f.homeTeamId,f.awayTeamId].sort().join('|')===ids.slice().sort().join('|'))},refereeProfiles:{...referees,profiles:referees.profiles.filter(p=>p.refereeSlug===match.refereeAssignment?.referee?.slug)},forecastDataset,finishedIds,artifacts});
  }
  require('./spatial-prospective/auto-capture.cjs').autoCapture(root);

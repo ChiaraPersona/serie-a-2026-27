@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const root=path.resolve(__dirname,'..'),out=path.join(root,'output/reading-spatial-2026-11-01-context-removed');fs.mkdirSync(out,{recursive:true});
+const root=path.resolve(__dirname,'..'),out=path.join(root,'output/reading-spatial-2026-11-06');fs.mkdirSync(out,{recursive:true});
 const protectedFiles=['data/normalized/predictions.json','data/normalized/schedina-md09.json','data/normalized/reading-md09-market-catalog.json','data/sources/match-results-2026-27.json','data/normalized/official-starter-registry.json'];
 const hashes=()=>protectedFiles.map(f=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f))).digest('hex'));
 const before=hashes(),mime={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp'};
@@ -10,7 +10,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const base=`http://127.0.0.1:${server.address().port}`,results=[];
  const browser=await chromium.launch({channel:'msedge',headless:true});
  try{
-  for(const id of ['frosinone-lecce-2026-27-md-09','bologna-inter-2026-27-md-07','milan-venezia-2026-27-md-02','inter-monza-2026-27-md-01']){
+  for(const id of ['inter-como-2026-27-md-11','cagliari-frosinone-2026-27-md-11','frosinone-lecce-2026-27-md-09','bologna-inter-2026-27-md-07','milan-venezia-2026-27-md-02','inter-monza-2026-27-md-01']){
    for(const width of [1440,390,320]){
     const page=await browser.newPage({viewport:{width,height:1000}}),errors=[],requests=[];
     page.on('pageerror',e=>errors.push(e.message));
@@ -18,6 +18,11 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
     await page.route('https://fonts.googleapis.com/**',r=>r.abort());await page.route('https://fonts.gstatic.com/**',r=>r.abort());
     await page.goto(`${base}/lettura.html?match=${id}`);await page.waitForSelector('[data-reading-ready="true"]');
     const section=page.locator('[data-spatial-fixture]');assert.equal(await section.count(),1);
+    if(id==='inter-como-2026-27-md-11'){
+     assert.match(await section.innerText(),/Champions League: 0\/4 gare con coordinate/);
+     assert.match(await page.locator('.rd-recent-form').innerText(),/Champions League/);
+     assert.match(await page.locator('.rd-tactical-current').allTextContents().then(t=>t.join(' ')),/Champions League/);
+    }
     assert.equal(await page.locator('#lettura-scenario .rd-spatial-synthesis').count(),0);
     assert.equal(await page.locator('#lettura-tattica .rd-spatial').count(),1);
     assert.equal(await section.locator('tbody tr').count(),6);

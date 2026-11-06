@@ -1,0 +1,937 @@
+{
+  "schemaVersion": 2,
+  "mode": "exploratory-development-only",
+  "newIndependentTest": false,
+  "predictiveUseApproved": false,
+  "protocol": {
+    "schemaVersion": 2,
+    "production": false,
+    "retrospectiveStatus": "Exploratory: 2024/25 and 2025/26 were already inspected in v1; neither is a new confirmatory test",
+    "historyWindowDays": 550,
+    "maximumTeamAppearances": 20,
+    "minimumTeamAppearances": 6,
+    "priorExposure": {
+      "quality": 30,
+      "execution": 8
+    },
+    "weight": 0.1,
+    "weightPolicy": "Fixed before v2 evaluation; no search on 2025/26",
+    "primaryCandidate": "execution",
+    "secondaryCandidate": "quality",
+    "features": {
+      "quality": "Attack and opposition defence xGOT/SOT relative to their competition; shrink to ratio 1",
+      "execution": "Attack and opposition defence xGOT/xG relative to their competition; shrink to ratio 1"
+    },
+    "domesticPolicy": "Only acquired provider leagues; normalize each observation against earlier same-competition data before combining with UCL. Missing countries remain uncovered.",
+    "prospectivePolicy": "First valid capture per fixture is immutable; require not started and all history acquired by capture time. No backdating or automatic promotion.",
+    "prospectiveMinimumFixtures": 100,
+    "prospectiveMinimumWeeks": 6,
+    "maximumBaselineAgeHours": 72,
+    "metrics": [
+      "1X2 log loss",
+      "multiclass Brier",
+      "ECE10"
+    ],
+    "individualOrDuoUse": false
+  },
+  "inputs": [
+    {
+      "path": "docs/xgot-protocol-v2.json",
+      "sha256": "ec142fe9a79cdbd525e00ef1b3c357cb00fe077f5f50965e7696cfbe33711f29"
+    },
+    {
+      "path": "data/normalized/xgot-team-research-v2.json",
+      "sha256": "ecc98a14f29a95e282d130aeb1c484b0d1406e4c0f5dbd0750290b95dbb323b0"
+    },
+    {
+      "path": "scripts/research/xgot/model-v2.cjs",
+      "sha256": "89e9e08ec6077ac4c151f1d9e08440498acfdd69f012d63d53487283a40e4320"
+    },
+    {
+      "path": "scripts/research/xgot/explore-v2.cjs",
+      "sha256": "39ac73ac1392b3b98e60b4f2f2b2e4ecdd947eff4f3692355ff443331b1c378e"
+    },
+    {
+      "path": "scripts/predictions/engine.js",
+      "sha256": "5bbf729cb37ee7469f64b22bbbbe74e680281d183893fba2575edb542263cbfa"
+    }
+  ],
+  "summary": [
+    {
+      "competition": "serie-a",
+      "season": "2024-25",
+      "n": 362,
+      "baseline": {
+        "n": 362,
+        "logLoss": 0.9841046300235453,
+        "brier": 0.5870096640247751,
+        "over25LogLoss": 0.6853320028878634,
+        "bttsLogLoss": 0.6986713792322815,
+        "ece10": 0.03247251553843579,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 3,
+            "predicted": 0.0943207965272495,
+            "observed": 0
+          },
+          {
+            "bin": 1,
+            "n": 89,
+            "predicted": 0.16598878537394793,
+            "observed": 0.10112359550561797
+          },
+          {
+            "bin": 2,
+            "n": 511,
+            "predicted": 0.25426923244359845,
+            "observed": 0.24070450097847357
+          },
+          {
+            "bin": 3,
+            "n": 183,
+            "predicted": 0.34778707033239753,
+            "observed": 0.3224043715846995
+          },
+          {
+            "bin": 4,
+            "n": 157,
+            "predicted": 0.4506616019925491,
+            "observed": 0.4968152866242038
+          },
+          {
+            "bin": 5,
+            "n": 93,
+            "predicted": 0.5376415346875091,
+            "observed": 0.5913978494623656
+          },
+          {
+            "bin": 6,
+            "n": 43,
+            "predicted": 0.6401943468067807,
+            "observed": 0.7441860465116279
+          },
+          {
+            "bin": 7,
+            "n": 7,
+            "predicted": 0.7263618444527549,
+            "observed": 0.8571428571428571
+          },
+          {
+            "bin": 8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "execution": {
+        "n": 362,
+        "logLoss": 0.9837780445426274,
+        "brier": 0.5867930111094402,
+        "over25LogLoss": 0.6856550736304807,
+        "bttsLogLoss": 0.6988878476251947,
+        "ece10": 0.033251582123135184,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 3,
+            "predicted": 0.09364398619247631,
+            "observed": 0
+          },
+          {
+            "bin": 1,
+            "n": 89,
+            "predicted": 0.1655156846492986,
+            "observed": 0.10112359550561797
+          },
+          {
+            "bin": 2,
+            "n": 511,
+            "predicted": 0.253992151791744,
+            "observed": 0.24070450097847357
+          },
+          {
+            "bin": 3,
+            "n": 187,
+            "predicted": 0.34895075740596965,
+            "observed": 0.32085561497326204
+          },
+          {
+            "bin": 4,
+            "n": 153,
+            "predicted": 0.4523193623992011,
+            "observed": 0.5098039215686274
+          },
+          {
+            "bin": 5,
+            "n": 92,
+            "predicted": 0.5379100696312681,
+            "observed": 0.5760869565217391
+          },
+          {
+            "bin": 6,
+            "n": 44,
+            "predicted": 0.6400916323385529,
+            "observed": 0.75
+          },
+          {
+            "bin": 7,
+            "n": 7,
+            "predicted": 0.7268243187267055,
+            "observed": 0.8571428571428571
+          },
+          {
+            "bin": 8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "quality": {
+        "n": 362,
+        "logLoss": 0.9835199558651789,
+        "brier": 0.5866737632070493,
+        "over25LogLoss": 0.6852798956671711,
+        "bttsLogLoss": 0.6989079267434901,
+        "ece10": 0.033560952479977244,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 3,
+            "predicted": 0.09266519994369982,
+            "observed": 0
+          },
+          {
+            "bin": 1,
+            "n": 93,
+            "predicted": 0.16589338967810388,
+            "observed": 0.0967741935483871
+          },
+          {
+            "bin": 2,
+            "n": 507,
+            "predicted": 0.25425310204114837,
+            "observed": 0.2406311637080868
+          },
+          {
+            "bin": 3,
+            "n": 183,
+            "predicted": 0.3476021509391839,
+            "observed": 0.3224043715846995
+          },
+          {
+            "bin": 4,
+            "n": 158,
+            "predicted": 0.45166530943230276,
+            "observed": 0.5063291139240507
+          },
+          {
+            "bin": 5,
+            "n": 92,
+            "predicted": 0.5396775977029037,
+            "observed": 0.5869565217391305
+          },
+          {
+            "bin": 6,
+            "n": 43,
+            "predicted": 0.6431120321057814,
+            "observed": 0.7441860465116279
+          },
+          {
+            "bin": 7,
+            "n": 7,
+            "predicted": 0.7298753634075402,
+            "observed": 0.8571428571428571
+          },
+          {
+            "bin": 8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "matchesUsingDomesticEvidence": 0,
+      "matchesUsingCrossCompetitionEvidence": 160,
+      "unavailableBaselineAcrossBothSeasons": 30,
+      "unavailableFeaturesAcrossBothSeasons": 0
+    },
+    {
+      "competition": "serie-a",
+      "season": "2025-26",
+      "n": 368,
+      "baseline": {
+        "n": 368,
+        "logLoss": 1.0098693334607416,
+        "brier": 0.603446513030637,
+        "over25LogLoss": 0.6997222711722447,
+        "bttsLogLoss": 0.6942415457601857,
+        "ece10": 0.028786029947587846,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 1,
+            "n": 81,
+            "predicted": 0.17067699805393335,
+            "observed": 0.13580246913580246
+          },
+          {
+            "bin": 2,
+            "n": 520,
+            "predicted": 0.2568542942085928,
+            "observed": 0.25
+          },
+          {
+            "bin": 3,
+            "n": 196,
+            "predicted": 0.34369153733685776,
+            "observed": 0.29591836734693877
+          },
+          {
+            "bin": 4,
+            "n": 173,
+            "predicted": 0.44486407282015744,
+            "observed": 0.4797687861271676
+          },
+          {
+            "bin": 5,
+            "n": 104,
+            "predicted": 0.546936206178156,
+            "observed": 0.6153846153846154
+          },
+          {
+            "bin": 6,
+            "n": 27,
+            "predicted": 0.6395282010561487,
+            "observed": 0.7407407407407407
+          },
+          {
+            "bin": 7,
+            "n": 3,
+            "predicted": 0.71242579406916,
+            "observed": 0.6666666666666666
+          },
+          {
+            "bin": 8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "execution": {
+        "n": 368,
+        "logLoss": 1.0097335329478903,
+        "brier": 0.6033690155952514,
+        "over25LogLoss": 0.6995363582291714,
+        "bttsLogLoss": 0.6943577086116185,
+        "ece10": 0.02900192486885095,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 1,
+            "n": 82,
+            "predicted": 0.17055093785343203,
+            "observed": 0.13414634146341464
+          },
+          {
+            "bin": 2,
+            "n": 522,
+            "predicted": 0.2571206098717731,
+            "observed": 0.2509578544061303
+          },
+          {
+            "bin": 3,
+            "n": 191,
+            "predicted": 0.34381329344686173,
+            "observed": 0.2931937172774869
+          },
+          {
+            "bin": 4,
+            "n": 174,
+            "predicted": 0.4443607537946934,
+            "observed": 0.47701149425287354
+          },
+          {
+            "bin": 5,
+            "n": 105,
+            "predicted": 0.5465067879256509,
+            "observed": 0.6190476190476191
+          },
+          {
+            "bin": 6,
+            "n": 27,
+            "predicted": 0.6403316140712674,
+            "observed": 0.7407407407407407
+          },
+          {
+            "bin": 7,
+            "n": 3,
+            "predicted": 0.7128627407360303,
+            "observed": 0.6666666666666666
+          },
+          {
+            "bin": 8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "quality": {
+        "n": 368,
+        "logLoss": 1.009741161865265,
+        "brier": 0.6033577608325391,
+        "over25LogLoss": 0.6997906068718089,
+        "bttsLogLoss": 0.6941779790167457,
+        "ece10": 0.03061777823307359,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 1,
+            "n": 84,
+            "predicted": 0.17031641663410826,
+            "observed": 0.13095238095238096
+          },
+          {
+            "bin": 2,
+            "n": 521,
+            "predicted": 0.2570350547027305,
+            "observed": 0.2533589251439539
+          },
+          {
+            "bin": 3,
+            "n": 188,
+            "predicted": 0.3432492577866094,
+            "observed": 0.28191489361702127
+          },
+          {
+            "bin": 4,
+            "n": 175,
+            "predicted": 0.444023742914483,
+            "observed": 0.48
+          },
+          {
+            "bin": 5,
+            "n": 104,
+            "predicted": 0.5466873997671166,
+            "observed": 0.6153846153846154
+          },
+          {
+            "bin": 6,
+            "n": 29,
+            "predicted": 0.6392876492940939,
+            "observed": 0.7586206896551724
+          },
+          {
+            "bin": 7,
+            "n": 3,
+            "predicted": 0.7161035411287768,
+            "observed": 0.6666666666666666
+          },
+          {
+            "bin": 8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "matchesUsingDomesticEvidence": 0,
+      "matchesUsingCrossCompetitionEvidence": 141,
+      "unavailableBaselineAcrossBothSeasons": 30,
+      "unavailableFeaturesAcrossBothSeasons": 0
+    },
+    {
+      "competition": "champions-league",
+      "season": "2024-25",
+      "n": 105,
+      "baseline": {
+        "n": 105,
+        "logLoss": 0.9387494665993936,
+        "brier": 0.5556641336310343,
+        "over25LogLoss": 0.6568234697762049,
+        "bttsLogLoss": 0.6703155382783053,
+        "ece10": 0.04710267243064113,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 8,
+            "predicted": 0.06897588031132569,
+            "observed": 0
+          },
+          {
+            "bin": 1,
+            "n": 52,
+            "predicted": 0.15936616834641162,
+            "observed": 0.17307692307692307
+          },
+          {
+            "bin": 2,
+            "n": 119,
+            "predicted": 0.23923936118029204,
+            "observed": 0.19327731092436976
+          },
+          {
+            "bin": 3,
+            "n": 37,
+            "predicted": 0.3447664098692793,
+            "observed": 0.35135135135135137
+          },
+          {
+            "bin": 4,
+            "n": 39,
+            "predicted": 0.45065270525185935,
+            "observed": 0.5128205128205128
+          },
+          {
+            "bin": 5,
+            "n": 29,
+            "predicted": 0.5519101439854736,
+            "observed": 0.5517241379310345
+          },
+          {
+            "bin": 6,
+            "n": 19,
+            "predicted": 0.635358173223686,
+            "observed": 0.7894736842105263
+          },
+          {
+            "bin": 7,
+            "n": 8,
+            "predicted": 0.7363337971155915,
+            "observed": 0.875
+          },
+          {
+            "bin": 8,
+            "n": 4,
+            "predicted": 0.8479964273254722,
+            "observed": 0.5
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "execution": {
+        "n": 105,
+        "logLoss": 0.9393217944792152,
+        "brier": 0.5560342202012443,
+        "over25LogLoss": 0.6568429047660868,
+        "bttsLogLoss": 0.669909741201352,
+        "ece10": 0.03972742963347216,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 8,
+            "predicted": 0.06850979240351673,
+            "observed": 0
+          },
+          {
+            "bin": 1,
+            "n": 51,
+            "predicted": 0.15834824186541005,
+            "observed": 0.1568627450980392
+          },
+          {
+            "bin": 2,
+            "n": 122,
+            "predicted": 0.23965447669839685,
+            "observed": 0.20491803278688525
+          },
+          {
+            "bin": 3,
+            "n": 35,
+            "predicted": 0.3474844961474445,
+            "observed": 0.37142857142857144
+          },
+          {
+            "bin": 4,
+            "n": 38,
+            "predicted": 0.44953870857446915,
+            "observed": 0.47368421052631576
+          },
+          {
+            "bin": 5,
+            "n": 29,
+            "predicted": 0.5489906337302727,
+            "observed": 0.5862068965517241
+          },
+          {
+            "bin": 6,
+            "n": 20,
+            "predicted": 0.6339544521701411,
+            "observed": 0.75
+          },
+          {
+            "bin": 7,
+            "n": 8,
+            "predicted": 0.7373355150196285,
+            "observed": 0.875
+          },
+          {
+            "bin": 8,
+            "n": 4,
+            "predicted": 0.848846333925853,
+            "observed": 0.5
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "quality": {
+        "n": 105,
+        "logLoss": 0.9381646675515636,
+        "brier": 0.5552957167951389,
+        "over25LogLoss": 0.655650784371531,
+        "bttsLogLoss": 0.6696749227737215,
+        "ece10": 0.0488278679521886,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 9,
+            "predicted": 0.07233713923751117,
+            "observed": 0
+          },
+          {
+            "bin": 1,
+            "n": 52,
+            "predicted": 0.16046949215449993,
+            "observed": 0.17307692307692307
+          },
+          {
+            "bin": 2,
+            "n": 121,
+            "predicted": 0.24049764180524877,
+            "observed": 0.19834710743801653
+          },
+          {
+            "bin": 3,
+            "n": 34,
+            "predicted": 0.3493501824599812,
+            "observed": 0.38235294117647056
+          },
+          {
+            "bin": 4,
+            "n": 38,
+            "predicted": 0.44953971385975694,
+            "observed": 0.5
+          },
+          {
+            "bin": 5,
+            "n": 30,
+            "predicted": 0.5515135117262608,
+            "observed": 0.5333333333333333
+          },
+          {
+            "bin": 6,
+            "n": 19,
+            "predicted": 0.6367901316642464,
+            "observed": 0.7894736842105263
+          },
+          {
+            "bin": 7,
+            "n": 8,
+            "predicted": 0.7382211716956874,
+            "observed": 0.875
+          },
+          {
+            "bin": 8,
+            "n": 4,
+            "predicted": 0.8484337347772958,
+            "observed": 0.5
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "matchesUsingDomesticEvidence": 102,
+      "matchesUsingCrossCompetitionEvidence": 102,
+      "unavailableBaselineAcrossBothSeasons": 158,
+      "unavailableFeaturesAcrossBothSeasons": 3
+    },
+    {
+      "competition": "champions-league",
+      "season": "2025-26",
+      "n": 105,
+      "baseline": {
+        "n": 105,
+        "logLoss": 0.9669273756129729,
+        "brier": 0.574564474819918,
+        "over25LogLoss": 0.6470556623009798,
+        "bttsLogLoss": 0.6561254060100254,
+        "ece10": 0.04592849011958292,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 7,
+            "predicted": 0.07855194516893661,
+            "observed": 0.14285714285714285
+          },
+          {
+            "bin": 1,
+            "n": 53,
+            "predicted": 0.17069593658991986,
+            "observed": 0.1320754716981132
+          },
+          {
+            "bin": 2,
+            "n": 106,
+            "predicted": 0.2326409222774345,
+            "observed": 0.2169811320754717
+          },
+          {
+            "bin": 3,
+            "n": 57,
+            "predicted": 0.3507304776126079,
+            "observed": 0.40350877192982454
+          },
+          {
+            "bin": 4,
+            "n": 37,
+            "predicted": 0.44914172289297677,
+            "observed": 0.40540540540540543
+          },
+          {
+            "bin": 5,
+            "n": 26,
+            "predicted": 0.5606971759122956,
+            "observed": 0.6538461538461539
+          },
+          {
+            "bin": 6,
+            "n": 22,
+            "predicted": 0.6414046084082966,
+            "observed": 0.6818181818181818
+          },
+          {
+            "bin": 7,
+            "n": 4,
+            "predicted": 0.7271677615300889,
+            "observed": 0.25
+          },
+          {
+            "bin": 8,
+            "n": 3,
+            "predicted": 0.8452446691207544,
+            "observed": 1
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "execution": {
+        "n": 105,
+        "logLoss": 0.9673844549365054,
+        "brier": 0.5748849179797868,
+        "over25LogLoss": 0.6472495088700755,
+        "bttsLogLoss": 0.6560917663928748,
+        "ece10": 0.035322316423327914,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 6,
+            "predicted": 0.07523998629387495,
+            "observed": 0.16666666666666666
+          },
+          {
+            "bin": 1,
+            "n": 54,
+            "predicted": 0.1697268418126551,
+            "observed": 0.12962962962962962
+          },
+          {
+            "bin": 2,
+            "n": 107,
+            "predicted": 0.23337033518245406,
+            "observed": 0.22429906542056074
+          },
+          {
+            "bin": 3,
+            "n": 53,
+            "predicted": 0.3486640400331432,
+            "observed": 0.37735849056603776
+          },
+          {
+            "bin": 4,
+            "n": 40,
+            "predicted": 0.4456943762781185,
+            "observed": 0.425
+          },
+          {
+            "bin": 5,
+            "n": 25,
+            "predicted": 0.5588172829895183,
+            "observed": 0.68
+          },
+          {
+            "bin": 6,
+            "n": 24,
+            "predicted": 0.6416646258308156,
+            "observed": 0.625
+          },
+          {
+            "bin": 7,
+            "n": 3,
+            "predicted": 0.7332211477346248,
+            "observed": 0.3333333333333333
+          },
+          {
+            "bin": 8,
+            "n": 3,
+            "predicted": 0.8452230163560213,
+            "observed": 1
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "quality": {
+        "n": 105,
+        "logLoss": 0.9678494308045926,
+        "brier": 0.5751601989160259,
+        "over25LogLoss": 0.6473021872463597,
+        "bttsLogLoss": 0.6557600042228631,
+        "ece10": 0.044208007908315826,
+        "calibrationBins": [
+          {
+            "bin": 0,
+            "n": 6,
+            "predicted": 0.07412244698186343,
+            "observed": 0.16666666666666666
+          },
+          {
+            "bin": 1,
+            "n": 54,
+            "predicted": 0.16941719391146584,
+            "observed": 0.12962962962962962
+          },
+          {
+            "bin": 2,
+            "n": 106,
+            "predicted": 0.23273560586366418,
+            "observed": 0.2169811320754717
+          },
+          {
+            "bin": 3,
+            "n": 56,
+            "predicted": 0.3498480023253364,
+            "observed": 0.39285714285714285
+          },
+          {
+            "bin": 4,
+            "n": 39,
+            "predicted": 0.44941089193638606,
+            "observed": 0.41025641025641024
+          },
+          {
+            "bin": 5,
+            "n": 24,
+            "predicted": 0.5609404741319554,
+            "observed": 0.7083333333333334
+          },
+          {
+            "bin": 6,
+            "n": 24,
+            "predicted": 0.6418262767567845,
+            "observed": 0.625
+          },
+          {
+            "bin": 7,
+            "n": 3,
+            "predicted": 0.7378010417034343,
+            "observed": 0.3333333333333333
+          },
+          {
+            "bin": 8,
+            "n": 3,
+            "predicted": 0.8461481877211053,
+            "observed": 1
+          },
+          {
+            "bin": 9,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "matchesUsingDomesticEvidence": 104,
+      "matchesUsingCrossCompetitionEvidence": 104,
+      "unavailableBaselineAcrossBothSeasons": 158,
+      "unavailableFeaturesAcrossBothSeasons": 3
+    }
+  ]
+}

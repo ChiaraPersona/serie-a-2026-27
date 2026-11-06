@@ -20,7 +20,7 @@ async function main() {
   if (requestedIds) assert.equal(requestedFixtures.length, requestedIds.size);
   assert(requestedFixtures.length, 'Nessuna fixture da aggiornare');
   const ids = new Set(requestedFixtures.map(f => f.id));
-  const target = path.join(root, 'data/normalized/odds/sisal/champions-league.json');
+  const target = path.join(root, 'data/normalized/odds/sisal/serie-a.json');
   const previous = readJsonFile(target);
   const retrievedAt = new Date().toISOString();
   const pageUrls = requestedFixtures.map(f => competition.eventUrlTemplate.replace('{homeTeam}',f.homeTeam).replace('{awayTeam}',f.awayTeam));

@@ -5,7 +5,14 @@ const {attackingCoordinates,zoneFor,minuteCompatible}=require('./shot-events/nor
 const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
 async function main(){
  const dataset=read('data/normalized/serie-a-shot-events-2026-27.json'),fixtures=read('data/normalized/matches.json').filter(f=>f.competition==='serie-a');
- const byId=new Map(fixtures.map(f=>[f.id,f]));
+ const europe=require('./build-serie-a-team-history.cjs').europeanFixtures(read('data/normalized/teams.json'),read('data/normalized/champions-league-2026-27.json'));
+ const history=[...fixtures,...europe];
+ const byId=new Map(history.map(f=>[f.id,f]));
+ const future=fixtures.find(f=>f.id==='inter-como-2026-27-md-11');
+ const europeanSample=spatialMatchup(future,history,dataset,read('data/normalized/serie-a-technical-context-2026-27.json'));
+ const inter=europeanSample.teams.find(t=>t.teamId==='inter');
+ assert.deepEqual(inter.competitionSamples.find(s=>s.competition==='champions-league'),{competition:'champions-league',expectedMatches:4,matches:0});
+ assert(europe.every(f=>f.score&&f.status==='finished'));
  assert.deepEqual(attackingCoordinates({x:8800,y:3000},true),{x:88,y:50});
  assert.deepEqual(attackingCoordinates({x:1200,y:3000},false),{x:88,y:50});
  assert.equal(attackingCoordinates({x:0,y:6001},true),null);
@@ -34,7 +41,7 @@ async function main(){
  assert.deepEqual(bad.sort(),['cagliari-inter-2026-27-md-02','como-parma-2026-27-md-04','sassuolo-juventus-2026-27-md-04'].sort());
  for(const fixture of fixtures){
   const technical=read('data/normalized/serie-a-technical-context-2026-27.json');
-  const data=spatialMatchup(fixture,fixtures,dataset,technical);
+  const data=spatialMatchup(fixture,history,dataset,technical);
   const projection=read(`data/generated/readings/matches/${fixture.id}.json`).artifacts['data/generated/reading-spatial-matchup.json'];
   assert.deepEqual(projection,data,'stale projection '+fixture.id);
   const serialized=JSON.stringify(data);assert(!/provider|sourceUrl|StatMuse|originalCoordinates|sha256/.test(serialized));

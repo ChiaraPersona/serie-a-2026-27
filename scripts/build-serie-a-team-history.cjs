@@ -3,6 +3,16 @@ const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const metrics=['shots','shotsOnTarget','corners','fouls','yellowCards','redCards','possessionPct','expectedGoals'];
 const numeric=value=>typeof value==='number'&&Number.isFinite(value)?value:null;
+function europeanFixtures(teams,champions){
+ const canonical=new Set(teams.map(t=>t.id));
+ const ids=new Map((champions.teamBranding||[]).map(t=>[t.team,t.slug]));
+ return (champions.fixtures||[]).filter(m=>m.status==='finished'&&m.date&&m.score&&[m.homeTeam,m.awayTeam].some(t=>canonical.has(ids.get(t)))).map(m=>({
+  id:m.id,competition:'champions-league',competitionLabel:'Champions League',season:m.season,date:m.date,kickoff:m.kickoff,status:m.status,score:m.score,
+  homeTeam:ids.get(m.homeTeam)||m.homeTeam,awayTeam:ids.get(m.awayTeam)||m.awayTeam,
+  teamNames:{[ids.get(m.homeTeam)||m.homeTeam]:m.homeTeam,[ids.get(m.awayTeam)||m.awayTeam]:m.awayTeam},
+  teamStats:Object.fromEntries(['home','away'].map((side,i)=>[side,Object.fromEntries(metrics.map(k=>[k,numeric(m.matchReport?.statistics?.[k]?.[i])]))]))
+ }));
+}
 function projectHistory(teams,league,champions){
  const canonical=new Set(teams.map(t=>t.id));
  // The verified branding slug is the canonical club ID; never resolve approximate names.
@@ -35,4 +45,4 @@ function build(){
  fs.mkdirSync(path.dirname(file),{recursive:true});if(!fs.existsSync(file)||fs.readFileSync(file,'utf8')!==text)fs.writeFileSync(file,text);
  return data;
 }
-module.exports={build,projectHistory};if(require.main===module)build();
+module.exports={build,projectHistory,europeanFixtures};if(require.main===module)build();

@@ -42,6 +42,20 @@ function run() {
     if (!fs.existsSync(path.join(ROOT, dir))) continue;
     for (const file of fs.readdirSync(path.join(ROOT, dir)).filter(f => f.endsWith(".json"))) sourceMatches.push(...read(`${dir}/${file}`).matches);
   }
+  const local = "data/raw/champions-season-shots/2026-10-20/fotmob/matches";
+  const leagues = { 42: "champions-league", 55: "serie-a", 47: "premier-league", 87: "la-liga", 54: "bundesliga",
+    53: "ligue-1", 61: "liga-portugal", 57: "eredivisie", 40: "belgian-pro-league" };
+  const seen = new Set(sourceMatches.map(m => m.providerMatchId));
+  for (const file of fs.readdirSync(path.join(ROOT, local))) {
+    if (!file.endsWith(".json.gz")) continue;
+    const rawPath = `${local}/${file}`, bytes = fs.readFileSync(path.join(ROOT, rawPath));
+    const raw = JSON.parse(zlib.gunzipSync(bytes)), g = raw.payload?.general;
+    const competition = leagues[g?.parentLeagueId || g?.leagueId], id = String(g?.matchId);
+    if (!competition || !g.finished || seen.has(id)) continue;
+    seen.add(id);
+    sourceMatches.push({ providerMatchId: id, competition, season: "2026/2027", date: g.matchTimeUTCDate.slice(0, 10),
+      source: { url: raw.url, retrievedAt: raw.retrievedAt, rawPath, sha256: crypto.createHash("sha256").update(bytes).digest("hex"), modelVersion: null } });
+  }
   const observations = [], audit = [];
   for (const m of sourceMatches) {
     const bytes = fs.readFileSync(path.join(ROOT, m.source.rawPath));
