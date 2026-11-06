@@ -1,0 +1,7 @@
+# Designazioni Serie A MD11 — 6 novembre 2026
+
+Acquisite le dieci designazioni con assistenti, IV ufficiale, VAR e AVAR dall'articolo fornito dall'utente: https://www.fantacalcio.it/news/calcio-italia/04_11_2026/serie-a-le-designazioni-arbitrali-della-10-giornata-500247 . URL e didascalia riportano MD10; titolo, testo e dieci abbinamenti identificano MD11. Identità risolte tramite slug esatti del registro interno.
+
+Aggiornata la fonte canonica referee-assignments-2026-27.json e importate solo le designazioni MD11. Eseguiti i builder esistenti build-reading-md11, build-schedina-md11 e build-reading-referee-history --matchday 11; build sito presentation-only/readings-index-only con acquisizione spaziale disabilitata. Formule e criteri invariati. Allegretta conserva DESIGNATED_REFEREE_EVIDENCE_UNAVAILABLE; il test ora verifica esplicitamente questo stato anziché presumere un campione disponibile. Provenienza conservata nelle fonti interne delle Letture e nel builder.
+
+Superati test-reading-md11 (dieci fixture desktop/mobile), controllo dati dedicato e test-schedina-md11 (sincronizzazione e salvataggi). Verificato confronto strutturale con HEAD: fixture, previsioni e Letture estranee a MD11 inalterate. Build completato. Il controllo aggiuntivo legacy check-referee-md08-refresh --matchday 11 si arresta perché richiede il campo analysis.recent assente nella proiezione MD11; il controllo browser MD11 dedicato passa. Nessun commit, push o deploy.

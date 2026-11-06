@@ -28,7 +28,8 @@ for(const match of round){
   const {matchId,...assignment}=assignments.assignments.find(a=>a.matchId===match.id);
   assert.deepEqual(match.refereeAssignment,assignment);
   assert(!p.dataQuality.missing.includes('designazione arbitrale'));
-  assert(p.likelyBooked.every(b=>b.refereeFactorSource==='DESIGNATED_REFEREE_HISTORICAL_SAMPLE'));
+  const expectedRefereeFactor=assignment.referee.slug==='claudio-giuseppe-allegretta'?'DESIGNATED_REFEREE_EVIDENCE_UNAVAILABLE':'DESIGNATED_REFEREE_HISTORICAL_SAMPLE';
+  assert(p.likelyBooked.every(b=>b.refereeFactorSource===expectedRefereeFactor));
   const history=read('data/generated/reading-referee-history.json').fixtures.find(f=>f.fixtureId===match.id);
   assert.equal(history.refereeId,assignment.referee.slug);assert.equal(history.rows.length,5);assert(history.rows.every(r=>r.date.slice(0,10)<match.date));
  }
