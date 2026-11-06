@@ -18,7 +18,7 @@ for(const t of lineups.teams){
  for(const p of starters.filter(p=>!p.playerId))unresolved.push({teamId:t.teamId,kind:'starter',sourceName:p.sourceName,sourceId:p.sourceId});
  for(const key of ['unavailable','suspended','doubtful','ballots'])for(const p of (t[key]||[]).flat()){
   if(!p.playerId)unresolved.push({teamId:t.teamId,kind:key,sourceName:p.sourceName,sourceId:p.sourceId});
-  if(['unavailable','suspended'].includes(key)&&starters.some(s=>s.sourceId===p.sourceId))conflicts.push({teamId:t.teamId,kind:key,player:p.sourceName});
+  if(['unavailable','suspended'].includes(key)&&p.playerId&&starters.some(s=>s.playerId===p.playerId))conflicts.push({teamId:t.teamId,kind:key,player:p.sourceName});
  }
  // Do not silently feed a stale team projection to the engine.
  const meta=read('data/teams/index.json').teams.find(q=>q.id===t.teamId),projected=meta.projectedLineup||meta.probableLineup;
