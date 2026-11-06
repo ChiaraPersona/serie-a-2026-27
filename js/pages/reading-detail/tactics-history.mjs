@@ -9,6 +9,22 @@ function profileFor(model,evidence,i){
  const side=[model.home,model.away][i],id=side.id||model.prediction?.teamProjections?.[i]?.teamId;
  return evidence.analysis.styles?.profiles?.find(p=>p.teamId===id)||null;
 }
+export function currentTacticalSample(model,evidence,side){
+ const rows=priorMatches(model,evidence,side).filter(m=>m.competition==='serie-a'&&m.season===(model.fixture.season||evidence.analysis.match?.season));
+ const valid=v=>finite(v)&&v>=0;
+ const metric=(key,opponent=false)=>{
+  const values=rows.map(m=>{const own=m.homeTeam===side.id?'home':'away',which=opponent?(own==='home'?'away':'home'):own;return key==='goals'?m.score?.[which]:m.teamStats?.[which]?.[key];}).filter(valid);
+  return {n:values.length,mean:values.length?values.reduce((a,b)=>a+b,0)/values.length:null};
+ };
+ return {matches:rows.length,from:rows.at(-1)?.date,to:rows[0]?.date,metrics:[
+  ['Possesso',metric('possessionPct'),'%'],['Tiri / gara',metric('shots'),''],['Tiri concessi / gara',metric('shots',true),''],['SOT / gara',metric('shotsOnTarget'),''],['Gol / gara',metric('goals'),''],['Gol subiti / gara',metric('goals',true),''],['xG / gara',metric('expectedGoals'),''],['xG concessi / gara',metric('expectedGoals',true),''],['Corner / gara',metric('corners'),'']
+ ]};
+}
+function currentTacticsMarkup(model,evidence,side){
+ const s=currentTacticalSample(model,evidence,side);
+ if(!s.matches)return missing('Stagione corrente: campione precedente alla gara N/D.');
+ return `<div class="rd-tactical-current"><p class="rd-footnote rd-tactical-baseline">Serie A ${esc((model.fixture.season||evidence.analysis.match?.season)?.replace('-','/'))} · ${s.matches} gare · ${esc(s.from)}–${esc(s.to)}</p><p class="rd-footnote">Volumi osservati; campione descrittivo precedente alla partita.</p><dl class="rd-player-kpis rd-tactical-metrics">${s.metrics.map(([label,m,suffix])=>`<div><dt>${label}</dt><dd>${m.n?number(m.mean)+suffix:'N/D'}</dd><small>${m.n?`n=${m.n}`:'N/D'}</small></div>`).join('')}</dl></div>`;
+}
 export function tacticsMarkup(model,evidence){
  if(model.competition==='champions'&&evidence.championsTactics)return championsTacticsMarkup(model,evidence);
  const sides=[model.home,model.away],profiles=sides.map((_,i)=>profileFor(model,evidence,i));
@@ -16,7 +32,8 @@ export function tacticsMarkup(model,evidence){
   const p=profiles[i],channels=evidence.analysis.attackChannels?.profiles?.find(p=>p.team===side.name)?.attackChannels||model.prediction?.teamProjections?.[i]?.attackChannels||p?.attackChannels;
   return `<article class="rd-tactical-column" data-tactical-side="${i?'away':'home'}"><header class="rd-tactical-team"><span>${i?'Ospite':'Casa'}</span><h3>${esc(side.name)}</h3></header><p class="rd-footnote rd-tactical-baseline">Baseline ${esc(p?.season||'storica')} · ${esc(p?.competition||'Campione N/D')} · ${number(p?.summary?.appearances,0)} gare</p><dl class="rd-player-kpis rd-tactical-metrics"><div><dt>Possesso</dt><dd>${number(p?.summary?.possessionPct)}${finite(p?.summary?.possessionPct)?'%':''}</dd></div><div><dt>Tiri / gara</dt><dd>${number(p?.summary?.shotsPerGame)}</dd></div><div><dt>Gol / gara</dt><dd>${number(p?.derived?.goalsPerGame)}</dd></div></dl><div class="rd-tactical-directions">${attackMarkup(channels)}</div></article>`;
  });
- return `<div class="rd-tactical-comparison" aria-label="Confronto tattico Casa e Ospite">${panels.join('')}</div>`;
+ const updated=model.competition==='serie-a'?panels.map((html,i)=>html.replace('</header>','</header>'+currentTacticsMarkup(model,evidence,sides[i])).replace('<p class="rd-footnote rd-tactical-baseline">Baseline','<details class="rd-disclosure"><summary>Baseline storica 2025/26</summary><p class="rd-footnote rd-tactical-baseline">Baseline').replace('<div class="rd-tactical-directions">','</details><div class="rd-tactical-directions">')):panels;
+ return `<div class="rd-tactical-comparison" aria-label="Confronto tattico Casa e Ospite">${updated.join('')}</div>`;
 }
 function championsTacticsMarkup(model,evidence){
  const sampleLabel=s=>`${s.competitionLabel}${s.id.endsWith('historical')?' · storico':''} ${s.season.replace('-','/')} · ${s.matches} gare`;

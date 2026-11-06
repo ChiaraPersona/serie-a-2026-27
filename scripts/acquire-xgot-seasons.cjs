@@ -57,10 +57,11 @@ function project(raw, fixture, target, rawPath) {
     const fields = (p.stats || []).flatMap(g => Object.values(g.stats || {}));
     const value = key => { const v = fields.find(s => s.key === key)?.stat?.value; return valid(v) ? v : null; };
     // The display label and key differ across historical payload versions.
-    const observed = fields.filter(s => /expected_goals_on_target|expected_goalsontarget/i.test(s.key || ""));
+    const observed = fields.filter(s => ["expected_goals_on_target", "expected_goals_on_target_variant", "expected_goalsontarget"].includes(s.key));
     const xgot = observed.length === 1 && valid(observed[0].stat?.value) ? observed[0].stat.value : null;
     return { providerPlayerId: String(p.id), providerTeamId: String(p.teamId), name: p.name,
-      minutes: value("minutes_played"), xgot, shots: value("total_shots"), shotsOnTarget: value("ShotsOnTarget") };
+      minutes: value("minutes_played"), xgot, xgotFaced: value("expected_goals_on_target_faced"),
+      isGoalkeeper: p.isGoalkeeper === true, shots: value("total_shots"), shotsOnTarget: value("ShotsOnTarget") };
   });
   return {
     provider: "FotMob", providerMatchId: String(fixture.id), competition: target.competition, season: target.season,
@@ -79,9 +80,10 @@ function project(raw, fixture, target, rawPath) {
   };
 }
 
-async function run({ offline = false } = {}) {
+async function run({ offline = false, targets = TARGETS,
+  normalizedRoot = "data/normalized/xgot-history-seasons", auditRoot = "data/analysis/xgot/seasons" } = {}) {
   const summaries = [];
-  for (const target of TARGETS) {
+  for (const target of targets) {
     const slug = target.season.replace("/", "-");
     const calendarPath = `${BASE}/calendars/${target.leagueId}-${slug}.json.gz`;
     const calendar = offline ? unpack(calendarPath) : await acquire(
@@ -114,22 +116,22 @@ async function run({ offline = false } = {}) {
       matchesWithTeamXgot: rows.filter(m => m.coverage.teamXgotPresent).length,
       matchesWithShotXgot: rows.filter(m => m.coverage.shotXgotPresent).length,
       playerXgotObservations: rows.reduce((n, m) => n + m.coverage.playerXgotObservations, 0), failures: failures.length,
-      calendarComplete: fixtures.length === target.expectedMatches && finished.length === target.expectedMatches,
-      acquisitionComplete: rows.length === target.expectedMatches,
-      xgotCoverageComplete: rows.length === target.expectedMatches && rows.every(m => m.coverage.teamXgotPresent),
+      calendarComplete: target.expectedMatches ? fixtures.length === target.expectedMatches && finished.length === target.expectedMatches : null,
+      acquisitionComplete: rows.length === finished.length,
+      xgotCoverageComplete: rows.length === finished.length && rows.every(m => m.coverage.teamXgotPresent),
       canonicalIdentityValidationComplete: false, predictiveUseApproved: false };
     const calendarEvidence = { rawPath: calendarPath, url: calendar.url, retrievedAt: calendar.retrievedAt,
       sha256: hash(fs.readFileSync(path.join(ROOT, calendarPath))) };
-    save(`data/normalized/xgot-history-seasons/${target.competition}-${slug}.json`, {
+    save(`${normalizedRoot}/${target.competition}-${slug}.json`, {
       schemaVersion: 1, summary, calendarEvidence, matches: rows });
-    save(`data/analysis/xgot/seasons/${target.competition}-${slug}.json`, {
+    save(`${auditRoot}/${target.competition}-${slug}.json`, {
       schemaVersion: 1, summary, calendarEvidence, failures,
       expectedProviderMatchIds: finished.map(f => String(f.id)).sort(),
       missingTeamXgot: rows.filter(m => !m.coverage.teamXgotPresent).map(m => m.providerMatchId) });
     summaries.push(summary);
     console.log(JSON.stringify(summary));
   }
-  save("data/analysis/xgot/seasons/coverage.json", { schemaVersion: 1, summaries });
+  save(`${auditRoot}/coverage.json`, { schemaVersion: 1, summaries });
   return summaries;
 }
 if (require.main === module) run({ offline: process.argv.includes("--offline") }).catch(e => { console.error(e); process.exitCode = 1; });

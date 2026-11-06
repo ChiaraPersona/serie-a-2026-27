@@ -35,7 +35,7 @@ for (const target of TARGETS) {
     assert.equal(m.predictiveUseApproved, false);
     for (const t of m.teams) assert(t.xgot === null || Number.isFinite(t.xgot) && t.xgot >= 0);
     const publishedKeys = Object.values(raw.payload.content?.playerStats || {}).flatMap(p =>
-      (p.stats || []).flatMap(g => Object.values(g.stats || {}))).filter(f => /expected_goals_on_target|expected_goalsontarget/i.test(f.key || ""));
+      (p.stats || []).flatMap(g => Object.values(g.stats || {}))).filter(f => ["expected_goals_on_target", "expected_goals_on_target_variant", "expected_goalsontarget"].includes(f.key));
     assert(m.players.filter(p => p.xgot !== null).length <= publishedKeys.length);
     matches++; playerObservations += m.coverage.playerXgotObservations;
   }
@@ -44,6 +44,12 @@ for (const target of TARGETS) {
   const fixture = fixtures.find(f => String(f.id) === first.providerMatchId);
   const wrong = structuredClone(raw); wrong.payload.general.matchId = "wrong";
   assert.throws(() => project(wrong, fixture, target, first.source.rawPath), /identity/);
+  const goalkeeperOnly = structuredClone(raw);
+  goalkeeperOnly.payload.content.playerStats = { 999: { id: 999, teamId: fixture.home.id, isGoalkeeper: true,
+    stats: [{ stats: { faced: { key: "expected_goals_on_target_faced", stat: { value: 1.5 } } } }] } };
+  const gk = project(goalkeeperOnly, fixture, target, first.source.rawPath).players[0];
+  assert.equal(gk.xgot, null, "Goalkeeper xGOT faced must not become attacking xGOT");
+  assert.equal(gk.xgotFaced, 1.5);
   const missing = structuredClone(raw); delete missing.payload.content.stats;
   const projected = project(missing, fixture, target, first.source.rawPath);
   assert(projected.teams.every(t => t.xgot === null));

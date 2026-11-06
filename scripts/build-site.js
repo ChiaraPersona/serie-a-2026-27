@@ -41,9 +41,9 @@ const homeVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const teamVersion = "20261018-no-player-media-v1";
 const leaderboardVersion = "20261013-md06-results-v1";
 const bettingVersion = "20261105-champions-md04-results-v1";
-const readingVersion = "20261101-spatial-clean-v3";
+const readingVersion = "20261106-current-tactics-v1";
 const cupVersion = "20261025-coppa-round16-disclosure-v1";
-const championsVersion = "20261105-champions-md04-results-v1";
+const championsVersion = "20261106-current-tactics-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (!teamPagesOnly && !presentationOnly && fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));

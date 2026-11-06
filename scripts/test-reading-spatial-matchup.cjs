@@ -15,12 +15,12 @@ async function main(){
  assert(minuteCompatible({minute:'90+3'},{clock:{minute:90,extraMinute:3}}));
  assert(!minuteCompatible({minute:67},{clock:{minute:65,second:48}}));
  assert.equal(dataset.matches.length,fixtures.filter(f=>f.status==='finished').length);
- assert.equal(dataset.summary.goals,274);
- assert.equal(dataset.summary.excluded,8);
+ assert.equal(dataset.summary.goals,318);
+ assert.equal(dataset.summary.excluded,9);
  const ignored=dataset.matches.flatMap(m=>m.excluded);
  assert.equal(ignored.filter(e=>e.reason==='empty-duplicate').length,1);
- assert.equal(ignored.filter(e=>e.reason==='keeper-save-not-attempt').length,7);
- assert.equal(dataset.matches.flatMap(m=>m.events).filter(e=>e.isGoal&&!e.usable).length,6);
+ assert.equal(ignored.filter(e=>e.reason==='keeper-save-not-attempt').length,8);
+ assert.equal(dataset.matches.flatMap(m=>m.events).filter(e=>e.isGoal&&!e.usable).length,7);
  for(const m of dataset.matches){
   assert(m.scoreMatches&&m.dateMatches&&m.seasonMatches,m.fixtureId);
   for(const e of m.events){
@@ -66,7 +66,7 @@ async function main(){
  const model={home:{id:chosen.homeTeam,name:'<img src=x onerror=alert(1)>'},away:{id:chosen.awayTeam,name:'Lecce'}};
  const html=spatialMarkup(model,data);
  assert(!html.includes('<img src=x'));assert(html.includes('&lt;img'));
- assert(html.includes('xG per zona: N/D'));assert(html.includes('Copertura e limiti'));
+ assert(html.includes('tiri localizzati'));assert(!html.includes('Copertura e limiti'));
  assert(spatialNarrative(model,data,data.directions[0]).length>0);
  console.log(`OK: ${fixtures.length} cutoff/projection checks; shot totals, quarantine, goalkeeper saves, duplicate, own goals, penalties, null xG, escaping.`);
 }
