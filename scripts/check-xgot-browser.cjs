@@ -14,13 +14,13 @@ try{for(const width of [1440,390]){
  await page.locator('[data-xgot-statistics]').screenshot({path:`${out}/team-${width}.png`});
  await page.goto(base+'champions-league.html?team=inter');await page.locator('[data-xgot-statistics]').waitFor();
  const future=JSON.parse(fs.readFileSync(path.join(root,'data/generated/champions-shared-scenarios.json'))).fixtures.find(f=>f.matchday===5&&f.expectedGoals?.components?.xgot?.applied);
- await page.goto(base+'champions-league.html?match='+future.fixtureId);await page.locator('[data-reading-ready="true"]').waitFor();await page.locator('[data-xgot-model]').waitFor({state:'attached'});
- await page.goto(base+'lettura.html?match=inter-como-2026-27-md-11');await page.locator('[data-reading-ready="true"]').waitFor();await page.locator('[data-xgot-model]').waitFor({state:'attached'});await page.locator('[data-xgot-observed]').waitFor({state:'attached'});await page.locator('[data-player-xgot]').first().waitFor({state:'attached'});
+ await page.goto(base+'champions-league.html?match='+future.fixtureId);await page.locator('[data-reading-ready="true"]').waitFor();assert.equal(await page.locator('[data-xgot-model]').count(),0);
+ await page.goto(base+'lettura.html?match=inter-como-2026-27-md-11');await page.locator('[data-reading-ready="true"]').waitFor();assert.equal(await page.locator('[data-xgot-model]').count(),0);await page.locator('[data-xgot-observed]').waitFor({state:'attached'});await page.locator('[data-player-xgot]').first().waitFor({state:'attached'});
  await page.locator('[data-statistic="xgot"][data-xgot-ready="true"]').waitFor({state:'attached'});
  assert.equal(await page.locator('.rd-diverging [data-statistic="xgot"]').count(),1);
  assert.equal(await page.locator('[data-statistic="xgot"] .rd-diverging-half').count(),2);
  await page.locator('[data-xgot-observed]').scrollIntoViewIfNeeded();await page.locator('.rd-diverging').screenshot({path:`${out}/comparison-${width}.png`});await page.screenshot({path:`${out}/reading-${width}.png`});
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2);assert.equal(overflow,false,'Page overflows viewport');assert.deepEqual(errors,[]);
  report.push({width,errors,players:true,team:true,champions:true,championsFutureReading:true,reading:true});await page.close();
-}fs.writeFileSync(`${out}/browser-audit.json`,JSON.stringify(report,null,2)+'\n');console.log('OK xGOT desktop/mobile: global player statistics, team statistics, Champions team and reading values/model disclosure; no script errors or page overflow');
+}fs.writeFileSync(`${out}/browser-audit.json`,JSON.stringify(report,null,2)+'\n');console.log('OK xGOT desktop/mobile: global player statistics, team statistics, Champions team and reading values; no script errors or page overflow');
 }finally{await browser.close();await new Promise(r=>server.close(r))}})().catch(e=>{console.error(e);server.close();process.exitCode=1});

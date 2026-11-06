@@ -29,9 +29,7 @@ export function scenarioMarkup(model){
   const values=sides.map((_,i)=>key==='xgot'?null:key==='fouls'?(finite(projections[i]?.fouls?.central)&&projections[i].fouls.central>=0?projections[i].fouls.central:null):key==='cards'?projectedYellowCards(projections[i]):key==='expectedGoals'?projections[i]?.[key]:projections[i]?.[key]?.central);
   return comparisonRow(key,label,values,sides);
  }).join('');
- const xgot=model.prediction?.expectedGoals?.components?.xgot;
- const xgotNote=xgot?.applied?'<p class="rd-footnote" data-xgot-model>xGOT attivo nei gol attesi · contributo sperimentale 10%. Validazione non conclusiva.</p>':'';
- const chart=`${xgotNote}<div class="rd-diverging" role="group" aria-label="Confronto delle previsioni, scala condivisa per ciascun indicatore"><div class="rd-diverging-teams">${sides.map((side,i)=>`<span class="is-${i?'away':'home'}">${esc(side.name)}</span>`).join('')}</div><div class="rd-diverging-rows">${comparisons}</div></div>`;
+ const chart=`<div class="rd-diverging" role="group" aria-label="Confronto delle previsioni, scala condivisa per ciascun indicatore"><div class="rd-diverging-teams">${sides.map((side,i)=>`<span class="is-${i?'away':'home'}">${esc(side.name)}</span>`).join('')}</div><div class="rd-diverging-rows">${comparisons}</div></div>`;
  const scores=model.prediction?.scoreForecast?.display||model.prediction?.exactScores||[];
  const scoreBlock=scores.length?`<div class="rd-score-grid">${scores.slice(0,3).map((s,i)=>`<article><small>${i?'Alternativa':'Risultato previsto'}</small><strong>${esc(s.score)}</strong><span>${pct(s.probabilityPct)} · ${esc(s.label||'')}</span></article>`).join('')}</div>`:missing('Risultati esatti non disponibili.');
  const european=model.prediction?.resultModel?.type==='EUROPEAN_RATING_RESULT';

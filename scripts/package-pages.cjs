@@ -15,7 +15,7 @@ const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-h
   'data/predictions/champions-event-snapshots/', 'data/predictions/exact-score-research/',
   'data/predictions/player-spatial-prospective/', 'data/predictions/player-spatial-v2-prospective/',
   'data/predictions/spatial-prospective/', 'data/predictions/xgot-prospective/',
-  'data/normalized/xgot-history-seasons/', 'data/normalized/xgot-extended-seasons/'];
+  'data/normalized/xgot-history-seasons/', 'data/normalized/xgot-extended-seasons/', 'data/normalized/xgot-current-seasons/'];
 // Build inputs and superseded artifacts: browser consumers use the retained UI/v2 files.
 const internalFiles = new Set([
   'data/normalized/xgot-history.json',

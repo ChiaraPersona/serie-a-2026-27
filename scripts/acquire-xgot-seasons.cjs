@@ -81,11 +81,12 @@ function project(raw, fixture, target, rawPath) {
 }
 
 async function run({ offline = false, targets = TARGETS,
-  normalizedRoot = "data/normalized/xgot-history-seasons", auditRoot = "data/analysis/xgot/seasons" } = {}) {
+  normalizedRoot = "data/normalized/xgot-history-seasons", auditRoot = "data/analysis/xgot/seasons", calendarTag = null } = {}) {
+  if(calendarTag!==null&&!/^[a-zA-Z0-9_-]+$/.test(calendarTag))throw Error('Invalid calendar snapshot tag');
   const summaries = [];
   for (const target of targets) {
     const slug = target.season.replace("/", "-");
-    const calendarPath = `${BASE}/calendars/${target.leagueId}-${slug}.json.gz`;
+    const calendarPath = `${BASE}/calendars/${target.leagueId}-${slug}${calendarTag?'-'+calendarTag:''}.json.gz`;
     const calendar = offline ? unpack(calendarPath) : await acquire(
       `https://www.fotmob.com/api/data/leagues?id=${target.leagueId}&season=${encodeURIComponent(target.season)}`, calendarPath);
     if (calendar.payload.details?.selectedSeason !== target.season || Number(calendar.payload.details?.id) !== target.leagueId) {

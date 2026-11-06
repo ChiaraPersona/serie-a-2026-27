@@ -38,13 +38,13 @@ function run() {
   const canonical = new Map(original.fixtureIdentityRegistry.map(m => [m.providerMatchId, m]));
   const quarantined = new Set(original.quarantine.map(m => m.providerMatchId));
   const sourceMatches = [];
-  for (const dir of ["data/normalized/xgot-history-seasons", "data/normalized/xgot-extended-seasons"]) {
+  for (const dir of ["data/normalized/xgot-history-seasons", "data/normalized/xgot-extended-seasons", "data/normalized/xgot-current-seasons"]) {
     if (!fs.existsSync(path.join(ROOT, dir))) continue;
     for (const file of fs.readdirSync(path.join(ROOT, dir)).filter(f => f.endsWith(".json"))) sourceMatches.push(...read(`${dir}/${file}`).matches);
   }
   const local = "data/raw/champions-season-shots/2026-10-20/fotmob/matches";
   const leagues = { 42: "champions-league", 55: "serie-a", 47: "premier-league", 87: "la-liga", 54: "bundesliga",
-    53: "ligue-1", 61: "liga-portugal", 57: "eredivisie", 40: "belgian-pro-league" };
+    53: "ligue-1", 61: "liga-portugal", 57: "eredivisie", 40: "belgian-pro-league", 10611: "champions-league-qualification" };
   const seen = new Set(sourceMatches.map(m => m.providerMatchId));
   for (const file of fs.readdirSync(path.join(ROOT, local))) {
     if (!file.endsWith(".json.gz")) continue;
@@ -71,7 +71,7 @@ function run() {
     if (evidence.evidenceGrade === "quarantined") continue;
     observations.push({ providerMatchId: m.providerMatchId, fixtureId: id?.fixtureId || null,
       fixtureNamespace: id?.fixtureNamespace || "unresolved-provider-only", competition: m.competition,
-      season: m.season.slice(0, 4) + "-" + m.season.slice(-2), date: m.date, kickoffUtc: d.general.matchTimeUTCDate,
+      season: m.season.length===4?m.season:m.season.slice(0, 4) + "-" + m.season.slice(-2), date: m.date, kickoffUtc: d.general.matchTimeUTCDate,
       score, evidenceGrade: evidence.evidenceGrade, predictiveUseApproved: false,
       teams: evidence.teams.map(t => ({ providerTeamId: t.providerTeamId, xgot: t.xgot, xg: t.xg,
         shots: t.shots, shotsOnTarget: t.shotsOnTarget })), source: m.source, availableAt: m.source.retrievedAt });

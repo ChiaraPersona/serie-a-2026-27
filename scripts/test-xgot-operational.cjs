@@ -25,11 +25,12 @@ const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 assert.equal(sha(JSON.stringify(data.predictions.filter(p=>!ids.has(p.matchId)))),before.nonMd11Hash,'Historical/unrelated predictions changed');
 assert.equal(sha(fs.readFileSync('data/normalized/odds/sisal/serie-a.json')),before.savedOddsHash,'Provider odds changed');
 const current=data.predictions.filter(p=>ids.has(p.matchId));
-assert.equal(current.filter(p=>p.expectedGoals.components.xgot.applied).length,7);
+assert(current.filter(p=>p.expectedGoals.components.xgot.applied).length>=7,'Verified coverage must not regress below the initial activation');
+for(const p of current.filter(p=>p.expectedGoals.components.xgot.applied))assert(p.expectedGoals.components.xgot.sample.every(n=>n>=6));
 for(const p of current){assert.equal(p.expectedGoals.components.xgot.statisticallyValidated,false);if(!p.expectedGoals.components.xgot.applied){const prior=before.predictions.find(q=>q.matchId===p.matchId);assert.equal(p.expectedGoals.home,prior.goals.home);assert.equal(p.expectedGoals.away,prior.goals.away)}}
 const stats=read('data/generated/xgot-statistics.json');
 for(const [id,periods] of Object.entries(stats.players))for(const [period,total]of Object.entries(periods)){
- const rows=stats.playerMatches[id].filter(r=>period==='total'||r.period===period);
+ const rows=stats.playerMatches[id].filter(r=>period==='total'?r.period!=='2026':r.period===period);
  assert.equal(total.matches,rows.length);assert.equal(total.minutes,rows.reduce((n,r)=>n+r.minutes,0));
  assert(Math.abs(total.xgot-rows.reduce((n,r)=>n+r.xgot,0))<1e-9);
  assert(Math.abs(total.per90-total.xgot*90/total.minutes)<1e-9);

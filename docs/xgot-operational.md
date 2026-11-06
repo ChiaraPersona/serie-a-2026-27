@@ -93,4 +93,6 @@ il cambio motore: serve un nuovo protocollo. L'evaluatore può ancora confrontar
 le probabilità già congelate con i risultati futuri, senza ricalcolarle e senza
 cambiare i criteri; la revisione di compatibilità è registrata separatamente.
 
+Aggiornamento delle lacune del 6 novembre: copertura operativa MD11 portata a 10/10 e Champions MD5 a 17/18, con 486 giocatori coperti nella stagione corrente. Dettagli in [xgot-missing-update-2026-11-06.md](xgot-missing-update-2026-11-06.md).
+
 Nessun commit, push o deploy eseguito.

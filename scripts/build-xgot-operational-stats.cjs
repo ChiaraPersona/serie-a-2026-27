@@ -22,7 +22,7 @@ function build() {
   };
   for (const m of history) {
     const period = m.season.replace(/^(\d{4})-(\d{2})$/, (_, y, end) => `${y}/${end}`);
-    if (!["2025/26", "2026/27"].includes(period)) continue;
+    if (!["2025/26", "2026/27", "2026"].includes(period)) continue;
     for (const [i, t] of m.teams.entries()) {
       const teamId = teamsByProvider.get(t.providerTeamId);
       if (!teamId) continue;
@@ -49,7 +49,8 @@ function build() {
     }
   }
   for (const directory of [out.teams, out.players]) for (const periods of Object.values(directory)) {
-    const rows = Object.values(periods);
+    // Calendar-year leagues stay separate from the two European-season totals.
+    const rows = Object.entries(periods).filter(([period])=>period!=='2026').map(([,row])=>row);
     if (rows.length) periods.total = { xgot: rows.reduce((n, r) => n + r.xgot, 0), matches: rows.reduce((n, r) => n + r.matches, 0),
       minutes: rows.reduce((n, r) => n + r.minutes, 0), from: rows.map(r => r.from).sort()[0], to: rows.map(r => r.to).sort().at(-1) };
     for (const r of Object.values(periods)) r.per90 = r.minutes > 0 ? r.xgot * 90 / r.minutes : null;

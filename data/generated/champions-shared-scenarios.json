@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "pipeline": "SHARED_SERIE_A_SCENARIO",
   "engineVersion": "4.14.0",
-  "generatedAt": "2026-11-06T12:16:41.874Z",
+  "generatedAt": "2026-11-06T16:25:15.459Z",
   "fixtures": [
     {
       "fixtureId": "ucl-2026-27-md04-01",
@@ -8706,9 +8706,9 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.37,
-        "away": 1.23,
-        "total": 3.59,
+        "home": 2.36,
+        "away": 1.22,
+        "total": 3.58,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -8768,19 +8768,59 @@
             }
           },
           "xgot": {
-            "status": "insufficient-data",
+            "status": "experimental-user-authorized",
             "weight": 0.1,
             "statisticallyValidated": false,
             "activation": "explicit-user-request",
             "sample": [
-              12,
-              2
+              20,
+              16
             ],
-            "factors": null,
-            "latestHistoryDate": null,
-            "historyMatchIds": [],
+            "factors": [
+              0.9619487117247456,
+              0.9706728217164503
+            ],
+            "latestHistoryDate": "2026-11-04",
+            "historyMatchIds": [
+              "5104925",
+              "5104940",
+              "5104946",
+              "5104857",
+              "5104955",
+              "5104962",
+              "5104972",
+              "5987804",
+              "5987811",
+              "5104986",
+              "5104994",
+              "5105005",
+              "5105011",
+              "5105017",
+              "6106315",
+              "5105025",
+              "6106320",
+              "5104932",
+              "5105035",
+              "6106316",
+              "5845951",
+              "5845962",
+              "5845963",
+              "5987799",
+              "5845977",
+              "5845972",
+              "6106404",
+              "5845984",
+              "5845989",
+              "5845997",
+              "6106405",
+              "5845999",
+              "6106281",
+              "5846007",
+              "5846014",
+              "6106408"
+            ],
             "variant": "execution",
-            "applied": false,
+            "applied": true,
             "unadjusted": {
               "home": 2.37,
               "away": 1.23
@@ -8796,9 +8836,9 @@
         }
       },
       "probabilities": {
-        "home": 64.779497374027,
-        "draw": 15.574059710864391,
-        "away": 19.646442915108604
+        "home": 64.82073307715883,
+        "draw": 15.611406477890606,
+        "away": 19.56786044495055
       },
       "scoreForecast": {
         "primary": null,
@@ -8945,7 +8985,7 @@
             "central": 0.6,
             "max": 2
           },
-          "expectedGoals": 2.37,
+          "expectedGoals": 2.36,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -9079,7 +9119,7 @@
             "central": 1.5,
             "max": 3
           },
-          "expectedGoals": 1.23,
+          "expectedGoals": 1.22,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -9138,7 +9178,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "bodo-glimt",
           "lask"
@@ -9155,9 +9195,9 @@
         "type": "EUROPEAN_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 64.779497374027,
-          "draw": 15.574059710864391,
-          "away": 19.646442915108604
+          "home": 64.82073307715883,
+          "draw": 15.611406477890606,
+          "away": 19.56786044495055
         },
         "samples": [
           40,
@@ -9183,7 +9223,7 @@
           "gap": 207.2614573208059
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -9193,11 +9233,22 @@
           "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
           "data/normalized/champions-league-2026-27.json": "d8fac2afb26a23c1e52f31112789a83dc15dac6eebd9cfbcc8ff8f98ddc3be22"
         },
-        "missing": []
+        "missing": [],
+        "probabilitiesBeforeXgot": {
+          "home": 64.779497374027,
+          "draw": 15.574059710864391,
+          "away": 19.646442915108604
+        },
+        "xgot": {
+          "applied": true,
+          "weight": 0.1,
+          "status": "experimental-user-authorized",
+          "statisticallyValidated": false
+        }
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 64.779497374027,
+        "probabilityPct": 64.82073307715883,
         "label": "Bodø/Glimt",
         "status": "PRELIMINARY"
       }
@@ -9215,7 +9266,7 @@
       "expectedGoals": {
         "home": 1.96,
         "away": 1.12,
-        "total": 3.08,
+        "total": 3.07,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -9280,31 +9331,35 @@
             "statisticallyValidated": false,
             "activation": "explicit-user-request",
             "sample": [
-              12,
+              20,
               20
             ],
             "factors": [
-              1.0647149514843095,
-              0.9813738193570049
+              1.0466919830073629,
+              0.9593346244028672
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
-              "4947197",
-              "4947224",
-              "4947232",
-              "4947249",
               "4947247",
               "4947207",
               "4947164",
               "5161867",
               "5205737",
               "5205738",
+              "5904710",
+              "5904721",
+              "5904728",
+              "5904733",
               "6106280",
+              "5904746",
+              "5904749",
+              "5904764",
               "6106338",
-              "4813654",
-              "4813656",
-              "4813671",
-              "4813676",
+              "5904771",
+              "6106312",
+              "5904782",
+              "5904790",
+              "6106341",
               "4813692",
               "4813695",
               "4813709",
@@ -9320,7 +9375,11 @@
               "5795464",
               "5795466",
               "6106284",
-              "5795482"
+              "5795482",
+              "6106285",
+              "5795486",
+              "5795496",
+              "6106263"
             ],
             "variant": "execution",
             "applied": true,
@@ -9681,7 +9740,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "galatasaray",
           "aston-villa"
@@ -9726,7 +9785,7 @@
           "gap": -150.1139169640253
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -9767,8 +9826,8 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.49,
-        "away": 1.01,
+        "home": 1.5,
+        "away": 1,
         "total": 2.5,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
@@ -9838,15 +9897,11 @@
               20
             ],
             "factors": [
-              0.8879382413153225,
-              0.9643246717392371
+              0.9195748214943756,
+              0.9141563017005633
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
-              "5205795",
-              "4813685",
-              "5205796",
-              "4813701",
               "4813706",
               "5205813",
               "4813716",
@@ -9863,10 +9918,10 @@
               "5795465",
               "6106260",
               "5795483",
-              "4829518",
-              "5161872",
-              "4829525",
-              "4829532",
+              "6106238",
+              "5795485",
+              "5795501",
+              "6106389",
               "4829542",
               "4829551",
               "4829564",
@@ -9882,7 +9937,11 @@
               "5881177",
               "5881180",
               "6106315",
-              "5881195"
+              "5881195",
+              "6106422",
+              "5881198",
+              "5881208",
+              "6106271"
             ],
             "variant": "execution",
             "applied": true,
@@ -9901,9 +9960,9 @@
         }
       },
       "probabilities": {
-        "home": 69.73498475071274,
-        "draw": 14.403067339794603,
-        "away": 15.861947909492649
+        "home": 70.16464495357584,
+        "draw": 14.299589308581758,
+        "away": 15.535765737842402
       },
       "scoreForecast": {
         "primary": null,
@@ -10050,7 +10109,7 @@
             "central": 1.3,
             "max": 3
           },
-          "expectedGoals": 1.49,
+          "expectedGoals": 1.5,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -10184,7 +10243,7 @@
             "central": 1.9,
             "max": 3
           },
-          "expectedGoals": 1.01,
+          "expectedGoals": 1,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -10243,7 +10302,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "arsenal",
           "borussia-dortmund"
@@ -10260,9 +10319,9 @@
         "type": "EUROPEAN_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 69.73498475071274,
-          "draw": 14.403067339794603,
-          "away": 15.861947909492649
+          "home": 70.16464495357584,
+          "draw": 14.299589308581758,
+          "away": 15.535765737842402
         },
         "samples": [
           43,
@@ -10288,7 +10347,7 @@
           "gap": 261.30136783584476
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -10313,7 +10372,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 69.73498475071274,
+        "probabilityPct": 70.16464495357584,
         "label": "Arsenal",
         "status": "PRELIMINARY"
       }
@@ -10329,9 +10388,9 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.21,
-        "away": 0.97,
-        "total": 2.19,
+        "home": 1.22,
+        "away": 0.96,
+        "total": 2.18,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -10391,19 +10450,63 @@
             }
           },
           "xgot": {
-            "status": "insufficient-data",
+            "status": "experimental-user-authorized",
             "weight": 0.1,
             "statisticallyValidated": false,
             "activation": "explicit-user-request",
             "sample": [
               20,
-              2
+              20
             ],
-            "factors": null,
-            "latestHistoryDate": null,
-            "historyMatchIds": [],
+            "factors": [
+              1.062066948151108,
+              0.8655174939347332
+            ],
+            "latestHistoryDate": "2026-11-04",
+            "historyMatchIds": [
+              "4803364",
+              "4803371",
+              "4803380",
+              "4803388",
+              "4803400",
+              "4803409",
+              "5749648",
+              "5749658",
+              "5749665",
+              "6106411",
+              "5749671",
+              "5749684",
+              "5749692",
+              "6106309",
+              "5749703",
+              "6106410",
+              "5749712",
+              "5749728",
+              "5749733",
+              "6106416",
+              "4948043",
+              "4948025",
+              "5206222",
+              "5206230",
+              "5206261",
+              "5206265",
+              "5987798",
+              "5943225",
+              "5987805",
+              "5943235",
+              "5943239",
+              "6106404",
+              "5943246",
+              "5943259",
+              "5943260",
+              "6106337",
+              "6106257",
+              "5943274",
+              "5943285",
+              "6106401"
+            ],
             "variant": "execution",
-            "applied": false,
+            "applied": true,
             "unadjusted": {
               "home": 1.21,
               "away": 0.97
@@ -10568,7 +10671,7 @@
             "central": 2,
             "max": 3
           },
-          "expectedGoals": 1.21,
+          "expectedGoals": 1.22,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -10702,7 +10805,7 @@
             "central": 2.6,
             "max": 4
           },
-          "expectedGoals": 0.97,
+          "expectedGoals": 0.96,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -10761,7 +10864,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "como",
           "aek-athens"
@@ -10806,7 +10909,7 @@
           "gap": 130.23377382402896
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -10840,7 +10943,7 @@
       "expectedGoals": {
         "home": 1.31,
         "away": 1.74,
-        "total": 3.05,
+        "total": 3.04,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -10909,15 +11012,11 @@
               20
             ],
             "factors": [
-              0.987528946594689,
-              1.0345003657966505
+              0.9401632273695407,
+              1.0051971477362684
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
-              "4815465",
-              "4815473",
-              "4815479",
-              "4815491",
               "4815500",
               "4815507",
               "4815520",
@@ -10934,10 +11033,10 @@
               "5781759",
               "6106309",
               "5781774",
-              "4844385",
-              "4844390",
-              "4844402",
-              "4844407",
+              "6106300",
+              "5781783",
+              "5781787",
+              "6106306",
               "4844416",
               "4844429",
               "4844436",
@@ -10953,7 +11052,11 @@
               "5887630",
               "5887641",
               "5887650",
-              "6106299"
+              "6106299",
+              "6106287",
+              "5887657",
+              "5887670",
+              "6106288"
             ],
             "variant": "execution",
             "applied": true,
@@ -11314,7 +11417,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "feyenoord",
           "porto"
@@ -11359,7 +11462,7 @@
           "gap": -26.333481883391187
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -11400,9 +11503,9 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.75,
+        "home": 1.76,
         "away": 1.13,
-        "total": 2.88,
+        "total": 2.89,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -11471,15 +11574,11 @@
               20
             ],
             "factors": [
-              0.9441576147823166,
-              1.0554338083857726
+              1.0075562037562578,
+              1.0263322151646088
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
-              "5205731",
-              "4813674",
-              "5205732",
-              "4813688",
               "4813701",
               "4813708",
               "4813720",
@@ -11496,11 +11595,10 @@
               "5795472",
               "6106254",
               "5795481",
-              "4803303",
-              "4803308",
-              "4803322",
-              "4803330",
-              "4803343",
+              "6106257",
+              "5795486",
+              "5795502",
+              "6106322",
               "4803355",
               "4803374",
               "4803380",
@@ -11515,7 +11613,12 @@
               "5749683",
               "5749697",
               "6106328",
-              "5749709"
+              "5749709",
+              "6106320",
+              "5749717",
+              "5749725",
+              "5749735",
+              "6106288"
             ],
             "variant": "execution",
             "applied": true,
@@ -11534,9 +11637,9 @@
         }
       },
       "probabilities": {
-        "home": 68.31606119890449,
-        "draw": 14.726470289111363,
-        "away": 16.95746851198415
+        "home": 68.5204650293888,
+        "draw": 14.651209059901483,
+        "away": 16.828325910709708
       },
       "scoreForecast": {
         "primary": null,
@@ -11683,7 +11786,7 @@
             "central": 1.7,
             "max": 3
           },
-          "expectedGoals": 1.75,
+          "expectedGoals": 1.76,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -11876,7 +11979,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "manchester-city",
           "napoli"
@@ -11893,9 +11996,9 @@
         "type": "EUROPEAN_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 68.31606119890449,
-          "draw": 14.726470289111363,
-          "away": 16.95746851198415
+          "home": 68.5204650293888,
+          "draw": 14.651209059901483,
+          "away": 16.828325910709708
         },
         "samples": [
           34,
@@ -11921,7 +12024,7 @@
           "gap": 243.9117549687112
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -11946,7 +12049,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 68.31606119890449,
+        "probabilityPct": 68.5204650293888,
         "label": "Manchester City",
         "status": "PRELIMINARY"
       }
@@ -11964,7 +12067,7 @@
       "expectedGoals": {
         "home": 1.99,
         "away": 1.46,
-        "total": 3.45,
+        "total": 3.46,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -12033,15 +12136,11 @@
               20
             ],
             "factors": [
-              1.0006572816789017,
-              0.9218637608152358
+              1.0127446835004565,
+              0.9440336969940589
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
-              "4829518",
-              "4829527",
-              "4829536",
-              "4829547",
               "4829555",
               "4829566",
               "4829572",
@@ -12058,10 +12157,10 @@
               "5881186",
               "6106323",
               "5881189",
-              "4830673",
-              "4830676",
-              "4830685",
-              "4830693",
+              "6106244",
+              "5881204",
+              "5881212",
+              "6106322",
               "4830704",
               "4830720",
               "4830729",
@@ -12077,7 +12176,11 @@
               "5802941",
               "5802947",
               "6106414",
-              "5802963"
+              "5802963",
+              "6106297",
+              "5802967",
+              "5802974",
+              "6106416"
             ],
             "variant": "execution",
             "applied": true,
@@ -12438,7 +12541,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "leipzig",
           "lens"
@@ -12483,7 +12586,7 @@
           "gap": 28.454369461686838
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -12524,9 +12627,9 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2,
+        "home": 1.99,
         "away": 1.57,
-        "total": 3.57,
+        "total": 3.56,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -12595,15 +12698,11 @@
               20
             ],
             "factors": [
-              0.9791351749684631,
-              1.0247950049917018
+              0.9520169829202776,
+              0.9790058409664381
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
-              "4837419",
-              "5205792",
-              "4837435",
-              "4837421",
               "4837443",
               "4837452",
               "4837469",
@@ -12620,10 +12719,10 @@
               "5868089",
               "6106274",
               "5868098",
-              "4815467",
-              "4815476",
-              "4815485",
-              "4815495",
+              "6106244",
+              "5868105",
+              "5868118",
+              "6106401",
               "4815502",
               "4815512",
               "4815515",
@@ -12639,7 +12738,11 @@
               "5781753",
               "5781762",
               "6106323",
-              "5781776"
+              "5781776",
+              "6106287",
+              "5781783",
+              "5781793",
+              "6106303"
             ],
             "variant": "execution",
             "applied": true,
@@ -12658,9 +12761,9 @@
         }
       },
       "probabilities": {
-        "home": 74.37398974292645,
-        "draw": 13.127076893325363,
-        "away": 12.498933363748174
+        "home": 74.21507529710534,
+        "draw": 13.190721043836367,
+        "away": 12.594203659058278
       },
       "scoreForecast": {
         "primary": null,
@@ -12807,7 +12910,7 @@
             "central": 1.9,
             "max": 3
           },
-          "expectedGoals": 2,
+          "expectedGoals": 1.99,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -13000,7 +13103,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "real-madrid",
           "psv-eindhoven"
@@ -13017,9 +13120,9 @@
         "type": "EUROPEAN_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 74.37398974292645,
-          "draw": 13.127076893325363,
-          "away": 12.498933363748174
+          "home": 74.21507529710534,
+          "draw": 13.190721043836367,
+          "away": 12.594203659058278
         },
         "samples": [
           45,
@@ -13045,7 +13148,7 @@
           "gap": 309.819250744632
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -13070,7 +13173,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 74.37398974292645,
+        "probabilityPct": 74.21507529710534,
         "label": "Real Madrid",
         "status": "PRELIMINARY"
       }
@@ -13086,9 +13189,9 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.29,
-        "away": 1.37,
-        "total": 3.66,
+        "home": 2.31,
+        "away": 1.38,
+        "total": 3.69,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -13148,19 +13251,53 @@
             }
           },
           "xgot": {
-            "status": "insufficient-data",
+            "status": "experimental-user-authorized",
             "weight": 0.1,
             "statisticallyValidated": false,
             "activation": "explicit-user-request",
             "sample": [
-              2,
+              10,
               20
             ],
-            "factors": null,
-            "latestHistoryDate": null,
-            "historyMatchIds": [],
+            "factors": [
+              1.089455319838041,
+              1.0664115857856222
+            ],
+            "latestHistoryDate": "2026-11-04",
+            "historyMatchIds": [
+              "4947949",
+              "4947942",
+              "4948020",
+              "4947948",
+              "4947950",
+              "5987801",
+              "6106237",
+              "6106396",
+              "6106277",
+              "6106408",
+              "4837441",
+              "4837456",
+              "4837461",
+              "4837472",
+              "4837481",
+              "5868023",
+              "5868020",
+              "5868035",
+              "5868043",
+              "6106311",
+              "5868060",
+              "5868063",
+              "5868074",
+              "5868082",
+              "6106299",
+              "5868091",
+              "6106300",
+              "5868104",
+              "5868112",
+              "6106271"
+            ],
             "variant": "execution",
-            "applied": false,
+            "applied": true,
             "unadjusted": {
               "home": 2.29,
               "away": 1.37
@@ -13176,9 +13313,9 @@
         }
       },
       "probabilities": {
-        "home": 19.94404927739843,
-        "draw": 15.669593406670595,
-        "away": 64.38635731593097
+        "home": 20.043403196381092,
+        "draw": 15.60852881679137,
+        "away": 64.34806798682753
       },
       "scoreForecast": {
         "primary": null,
@@ -13325,7 +13462,7 @@
             "central": 1.4,
             "max": 3
           },
-          "expectedGoals": 2.29,
+          "expectedGoals": 2.31,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -13459,7 +13596,7 @@
             "central": 1.9,
             "max": 3
           },
-          "expectedGoals": 1.37,
+          "expectedGoals": 1.38,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -13518,7 +13655,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "slovan-bratislava",
           "real-betis"
@@ -13535,9 +13672,9 @@
         "type": "EUROPEAN_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 19.94404927739843,
-          "draw": 15.669593406670595,
-          "away": 64.38635731593097
+          "home": 20.043403196381092,
+          "draw": 15.60852881679137,
+          "away": 64.34806798682753
         },
         "samples": [
           26,
@@ -13563,7 +13700,7 @@
           "gap": -203.59220674322296
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -13573,11 +13710,22 @@
           "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
           "data/normalized/champions-league-2026-27.json": "d8fac2afb26a23c1e52f31112789a83dc15dac6eebd9cfbcc8ff8f98ddc3be22"
         },
-        "missing": []
+        "missing": [],
+        "probabilitiesBeforeXgot": {
+          "home": 19.94404927739843,
+          "draw": 15.669593406670595,
+          "away": 64.38635731593097
+        },
+        "xgot": {
+          "applied": true,
+          "weight": 0.1,
+          "status": "experimental-user-authorized",
+          "statisticallyValidated": false
+        }
       },
       "verdict": {
         "outcome": "2",
-        "probabilityPct": 64.38635731593097,
+        "probabilityPct": 64.34806798682753,
         "label": "Real Betis",
         "status": "PRELIMINARY"
       }
@@ -13664,7 +13812,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "sabah",
           "barcelona"
@@ -13709,7 +13857,7 @@
           "gap": -168.31842234550732
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -13741,9 +13889,9 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.14,
+        "home": 1.15,
         "away": 1.93,
-        "total": 3.07,
+        "total": 3.08,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -13808,14 +13956,14 @@
             "statisticallyValidated": false,
             "activation": "explicit-user-request",
             "sample": [
-              10,
+              12,
               20
             ],
             "factors": [
-              1.008688214129574,
-              1.0234384860057242
+              1.0558161334313476,
+              1.029515073326276
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
               "4947222",
               "4947128",
@@ -13827,10 +13975,8 @@
               "4947235",
               "6106392",
               "6106424",
-              "4837403",
-              "4837410",
-              "4837434",
-              "4837427",
+              "6106333",
+              "6106389",
               "4837448",
               "4837454",
               "4837468",
@@ -13846,7 +13992,11 @@
               "5868080",
               "5868089",
               "6106328",
-              "5868100"
+              "5868100",
+              "6106248",
+              "5868110",
+              "5868120",
+              "6106326"
             ],
             "variant": "execution",
             "applied": true,
@@ -13865,9 +14015,9 @@
         }
       },
       "probabilities": {
-        "home": 43.16590917295085,
-        "draw": 20.78466377902607,
-        "away": 36.04942704802306
+        "home": 43.469104001890216,
+        "draw": 20.734862890872705,
+        "away": 35.79603310723708
       },
       "scoreForecast": {
         "primary": null,
@@ -14014,7 +14164,7 @@
             "central": 1.7,
             "max": 3
           },
-          "expectedGoals": 1.14,
+          "expectedGoals": 1.15,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -14207,7 +14357,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "slavia-praha",
           "villarreal"
@@ -14224,9 +14374,9 @@
         "type": "EUROPEAN_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 43.16590917295085,
-          "draw": 20.78466377902607,
-          "away": 36.04942704802306
+          "home": 43.469104001890216,
+          "draw": 20.734862890872705,
+          "away": 35.79603310723708
         },
         "samples": [
           28,
@@ -14252,7 +14402,7 @@
           "gap": 33.050520142266805
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -14277,7 +14427,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 43.16590917295085,
+        "probabilityPct": 43.469104001890216,
         "label": "Slavia Praha",
         "status": "PRELIMINARY"
       }
@@ -14293,9 +14443,9 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.61,
+        "home": 1.6,
         "away": 1.29,
-        "total": 2.9,
+        "total": 2.88,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -14355,19 +14505,63 @@
             }
           },
           "xgot": {
-            "status": "insufficient-data",
+            "status": "experimental-user-authorized",
             "weight": 0.1,
             "statisticallyValidated": false,
             "activation": "explicit-user-request",
             "sample": [
               20,
-              2
+              20
             ],
-            "factors": null,
-            "latestHistoryDate": null,
-            "historyMatchIds": [],
+            "factors": [
+              0.923609946040878,
+              0.9895692952174657
+            ],
+            "latestHistoryDate": "2026-11-04",
+            "historyMatchIds": [
+              "5205814",
+              "4837451",
+              "4837466",
+              "4837471",
+              "4837487",
+              "5868012",
+              "5868022",
+              "5868040",
+              "5868042",
+              "6106246",
+              "5868058",
+              "5868062",
+              "5868072",
+              "5868081",
+              "6106267",
+              "5868094",
+              "6106397",
+              "5868103",
+              "5868117",
+              "6106266",
+              "5104952",
+              "5104924",
+              "5104960",
+              "5104963",
+              "5104975",
+              "5104979",
+              "5987800",
+              "5987807",
+              "5104991",
+              "5104993",
+              "6106400",
+              "5105008",
+              "5105015",
+              "5105018",
+              "6106417",
+              "5105026",
+              "6106285",
+              "5104930",
+              "5105035",
+              "6106420"
+            ],
             "variant": "execution",
-            "applied": false,
+            "applied": true,
             "unadjusted": {
               "home": 1.61,
               "away": 1.29
@@ -14532,7 +14726,7 @@
             "central": 2.1,
             "max": 3
           },
-          "expectedGoals": 1.61,
+          "expectedGoals": 1.6,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -14725,7 +14919,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "atletico-de-madrid",
           "viking"
@@ -14770,7 +14964,7 @@
           "gap": 196.83113597152942
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -14802,9 +14996,9 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.36,
+        "home": 2.37,
         "away": 1.15,
-        "total": 3.51,
+        "total": 3.52,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -14873,15 +15067,11 @@
               20
             ],
             "factors": [
-              1.0020180668676992,
-              0.9351597732849831
+              1.0417301429628933,
+              0.9420211752731203
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
-              "5268751",
-              "5268753",
-              "5268758",
-              "5268759",
               "5268762",
               "5268767",
               "5268768",
@@ -14898,10 +15088,10 @@
               "5811771",
               "5811777",
               "6106251",
-              "5205738",
-              "4813677",
-              "5205789",
-              "4813690",
+              "6106297",
+              "5811783",
+              "5811799",
+              "6106303",
               "5205790",
               "4813699",
               "4813710",
@@ -14917,7 +15107,11 @@
               "5795455",
               "5795472",
               "6106405",
-              "5795476"
+              "5795476",
+              "6106248",
+              "5795492",
+              "5795501",
+              "6106330"
             ],
             "variant": "execution",
             "applied": true,
@@ -14936,9 +15130,9 @@
         }
       },
       "probabilities": {
-        "home": 41.86104970029782,
-        "draw": 21.30966003067752,
-        "away": 36.82929026902466
+        "home": 42.063060993880505,
+        "draw": 21.263378836073546,
+        "away": 36.67356017004594
       },
       "scoreForecast": {
         "primary": null,
@@ -15085,7 +15279,7 @@
             "central": 1.4,
             "max": 3
           },
-          "expectedGoals": 2.36,
+          "expectedGoals": 2.37,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -15278,7 +15472,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "club-brugge",
           "liverpool"
@@ -15295,9 +15489,9 @@
         "type": "EUROPEAN_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 41.86104970029782,
-          "draw": 21.30966003067752,
-          "away": 36.82929026902466
+          "home": 42.063060993880505,
+          "draw": 21.263378836073546,
+          "away": 36.67356017004594
         },
         "samples": [
           38,
@@ -15323,7 +15517,7 @@
           "gap": 19.77398977885855
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -15348,7 +15542,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 41.86104970029782,
+        "probabilityPct": 42.063060993880505,
         "label": "Club Brugge",
         "status": "PRELIMINARY"
       }
@@ -15364,9 +15558,9 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.82,
+        "home": 2.81,
         "away": 1.59,
-        "total": 4.41,
+        "total": 4.4,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -15435,16 +15629,11 @@
               20
             ],
             "factors": [
-              0.9856744445410274,
-              0.940996978092922
+              0.9472734711616695,
+              0.9206685711259036
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
-              "4803316",
-              "4803320",
-              "4803332",
-              "4803339",
-              "4803351",
               "4803358",
               "4803376",
               "4803382",
@@ -15460,10 +15649,11 @@
               "5749694",
               "6106251",
               "5749702",
-              "4829516",
-              "4829529",
-              "4829535",
-              "4829547",
+              "6106252",
+              "5749714",
+              "5749729",
+              "5749730",
+              "6106306",
               "4829549",
               "4829564",
               "4829574",
@@ -15479,7 +15669,11 @@
               "5881177",
               "5881185",
               "6106396",
-              "5881193"
+              "5881193",
+              "6106397",
+              "5881205",
+              "5881207",
+              "6106341"
             ],
             "variant": "execution",
             "applied": true,
@@ -15498,9 +15692,9 @@
         }
       },
       "probabilities": {
-        "home": 61.77164140548046,
-        "draw": 16.337359344391384,
-        "away": 21.890999250128147
+        "home": 61.60404415329771,
+        "draw": 16.389244031059356,
+        "away": 22.006711815642927
       },
       "scoreForecast": {
         "primary": null,
@@ -15647,7 +15841,7 @@
             "central": 1.6,
             "max": 3
           },
-          "expectedGoals": 2.82,
+          "expectedGoals": 2.81,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -15840,7 +16034,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "inter",
           "stuttgart"
@@ -15857,9 +16051,9 @@
         "type": "EUROPEAN_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 61.77164140548046,
-          "draw": 16.337359344391384,
-          "away": 21.890999250128147
+          "home": 61.60404415329771,
+          "draw": 16.389244031059356,
+          "away": 22.006711815642927
         },
         "samples": [
           37,
@@ -15885,7 +16079,7 @@
           "gap": 179.5899212778877
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -15910,7 +16104,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 61.77164140548046,
+        "probabilityPct": 61.60404415329771,
         "label": "Inter",
         "status": "PRELIMINARY"
       }
@@ -15926,9 +16120,9 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.42,
-        "away": 0.92,
-        "total": 2.34,
+        "home": 1.43,
+        "away": 0.93,
+        "total": 2.36,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -15988,19 +16182,59 @@
             }
           },
           "xgot": {
-            "status": "insufficient-data",
+            "status": "experimental-user-authorized",
             "weight": 0.1,
             "statisticallyValidated": false,
             "activation": "explicit-user-request",
             "sample": [
-              2,
-              2
+              16,
+              20
             ],
-            "factors": null,
-            "latestHistoryDate": null,
-            "historyMatchIds": [],
+            "factors": [
+              1.0335345452250337,
+              1.1062712063248292
+            ],
+            "latestHistoryDate": "2026-11-04",
+            "historyMatchIds": [
+              "4948026",
+              "4947945",
+              "4947947",
+              "4947972",
+              "4948063",
+              "4947946",
+              "5206216",
+              "5206224",
+              "5206259",
+              "5206263",
+              "5206267",
+              "5206269",
+              "6106304",
+              "6106337",
+              "6106252",
+              "6106335",
+              "5787785",
+              "5787787",
+              "5954870",
+              "5954880",
+              "5904708",
+              "5987803",
+              "5904719",
+              "5987810",
+              "5904730",
+              "5904737",
+              "6106331",
+              "5904740",
+              "5904755",
+              "5904761",
+              "6106284",
+              "5904773",
+              "6106333",
+              "5904782",
+              "5904791",
+              "6106330"
+            ],
             "variant": "execution",
-            "applied": false,
+            "applied": true,
             "unadjusted": {
               "home": 1.42,
               "away": 0.92
@@ -16016,9 +16250,9 @@
         }
       },
       "probabilities": {
-        "home": 39.982901873942254,
-        "draw": 21.72628165465769,
-        "away": 38.290816471400056
+        "home": 39.967155326804274,
+        "draw": 21.60360943047561,
+        "away": 38.42923524272011
       },
       "scoreForecast": {
         "primary": null,
@@ -16157,7 +16391,7 @@
           },
           "fouls": null,
           "cards": null,
-          "expectedGoals": 1.42,
+          "expectedGoals": 1.43,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -16291,7 +16525,7 @@
             "central": 1.5,
             "max": 3
           },
-          "expectedGoals": 0.92,
+          "expectedGoals": 0.93,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -16351,7 +16585,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "shakhtar-donetsk",
           "fenerbahce"
@@ -16368,9 +16602,9 @@
         "type": "EUROPEAN_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 39.982901873942254,
-          "draw": 21.72628165465769,
-          "away": 38.290816471400056
+          "home": 39.967155326804274,
+          "draw": 21.60360943047561,
+          "away": 38.42923524272011
         },
         "samples": [
           32,
@@ -16396,7 +16630,7 @@
           "gap": 7.511873691787059
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -16406,11 +16640,22 @@
           "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
           "data/normalized/champions-league-2026-27.json": "d8fac2afb26a23c1e52f31112789a83dc15dac6eebd9cfbcc8ff8f98ddc3be22"
         },
-        "missing": []
+        "missing": [],
+        "probabilitiesBeforeXgot": {
+          "home": 39.982901873942254,
+          "draw": 21.72628165465769,
+          "away": 38.290816471400056
+        },
+        "xgot": {
+          "applied": true,
+          "weight": 0.1,
+          "status": "experimental-user-authorized",
+          "statisticallyValidated": false
+        }
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 39.982901873942254,
+        "probabilityPct": 39.967155326804274,
         "label": "Shakhtar Donetsk",
         "status": "PRELIMINARY"
       }
@@ -16497,15 +16742,11 @@
               20
             ],
             "factors": [
-              1.116444613073491,
-              0.8931444365795325
+              1.1151540444257135,
+              0.8765129948094869
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
-              "4830656",
-              "4830666",
-              "4830677",
-              "4830690",
               "4830704",
               "4830718",
               "4830721",
@@ -16522,10 +16763,10 @@
               "5802948",
               "6106260",
               "5802958",
-              "5205740",
-              "4829550",
-              "4829561",
-              "5205791",
+              "6106312",
+              "5802969",
+              "5802974",
+              "6106316",
               "4829573",
               "5205792",
               "4829577",
@@ -16541,7 +16782,11 @@
               "5881171",
               "5881179",
               "6106417",
-              "5881189"
+              "5881189",
+              "6106238",
+              "5881200",
+              "5881208",
+              "6106266"
             ],
             "variant": "execution",
             "applied": true,
@@ -16902,7 +17147,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "lille",
           "bayern-munchen"
@@ -16947,7 +17192,7 @@
           "gap": -213.11265373181368
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -16988,9 +17233,9 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.88,
-        "away": 1.26,
-        "total": 3.14,
+        "home": 1.89,
+        "away": 1.25,
+        "total": 3.15,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -17059,15 +17304,11 @@
               20
             ],
             "factors": [
-              1.014792686220272,
-              1.078618060649471
+              1.0687662913207632,
+              1.059348837164213
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
-              "5205789",
-              "5205790",
-              "4830726",
-              "4830689",
               "4830728",
               "5205811",
               "4830744",
@@ -17084,11 +17325,10 @@
               "5802952",
               "6106254",
               "5802962",
-              "4803312",
-              "4803318",
-              "4803337",
-              "4803339",
-              "4803356",
+              "6106234",
+              "5802972",
+              "5802973",
+              "6106326",
               "4803363",
               "4803368",
               "4803385",
@@ -17103,7 +17343,12 @@
               "5749681",
               "5749692",
               "6106274",
-              "5749701"
+              "5749701",
+              "6106277",
+              "5749717",
+              "5749721",
+              "5749739",
+              "6106291"
             ],
             "variant": "execution",
             "applied": true,
@@ -17122,9 +17367,9 @@
         }
       },
       "probabilities": {
-        "home": 73.47683119662112,
-        "draw": 13.350837589561989,
-        "away": 13.172331213816886
+        "home": 73.8177193194405,
+        "draw": 13.253810152759748,
+        "away": 12.928470527799732
       },
       "scoreForecast": {
         "primary": null,
@@ -17271,7 +17516,7 @@
             "central": 1,
             "max": 2
           },
-          "expectedGoals": 1.88,
+          "expectedGoals": 1.89,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -17405,7 +17650,7 @@
             "central": 1.8,
             "max": 3
           },
-          "expectedGoals": 1.26,
+          "expectedGoals": 1.25,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
@@ -17464,7 +17709,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "paris-saint-germain",
           "roma"
@@ -17481,9 +17726,9 @@
         "type": "EUROPEAN_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 73.47683119662112,
-          "draw": 13.350837589561989,
-          "away": 13.172331213816886
+          "home": 73.8177193194405,
+          "draw": 13.253810152759748,
+          "away": 12.928470527799732
         },
         "samples": [
           50,
@@ -17509,7 +17754,7 @@
           "gap": 300.88028368237656
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
@@ -17534,7 +17779,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 73.47683119662112,
+        "probabilityPct": 73.8177193194405,
         "label": "Paris Saint-Germain",
         "status": "PRELIMINARY"
       }
@@ -17552,7 +17797,7 @@
       "expectedGoals": {
         "home": 2.36,
         "away": 1.01,
-        "total": 3.38,
+        "total": 3.37,
         "method": "Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.",
         "components": {
           "home": {
@@ -17621,15 +17866,11 @@
               20
             ],
             "factors": [
-              1.0082660854404393,
-              0.9605420322240524
+              0.9953987723015786,
+              0.9224840520250873
             ],
-            "latestHistoryDate": "2026-10-18",
+            "latestHistoryDate": "2026-11-04",
             "historyMatchIds": [
-              "4844408",
-              "5205795",
-              "4844417",
-              "5205796",
               "4844426",
               "4844434",
               "4844394",
@@ -17646,10 +17887,10 @@
               "5887643",
               "5887647",
               "6106414",
-              "4813639",
-              "4813652",
-              "4813662",
-              "4813671",
+              "6106281",
+              "5887661",
+              "5887666",
+              "6106335",
               "4813675",
               "4813691",
               "4813697",
@@ -17665,7 +17906,11 @@
               "5795459",
               "5795473",
               "6106267",
-              "5795480"
+              "5795480",
+              "6106410",
+              "5795493",
+              "5795498",
+              "6106291"
             ],
             "variant": "execution",
             "applied": true,
@@ -18026,7 +18271,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-06T12:16:41.874Z",
+        "cutoff": "2026-11-06T16:25:15.459Z",
         "teamIds": [
           "sporting-cp",
           "manchester-united"
@@ -18071,7 +18316,7 @@
           "gap": 78.04780919242125
         },
         "cutoff": "2026-11-06",
-        "asOf": "2026-11-06T12:16:41.874Z",
+        "asOf": "2026-11-06T16:25:15.459Z",
         "statisticallyValidated": false,
         "policyPath": "data/sources/champions-european-result-policy.json",
         "inputHashes": {
