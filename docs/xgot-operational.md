@@ -41,6 +41,8 @@ sezioni pubbliche di provenienza. Fonti e identificativi esterni restano nei
 registri interni. Sono disponibili 52 squadre e 523 giocatori identificati con
 almeno un campione individuale valido. Questi conteggi non certificano copertura
 completa di stagioni, giocatori o competizioni.
+Il pacchetto Pages include la proiezione UI; esclude archivi xGOT, policy di
+costruzione, storico di ricerca e congelamenti prospettici senza consumatori web.
 
 - Statistiche giocatori: colonna xGOT per totale e /90, ordinabile e presente nel
   comparatore per periodo. Il campione parziale è dichiarato.
@@ -71,6 +73,11 @@ Test pertinenti: `test-xgot-operational.cjs`, `test-predictions.js`,
 `test-schedina-md11.mjs`, `test-champions-shared-scenarios.cjs`,
 `test-xgot-prospective.cjs` e `check-xgot-browser.cjs`. Gli ultimi controlli UI
 coprono desktop 1440 px e mobile 390 px. Evidenze in `reports/xgot-operational/`.
+Il controllo aggiuntivo `test-champions-european-results.cjs` incontra uno
+snapshot di applicazione anteriore alle ultime formazioni MD4 (gol attesi 1.07
+contro 1.10). Le 18 righe MD4 correnti sono verificate identiche a HEAD:
+non è una modifica introdotta dall'xGOT. Il riscontro è registrato in
+`data/analysis/xgot/operational-checks.json`.
 
 La suite generale è stata aggiornata per confrontare i regressori MD6 con le
 formazioni MD6, non con quelle MD11, e per non pretendere che gli archivi abbiano

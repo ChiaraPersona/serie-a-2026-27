@@ -14,9 +14,14 @@ const rootFiles = new Set(['.nojekyll', 'sw.js', 'manifest.webmanifest', 'CNAME'
 const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-history/',
   'data/predictions/champions-event-snapshots/', 'data/predictions/exact-score-research/',
   'data/predictions/player-spatial-prospective/', 'data/predictions/player-spatial-v2-prospective/',
-  'data/predictions/spatial-prospective/'];
+  'data/predictions/spatial-prospective/', 'data/predictions/xgot-prospective/',
+  'data/normalized/xgot-history-seasons/', 'data/normalized/xgot-extended-seasons/'];
 // Build inputs and superseded artifacts: browser consumers use the retained UI/v2 files.
 const internalFiles = new Set([
+  'data/normalized/xgot-history.json',
+  'data/normalized/xgot-reconciled-history.json',
+  'data/normalized/xgot-team-research-v2.json',
+  'data/sources/xgot-operational-policy.json',
   'data/normalized/champions-tactical-evidence-2026-27.json',
   'data/normalized/champions-md02-integration-2026-27.json',
   'data/normalized/team-matchup-profiles-2026-27.json',
