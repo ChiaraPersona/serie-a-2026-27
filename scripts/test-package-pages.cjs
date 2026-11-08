@@ -8,6 +8,7 @@ assert(result.totalBytes < result.sourceBytes, 'Deploy JSON should be compacted'
 assert.equal(result.savedBytes, result.sourceBytes - result.totalBytes);
 assert(result.totalBytes < 1_000_000_000, 'Published site must fit the Pages limit');
 for (const file of result.files) {
+  assert(!file.startsWith('fantachampions-2026-27/'), 'Offline fantasy analysis published: ' + file);
   assert(!/^(output|reports|docs|data\/raw|data\/analysis)\//.test(file), 'Internal artifact published: ' + file);
   assert(!/^data\/predictions\/(?:champions-event-snapshots|exact-score-research|player-spatial-prospective|player-spatial-v2-prospective|spatial-prospective)\//.test(file), 'Research snapshot published: ' + file);
   assert(!file.startsWith('data/normalized/referee-history/'), 'Internal referee archive published: ' + file);

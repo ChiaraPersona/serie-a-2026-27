@@ -1,5 +1,17 @@
 # GitHub Pages
 
+### Additional package reduction — 8 November 2026
+
+The package excludes the offline `fantachampions-2026-27/` analysis workspace
+(including Python scripts, bytecode and model outputs), the full generated
+head-to-head input and `fantacalcio-advice.json`. The site uses generated HTML
+and the head-to-head summary; these excluded inputs have no browser consumers.
+All original files remain in the repository. The package dependency audit
+checks excluded filenames against published browser code and rejects offline
+fantasy analysis files. Measured size: 504,468,865 → 497,609,760 bytes
+(6,859,105 bytes saved). This reduces deployment size; it does not imply a
+corresponding improvement in page load time because these files were not fetched.
+
 Pages uses `.github/workflows/pages.yml` and the repository setting `build_type: workflow`.
 Pushes to `main` package the already committed site; the workflow does not regenerate sports data or forecasts.
 

@@ -5,7 +5,7 @@ const path = require('node:path');
 const {execFileSync} = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const maximumBytes = 950_000_000;
-const directories = ['assets/', 'css/', 'js/', 'statistiche-squadra/', 'fantachampions-2026-27/',
+const directories = ['assets/', 'css/', 'js/', 'statistiche-squadra/',
   'data/generated/', 'data/normalized/', 'data/sources/', 'data/teams/', 'data/derived/',
   'data/predictions/', 'data/players/', 'data/champions-2026-27/'];
 const rootFiles = new Set(['.nojekyll', 'sw.js', 'manifest.webmanifest', 'CNAME', 'robots.txt', 'sitemap.xml', 'data/team-objectives.json']);
@@ -18,6 +18,9 @@ const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-h
   'data/normalized/xgot-history-seasons/', 'data/normalized/xgot-extended-seasons/', 'data/normalized/xgot-current-seasons/'];
 // Build inputs and superseded artifacts: browser consumers use the retained UI/v2 files.
 const internalFiles = new Set([
+  // Build-only reports: pages consume the generated HTML / summary projections.
+  'data/generated/head-to-head/first-leg-2026-27.json',
+  'data/generated/fantacalcio-advice.json',
   // Canonical/build datasets: the browser uses match/day projections instead.
   'data/normalized/predictions.json',
   'data/normalized/reading-md08-market-catalog.json',
