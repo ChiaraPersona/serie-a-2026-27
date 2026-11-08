@@ -23,6 +23,15 @@ for (const file of ['index.html', 'offline.html', 'download.html', 'manifest.web
   'data/derived/champions-md03/upcoming-forecasts.json', 'data/predictions/snapshots/manifest.json']) {
   assert(files.has(file), 'Missing runtime dependency: ' + file);
 }
+// These URLs are composed at runtime and cannot be covered by basename scans.
+const tracked = require('node:child_process').execFileSync('git', ['ls-files', '-z'], {maxBuffer: 32 * 1024 * 1024})
+  .toString().split('\0').filter(Boolean);
+for (const file of tracked.filter(file =>
+  /^data\/normalized\/(?:predictions-md\d+|schedina-md\d+)\.json$/.test(file) ||
+  /^data\/generated\/readings\/(?:matches|catalogs)\/[^/]+\.json$/.test(file) ||
+  /^data\/predictions\/snapshots\/\d{4}-\d{2}\/md-\d{2}\.json$/.test(file))) {
+  assert(files.has(file), 'Missing dynamic runtime dependency: ' + file);
+}
 const browserCode = result.files.filter(f => /\.(?:m?js|html)$/.test(f))
   .map(file => ({file, source: fs.readFileSync(file, 'utf8')}));
 for (const internal of internalFiles) {

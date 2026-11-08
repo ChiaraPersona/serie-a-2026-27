@@ -18,6 +18,28 @@ const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-h
   'data/normalized/xgot-history-seasons/', 'data/normalized/xgot-extended-seasons/', 'data/normalized/xgot-current-seasons/'];
 // Build inputs and superseded artifacts: browser consumers use the retained UI/v2 files.
 const internalFiles = new Set([
+  // Canonical/build datasets: the browser uses match/day projections instead.
+  'data/normalized/predictions.json',
+  'data/normalized/reading-md08-market-catalog.json',
+  'data/normalized/reading-md09-market-catalog.json',
+  'data/normalized/reading-md10-market-catalog.json',
+  'data/normalized/reading-md11-market-catalog.json',
+  'data/normalized/champions-player-stats-2025-26.json',
+  'data/normalized/champions-player-stats-2026-27.json',
+  'data/normalized/champions-player-shooting-2026-27.json',
+  'data/normalized/champions-md04-player-database-2026-27.json',
+  'data/normalized/serie-a-shot-events-2026-27.json',
+  'data/normalized/understat-serie-a-xg.json',
+  'data/sources/prediction-archive-md05-2026-27.json',
+  'data/sources/prediction-archive-md06-2026-27.json',
+  'data/sources/champions-pilot-match-stats-2025-27.json',
+  'data/sources/match-results-2026-27.json',
+  'data/sources/champions-observed-performances-2026-27.json',
+  'data/sources/champions-results-md01-2026-27.json',
+  'data/sources/champions-results-md02-2026-27.json',
+  'data/sources/champions-results-md03-2026-27.json',
+  'data/sources/champions-package1-performances-2026-10-19.json',
+  'data/generated/current-disciplinary-features-2026-27.json',
   'data/normalized/xgot-history.json',
   'data/normalized/xgot-reconciled-history.json',
   'data/normalized/xgot-team-research-v2.json',
