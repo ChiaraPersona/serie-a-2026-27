@@ -3,7 +3,7 @@
 const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 const fs = require("fs");
 const path = require("path");
-const { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, WEIGHTS, predictMatch } = require("./predictions/engine");
+const { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, WEIGHTS, predictMatch, volumeMetric } = require("./predictions/engine");
 const { currentTeamVolume, withDisciplineHistory } = require('./predictions/current-sot-volume.cjs');
 const { currentGoalInputs } = require('./predictions/current-goal-inputs.cjs');
 const { DECISION_LAYER_VERSION, PROFILE_LIMITS, enrichPrediction } = require("./predictions/decision-layer");
@@ -72,6 +72,9 @@ const openingBacktest = fs.existsSync(openingBacktestPath) ? storageReadJson(ope
 const generatedAt = new Date().toISOString();
 const previewMatchday = Number(process.env.SERIE_A_PREDICTION_PREVIEW_MATCHDAY);
 const previewMode = Number.isInteger(previewMatchday) && previewMatchday > 0;
+const cardResearch = process.argv.includes("--inspect-card-ranking");
+if (cardResearch && !previewMode) throw new Error("La ricerca ammoniti richiede una giornata in anteprima");
+const cardRankings = [];
 const requestedMatchId = process.env.SERIE_A_PREDICTION_MATCH_ID || null;
 if (requestedMatchId && !matches.some(match => match.id === requestedMatchId)) throw new Error(`Fixture sconosciuta: ${requestedMatchId}`);
 
@@ -89,6 +92,19 @@ const homeByTeam = byId(standings.homeRows);
 const awayByTeam = byId(standings.awayRows);
 const teamById = new Map(teams.map(team => [team.id, team]));
 const squadsByTeam = new Map(teams.map(team => [team.id, read(`data/generated/team-pages/${team.id}-squad.json`)]));
+const roleDiscipline = new Map();
+if (cardResearch) {
+  const seen = new Set();
+  for (const squad of squadsByTeam.values()) for (const player of squad.players) {
+    const totals = player.previousSeason?.totals;
+    if (!player.id || seen.has(player.id) || !Number.isFinite(totals?.yellowCards) || !(totals.foulsCommitted > 0)) continue;
+    seen.add(player.id);
+    const role = roleDiscipline.get(player.role) ?? { yellows: 0, fouls: 0 };
+    role.yellows += totals.yellowCards;
+    role.fouls += totals.foulsCommitted;
+    roleDiscipline.set(player.role, role);
+  }
+}
 const identityRegistry = loadPlayerIdentities(root);
 for (const identity of identityRegistry.payload.players) {
   const squad = squadsByTeam.get(identity.teamId);
@@ -385,7 +401,46 @@ const generatedPredictions = targetMatches.map(match => {
       }
       : null,
     generatedAt: predictionGeneratedAt
-  });
+  }, cardResearch ? (candidates, selected) => {
+    const lineupInfo = team => {
+      const lineup = team.probableLineup;
+      return { teamId: team.id, status: lineup?.status, matchId: lineup?.matchId ?? null, updatedAt: lineup?.updatedAt ?? null, size: lineup?.players?.length ?? 0 };
+    };
+    const compact = ({playerId, name, teamId, role, riskScore, expectedMinutes, duelResearch}) => {
+      const previous = squadsByTeam.get(teamId)?.players.find(player => player.id === playerId)?.previousSeason?.totals;
+      const recent = currentPlayerPerformance(teamId, match)[playerId]?.disciplinaryFeatures;
+      const prior = roleDiscipline.get(role);
+      let yellows = 0, fouls = 0;
+      if (Number.isFinite(previous?.yellowCards) && Number.isFinite(previous?.foulsCommitted) && previous.minutes > 0) {
+        yellows += previous.yellowCards;
+        fouls += previous.foulsCommitted;
+      }
+      if (Number.isFinite(recent?.yellowPer90) && Number.isFinite(recent?.foulsCommittedPer90)) {
+        yellows += recent.ordinaryYellows;
+        fouls += recent.foulsCommitted;
+      }
+      const roleRate = prior?.yellows > 0 ? prior.yellows / prior.fouls : null;
+      const relative = roleRate && fouls > 0 ? (yellows + 30 * roleRate) / (fouls + 30) / roleRate : null;
+      const propensity = { yellows, fouls, roleRate, factor: relative == null ? 1 : 1 + 0.2 * Math.max(-0.5, Math.min(0.5, relative - 1)) };
+      return {playerId, name, teamId, role, riskScore, expectedMinutes, duelResearch, propensity};
+    };
+    const cardVolume = teamId => currentTeamVolume({ matches, historicalProfiles: currentVolumePriors, teamId, targetMatch: match, metrics: ["yellowCards", "fouls"] });
+    const homeCards = cardVolume(match.homeTeam), awayCards = cardVolume(match.awayTeam);
+    const expectedCount = (own, opponent, venue, metric) => {
+      const prior = own?.venues?.[venue]?.[metric]?.for;
+      return prior ? volumeMetric(null, null, own, opponent, venue, metric, 1, prior).central : null;
+    };
+    cardRankings.push({
+      matchId: match.id, lineups: [lineupInfo(homeTeam), lineupInfo(awayTeam)], candidates: candidates.map(compact), selected: selected.map(compact),
+      cardContext: {
+        home: expectedCount(homeCards, awayCards, "home", "yellowCards"), away: expectedCount(awayCards, homeCards, "away", "yellowCards"), refereeFactor: candidates[0]?.refereeFactor ?? 1,
+        teamFouls: {
+          [match.homeTeam]: expectedCount(homeCards, awayCards, "home", "fouls"),
+          [match.awayTeam]: expectedCount(awayCards, homeCards, "away", "fouls")
+        }
+      }
+    });
+  } : undefined);
   prediction.cardDataContract = {schemaVersion:1,targetVersion:"card-targets-v1",modelState:"DATA_ONLY_LEGACY_HEURISTIC",calibratedProbability:null,teamEstimateTarget: currentHome?.diagnostics && currentAway?.diagnostics ? "CURRENT_REGULARIZED_YELLOW_CARD_COUNTS_NOT_ALL_DISCIPLINARY_EVENTS" : "HISTORICAL_YELLOW_CARD_BASELINE_FIXED_DISPERSION_NOT_ALL_DISCIPLINARY_EVENTS"};
   for (const candidate of prediction.likelyBooked || []) {
     if (match.refereeAssignment?.referee?.slug && candidate.refereeFactorSource === "NO_DESIGNATION_AVAILABLE") candidate.refereeFactorSource = "DESIGNATED_REFEREE_EVIDENCE_UNAVAILABLE";
@@ -613,5 +668,9 @@ const output = {
 const outputPath = process.env.SERIE_A_PREDICTION_OUTPUT ? path.resolve(root, process.env.SERIE_A_PREDICTION_OUTPUT) : previewMode
   ? path.join(root, "data/generated", `prediction-preview-md${String(previewMatchday).padStart(2, "0")}-2026-27.json`)
   : path.join(root, "data/normalized/predictions.json");
-fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
-console.log(`OK pronostici preliminari: ${predictions.length} · motore ${ENGINE_VERSION} · ${path.relative(root, outputPath)}`);
+if (cardResearch) {
+  console.log(JSON.stringify({ generatedAt, engineVersion: ENGINE_VERSION, fixtures: cardRankings }));
+} else {
+  fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
+  console.log(`OK pronostici preliminari: ${predictions.length} · motore ${ENGINE_VERSION} · ${path.relative(root, outputPath)}`);
+}

@@ -168,28 +168,28 @@
   color:var(--button-blue-strong);
 }
 
-/* Home: selettori compatti in vetro, senza intervenire sul tabellone. */
-.home-standings .standings-switch,
-.home-standings .standings-scope-switch{
+/* Home: selettori incassati della classifica. */
+body[data-page="home"] main .home-standings .standings-switch,
+body[data-page="home"] main .home-standings .standings-scope-switch{
   display:flex;
   flex-wrap:wrap;
+  width:fit-content;
+  max-width:100%;
   gap:8px;
   padding:0;
   border:0;
-  border-radius:0;
   background:transparent;
-  box-shadow:none;
 }
 
-.home-standings .standings-switch button,
-.home-standings .standings-scope-switch button{
+body[data-page="home"] main .home-standings .standings-switch button,
+body[data-page="home"] main .home-standings .standings-scope-switch button{
   flex:0 0 auto;
   min-height:36px;
   padding:8px 16px;
-  border:1px solid rgba(255,255,255,.68);
-  border-radius:999px;
-  background:#eaf1f4;
-  box-shadow:0 4px 12px rgba(20,43,59,.06),inset 0 1px rgba(255,255,255,.6);
+  border:1px solid var(--ds-color-border);
+  border-radius:var(--ds-radius-control);
+  background:#e6ebed;
+  box-shadow:inset 0 2px 5px rgba(20,43,59,.14);
   color:#283e4b;
   font-size:.86rem;
   line-height:1.2;
@@ -199,36 +199,35 @@
   transition:background-color .2s ease,box-shadow .2s ease,color .2s ease;
 }
 
-@supports ((backdrop-filter:blur(14px)) or (-webkit-backdrop-filter:blur(14px))){
-  .home-standings .standings-switch button,
-  .home-standings .standings-scope-switch button{
-    background:linear-gradient(115deg,rgba(255,255,255,.38),rgba(255,255,255,.16)),rgba(225,238,243,.76);
-    backdrop-filter:blur(14px) saturate(135%);
-    -webkit-backdrop-filter:blur(14px) saturate(135%);
-  }
-}
-
-.home-standings .standings-switch button:hover,
-.home-standings .standings-scope-switch button:hover{
-  background-color:#e0ebf0;
+body[data-page="home"] main .home-standings .standings-switch button:not(.active):hover,
+body[data-page="home"] main .home-standings .standings-scope-switch button:not(.active):hover{
+  border-color:var(--ds-color-border);
+  background-color:#d8e2e7;
   color:#152e42;
-  box-shadow:0 5px 14px rgba(20,43,59,.1),inset 0 1px rgba(255,255,255,.6);
+  box-shadow:inset 0 2px 9px rgba(20,43,59,.12);
   text-decoration:none;
   transform:none;
 }
 
-.home-standings .standings-switch button.active,
-.home-standings .standings-scope-switch button.active{
-  border-color:rgba(255,255,255,.24);
-  background:#142c40;
-  color:#fff;
-  box-shadow:0 4px 12px rgba(20,43,59,.14),inset 0 1px rgba(255,255,255,.1);
+body[data-page="home"] main .home-standings .standings-switch button.active,
+body[data-page="home"] main .home-standings .standings-scope-switch button.active{
+  border-color:var(--ds-color-accent-strong);
+  background:var(--ds-color-accent-strong);
+  color:var(--ds-color-on-accent);
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.25);
   text-decoration:none;
   transform:none;
 }
 
-.home-standings .standings-switch button:focus-visible,
-.home-standings .standings-scope-switch button:focus-visible{
+body[data-page="home"] main .home-standings .standings-switch button.active:hover,
+body[data-page="home"] main .home-standings .standings-scope-switch button.active:hover{
+  border-color:transparent;
+  background-color:color-mix(in srgb,var(--ds-color-accent-strong) 92%,var(--ds-color-on-accent));
+  box-shadow:inset 0 2px 9px rgba(0,0,0,.18);
+}
+
+body[data-page="home"] main .home-standings .standings-switch button:focus-visible,
+body[data-page="home"] main .home-standings .standings-scope-switch button:focus-visible{
   outline:2px solid #9a6912;
   outline-offset:3px;
 }

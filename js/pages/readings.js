@@ -73,7 +73,7 @@ export function renderPredictionV2Sections({prediction,teams=[],esc=value=>Strin
     const foulEvidence=evidence.find(item=>typeof item==='string'&&/^\d+(?:[.,]\d+)? falli\/90(?: stimati)?$/.test(item));
     const fouls=foulEvidence?Number(foulEvidence.match(/^[\d.,]+/)[0].replace(',','.')):null;
     const own=isFiniteNumber(fouls)?'Commette '+metric(fouls)+' falli/90'+(foulEvidence.endsWith('stimati')?' stimati':'')+'.':'Falli commessi/90 N/D.';
-    const duels=Array.isArray(candidate.readingDuels)&&candidate.readingDuels.length?candidate.readingDuels:candidate.directOpponent?[{name:candidate.directOpponent,foulsWonPer90:candidate.opponentFoulsWonPer90}]:[];
+    const duels=Array.isArray(candidate.readingDuels)&&candidate.readingDuels.length?candidate.readingDuels:candidate.role!=='Difensore'&&candidate.directOpponent?[{name:candidate.directOpponent,foulsWonPer90:candidate.opponentFoulsWonPer90}]:[];
     const duel=duels.length?(duels.length>1?'Possibili duelli con ':'Possibile duello con ')+duels.map(d=>d.name).join(', '):'Duello diretto N/D';
     const refereeMissing=candidate.refereeFactorSource==='INSUFFICIENT_REFEREE_EVIDENCE'||candidate.refereeEvidence?.some(item=>/N\/D|non disponibile/i.test(item));
     const referee=candidate.refereeFactorSource==='NO_DESIGNATION_AVAILABLE'?'arbitro non designato':refereeMissing?'influenza arbitrale N/D':isFiniteNumber(candidate.refereeFactor)?candidate.refereeFactor>1?'arbitro severo':candidate.refereeFactor<1?'arbitro permissivo':'arbitro nella media':'influenza arbitrale N/D';

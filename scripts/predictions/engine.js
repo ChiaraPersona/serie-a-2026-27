@@ -2,6 +2,7 @@
 const { normalizePlayerName } = require("../player-identity");
 const { attachBetSelection, selectionIdFor } = require("../betting-selection-contract");
 const { rankShooterCandidates } = require('./rank-shooter-candidates');
+const { isDefensiveDuel } = require("./defensive-duel.cjs");
 
 const ENGINE_VERSION = "4.16.0";
 const PLAYER_MARKET_MODEL_VERSION = 2;
@@ -1173,17 +1174,19 @@ function playerSide(candidate) {
   return "central";
 }
 
-function directDuel(candidate, opponents) {
+function directDuel(candidate, opponents, byDefensiveRole = false) {
   const side = playerSide(candidate);
-  if (side === "central" || !candidate.detailedRole || !["Difensore", "Centrocampista"].includes(candidate.role)) return null;
+  if ((!byDefensiveRole && side === "central") || !candidate.detailedRole || !["Difensore", "Centrocampista"].includes(candidate.role)) return null;
   const facedSide = side === "right" ? "left" : "right";
   const eligible = opponents.filter(opponent =>
-    opponent.detailedRole && playerSide(opponent) === facedSide && opponent.role !== "Portiere" &&
+    (byDefensiveRole
+      ? isDefensiveDuel(candidate, opponent)
+      : opponent.detailedRole && playerSide(opponent) === facedSide && opponent.role !== "Portiere") &&
     Number.isFinite(opponent.player?.previousSeason?.totals?.per90?.foulsWon)
-  ).sort((left, right) => right.player.previousSeason.totals.per90.foulsWon - left.player.previousSeason.totals.per90.foulsWon);
+  );
   if (eligible.length !== 1) return null;
   const opponent = eligible[0];
-  return { name: opponent.player?.name || opponent.name, foulsWonPer90: round(opponent.player.previousSeason.totals.per90.foulsWon, 2) };
+  return { playerId: opponent.player?.id ?? null, name: opponent.player?.name || opponent.name, role: opponent.role, foulsWonPer90: round(opponent.player.previousSeason.totals.per90.foulsWon, 2) };
 }
 
 function refereeCardFactor(profile, leagueAverage) {
@@ -1212,7 +1215,7 @@ function expectedDefensiveExposureFactor(expectedPossessionPct, maxImpactPct = 6
   return round(1 + (rawFactor - 1) * reliability, 4);
 }
 
-function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awayProfile, homeCurrentDiscipline, awayCurrentDiscipline, refereeProfile, refereeLeagueAverage, homeTeamMatchupProfile, awayTeamMatchupProfile) {
+function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awayProfile, homeCurrentDiscipline, awayCurrentDiscipline, refereeProfile, refereeLeagueAverage, homeTeamMatchupProfile, awayTeamMatchupProfile, inspectCandidates) {
   const homePlayers = lineupPlayers(homeTeam, homeSquad);
   const awayPlayers = lineupPlayers(awayTeam, awaySquad);
   const referee = refereeCardFactor(refereeProfile, refereeLeagueAverage);
@@ -1237,8 +1240,10 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
     const reliability = minutes ? clamp(minutes / 1800, 0.35, 1) : 0.3;
     const channelLoad = facedChannel / 100 * 1.15 + (candidate.opponentProfile?.playingStyle || []).some(item => item.id === "aggressivi") * 0.14;
     const directOpponent = directDuel(candidate, candidate.opponents);
-    const duelRisk = directOpponent ? round(clamp(1 + (directOpponent.foulsWonPer90 - 1.25) * 0.09, 0.92, 1.12), 3) : 1;
-    const opponentDuelEnvironmentFactor = directOpponent ? clamp(candidate.opponentTeamMatchupProfile?.discipline?.foulIntensity?.directDuelEnvironmentFactor ?? 1, 0.98, 1.03) : 1;
+    const duelFactor = opponent => opponent ? round(clamp(1 + (opponent.foulsWonPer90 - 1.25) * 0.09, 0.92, 1.12), 3) : 1;
+    const duelEnvironment = opponent => opponent ? clamp(candidate.opponentTeamMatchupProfile?.discipline?.foulIntensity?.directDuelEnvironmentFactor ?? 1, 0.98, 1.03) : 1;
+    const duelRisk = duelFactor(directOpponent);
+    const opponentDuelEnvironmentFactor = duelEnvironment(directOpponent);
     const teamDisciplineFactor = clamp(candidate.teamMatchupProfile?.discipline?.modelFactor ?? 1, 0.95, 1.05);
     const baseDefensiveExposureFactor = candidate.teamMatchupProfile?.discipline?.expectedDefensiveExposure?.factor ?? 1;
     const defensiveExposureReliability = 1 - currentWeight * 0.5;
@@ -1246,6 +1251,25 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
     const historicalRaw = roleBase + observed * (0.55 + reliability * 0.45) + channelLoad;
     const raw = historicalRaw * duelRisk * opponentDuelEnvironmentFactor * referee.factor * teamDisciplineFactor * defensiveExposureFactor;
     const riskScore = Math.round(clamp(raw * 19, 12, 88));
+    let duelResearch;
+    if (inspectCandidates) {
+      const corrected = candidate.role === "Difensore" ? directDuel(candidate, candidate.opponents, true) : directOpponent;
+      const correctedRaw = historicalRaw * duelFactor(corrected) * duelEnvironment(corrected) * referee.factor * teamDisciplineFactor * defensiveExposureFactor;
+      const previousYellows = candidate.player?.previousSeason?.totals?.yellowCards;
+      const priorMinutes = Number.isFinite(previousYellows) && minutes > 0 ? minutes * 0.5 : 0;
+      const discipline = current?.disciplinaryFeatures;
+      const recentMinutes = Number.isFinite(discipline?.yellowPer90) ? discipline.minutes : 0;
+      const yellowRate = (0.12 * 900 + (priorMinutes ? previousYellows * 45 : 0) +
+        (recentMinutes ? discipline.yellowPer90 * recentMinutes : 0)) / (900 + priorMinutes + recentMinutes);
+      const correctedWithHistory = (historicalRaw + (yellowRate - estimatedCards) * 3.6 * (0.55 + reliability * 0.45)) *
+        duelFactor(corrected) * duelEnvironment(corrected) * referee.factor * teamDisciplineFactor * defensiveExposureFactor;
+      duelResearch = {
+        legacyOpponent: directOpponent, correctedOpponent: corrected, facedAttackChannelPct: facedChannel,
+        riskScore: Math.round(clamp(correctedRaw * 19, 12, 88)),
+        foulExposureRate: estimatedFouls * duelFactor(corrected),
+        yellowHistory: { yellowRate, previousSeasonMinutes: priorMinutes * 2, recentMinutes, riskScore: Math.round(clamp(correctedWithHistory * 19, 12, 88)) }
+      };
+    }
     const evidence = [];
     if (per90.cards != null) evidence.push(`${round(estimatedCards, 2)} cartellini/90${current?.minutes ? " stimati" : ""}`);
     if (per90.foulsCommitted != null) evidence.push(`${round(estimatedFouls, 2)} falli/90${current?.minutes ? " stimati" : ""}`);
@@ -1269,6 +1293,7 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
       teamId: candidate.teamId,
       role: candidate.role,
       riskScore,
+      ...(inspectCandidates ? { expectedMinutes: expectedMinutes(candidate, current).expectedMinutes, duelResearch } : {}),
       riskComponents: {
         roleBase: round(roleBase, 3),
         historicalDiscipline: round(observed, 3),
@@ -1312,7 +1337,9 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
       if (replacement) selected[selected.length - 1] = replacement;
     }
   }
-  return selected.sort((a, b) => b.riskScore - a.riskScore).map((candidate, index) => ({ ...candidate, rank: index + 1, possibleFirstBooked: index === 0, firstBookedHeuristic: index === 0, firstBookedProbability: null }));
+  selected.sort((a, b) => b.riskScore - a.riskScore);
+  inspectCandidates?.(uniqueRows, selected);
+  return selected.map((candidate, index) => ({ ...candidate, rank: index + 1, possibleFirstBooked: index === 0, firstBookedHeuristic: index === 0, firstBookedProbability: null }));
 }
 
 function shotAccuracy(players) {
@@ -2125,7 +2152,7 @@ function predictScenario(input) {
   return { market, expected, matrix, parts, final, crossCompetition, lineupsOfficial, dataCompleteness, surprise, confidenceResult, orderedOutcomes, doubleChance, matrices, forecast, teamProjections, matchProjection };
 }
 
-function predictMatch(input) {
+function predictMatch(input, inspectCardCandidates) {
   const { market, expected, matrix, parts, final, crossCompetition, lineupsOfficial, dataCompleteness, surprise, confidenceResult, orderedOutcomes, doubleChance, matrices, forecast, teamProjections, matchProjection } = predictScenario(input);
   const [primaryHome, primaryAway] = forecast.primary.score.split("-").map(Number);
   const evaluatedMarkets = marketEvaluation(input.oddsEvent, matrices, dataCompleteness, { home: primaryHome, away: primaryAway });
@@ -2167,7 +2194,7 @@ function predictMatch(input) {
     matchProjection,
     teamProjections,
     shooters,
-    likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, input.homeCurrentDiscipline, input.awayCurrentDiscipline, input.refereeProfile, input.refereeLeagueAverage, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile),
+    likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, input.homeCurrentDiscipline, input.awayCurrentDiscipline, input.refereeProfile, input.refereeLeagueAverage, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile, inspectCardCandidates),
     scenarios: matchScenarios(input, final, expected),
     marketComparison: evaluatedMarkets.rows,
     recommendations: evaluatedMarkets.selections,

@@ -1,5 +1,5 @@
 const release=new URL(import.meta.url).searchParams.get("v")||"development";
-const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=20261104-champions-results`);
+const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=20261109-md11-results`);
 const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261102-champions-no-draw`);
 const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts,publicForecastLabel,meetsMinimumPublicOdds,isExcludedStraightDraw}=await import(`./shared-forecast-contract.mjs?v=20261102-champions-no-draw`);
 
@@ -481,7 +481,7 @@ export function createPage(deps){
       if(number>=6)bindMatchdayInteractions(number);
       return;
     }
-    document.querySelector("#app").innerHTML=(await loadGenerated("schedina-index-2026-27.json?presentation=20261024-clean-heading")).html;
+    document.querySelector("#app").innerHTML=(await loadGenerated("schedina-index-2026-27.json?presentation=20261109-md11-results")).html;
     // First touch reveals the existing reverse face; second touch follows its link.
     const cl3Card=document.querySelector('[data-champions-matchday="3"]');
     cl3Card?.addEventListener('click',event=>{

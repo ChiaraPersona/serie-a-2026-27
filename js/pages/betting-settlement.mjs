@@ -73,22 +73,28 @@ function settleThreshold(selection,actual,threshold){
   return unavailable();
 }
 
-function playerDuo(match,player){
+function playerDuo(match,player,playerId){
   const name=comparableName(player),all=[...(match?.playerStats?.home||[]),...(match?.playerStats?.away||[])];
+  const identified=playerId?all.find(item=>item.playerId===playerId):null;
   const wantedTokens=name.replace(/[^a-z0-9]+/g," ").trim().split(/\s+/).filter(Boolean);
   const fuzzy=all.filter(item=>{
     const candidateTokens=comparableName(item.player).replace(/[^a-z0-9]+/g," ").trim().split(/\s+/).filter(Boolean);
     const words=wantedTokens.filter(token=>token.length>1),initials=wantedTokens.filter(token=>token.length===1);
     return words.length>0&&words.every(token=>candidateTokens.includes(token))&&initials.every(initial=>candidateTokens.some(token=>token.startsWith(initial)));
   });
-  const primary=all.find(item=>comparableName(item.player)===name)||(fuzzy.length===1?fuzzy[0]:null);
-  const substitution=(match?.substitutions||[]).find(item=>comparableName(item.playerOut)===comparableName(primary?.player||player));
+  const primary=identified||all.find(item=>comparableName(item.player)===name)||(fuzzy.length===1?fuzzy[0]:null);
+  const substitution=(match?.substitutions||[]).find(item=>primary?.playerId&&item.playerOutId
+    ?item.playerOutId===primary.playerId
+    :comparableName(item.playerOut)===comparableName(primary?.player||player));
   if(!primary&&substitution){
     const goalsFor=person=>(match?.scorers||[]).filter(item=>!item.ownGoal&&comparableName(item.player)===comparableName(person)).length;
     return [{player,goals:goalsFor(player)}, {player:substitution.playerIn,goals:goalsFor(substitution.playerIn)}];
   }
   if(!primary)return null;
-  const substitute=substitution?all.find(item=>comparableName(item.player)===comparableName(substitution.playerIn)):null;
+  const substitute=substitution?all.find(item=>substitution.playerInId&&item.playerId
+    ?item.playerId===substitution.playerInId
+    :comparableName(item.player)===comparableName(substitution.playerIn)):null;
+  if(identified&&substitution&&!substitute)return null;
   return [primary,...(substitute?[substitute]:[])];
 }
 
@@ -306,7 +312,9 @@ export function settleLeg(leg,match){
       return resultStatus(selection==="SI"?goals>0:goals===0);
     }
     const playerName=referencedPlayer;
-    const players=playerDuo(match,playerName),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
+    const subject=leg?.betSelection?.market?.subject;
+    const playerId=leg?.playerId||(subject?.type?.includes("player")?subject.id:null);
+    const players=playerDuo(match,playerName,playerId),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
     if(!players&&playerDidNotPlay(match,playerName))return voided();
     if(!players)return unavailable();
     if(market.includes("SEGNA O FA ASSIST"))return resultStatus(selection==="SI"?goals+assists>0:goals+assists===0);
