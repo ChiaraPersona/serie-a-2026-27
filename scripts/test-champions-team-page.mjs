@@ -7,9 +7,19 @@ globalThis.document={querySelector:()=>app};
 const esc=value=>String(value??'').replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 const data=await load('champions-league-2026-27.json');
 const squads=await load('champions-registered-squads-2026-27.json');
+const current=await load('champions-player-stats-2026-27.json');
 for(const team of squads.teams){
  globalThis.location={search:`?team=${team.id}`};
  await createPage({esc,load}).render();
+ assert(app.innerHTML.includes('value="2026-27" selected'));
+ const statsTeam=current.teams.find(t=>t.id===({'bod-glimt':'bodo-glimt'}[team.id]||team.id));
+ for(const player of team.players){
+  const providerId=player.providerIds?.espn;
+  const matches=(statsTeam?.players||[]).filter(p=>providerId?String(p.providerPlayerId)===String(providerId):p.id===player.id);
+  const totals=matches.length===1?matches[0].currentSeason?.totals:null;
+  const row=app.innerHTML.split(`data-champions-player="${esc(player.id)}"`)[1].split('</tr>')[0];
+  for(const [field,attr] of [['minutes','minutes'],['shots','shots'],['shotsOnTarget','shots-on-target']])assert(row.includes(`data-stat-${attr}="${typeof totals?.[field]==='number'?totals[field]:''}"`),`${team.team}: ${player.id} ${field}`);
+ }
  const calendar=app.innerHTML.split('aria-labelledby="team-calendar-title"')[1].split('<section class="champions-team-lineup">')[0];
  const fixtures=data.fixtures.filter(f=>f.homeTeam===team.team||f.awayTeam===team.team);
  assert.equal(fixtures.length,8,team.team);

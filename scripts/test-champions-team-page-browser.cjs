@@ -13,6 +13,8 @@ const server=http.createServer((req,res)=>{
   fs.readFile(file,(error,body)=>{res.writeHead(error?404:200,{'Content-Type':types[path.extname(file)]||'application/octet-stream'});res.end(error?'Missing':body)});
 });
 
+const calendarData=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/champions-league-2026-27.json'),'utf8'));
+const squads=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/champions-registered-squads-2026-27.json'),'utf8'));
 const cases=[
   {id:'bayern-munchen',volume:true,attack:true},
   {id:'aek-athens',volume:true,attack:false},
@@ -35,6 +37,17 @@ const screenshotDirectory=(process.argv.find(argument=>argument.startsWith('--sc
       for(const item of cases){
         await page.goto(`http://127.0.0.1:${server.address().port}/champions-league.html?team=${item.id}`,{waitUntil:'networkidle'});
         await page.waitForSelector('.champions-team-detail');
+        assert.equal(await page.locator('#champions-player-season').inputValue(),'2026-27');
+        const currentRows=await page.locator('.champions-player-stats-table tbody').innerHTML();
+        await page.selectOption('#champions-player-season','2025-26');
+        await page.waitForURL(/playerSeason=2025-26/);
+        await page.waitForSelector('#champions-player-season');
+        assert.equal(await page.locator('#champions-player-season').inputValue(),'2025-26');
+        if(item.id==='bayern-munchen')assert.notEqual(await page.locator('.champions-player-stats-table tbody').innerHTML(),currentRows);
+        await page.selectOption('#champions-player-season','2026-27');
+        await page.waitForURL(/playerSeason=2026-27/);
+        await page.waitForSelector('#champions-player-season');
+        assert.equal(await page.locator('.champions-player-stats-table tbody').innerHTML(),currentRows);
         assert.equal(await page.locator('.champions-team-hero-logo img').count(),1,`${item.id}: stemma`);
         assert(await page.locator('.champions-team-hero-logo img').evaluate(image=>image.naturalWidth>0),`${item.id}: stemma caricato`);
         assert.match(await page.locator('.champions-team-hero-facts').innerText(),/Posizione fase campionato/i);
@@ -48,7 +61,7 @@ const screenshotDirectory=(process.argv.find(argument=>argument.startsWith('--sc
         }
         assert.equal(await page.locator('.champions-calendar-list>li').count(),8,`${item.id}: calendario`);
         assert.equal(await page.locator('.champions-calendar-list>li.is-next').count(),1,`${item.id}: prossima gara`);
-        assert.equal(await page.locator('.champions-calendar-result').count(),1,`${item.id}: risultato concluso`);
+        assert.equal(await page.locator('.champions-calendar-result').count(),calendarData.fixtures.filter(f=>f.status==='finished'&&[f.homeTeam,f.awayTeam].includes(squads.teams.find(t=>t.id===item.id).team)).length,`${item.id}: risultato concluso`);
         assert.equal(await page.locator('.champions-calendar-list a[href*="?match="]').count(),2,`${item.id}: letture MD1 e MD2`);
         assert.equal(await page.locator('.champions-volume-grid').count(),item.volume?1:0,`${item.id}: volumi`);
         assert.equal(await page.locator('.champions-team-volume.is-unavailable').count(),item.volume?0:1,`${item.id}: fallback N/D`);
@@ -56,7 +69,7 @@ const screenshotDirectory=(process.argv.find(argument=>argument.startsWith('--sc
         if(item.fallback)assert.match(await page.locator('.champions-team-volume>header').innerText(),/fallback UEFA/i);
         assert.equal(await page.locator('.champions-player-ranking-tabs button').count(),3,`${item.id}: selettori ranking`);
         assert.equal(await page.locator('.champions-player-controls input[type="search"]').count(),1,`${item.id}: ricerca`);
-        assert.equal(await page.locator('.champions-player-controls select').count(),2,`${item.id}: filtri`);
+        assert.equal(await page.locator('.champions-player-controls select').count(),3,`${item.id}: filtri`);
         assert.equal(await page.locator('#offensive-identity,#defensive-vulnerability,#recent-form').count(),0,`${item.id}: sezioni future vuote`);
         const order=await page.locator('.champions-team-detail').evaluate(rootNode=>['.champions-team-hero','.champions-team-summary','.champions-team-calendar','.champions-team-volume','.champions-team-attack','.champions-team-lineup','.champions-player-overview','.champions-team-players'].filter(selector=>rootNode.querySelector(selector)).map(selector=>({selector,top:rootNode.querySelector(selector).getBoundingClientRect().top})).every((item,index,array)=>!index||item.top>=array[index-1].top));
         assert(order,`${item.id}: ordine sezioni`);
