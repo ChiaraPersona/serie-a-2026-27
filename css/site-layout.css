@@ -220,3 +220,30 @@ body :is(.site-header .brand strong,.footer-brand strong){
 body :is(.standings-table,.rd-compact-forecast-table) td{
   font-variant-numeric:tabular-nums;
 }
+
+/* Final mobile navigation surfaces, consistent with the glass header. */
+@media(max-width:900px){
+ body[data-page] .site-header>.menu-button,
+ body[data-page] .site-header>.menu-button:is(:hover,:focus-visible,:active){background:transparent;border:0;box-shadow:none}
+ body[data-page] .site-header>.site-nav{
+  background:rgba(213,235,239,.9);
+  border:1px solid rgba(255,255,255,.72);
+  box-shadow:0 8px 16px rgba(30,51,61,.12),0 24px 36px rgba(30,51,61,.12),inset 0 1px 3px rgba(255,255,255,.8);
+  backdrop-filter:blur(24px) saturate(135%);
+  -webkit-backdrop-filter:blur(24px) saturate(135%);
+ }
+}
+@media(max-width:760px){body[data-page="home"] #app>.home-dashboard{margin-top:16px}}
+
+/* Champions mobile menu follows the competition's blue glass palette. */
+@media(max-width:900px){
+ body[data-page="champions"] .site-header>.site-nav{
+  background:rgba(8,32,82,.9);
+  border-color:rgba(147,200,255,.3);
+  box-shadow:0 8px 16px rgba(0,8,37,.2),0 24px 36px rgba(0,8,37,.24),inset 0 1px 3px rgba(190,221,255,.16);
+ }
+ body[data-page="champions"] .site-header>.site-nav .page-link{color:#eaf4ff}
+ body[data-page="champions"] .site-header>.site-nav .page-link.active{background:rgba(112,179,255,.18);border-color:rgba(147,200,255,.3);color:#fff}
+ body[data-page="champions"] .site-header>.site-nav .page-link:is(:hover,:focus-visible){background:rgba(112,179,255,.14);color:#fff}
+ body[data-page="champions"] .site-header>.menu-button{color:#eaf4ff}
+}

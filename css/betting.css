@@ -481,6 +481,20 @@ body[data-page="betting"] .betting-archive-card--champions .betting-archive-perf
 
 body[data-page="betting"] .betting-archive-card--champions .betting-archive-number{background:none;box-shadow:none;text-shadow:none}
 
+/* Archive performance uses a simple divider instead of separate tiles. */
+body[data-page="betting"] .betting-archive-performance{gap:0}
+body[data-page="betting"] .betting-archive-card .betting-archive-performance>span{position:relative;border:0;border-radius:0;background:none;box-shadow:none}
+body[data-page="betting"] .betting-archive-performance>span+span::before{content:"";position:absolute;left:0;top:50%;height:24px;width:1px;background:currentColor;opacity:.3;transform:translateY(-50%)}
+
+/* All mobile archive cards share one size, including touch devices. */
+@media(max-width:760px){
+ body[data-page="betting"] .betting-archive-list.team-directory-grid.team-flip-grid{grid-template-columns:minmax(0,1fr)}
+ body[data-page="betting"] .betting-archive-card{height:220px;min-width:0}
+ body[data-page="betting"] .betting-archive-card .team-flip-inner{height:100%;min-height:0;box-sizing:border-box}
+ body[data-page="betting"] .betting-archive-card .team-flip-face{min-height:0}
+ body[data-page="betting"] .betting-archive-card--champions .team-flip-front{background:none!important;box-shadow:none}
+}
+
 /* Finished Champions selections share outcome colors across all workspaces. */
 body[data-page] .betting-round-page[data-champions-workspace] .betting-market-row[data-settlement="won"]{background:color-mix(in srgb,#168754 24%,var(--ds-color-surface));border-color:#168754;box-shadow:inset 3px 0 #168754}
 body[data-page] .betting-round-page[data-champions-workspace] .betting-market-row[data-settlement="lost"]{background:color-mix(in srgb,#c9323a 24%,var(--ds-color-surface));border-color:#c9323a;box-shadow:inset 3px 0 #c9323a}

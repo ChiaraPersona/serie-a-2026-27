@@ -84,7 +84,7 @@ function homeStandings(standings,currentHomeRows,currentAwayRows,previousStandin
       panel.hidden=panel===previousPanel&&matchday===undefined;
       panel.querySelector("[data-home-matchday-label]").textContent=matchday??"";
       const fixtures=league.filter(match=>match.matchday===matchday).sort(matchdayChronology);
-      const grouped=desktopCalendar.matches;
+      const grouped=true;
       let previousDate;
       const rows=fixtures.map(match=>{
         const date=match.date?.slice(0,10)||"";

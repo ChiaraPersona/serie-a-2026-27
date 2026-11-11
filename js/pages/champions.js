@@ -86,7 +86,7 @@ export function createPage(deps){
     }
     for(const row of rows.values())row.goalDifferenceLabel=(row.gf>row.ga?'+':'')+(row.gf-row.ga);
     const sorted=[...rows.values()].sort((a,b)=>b.points-a.points||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf||a.team.localeCompare(b.team));
-    return `<section class="champions-strength-panel champions-round-summary" aria-labelledby="champions-standings-title"><header class="champions-standings-heading"><h2 id="champions-standings-title">Classifica</h2></header><div class="champions-strength-table-wrap table-wrap"><table class="standings-table champions-standings-table"><thead><tr><th scope="col">#</th><th scope="col">Squadra</th><th scope="col">PT</th><th scope="col" title="Partite giocate">PG</th><th scope="col" title="Vittorie">V</th><th scope="col" title="Pareggi">N</th><th scope="col" title="Sconfitte">P</th><th scope="col" title="Gol fatti">GF</th><th scope="col" title="Gol subiti">GS</th><th scope="col" title="Cartellini assegnati agli avversari">C+</th><th scope="col" title="Cartellini ricevuti dalla squadra">C-</th><th scope="col" title="Ultime 5 partite disponibili, più recente a sinistra">Ultime 5</th></tr></thead><tbody>${sorted.map((r,index)=>`<tr><td>${index+1}</td><td>${teamBadge(r.team,branding)}</td><td><strong>${r.points}</strong></td><td>${r.played}</td><td>${r.won}</td><td>${r.drawn}</td><td>${r.lost}</td><td>${r.gf}</td><td>${r.ga}</td>${disciplineCells(r.team)}<td>${standingsForm(data.fixtures,r.team,{escape:esc})}</td></tr>`).join("")}</tbody></table></div></section>`;
+    return `<section class="champions-strength-panel champions-round-summary" aria-labelledby="champions-standings-title"><header class="champions-standings-heading"><h2 id="champions-standings-title">Classifica</h2></header><div class="champions-strength-table-wrap table-wrap"><table class="standings-table champions-standings-table"><thead><tr><th scope="col">#</th><th class="champions-pinned-logo" scope="col" aria-label="Logo squadra"></th><th scope="col">Squadra</th><th scope="col">PT</th><th scope="col" title="Partite giocate">PG</th><th scope="col" title="Vittorie">V</th><th scope="col" title="Pareggi">N</th><th scope="col" title="Sconfitte">P</th><th scope="col" title="Gol fatti">GF</th><th scope="col" title="Gol subiti">GS</th><th scope="col" title="Cartellini assegnati agli avversari">C+</th><th scope="col" title="Cartellini ricevuti dalla squadra">C-</th><th scope="col" title="Ultime 5 partite disponibili, più recente a sinistra">Ultime 5</th></tr></thead><tbody>${sorted.map((r,index)=>`<tr><td>${index+1}</td><td class="champions-pinned-logo">${teamBadge(r.team,branding,{showName:false})}</td><td>${teamBadge(r.team,branding)}</td><td><strong>${r.points}</strong></td><td>${r.played}</td><td>${r.won}</td><td>${r.drawn}</td><td>${r.lost}</td><td>${r.gf}</td><td>${r.ga}</td>${disciplineCells(r.team)}<td>${standingsForm(data.fixtures,r.team,{escape:esc})}</td></tr>`).join("")}</tbody></table></div></section>`;
   }
 
   function fixtureCard(fixture,branding,pilotByFixture){
@@ -594,6 +594,29 @@ export function createPage(deps){
         <div id="champions-fixtures" role="region" aria-labelledby="champions-calendar-title"></div>
       </section>${roundTable(data,branding)}</div>`;
 
+    const logoScroll=document.querySelector(".champions-team-logo-scroll");
+    if(logoScroll){
+      logoScroll.tabIndex=0;
+      logoScroll.setAttribute("aria-label","Squadre Champions League: scorri orizzontalmente");
+      const reducedMotion=matchMedia("(prefers-reduced-motion:reduce)");
+      const logoTrack=logoScroll.querySelector(".champions-team-logo-grid");
+      let stopped=false,lastTime=null,direction=1,position=0;
+      const stop=()=>{stopped=true;logoTrack.style.transform="";logoTrack.style.willChange="";logoScroll.scrollLeft=position};
+      for(const event of ["pointerdown","wheel","focusin","pointerenter"])logoScroll.addEventListener(event,stop,{passive:true,once:true});
+      const animate=time=>{
+        if(stopped||!logoScroll.isConnected||reducedMotion.matches)return;
+        if(lastTime!==null&&!document.hidden){
+          const max=Math.max(0,logoTrack.offsetWidth-logoScroll.clientWidth);
+          position=Math.max(0,Math.min(max,position+direction*Math.min(time-lastTime,50)*.025));
+          logoTrack.style.transform=`translate3d(${-position}px,0,0)`;
+          if(position>=max)direction=-1;
+          else if(position<=0)direction=1;
+        }
+        lastTime=time;
+        requestAnimationFrame(animate);
+      };
+      if(!reducedMotion.matches){logoTrack.style.willChange="transform";requestAnimationFrame(animate);}
+    }
     const results=document.querySelector("#champions-fixtures");
     const applyFilters=()=>{
       const filtered=data.fixtures.filter(fixture=>fixture.matchday===selectedMatchday);

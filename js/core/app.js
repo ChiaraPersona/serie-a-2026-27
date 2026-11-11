@@ -15,7 +15,20 @@ const dependencies={...utils,...services,...components};
 
 document.querySelectorAll("[data-page-link]").forEach(link=>link.classList.toggle("active",link.dataset.pageLink===page));
 const button=document.querySelector(".menu-button"),navigation=document.querySelector(".site-nav");
-button?.addEventListener("click",()=>{const open=navigation.classList.toggle("open");button.setAttribute("aria-expanded",String(open))});
+function setMenuOpen(open){
+  navigation.classList.toggle("open",open);
+  button.setAttribute("aria-expanded",String(open));
+  button.setAttribute("aria-label",open?"Chiudi menu":"Apri menu");
+}
+button?.setAttribute("aria-label","Apri menu");
+button?.addEventListener("click",()=>setMenuOpen(!navigation.classList.contains("open")));
+navigation?.addEventListener("click",event=>{if(event.target.closest("a"))setMenuOpen(false)});
+document.addEventListener("keydown",event=>{
+  if(!navigation?.classList.contains("open")||!matchMedia("(max-width:900px)").matches)return;
+  if(event.key==="Escape"){setMenuOpen(false);button.focus()}
+
+});
+matchMedia("(max-width:900px)").addEventListener("change",()=>setMenuOpen(false));
 
 try{
   const pageModule=await loadPage(page,RELEASE);

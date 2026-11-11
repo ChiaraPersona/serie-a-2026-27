@@ -294,8 +294,8 @@ body[data-page="home"] .home-standings .standings-table thead th:not(.standings-
 }
 @media(max-width:900px){
   .home-standings .standings-table{border-collapse:separate;border-spacing:0}
-  body[data-page="home"] .home-standings .standings-table :is(th,td):first-child{position:sticky;left:-1px;z-index:3;box-sizing:border-box;width:54px;min-width:54px;max-width:54px}
-  body[data-page="home"] .home-standings .standing-pinned-logo{display:table-cell;position:sticky;left:53px;z-index:2;width:50px;min-width:50px;padding-inline:10px}
+  body[data-page="home"] .home-standings .standings-table :is(th,td):first-child{position:sticky;left:0;z-index:3;box-sizing:border-box;width:54px;min-width:54px;max-width:54px}
+  body[data-page="home"] .home-standings .standing-pinned-logo{display:table-cell;position:sticky;left:54px;z-index:2;box-sizing:border-box;width:50px;min-width:50px;max-width:50px;padding-inline:10px}
   body[data-page="home"] .home-standings tbody :is(.standing-pinned-logo,td:first-child){background-color:var(--ds-color-page);background-image:var(--site-page-background);background-attachment:fixed;background-repeat:no-repeat}
   body[data-page="home"] .home-standings .standings-table thead th:first-child:not(.standings-column-active){box-shadow:1px 0 0 var(--standings-heading-background)}
   .home-standings .standing-team>.standing-logo{display:none}
@@ -315,6 +315,9 @@ body[data-page="home"] .home-standings .standings-table thead th:not(.standings-
   .home-dashboard .home-next-panel[data-home-matchday-panel="current"]{grid-area:1 / 2;padding-inline-start:12px}
   .home-dashboard .home-next-panel[data-home-matchday-panel="previous"][hidden]+.home-matchday-nav+.home-next-panel{grid-column:1 / -1;padding-inline:0}
   .home-dashboard .home-next-panel h3{justify-content:center}
+}
+
+/* Shared calendar appearance at every screen width. */
   .home-dashboard .home-match-list{border-top:0}
   .home-dashboard .home-match-date-heading{padding:5px 8px;background:#dce8f3;color:#283e4b;font-size:12px;font-weight:700;text-transform:capitalize}
   .home-dashboard .home-match-row{grid-template-columns:minmax(0,1fr);min-height:44px;gap:0;padding-block:4px}
@@ -324,7 +327,6 @@ body[data-page="home"] .home-standings .standings-table thead th:not(.standings-
   .home-dashboard .home-match-summary .home-match-score{min-width:0;white-space:nowrap}
   .home-dashboard .home-match-teams .team-logo{width:22px;height:22px;flex-basis:22px}
   .home-dashboard .home-match-teams .team-logo img{width:18px;height:18px}
-}
 
 /* Balance team names against equally spaced numeric columns on desktop. */
 @media(min-width:901px){
@@ -352,5 +354,35 @@ body[data-page="home"] .home-standings .standings-table :is(th,td):last-child{wi
  body[data-page="home"] .home-dashboard .home-match-meta{align-items:center;text-align:center}
  body[data-page="home"] .home-dashboard .home-match-meta time{width:100%;text-align:center}
  body[data-page="home"] .home-standings .standings-table{width:1000px;min-width:1000px}
- body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(3){box-sizing:border-box;width:94px;padding-inline:6px}
+ body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(3){box-sizing:border-box;width:auto;padding-inline:6px}
 }
+
+@media(max-width:1000px){
+ .home-dashboard .home-match-date-heading{text-align:center}
+}
+
+/* Keep standings rows clean while retaining the vertical zone markers. */
+body[data-page="home"] .home-standings .standings-table tbody td{border-bottom:0;border-top:0}
+
+@media(max-width:760px){
+ body[data-page="home"] main>.home-dashboard{margin-top:16px}
+ .home-dashboard .home-next{padding-top:8px}
+}
+
+/* Draw the zone marker independently from the cell edges. */
+body[data-page="home"] .home-standings .standings-table tbody tr>td:first-child{position:relative;box-shadow:none;border-block:0}
+body[data-page="home"] .home-standings .standings-table tbody tr>td:first-child::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--standing-zone-color,transparent);pointer-events:none}
+body[data-page="home"] .home-standings .standing-zone-champion{--standing-zone-color:var(--gold)}
+body[data-page="home"] .home-standings .standing-zone-top{--standing-zone-color:#4e9cff}
+body[data-page="home"] .home-standings .standing-zone-europa{--standing-zone-color:#27d17f}
+body[data-page="home"] .home-standings .standing-zone-conference{--standing-zone-color:#f59e0b}
+body[data-page="home"] .home-standings .standing-zone-bottom{--standing-zone-color:#dc2626}
+@media(max-width:900px){body[data-page="home"] .home-standings .standings-table tbody tr>td:first-child{position:sticky}}
+
+/* Alternating full-width rows also cover the pinned mobile cells. */
+body[data-page="home"] .home-standings .standings-table tbody tr{--standing-row-background:#f4f7f8}
+body[data-page="home"] .home-standings .standings-table tbody tr:nth-child(even){--standing-row-background:#e2edf1}
+body[data-page="home"] .home-standings .standings-table tbody tr>td{background:var(--standing-row-background)}
+body[data-page="home"] .home-standings .standings-table tbody tr>td.standings-column-active{background:color-mix(in srgb,var(--ds-color-accent) 11%,var(--standing-row-background))}
+body[data-page="home"] .home-standings .standings-table tbody tr:is(:hover,:focus-within)>td{background:color-mix(in srgb,var(--ds-color-accent) 8%,var(--standing-row-background))}
+body[data-page="home"] .home-standings .standings-table tbody tr:is(:hover,:focus-within)>td.standings-column-active{background:color-mix(in srgb,var(--ds-color-accent) 16%,var(--standing-row-background))}

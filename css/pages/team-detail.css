@@ -598,6 +598,21 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* home.css: original cascade position */
 
 
@@ -757,6 +772,7 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+}
 
 
 
@@ -764,9 +780,39 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+
+
+@media(min-width:901px){
+}
+@media(min-width:901px){
+}
+
+
+
+
+
+@media(max-width:760px){
 
 
 }
+
+
+@media(max-width:760px){
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* matches.css: original cascade position */
 .match{display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:center;margin-bottom:10px}
 .match-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -3110,6 +3156,11 @@ body[data-page="team-stats"] .global-player-table :is(th,td):nth-child(n+4){text
 
 
 
+@media(max-width:760px){
+
+
+
+}
 
 
 
@@ -3589,6 +3640,22 @@ body:not([data-page="home"]) .hero h1{font-size:clamp(38px,11vw,54px)}
 }
 @media(max-width:600px){:root{--page-gutter:16px}}
 
+@media(max-width:900px){.site-header{align-items:center}
+.site-header>.brand>span:last-child{display:none}
+.site-header>.menu-button{display:grid;place-content:center;gap:5px;width:44px;height:44px;padding:10px;font-size:0;flex-shrink:0}
+.site-header>.menu-button::before,.site-header>.menu-button::after{content:"";display:block;width:20px;height:2px;background:currentColor;transition:transform .18s ease}
+.site-header>.menu-button::before{box-shadow:0 6px currentColor;transform:translateY(-3px)}
+.site-header>.menu-button::after{transform:translateY(2px)}
+.site-header>.menu-button[aria-expanded="true"]::before{box-shadow:none;transform:translateY(3.5px) rotate(45deg)}
+.site-header>.menu-button[aria-expanded="true"]::after{transform:translateY(-3.5px) rotate(-45deg)}}
+@media(prefers-reduced-motion:reduce){.site-header>.menu-button::before,.site-header>.menu-button::after{transition:none}}
+@media(max-width:900px){.site-header>.menu-button{position:relative;display:block;background:transparent;border:0;box-shadow:none;border-radius:0}
+.site-header>.menu-button:is(:hover,:focus-visible,:active){background:transparent;box-shadow:none}
+.site-header>.menu-button::before,.site-header>.menu-button::after{position:absolute;left:12px;top:21px;margin:0}
+.site-header>.menu-button::before{transform:translateY(-4px);box-shadow:0 8px currentColor}
+.site-header>.menu-button::after{opacity:0;transform:none}
+.site-header>.menu-button[aria-expanded="true"]::before{transform:rotate(45deg);box-shadow:none}
+.site-header>.menu-button[aria-expanded="true"]::after{opacity:1;transform:rotate(-45deg)}}
 /* buttons.css: original cascade position */
 :root{
   --button-blue:#1e5f9d;
@@ -4996,6 +5063,58 @@ button:disabled{
 
 
 }
+
+
+
+
+
+
+@media(min-width:901px){
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+@media(hover:hover){
+}
+@media(prefers-reduced-motion:reduce){
+}
+
+
+
+
+
+
+
+
+
+@media(prefers-reduced-motion:reduce){
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@media(max-width:760px){
+}
+
+
 /* site-layout.css: original cascade position */
 body :is(.site-header,main,#team-squad-app,.site-footer-inner){
   width:var(--container-width);
@@ -5162,6 +5281,21 @@ body :is(.site-header .brand strong,.footer-brand strong){
 }
 body :is(.standings-table,.rd-compact-forecast-table) td{
   font-variant-numeric:tabular-nums;
+}
+@media(max-width:900px){body[data-page] .site-header>.menu-button,
+ body[data-page] .site-header>.menu-button:is(:hover,:focus-visible,:active){background:transparent;border:0;box-shadow:none}
+body[data-page] .site-header>.site-nav{
+  background:rgba(213,235,239,.9);
+  border:1px solid rgba(255,255,255,.72);
+  box-shadow:0 8px 16px rgba(30,51,61,.12),0 24px 36px rgba(30,51,61,.12),inset 0 1px 3px rgba(255,255,255,.8);
+  backdrop-filter:blur(24px) saturate(135%);
+  -webkit-backdrop-filter:blur(24px) saturate(135%);
+ }}
+
+@media(max-width:900px){
+
+
+
 }
 /* page-background.css: original cascade position */
 body{

@@ -308,3 +308,26 @@
 /* One outer width for navigation, content and footer at every breakpoint. */
 @media(max-width:600px){:root{--page-gutter:16px}}
 :is(body,body[data-page="home"],body[data-page="champions"]) :is(.site-header,main,.site-footer-inner){width:var(--container-width)}
+
+/* Mobile navigation: compact brand and almost full-height menu. */
+@media(max-width:900px){
+ .site-header{align-items:center}
+ .site-header>.brand>span:last-child{display:none}
+ .site-header>.menu-button{display:grid;place-content:center;gap:5px;width:44px;height:44px;padding:10px;font-size:0;flex-shrink:0}
+ .site-header>.menu-button::before,.site-header>.menu-button::after{content:"";display:block;width:20px;height:2px;background:currentColor;transition:transform .18s ease}
+ .site-header>.menu-button::before{box-shadow:0 6px currentColor;transform:translateY(-3px)}
+ .site-header>.menu-button::after{transform:translateY(2px)}
+ .site-header>.menu-button[aria-expanded="true"]::before{box-shadow:none;transform:translateY(3.5px) rotate(45deg)}
+ .site-header>.menu-button[aria-expanded="true"]::after{transform:translateY(-3.5px) rotate(-45deg)}
+}
+@media(prefers-reduced-motion:reduce){.site-header>.menu-button::before,.site-header>.menu-button::after{transition:none}}
+
+@media(max-width:900px){
+ .site-header>.menu-button{position:relative;display:block;background:transparent;border:0;box-shadow:none;border-radius:0}
+ .site-header>.menu-button:is(:hover,:focus-visible,:active){background:transparent;box-shadow:none}
+ .site-header>.menu-button::before,.site-header>.menu-button::after{position:absolute;left:12px;top:21px;margin:0}
+ .site-header>.menu-button::before{transform:translateY(-4px);box-shadow:0 8px currentColor}
+ .site-header>.menu-button::after{opacity:0;transform:none}
+ .site-header>.menu-button[aria-expanded="true"]::before{transform:rotate(45deg);box-shadow:none}
+ .site-header>.menu-button[aria-expanded="true"]::after{opacity:1;transform:rotate(-45deg)}
+}
