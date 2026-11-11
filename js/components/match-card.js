@@ -14,11 +14,14 @@ function matchCard(m,teams){
   const referee=m.refereeAssignment?.referee?.name?`<footer class="fixture-official"><span>Arbitro</span><strong>${esc(m.refereeAssignment.referee.name)}</strong></footer>`:"";
   return `<a class="card match fixture-card fixture-card-link" href="lettura.html?match=${esc(m.id)}" aria-label="Apri la lettura di ${esc(home.name)} - ${esc(away.name)}" style="${teamColorStyle}"><header class="match-head"><div class="match-badges"><span class="matchday-chip">Giornata ${m.matchday}</span>${status}${m.dateStatus==="provisional"?'<span class="status provisional">Provvisoria UEFA</span>':''}</div><div class="match-date">${scheduleLabel(m)}</div></header><div class="fixture-teams"><div class="fixture-team fixture-team-home">${teamLogo(home)}</div><div class="fixture-score"><strong class="score ${m.score?'score-result reading-final-score':'score-versus'}">${scoreContent}</strong></div><div class="fixture-team fixture-team-away">${teamLogo(away)}</div></div>${referee}</a>`
 }
-function homeMatchListItem(m,teams){
+function homeMatchListItem(m,teams,{grouped=false,showKickoff=true}={}){
   const home=teams.find(team=>team.id===m.homeTeam),away=teams.find(team=>team.id===m.awayTeam);
   const finished=m.status==="finished"&&m.score,result=finished?`${m.score.home} – ${m.score.away}`:"–";
   const readingLink=m.competition==="serie-a"&&m.id?`<a class="home-match-reading" href="lettura.html?match=${esc(m.id)}" aria-label="Apri la lettura di ${esc(home.name)} - ${esc(away.name)}"></a>`:"";
-  return `<li class="home-match-row${finished?" is-finished":""}"><div class="home-match-meta"><time>${scheduleLabel(m)}</time></div><div class="home-match-teams">${teamLogo(home)}<b class="home-match-score" aria-label="${finished?`Risultato ${m.score.home} a ${m.score.away}`:"Partita da giocare"}">${result}</b>${teamLogo(away)}</div>${readingLink}</li>`
+  const kickoff=`<time class="home-match-kickoff">${esc(m.kickoff||"N/D")}</time>`;
+  const score=`<b class="home-match-score" aria-label="${finished?`Risultato ${m.score.home} a ${m.score.away}`:"Partita da giocare"}">${result}</b>`;
+  const middle=grouped?`<span class="home-match-summary">${finished||!showKickoff?score:""}${showKickoff?kickoff:""}</span>`:score;
+  return `<li class="home-match-row${finished?" is-finished":""}">${grouped?"":`<div class="home-match-meta"><time>${scheduleLabel(m)}</time></div>`}<div class="home-match-teams">${teamLogo(home)}${middle}${teamLogo(away)}</div>${readingLink}</li>`
 }
   return {scheduleLabel,teamLogo,matchCard,homeMatchListItem};
 }

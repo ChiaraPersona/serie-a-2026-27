@@ -57,14 +57,18 @@ body{background:#e8e8e8;color:var(--glass-text)}
 h1,h2,h3,h4,strong{color:var(--glass-text)}
 
 h1,h2,h3,
-.hero-stat strong,
-.hero-season strong,
 .editorial-empty-mark{
   font-family:var(--font-display);
   font-weight:400!important;
   font-style:normal;
   letter-spacing:.025em!important;
   word-spacing:.06em;
+}
+
+:is(.hero-stat,.hero-season) strong{
+  font-family:var(--ds-font-data);
+  font-weight:700;
+  font-variant-numeric:tabular-nums lining-nums;
 }
 
 :root{

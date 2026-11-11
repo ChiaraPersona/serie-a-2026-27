@@ -12,7 +12,18 @@ export function fixtureDiscipline(report, side) {
     const second = events.filter(event => ['yellow-red-card', 'second-yellow-card'].includes(event.eventType)).length;
     const straight = events.filter(event => event.eventType === 'red-card').length;
     const known = events.every(event => ['yellow-card', 'red-card', 'yellow-red-card', 'second-yellow-card'].includes(event.eventType));
-    if (known && count(stats?.yellowCards) === yellow && count(stats?.redCards) === straight + second) {
+    // The box score omits the first yellow for these verified dismissals.
+    // Keep both cards in the standings count, as recorded in the event log.
+    const excludedYellows = new Set();
+    for (const {firstYellowId, dismissalId} of report.verifiedSecondYellowDismissals || []) {
+      const first = events.find(event => event.eventId === firstYellowId);
+      const dismissal = events.find(event => event.eventId === dismissalId);
+      if (first?.eventType === 'yellow-card' && dismissal?.eventType === 'red-card' &&
+          first.providerPlayerId && first.providerPlayerId === dismissal.providerPlayerId) {
+        excludedYellows.add(firstYellowId);
+      }
+    }
+    if (known && count(stats?.yellowCards) === yellow - excludedYellows.size && count(stats?.redCards) === straight + second) {
       cards = yellow + second + straight;
     }
   }

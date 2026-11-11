@@ -13,7 +13,8 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 .betting-archive-list{width:100%;max-width:var(--max);margin:0;padding:0}
 .betting-archive-card{color:#fff;text-decoration:none}
 .betting-archive-card-front{gap:0}
-.betting-archive-number{width:100%;color:#fff;font-family:"Anton",sans-serif;font-size:88px;font-weight:400;line-height:.85;text-align:center;text-shadow:0 12px 24px rgba(0,0,0,.32)}
+.betting-archive-number{width:100%;color:#fff;font-family:var(--ds-font-data);font-variant-numeric:tabular-nums;font-size:88px;font-weight:400;line-height:.85;text-align:center;text-shadow:0 12px 24px rgba(0,0,0,.32)}
+body[data-page="betting"] :is(.betting-archive-number,.betting-slip-index){font-family:Anton,Impact,var(--ds-font-data);font-variant-numeric:lining-nums tabular-nums;font-weight:400}
 .betting-archive-card-back strong{font-size:1.45rem}
 .betting-archive-card--champions .betting-archive-card-back{gap:4px;padding:14px}
 .betting-archive-card--champions .betting-champions-verification{font-size:.65rem}
@@ -71,7 +72,7 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 .betting-slip[data-quality="qualificata"] .betting-quality{border-color:rgba(26,137,99,.2);color:#137557}
 .betting-slip h2{margin:2px 0 0;font-size:25px;letter-spacing:-.04em}
 .betting-slip>header small{display:block;max-width:850px;margin-top:4px;color:var(--muted);font-size:10px;line-height:1.35}
-.betting-slip-index{color:rgba(22,72,126,.14);font-family:"Anton",sans-serif;font-size:48px;line-height:.8}
+.betting-slip-index{color:rgba(22,72,126,.14);font-size:48px;line-height:.8}
 .betting-slip-copy{min-height:58px;margin:16px 0;color:var(--muted);font-size:13px;line-height:1.55}
 .betting-family-list{display:flex;flex-wrap:wrap;gap:5px;margin:-3px 0 14px}
 .betting-family-list span{padding:5px 8px;border:1px solid rgba(28,109,255,.12);border-radius:999px;background:rgba(255,255,255,.62);color:#17528e;font-size:9px;font-weight:850;letter-spacing:.04em;text-transform:uppercase}

@@ -11,7 +11,10 @@ function styleLinks(prefix = '', page = 'home') {
   // Parser-blocking route choice in the head: no asynchronous CSS insertion,
   // no hidden page and no legacy layout while the detail sheet is downloading.
   const content=['readings','champions'].includes(page)?`<script data-page-styles>document.write(new URLSearchParams(location.search).has('match')?${JSON.stringify(link(true))}:${JSON.stringify(normal)})</script>`:normal;
-  return `<!-- page-styles:start -->${content}<!-- page-styles:end -->`;
+  const cardFont=page==='betting'
+    ? '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&amp;display=swap">'
+    : '';
+  return `<!-- page-styles:start -->${cardFont}${content}<!-- page-styles:end -->`;
 }
 function applyStyleLinks(html) {
   const prefix=/<body[^>]*data-depth="team"/.test(html)?'../':'';

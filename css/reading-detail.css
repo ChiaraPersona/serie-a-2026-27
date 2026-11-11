@@ -138,7 +138,7 @@ body[data-reading-detail-theme] #app{max-width:var(--ds-content-max)!important;w
 .rd-team img{object-fit:contain;width:92px;height:92px;filter:drop-shadow(0 6px 9px #00000012);margin-bottom:8px}
 .rd-side{font-size:10px;text-transform:uppercase;letter-spacing:.16em;font-weight:750;color:var(--rd-home)}
 .rd-team--away .rd-side{color:var(--rd-away)}
-.rd-team-name{font-family:Anton,Inter,system-ui,sans-serif;font-size:clamp(28px,4vw,45px);line-height:1.15;font-weight:400;letter-spacing:.005em;overflow-wrap:anywhere}
+.rd-team-name{font-family:var(--ds-font-display);font-size:clamp(28px,4vw,45px);line-height:1.15;font-weight:400;letter-spacing:.005em;overflow-wrap:anywhere}
 .rd-versus{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
 .rd-versus>.rd-vs{font-size:15px;font-weight:600;letter-spacing:.13em;color:var(--rd-muted)}
 .rd-result{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--rd-muted)}
@@ -240,7 +240,7 @@ body[data-reading-detail-theme] #app{max-width:var(--ds-content-max)!important;w
 @media(max-width:380px){.rd-shell[data-reading-fixture^="ucl-2026-27-md03-"] [data-md3-probability] strong{font-size:24px!important}}
 .rd-shell .rd-score-grid article{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;padding:18px;background:transparent}
 .rd-shell .rd-score-grid article+article{border-left:1px solid var(--rd-line)}
-.rd-shell .rd-score-grid small{font-size:11px;color:var(--rd-muted)}.rd-shell .rd-score-grid strong{font-family:Anton,Inter,sans-serif;font-size:32px;font-weight:400}.rd-shell .rd-score-grid article>span{font-size:11px;color:var(--rd-muted)}
+.rd-shell .rd-score-grid small{font-size:11px;color:var(--rd-muted)}.rd-shell .rd-score-grid strong{font-family:var(--ds-font-data);font-variant-numeric:tabular-nums;font-size:32px;font-weight:400}.rd-shell .rd-score-grid article>span{font-size:11px;color:var(--rd-muted)}
 .rd-shell .rd-interpretation{font-size:17px;line-height:1.6;border-left:3px solid var(--rd-accent);padding-left:16px;margin-block:20px}
 .rd-shell .rd-footnote{font-size:12px;line-height:1.65;color:var(--rd-muted);margin:14px 0}
 .rd-shell .rd-disclosure{border:0;border-top:1px solid var(--rd-line);padding:12px 0;color:var(--rd-ink);background:none;max-width:100%;min-width:0}
@@ -312,7 +312,7 @@ body[data-reading-detail-theme] #app:has(.rd-slip-trigger){padding-bottom:110px!
 .rd-shell .rd-channels{display:grid;gap:13px;margin:22px 0}.rd-shell .rd-channels>div{display:grid;grid-template-columns:75px minmax(0,1fr) 55px;gap:12px;align-items:center;font-size:12px}.rd-shell .rd-channels i{height:7px;background:var(--rd-soft);border-radius:4px;overflow:hidden}.rd-shell .rd-channels i b{display:block;height:100%;background:var(--rd-accent)}.rd-shell .rd-channels strong{text-align:right;font-weight:600}
 .rd-shell .rd-traits{font-size:13px;padding-left:18px;line-height:1.9}.rd-shell .rd-duel{border-bottom:1px solid var(--rd-line);padding:15px 0}.rd-shell .rd-duel h3{font-size:16px}.rd-shell .rd-duel p{font-size:13px;line-height:1.6}
 .rd-shell .rd-match-log{border-top:1px solid var(--rd-line);padding:13px 0}.rd-shell .rd-match-log>.rd-match-log-row{display:grid;grid-template-columns:82px minmax(0,1fr) auto;gap:10px;align-items:center;list-style:none;font-size:12px;min-height:35px}.rd-shell .rd-match-log time{color:var(--rd-muted);font-size:10px}.rd-shell .rd-match-log b{white-space:nowrap}
-.rd-shell .rd-final-score{display:flex;justify-content:center;align-items:center;gap:25px;text-align:center;font-size:18px;border-block:1px solid var(--rd-line);padding:22px 0}.rd-shell .rd-final-score strong{font-family:Anton,Inter,sans-serif;font-size:38px;font-weight:400;white-space:nowrap}
+.rd-shell .rd-final-score{display:flex;justify-content:center;align-items:center;gap:25px;text-align:center;font-size:18px;border-block:1px solid var(--rd-line);padding:22px 0}.rd-shell .rd-final-score strong{font-family:var(--ds-font-data);font-variant-numeric:tabular-nums;font-size:38px;font-weight:400;white-space:nowrap}
 .rd-shell .rd-event-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin:25px 0}.rd-shell .rd-event-grid h3{font-size:15px}
 .rd-shell .rd-event-list{list-style:none;padding:0;margin:0}.rd-shell .rd-event-list li{display:flex;align-items:baseline;gap:10px;padding:10px 0;border-top:1px solid var(--rd-line);font-size:12px}.rd-shell .rd-event-list time{min-width:28px;color:var(--rd-muted)}.rd-shell .rd-event-list span,.rd-shell .rd-event-list small{display:block;line-height:1.7;font-size:11px;color:var(--rd-muted)}
 .rd-shell .rd-stat-table{max-width:100%;overflow-x:auto;margin:24px 0}.rd-shell .rd-stat-table table{width:100%;border-collapse:collapse;font-size:13px}.rd-shell .rd-stat-table caption{text-align:left;font-weight:650;font-size:14px;margin-bottom:12px}.rd-shell .rd-stat-table :is(td,th){padding:13px 10px;text-align:left;border-bottom:1px solid var(--rd-line);font-weight:500}.rd-shell .rd-stat-table td{font-variant-numeric:tabular-nums}.rd-shell .rd-stat-table thead{font-size:11px}
@@ -616,3 +616,12 @@ body[data-reading-detail-theme="champions"] .rf-history tbody tr:hover td{backgr
 .rd-shell .rd-tactical-serie-a .rd-channels{margin:0;gap:12px}
 @media(max-width:1000px){.rd-shell .rd-tactical-serie-a .rd-tactical-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.rd-shell .rd-tactical-comparison:has(.rd-tactical-serie-a){grid-template-columns:minmax(0,1fr);gap:20px}.rd-shell .rd-tactical-serie-a{padding:18px;gap:18px}.rd-shell .rd-tactical-serie-a+.rd-tactical-serie-a{padding-top:18px}.rd-shell .rd-tactical-serie-a .rd-tactical-team h3{font-size:24px}.rd-shell .rd-tactical-serie-a .rd-tactical-metrics dt{min-height:0}.rd-shell .rd-tactical-serie-a .rd-tactical-metrics dd{font-size:23px}}
+
+/* Keep the reading controls and figures in Inter. */
+body .rd-shell :is(.rd-team-name,.rd-section-heading h2){
+  font-family:var(--ds-font-display);
+  font-weight:650;
+  line-height:1.12;
+  letter-spacing:normal;
+  text-transform:none;
+}

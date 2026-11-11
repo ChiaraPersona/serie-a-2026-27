@@ -1,6 +1,6 @@
 import {imageSource} from '../core/image-source.mjs?v=20261022-assets-v1';
 export function createPage(deps){
-  const {esc,hero,empty,matchdayChronology,homeMatchListItem,load}=deps;
+  const {esc,hero,matchdayChronology,homeMatchListItem,load}=deps;
 const standingsColumns=[
   {key:"position",label:"#",title:"Posizione",type:"number",direction:"asc"},
   {key:"teamName",label:"Squadra",title:"Squadra",type:"text",direction:"asc"},
@@ -58,6 +58,9 @@ function homeStandings(standings,currentHomeRows,currentAwayRows,previousStandin
   const archivePanels=archiveViews.map(view=>`<section class="section historical-standings" data-standings-scope-panel="${view.id}"><p class="eyebrow">${view.eyebrow}</p><h2>${view.title}</h2><p class="muted">${view.description}</p>${standingsTable(view.rows,standingsTeams)}</section>`).join("");
   return `<section class="section home-standings" id="classifiche"><header class="section-heading"><div><p class="eyebrow">Serie A · classifiche</p></div></header><nav class="standings-switch" aria-label="Selezione stagione"><button type="button" data-standings-tab="current">2026/27</button><button type="button" data-standings-tab="archive">2025/26</button></nav><div data-standings-panel="current"><nav class="standings-scope-switch" aria-label="Selezione rendimento 2026/27">${scopeTabs(currentViews)}</nav>${currentPanels}</div><div data-standings-panel="archive"><nav class="standings-scope-switch" aria-label="Selezione rendimento 2025/26">${scopeTabs(archiveViews)}</nav>${archivePanels}</div></section>`;
 }
+  function homeMatchdayPanel(side){
+    return `<section class="home-next-panel" data-home-matchday-panel="${side}"><h3><strong>Giornata <span data-home-matchday-label aria-live="polite" aria-atomic="true"></span></strong></h3><ul class="home-match-list" data-home-match-list></ul></section>`;
+  }
   async function render(){
     const page="home",[teams,matches,previousStandings]=await Promise.all([load("teams.json"),load("matches.json"),load("standings-2025-26.json")]);
     const league=matches.filter(m=>m.competition==="serie-a"),calculateStandings=globalThis.calculateStandings;
@@ -67,17 +70,53 @@ function homeStandings(standings,currentHomeRows,currentAwayRows,previousStandin
     const completed=league.filter(match=>match.status==="finished").length;
     homeMatchdays=[...new Set(league.map(match=>match.matchday))].sort((left,right)=>left-right);
     activeHomeMatchday=homeMatchdays.find(matchday=>league.some(match=>match.matchday===matchday&&match.status!=="finished"))??homeMatchdays.at(-1);
-    const matchdayMatches=league.filter(match=>match.matchday===activeHomeMatchday).sort(matchdayChronology);
-    html=hero("","Il calcio italiano giornata dopo giornata","Calendario, numeri e contesto della Serie A Enilive 2026/27. Ogni dato resta collegato alla propria fonte.",`<div class="hero-season"><span>Serie A</span><strong>26<span>/</span>27</strong><small>${completed}/380 partite concluse</small></div>`)+`<section class="section home-dashboard"><header class="section-heading"><div><p class="eyebrow">In primo piano</p></div></header><div class="home-dashboard-grid"><div class="home-next"><div class="home-next-head"><h3><strong>Giornata <b data-home-matchday-label aria-live="polite" aria-atomic="true">${activeHomeMatchday}</b></strong></h3><div class="home-matchday-nav"><button class="home-matchday-button" type="button" data-home-previous-matchday><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button><button class="home-matchday-button" type="button" data-home-next-matchday><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button></div></div>${matchdayMatches.length?`<ul class="home-match-list" data-home-match-list>${matchdayMatches.map(match=>homeMatchListItem(match,teams)).join("")}</ul>`:empty("Programmazione in aggiornamento.")}</div><aside class="home-rail"><a class="home-editorial-readings" href="lettura.html"><span>Letture</span><svg class="home-editorial-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 10v44h46M22 43V32m12 11V24m12 19V14M18 24l14-10 12 3 12-10"/></svg><strong>Dentro la partita.</strong><small>Analisi e pronostici</small><svg class="home-editorial-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a><a class="home-editorial-teams" href="download.html"><span>App</span><svg class="home-editorial-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="18" y="5" width="28" height="54" rx="5"/><path d="M27 12h10M28 51h8M32 21v20m-8-8 8 8 8-8"/></svg><strong>Il calcio, con te.</strong><small>Installa l’app sul tuo telefono</small><svg class="home-editorial-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a></aside></div></section>`+homeStandings(standings,currentHomeRows,currentAwayRows,previousStandings,teams,standingsTeams);
+    html=hero("","Il calcio, giornata dopo giornata","Calendario, numeri e contesto della Serie A Enilive 2026/27. Ogni dato resta collegato alla propria fonte.",`<div class="hero-season"><span>Serie A</span><strong>26<span>/</span>27</strong><small>${completed}/380 partite concluse</small></div>`)+`<section class="section home-dashboard"><div class="home-dashboard-grid"><div class="home-next">${homeMatchdayPanel("previous")}<div class="home-matchday-nav"><button class="home-matchday-button" type="button" data-home-previous-matchday><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button><button class="home-matchday-button" type="button" data-home-next-matchday><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button></div>${homeMatchdayPanel("current")}</div><aside class="home-rail"><a class="home-editorial-readings" href="lettura.html"><svg class="home-editorial-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 10v44h46M22 43V32m12 11V24m12 19V14M18 24l14-10 12 3 12-10"/></svg><div><strong>Letture</strong><small>Analisi e pronostici delle partite</small></div><svg class="home-editorial-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a><a class="home-editorial-champions" href="champions-league.html"><svg class="home-editorial-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10h24v13a12 12 0 0 1-24 0V10Zm0 4H10v5a10 10 0 0 0 11 10m23-15h10v5a10 10 0 0 1-11 10M32 35v13m-12 6h24m-20 0v-6h16v6"/></svg><div><strong>Champions League</strong><small>Calendario, risultati e letture europee</small></div><svg class="home-editorial-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a><a class="home-editorial-teams" href="download.html"><svg class="home-editorial-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="18" y="5" width="28" height="54" rx="5"/><path d="M27 12h10M28 51h8M32 21v20m-8-8 8 8 8-8"/></svg><div><strong>Scarica l’app</strong><small>Il calendario e le letture sul tuo telefono</small></div><svg class="home-editorial-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a></aside></div></section>`+homeStandings(standings,currentHomeRows,currentAwayRows,previousStandings,teams,standingsTeams);
   }
     document.querySelector("#app").innerHTML=html;
   if(page==="home"){
     configureStandingsTables();
-    const matchList=document.querySelector("[data-home-match-list]"),matchdayLabel=document.querySelector("[data-home-matchday-label]"),previousMatchdayButton=document.querySelector("[data-home-previous-matchday]"),nextMatchdayButton=document.querySelector("[data-home-next-matchday]");
-    const showMatchday=matchday=>{const currentIndex=homeMatchdays.indexOf(matchday),matchdayMatches=league.filter(match=>match.matchday===matchday).sort(matchdayChronology);activeHomeMatchday=matchday;matchdayLabel.textContent=String(matchday);matchList.innerHTML=matchdayMatches.map(match=>homeMatchListItem(match,teams)).join("");previousMatchdayButton.disabled=currentIndex===0;previousMatchdayButton.setAttribute("aria-label",previousMatchdayButton.disabled?"Prima giornata disponibile":`Mostra la giornata ${homeMatchdays[currentIndex-1]}`);nextMatchdayButton.disabled=currentIndex===homeMatchdays.length-1;nextMatchdayButton.setAttribute("aria-label",nextMatchdayButton.disabled?"Ultima giornata disponibile":`Mostra la giornata ${homeMatchdays[currentIndex+1]}`)};
-    previousMatchdayButton.addEventListener("click",()=>{const previousMatchday=homeMatchdays[homeMatchdays.indexOf(activeHomeMatchday)-1];if(previousMatchday!==undefined)showMatchday(previousMatchday)});
-    nextMatchdayButton.addEventListener("click",()=>{const nextMatchday=homeMatchdays[homeMatchdays.indexOf(activeHomeMatchday)+1];if(nextMatchday!==undefined)showMatchday(nextMatchday)});
-    showMatchday(activeHomeMatchday);
+    const desktopCalendar=matchMedia("(min-width: 1001px)");
+    const previousPanel=document.querySelector('[data-home-matchday-panel="previous"]');
+    const currentPanel=document.querySelector('[data-home-matchday-panel="current"]');
+    const previousButton=document.querySelector("[data-home-previous-matchday]");
+    const nextButton=document.querySelector("[data-home-next-matchday]");
+    const dayHeading=new Intl.DateTimeFormat("it-IT",{weekday:"long",day:"numeric",month:"long",timeZone:"UTC"});
+    const renderMatchday=(panel,matchday)=>{
+      panel.hidden=panel===previousPanel&&matchday===undefined;
+      panel.querySelector("[data-home-matchday-label]").textContent=matchday??"";
+      const fixtures=league.filter(match=>match.matchday===matchday).sort(matchdayChronology);
+      const grouped=desktopCalendar.matches;
+      let previousDate;
+      const rows=fixtures.map(match=>{
+        const date=match.date?.slice(0,10)||"";
+        const heading=grouped&&date!==previousDate
+          ? `<li class="home-match-date-heading">${date?dayHeading.format(new Date(date)):"Data da definire"}</li>`
+          : "";
+        previousDate=date;
+        return heading+homeMatchListItem(match,teams,{grouped,showKickoff:panel!==previousPanel});
+      });
+      panel.querySelector("[data-home-match-list]").innerHTML=rows.join("")||(panel.hidden?"":'<li class="muted">Programmazione in aggiornamento.</li>');
+    };
+    const showMatchdays=()=>{
+      const firstIndex=desktopCalendar.matches&&homeMatchdays.length>1?1:0;
+      const index=Math.max(firstIndex,homeMatchdays.indexOf(activeHomeMatchday));
+      renderMatchday(previousPanel,firstIndex?homeMatchdays[index-1]:undefined);
+      renderMatchday(currentPanel,homeMatchdays[index]);
+      previousButton.disabled=index<=firstIndex;
+      nextButton.disabled=index>=homeMatchdays.length-1;
+      previousButton.setAttribute("aria-label",firstIndex?"Scorri le giornate indietro":"Mostra la giornata precedente");
+      nextButton.setAttribute("aria-label",firstIndex?"Scorri le giornate avanti":"Mostra la giornata successiva");
+    };
+    const moveMatchday=step=>{
+      const index=homeMatchdays.indexOf(activeHomeMatchday);
+      const visibleIndex=desktopCalendar.matches&&homeMatchdays.length>1?Math.max(1,index):index;
+      activeHomeMatchday=homeMatchdays[visibleIndex+step];
+      showMatchdays();
+    };
+    previousButton.addEventListener("click",()=>moveMatchday(-1));
+    nextButton.addEventListener("click",()=>moveMatchday(1));
+    desktopCalendar.addEventListener("change",showMatchdays);
+    showMatchdays();
     const activate=value=>{document.querySelectorAll("[data-standings-panel]").forEach(panel=>panel.hidden=panel.dataset.standingsPanel!==value);document.querySelectorAll("[data-standings-tab]").forEach(button=>{const active=button.dataset.standingsTab===value;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active))});history.replaceState(null,"",value==="archive"?"#classifica-2025-26":location.pathname)};
     const activateScope=value=>{document.querySelectorAll("[data-standings-scope-panel]").forEach(panel=>panel.hidden=panel.dataset.standingsScopePanel!==value);document.querySelectorAll("[data-standings-scope-tab]").forEach(button=>{const active=button.dataset.standingsScopeTab===value;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active))})};
     document.querySelectorAll("[data-standings-tab]").forEach(button=>button.addEventListener("click",()=>activate(button.dataset.standingsTab)));
