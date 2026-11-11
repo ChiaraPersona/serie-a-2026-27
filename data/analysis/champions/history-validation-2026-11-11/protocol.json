@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "experiment": "champions-history-validation-2026-11-11",
+  "design": "retrospective-event-time-paired-replay",
+  "primaryMatchday": 3,
+  "cohort": "Earliest valid prematch snapshots; exact artifact hash and numeric replay; conditional-on-starting forecasts evaluated on actual starters only; same cases across arms.",
+  "arms": {
+    "baseline": "Archived published forecast, unchanged",
+    "clubRecovered": "Fill missing club history only; preserve all existing blockers, minutes and team targets",
+    "nationalOfficial": "Research sensitivity: add coherent previous-season senior OFFICIAL observations to club counts, weight by minutes, existing shrink/blend/reconciliation",
+    "nationalFriendly": "Separate research sensitivity: add coherent previous-season senior FRIENDLY observations to club counts; never mixed with official appearances"
+  },
+  "inputPolicy": "Only completed previous-season national appearances from 2025-07-01 through 2026-06-30; positive minutes, shots and SOT jointly observed. No retuning, no selection on outcomes. New national integration is experimental, not approved.",
+  "fixedControls": [
+    "expectedMinutes",
+    "role",
+    "domesticContextFactor",
+    "current-season channel summaries",
+    "team targets",
+    "eligible allocation universe",
+    "existing blockers"
+  ],
+  "metrics": [
+    "shots MAE",
+    "SOT MAE",
+    "shots RMSE",
+    "SOT RMSE",
+    "Poisson NLL",
+    "Brier 1+ shots",
+    "Brier 1+ SOT",
+    "secondary thresholds 2+/3+ shots and 2+ SOT"
+  ],
+  "uncertainty": {
+    "method": "paired fixture-cluster bootstrap",
+    "replications": 2000,
+    "seed": 20261111,
+    "interval": 0.95
+  },
+  "exclusions": [
+    "unknown provider identity",
+    "actual non-starter",
+    "missing observed shots/SOT",
+    "unverified team statistical template",
+    "future feature event",
+    "baseline replay mismatch"
+  ],
+  "limitations": [
+    "New evidence acquired after matches: not a prospective validation",
+    "No approved national-strength or role correction",
+    "No DUO probabilities, EV, ROI, odds or settlement evaluated",
+    "MD4 lacks immutable prematch snapshots and is not used for primary accuracy claims"
+  ]
+}

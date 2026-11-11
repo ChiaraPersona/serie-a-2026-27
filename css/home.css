@@ -335,3 +335,22 @@ body[data-page="home"] .home-standings .standings-table thead th:not(.standings-
  body[data-page="home"] .home-standings .standings-table{width:100%;min-width:0}
  body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(n+4):not(:last-child){width:calc((100% - 342px)/9);padding-inline:6px}
 }
+
+/* One hover layer per cell, with a distinct but restrained sorted column. */
+body[data-page="home"] .home-standings .standings-table tbody tr:is(:hover,:focus-within){background:transparent;color:var(--ds-color-text)}
+body[data-page="home"] .home-standings .standings-table tbody tr:is(:hover,:focus-within)>td{background:color-mix(in srgb,var(--ds-color-accent) 6%,var(--ds-color-surface));background-image:none;color:var(--ds-color-text)}
+body[data-page="home"] .home-standings .standings-table tbody tr:is(:hover,:focus-within)>td.standings-column-active{background:color-mix(in srgb,var(--ds-color-accent) 13%,var(--ds-color-surface));color:var(--ds-color-text)}
+
+/* Reserve breathing room for form while keeping numeric columns equidistant. */
+body[data-page="home"] .home-standings .standings-table :is(th,td):last-child{width:154px;min-width:154px;padding-left:12px;padding-right:20px;text-align:center}
+@media(min-width:901px){
+ body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(n+4):not(:last-child){width:calc((100% - 368px)/9);padding-inline:5px}
+}
+
+/* Mobile home: centered fixture dates and compact team names. */
+@media(max-width:760px){
+ body[data-page="home"] .home-dashboard .home-match-meta{align-items:center;text-align:center}
+ body[data-page="home"] .home-dashboard .home-match-meta time{width:100%;text-align:center}
+ body[data-page="home"] .home-standings .standings-table{width:1000px;min-width:1000px}
+ body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(3){box-sizing:border-box;width:94px;padding-inline:6px}
+}

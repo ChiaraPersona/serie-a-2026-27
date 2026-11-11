@@ -1,4 +1,4 @@
-import {standingsForm} from '../components/standings-form.mjs';
+import {standingsForm} from '../components/standings-form.mjs?v=1c2e46f61176';
 import {imageSource} from '../core/image-source.mjs?v=20261022-assets-v1';
 export function createPage(deps){
   const {esc,hero,matchdayChronology,homeMatchListItem,load}=deps;
@@ -23,7 +23,7 @@ function standingsTable(rows,teams,fixtures=null,scope="general"){
   const form=row=>standingsForm(fixtures,row.team,{scope,limit:5,name:id=>teams.find(t=>t.id===id)?.name||id,escape:esc});
   const head=standingsColumns.map((column,index)=>`${index===1?'<th class="standing-pinned-logo" aria-label="Squadra"></th>':""}<th aria-sort="none"><button class="standings-sort" type="button" data-standings-sort="${column.key}" data-column-index="${index >= 1 ? index + 1 : index}" data-sort-type="${column.type}" data-default-direction="${column.direction}" title="${column.title}" aria-label="Ordina per ${column.title}" aria-pressed="false">${column.label}</button></th>`).join("");
   const body=rows.map((row,index)=>{const originalPosition=row.position||index+1,zone=originalPosition===1?"standing-zone-champion":originalPosition<=4?"standing-zone-top":originalPosition<=6?"standing-zone-europa":originalPosition===7?"standing-zone-conference":originalPosition>rows.length-3?"standing-zone-bottom":"";return `<tr class="${zone}" data-original-order="${index}">${standingsColumns.map(column=>{const current=value(row,column.key,index),sortValue=current===null||current===undefined?"":current,content=column.key==="teamName"?teamCell(row):column.key==="points"?`<strong>${display(column.key,current)}</strong>`:display(column.key,current);return `${column.key==="teamName"?`<td class="standing-pinned-logo"><span class="standing-logo" role="img" aria-label="${esc(name(row))}" title="${esc(name(row))}">${teamFor(row)?.logo?`<img src="${imageSource(teamFor(row).logo)}" alt="" onerror="this.hidden=true">`:""}</span></td>`:""}<td data-sort-value="${esc(sortValue)}">${content}</td>`}).join("")}<td>${form(row)}</td></tr>`}).join("");
-  return `<div class="table-wrap"><table class="standings-table" data-sortable-standings><thead><tr>${head}<th scope="col" title="Ultime 5 partite, più recente a destra">Ultime 5</th></tr></thead><tbody>${body}</tbody></table></div>`;
+  return `<div class="table-wrap"><table class="standings-table" data-sortable-standings><thead><tr>${head}<th scope="col" title="Ultime 5 partite, più recente a sinistra">Ultime 5</th></tr></thead><tbody>${body}</tbody></table></div>`;
 }
 function configureStandingsTables(){
   document.querySelectorAll("[data-sortable-standings]").forEach(table=>{

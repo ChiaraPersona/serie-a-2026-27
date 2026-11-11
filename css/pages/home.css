@@ -861,6 +861,15 @@ body[data-page="home"] .home-standings .standings-table thead th:first-child:not
 body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(n+4):not(:last-child){box-sizing:border-box;width:calc((100% - 396px)/9);padding-inline:8px;text-align:center}}
 @media(min-width:901px){body[data-page="home"] .home-standings .standings-table{width:100%;min-width:0}
 body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(n+4):not(:last-child){width:calc((100% - 342px)/9);padding-inline:6px}}
+body[data-page="home"] .home-standings .standings-table tbody tr:is(:hover,:focus-within){background:transparent;color:var(--ds-color-text)}
+body[data-page="home"] .home-standings .standings-table tbody tr:is(:hover,:focus-within)>td{background:color-mix(in srgb,var(--ds-color-accent) 6%,var(--ds-color-surface));background-image:none;color:var(--ds-color-text)}
+body[data-page="home"] .home-standings .standings-table tbody tr:is(:hover,:focus-within)>td.standings-column-active{background:color-mix(in srgb,var(--ds-color-accent) 13%,var(--ds-color-surface));color:var(--ds-color-text)}
+body[data-page="home"] .home-standings .standings-table :is(th,td):last-child{width:154px;min-width:154px;padding-left:12px;padding-right:20px;text-align:center}
+@media(min-width:901px){body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(n+4):not(:last-child){width:calc((100% - 368px)/9);padding-inline:5px}}
+@media(max-width:760px){body[data-page="home"] .home-dashboard .home-match-meta{align-items:center;text-align:center}
+body[data-page="home"] .home-dashboard .home-match-meta time{width:100%;text-align:center}
+body[data-page="home"] .home-standings .standings-table{width:1000px;min-width:1000px}
+body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(3){box-sizing:border-box;width:94px;padding-inline:6px}}
 /* matches.css: original cascade position */
 .match{display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:center;margin-bottom:10px}
 .match-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -5168,6 +5177,32 @@ button:disabled{
 
 
 }
+
+
+
+
+
+
+
+
+@media(hover:hover){
+}
+@media(prefers-reduced-motion:reduce){
+}
+
+
+
+
+
+
+
+
+
+@media(prefers-reduced-motion:reduce){
+}
+
+
+
 /* site-layout.css: original cascade position */
 body :is(.site-header,main,#team-squad-app,.site-footer-inner){
   width:var(--container-width);
