@@ -491,3 +491,30 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 .global-stat-button{min-height:32px;padding:6px 11px;box-shadow:inset 0 1px rgba(255,255,255,.72)}
 
 .global-stat-button.active{box-shadow:0 5px 12px rgba(167,116,22,.16),inset 0 1px rgba(255,255,255,.7)}
+
+/* Recent results: letters keep outcomes readable without relying on colour. */
+.standings-form{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.standings-form-result{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font:600 12px/1 var(--ds-font-body);color:#fff;background:#526174}
+.standings-form-result.is-win{background:#087f6c;color:#fff}
+.standings-form-result.is-draw{background:#e0e4e9;color:#233144}
+.standings-form-result.is-loss{background:#c83e49;color:#fff}
+.standings-form-empty{color:var(--ds-color-text-muted);font-size:12px}
+
+/* Keep recent form beside the final disciplinary column. */
+body[data-page="home"] .home-standings .standings-table :is(th,td):last-child,
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):last-child{box-sizing:border-box;width:116px;min-width:116px;padding-left:6px;padding-right:12px;text-align:left;white-space:nowrap}
+body[data-page="home"] .home-standings .standings-table :is(th,td):nth-last-child(2),
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-last-child(2){box-sizing:border-box;width:48px;padding-left:6px;padding-right:6px;text-align:center}
+
+/* Align recent results and heading on the same centred column. */
+body[data-page="home"] .home-standings .standings-table :is(th,td):last-child{width:182px;min-width:182px;padding-inline:10px;text-align:center}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):last-child{width:182px;min-width:182px;padding-inline:10px;text-align:center}
+body[data-page="home"] .home-standings .standings-table :is(th,td):nth-last-child(2),
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-last-child(2){width:56px;padding-inline:8px}
+.standings-form{vertical-align:middle;justify-content:center}
+
+/* Compact recent form without sacrificing the five-result history. */
+.standings-form{gap:4px}
+.standings-form-result{width:20px;height:20px;font-size:10px}
+body[data-page="home"] .home-standings .standings-table :is(th,td):last-child,
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):last-child{width:128px;min-width:128px;padding-inline:6px}

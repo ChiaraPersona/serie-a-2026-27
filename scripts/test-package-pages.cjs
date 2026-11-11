@@ -19,6 +19,7 @@ for (const file of ['index.html', 'offline.html', 'download.html', 'manifest.web
   'data/generated/readings/index.json', 'data/generated/schedina-index-2026-27.json',
   'data/sources/official-lineups-2026-27.json', 'data/sources/team-pages/shirt-numbers-2026-27.json',
   'data/normalized/champions-md02-ui-2026-27.json',
+  'data/normalized/champions-player-history-context-2025-26.json',
   'data/derived/champions-md03/market-catalog-official-seven-v2-2026-10-20.json',
   'data/derived/champions-md03/official-individuals-seven-v2-2026-10-20.json',
   'data/derived/champions-md03/upcoming-forecasts.json', 'data/predictions/snapshots/manifest.json']) {

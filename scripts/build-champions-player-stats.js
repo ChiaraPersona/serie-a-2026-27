@@ -104,7 +104,10 @@ function squadTeams() {
   return [...source.teams, ...fragments].map(team => ({
     team: team.team,
     id: slug(team.team),
-    players: team.players.map(([name, position]) => ({ id: slug(name), name, position }))
+    players: team.players.map(([name, position]) => {
+      const identity=team.playerIdentities?.find(p=>p.name===name);
+      return { id: identity?.canonicalStatisticsPlayerId || identity?.playerId || slug(name), name, position, ...(identity?.providerIds ? {providerIds:identity.providerIds} : {}) };
+    })
   }));
 }
 
@@ -448,7 +451,7 @@ function buildCurrent(args) {
       const rosterCandidates = [...(rosterIds.get(`${config.espnTeamId}|${nameKey}`) || [])];
       const teamCandidates = [...(espn.athletesByTeamAndName.get(`${config.espnTeamId}|${nameKey}`) || [])];
       const globalCandidates = [...(espn.athletesByNormalizedName.get(nameKey) || [])];
-      const verifiedId = identity.providerIds?.[`${team.team}|${player.name}`]?.id;
+      const verifiedId = player.providerIds?.espn || identity.providerIds?.[`${team.team}|${player.name}`]?.id;
       const historicalId = historicalIds.get(`${normalize(team.team)}|${nameKey}`);
       let candidates = [];
       let identitySource = "unresolved";

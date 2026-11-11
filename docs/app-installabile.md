@@ -8,7 +8,7 @@ iPhone/iPad: la pagina Download (`download.html`) spiega come usare Condividi �
 
 Serve un hosting HTTPS (oppure localhost per le prove). Pubblicare anche `manifest.webmanifest`, `sw.js`, `offline.html`, `assets/app/`, `js/install-app.js` e `css/install-app.css`. Non serve uno store. Nessun deploy viene eseguito dal build.
 
-Il service worker memorizza esclusivamente la schermata di assenza connessione. Navigazioni e richieste in `data/` usano la rete senza cache HTTP; nessun pronostico o quota viene conservato dal service worker. Offline viene mostrato un messaggio esplicito. Le pagine già aperte mantengono il comportamento del sito esistente.
+Il service worker memorizza esclusivamente la schermata di caricamento non riuscito. Navigazioni e richieste in `data/` usano la rete senza cache HTTP; nessun pronostico o quota viene conservato dal service worker. Un errore di navigazione mostra «Pagina non raggiungibile»: può verificarsi anche con Internet attivo e non certifica una disconnessione. «Riprova» ricarica la pagina richiesta; se si apre direttamente `offline.html`, torna alla home sotto la stessa sottocartella. L'evento `online` avvia un nuovo tentativo. Le pagine già aperte mantengono il comportamento del sito esistente.
 
 Verifica: `node scripts/check-install-app.cjs` controlla Chromium desktop/mobile, pagina Download con icone Apple e Android, istruzioni iPhone, prompt Android simulato, hosting sotto una sottocartella, icone, navigazione offline, dati non disponibili offline e riconnessione. Non sostituisce una prova di installazione su dispositivi Android e iOS reali.
 

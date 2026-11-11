@@ -325,3 +325,13 @@ body[data-page="home"] .home-standings .standings-table thead th:not(.standings-
   .home-dashboard .home-match-teams .team-logo{width:22px;height:22px;flex-basis:22px}
   .home-dashboard .home-match-teams .team-logo img{width:18px;height:18px}
 }
+
+/* Balance team names against equally spaced numeric columns on desktop. */
+@media(min-width:901px){
+ body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(3){box-sizing:border-box;width:160px}
+ body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(n+4):not(:last-child){box-sizing:border-box;width:calc((100% - 396px)/9);padding-inline:8px;text-align:center}
+}
+@media(min-width:901px){
+ body[data-page="home"] .home-standings .standings-table{width:100%;min-width:0}
+ body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(n+4):not(:last-child){width:calc((100% - 342px)/9);padding-inline:6px}
+}

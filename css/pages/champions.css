@@ -594,6 +594,25 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+.standings-form{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.standings-form-result{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font:600 12px/1 var(--ds-font-body);color:#fff;background:#526174}
+.standings-form-result.is-win{background:#087f6c;color:#fff}
+.standings-form-result.is-draw{background:#e0e4e9;color:#233144}
+.standings-form-result.is-loss{background:#c83e49;color:#fff}
+.standings-form-empty{color:var(--ds-color-text-muted);font-size:12px}
+
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):last-child{box-sizing:border-box;width:116px;min-width:116px;padding-left:6px;padding-right:12px;text-align:left;white-space:nowrap}
+
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-last-child(2){box-sizing:border-box;width:48px;padding-left:6px;padding-right:6px;text-align:center}
+
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):last-child{width:182px;min-width:182px;padding-inline:10px;text-align:center}
+
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-last-child(2){width:56px;padding-inline:8px}
+.standings-form{vertical-align:middle;justify-content:center}
+.standings-form{gap:4px}
+.standings-form-result{width:20px;height:20px;font-size:10px}
+
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):last-child{width:128px;min-width:128px;padding-inline:6px}
 /* home.css: original cascade position */
 
 
@@ -762,6 +781,10 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+}
+@media(min-width:901px){
+}
+@media(min-width:901px){
 }
 /* matches.css: original cascade position */
 .match{display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:center;margin-bottom:10px}
@@ -5160,6 +5183,45 @@ body[data-page="champions"] .champions-overview .reading-fixture-teams>b{positio
 .champions-team-detail .champions-calendar-date{display:flex;align-items:baseline;gap:6px;font-size:10px}
 .champions-team-detail .champions-calendar-date small{margin:0}
 .champions-team-detail .champions-calendar-opponent .team-name{white-space:normal;overflow-wrap:anywhere;font-size:11px}}
+body[data-page="champions"] .champions-overview .champions-standings-heading{padding:20px;background:var(--ds-color-surface-soft);color:var(--ds-color-text)}
+body[data-page="champions"] .champions-overview .champions-standings-heading h2{margin:0;font-family:var(--ds-font-body);font-size:16px;font-weight:700;color:inherit}
+body[data-page="champions"] .champions-overview .champions-round-summary{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+body[data-page="champions"] .champions-overview .champions-standings-heading{padding:0 0 14px;background:transparent}
+body[data-page="champions"] .champions-overview .champions-round-summary .table-wrap{margin:0}
+body[data-page="champions"] .champions-overview .champions-round-summary .table-wrap{padding-bottom:5px;background:var(--ds-color-surface-soft);box-shadow:inset 0 2px 9px rgba(0,7,28,.38)}
+@media(min-width:901px){body[data-page="champions"] .champions-overview .champions-standings-table{width:100%;min-width:0;table-layout:fixed}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td){box-sizing:border-box;padding:10px 6px}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):first-child{width:42px}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(2){width:200px;white-space:normal}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(n+3):not(:last-child){width:calc((100% - 370px)/9)}
+body[data-page="champions"] .champions-overview .champions-standings-table .team-with-logo{min-width:0;white-space:normal}
+body[data-page="champions"] .champions-overview .champions-standings-table .team-name{white-space:normal;overflow-wrap:anywhere}}
+body[data-page="champions"] .champions-overview .champions-days{gap:12px;padding:12px 6px 18px;perspective:800px}
+body[data-page="champions"] .champions-overview .champions-day{position:relative;isolation:isolate;overflow:visible;border:0;outline:none;border-radius:14px;background:linear-gradient(150deg,#112b4e,#081a34);color:#c3d4e9;box-shadow:0 7px 14px #000b2466,inset 0 1px 1px #c2e2ff18,inset 0 -2px 4px #000b244d;transition:background .22s,box-shadow .22s,transform .22s}
+body[data-page="champions"] .champions-overview .champions-day::before{content:"";position:absolute;z-index:-1;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,#d6e8ff24,#b4d6ff09 55%,#d4ecff14);box-shadow:inset 0 1px 0 #e0f2ff26;opacity:.45;transform-origin:50% 0;transition:opacity .22s,transform .22s}
+body[data-page="champions"] .champions-overview .champions-day.is-completed{background:linear-gradient(150deg,#253950,#172a42);color:#d3dfec}
+body[data-page="champions"] .champions-overview .champions-day.is-completed::before{opacity:1;background:linear-gradient(140deg,#e2efff35,#cedff51c 52%,#c6def52b);backdrop-filter:blur(7px) saturate(.65);-webkit-backdrop-filter:blur(7px) saturate(.65)}
+body[data-page="champions"] .champions-overview .champions-day:not(.is-completed)::before{inset:0 0 65%;transform:perspective(240px) rotateX(42deg) translateY(-3px);opacity:.7}
+body[data-page="champions"] .champions-overview .champions-day[aria-expanded="true"]{background:linear-gradient(145deg,#20538a,#112f55);box-shadow:0 8px 18px #000b2473,inset 0 2px 7px #a4d5ff24,inset 0 -2px 5px #000b244d;color:#f0f7ff}
+body[data-page="champions"] .champions-overview .champions-day:focus-visible{outline:2px solid #a9d9ff;outline-offset:4px}
+@media(hover:hover){body[data-page="champions"] .champions-overview .champions-day:hover{transform:translateY(-2px);background:linear-gradient(145deg,#294a70,#132d4e);box-shadow:0 10px 20px #000b2473,0 0 18px #8bcaff19,inset 0 1px 7px #d5edff30}
+body[data-page="champions"] .champions-overview .champions-day:hover::before{opacity:1}}
+@media(prefers-reduced-motion:reduce){body[data-page="champions"] .champions-overview .champions-day,body[data-page="champions"] .champions-overview .champions-day::before{transition:none}
+body[data-page="champions"] .champions-overview .champions-day:hover{transform:none}}
+body[data-page="champions"] .champions-overview .champions-days{padding-inline:0;margin-inline:0}
+body[data-page="champions"] .champions-overview .champions-team-logo-directory{margin-inline:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+body[data-page="champions"] .champions-overview .champions-team-logo-scroll{padding:0 0 12px;overflow:visible}
+body[data-page="champions"] .champions-overview .champions-team-logo-grid{min-width:0;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}
+body[data-page="champions"] .champions-overview .champions-team-logo-grid a{position:relative;isolation:isolate;border:0;border-radius:14px;background:linear-gradient(150deg,#112b4e,#081a34);box-shadow:0 7px 14px #000b2466,inset 0 1px 1px #c2e2ff18,inset 0 -2px 4px #000b244d;transition:background .22s,box-shadow .22s,transform .22s}
+body[data-page="champions"] .champions-overview .champions-team-logo-grid a::before{content:"";position:absolute;z-index:-1;inset:0 0 65%;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,#d6e8ff24,#b4d6ff09 55%,#d4ecff14);box-shadow:inset 0 1px 0 #e0f2ff26;transform-origin:50% 0;transform:perspective(240px) rotateX(42deg) translateY(-3px);opacity:.7}
+body[data-page="champions"] .champions-overview .champions-team-logo-grid a:focus-visible{outline:2px solid #a9d9ff;outline-offset:4px}
+@media(hover:hover){body[data-page="champions"] .champions-overview .champions-team-logo-grid a:hover{transform:translateY(-2px);background:linear-gradient(145deg,#294a70,#132d4e);box-shadow:0 10px 20px #000b2473,0 0 18px #8bcaff19,inset 0 1px 7px #d5edff30}}
+@media(max-width:760px){body[data-page="champions"] .champions-overview .champions-team-logo-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}}
+@media(prefers-reduced-motion:reduce){body[data-page="champions"] .champions-overview .champions-team-logo-grid a{transition:none}
+body[data-page="champions"] .champions-overview .champions-team-logo-grid a:hover{transform:none}}
+body[data-page="champions"] .champions-overview .champions-home-banner{border:0;outline:0;box-shadow:0 5px 10px rgba(0,4,18,.35),0 20px 34px rgba(0,4,18,.48),0 40px 64px -18px rgba(0,2,14,.75)}
+body[data-page="champions"] .champions-overview .champions-home-banner{position:relative;box-shadow:none}
+body[data-page="champions"] .champions-overview .champions-home-banner::after{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;pointer-events:none;background:transparent;box-shadow:inset 0 10px 18px rgba(0,3,16,.7),inset 0 0 30px 8px rgba(0,3,16,.5),inset 0 -5px 12px rgba(0,3,16,.4)}
 /* site-layout.css: original cascade position */
 body :is(.site-header,main,#team-squad-app,.site-footer-inner){
   width:var(--container-width);

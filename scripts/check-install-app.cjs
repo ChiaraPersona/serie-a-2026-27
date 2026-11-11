@@ -4,11 +4,14 @@ const http = require('node:http');
 const assert = require('node:assert/strict');
 const {chromium} = require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const root = path.resolve(__dirname, '..');
+let failNavigation = false;
 const types = {'.html':'text/html', '.js':'text/javascript', '.mjs':'text/javascript', '.mjs':'text/javascript', '.css':'text/css', '.json':'application/json', '.webmanifest':'application/manifest+json', '.png':'image/png'};
 // Mount below a subpath too, as on repository-based static hosting.
 const server = http.createServer((req, res) => {
   const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
-  const file = path.resolve(root, '.' + pathname.replace(/^\/demo/, ''));
+  if (failNavigation && pathname === '/demo/index.html') {req.socket.destroy(); return;}
+  const relative = pathname.replace(/^\/demo/, '');
+  const file = path.resolve(root, '.' + relative + (relative.endsWith('/') ? 'index.html' : ''));
   if (!file.startsWith(root + path.sep)) {res.writeHead(403).end(); return;}
   fs.readFile(file, (err, data) => {
     res.writeHead(err ? 404 : 200, {'Content-Type':types[path.extname(file)] || 'application/octet-stream'});
@@ -65,14 +68,24 @@ const server = http.createServer((req, res) => {
       await page.screenshot({path:path.join(out,mobile ? 'mobile.png' : 'desktop.png'),fullPage:true});
       await page.goto(base + 'statistiche-squadra/inter.html');
       assert.equal(await page.locator('link[rel="manifest"]').getAttribute('href'),'../manifest.webmanifest');
+      failNavigation = true;
+      await page.goto(base + 'index.html');
+      assert.equal(await page.evaluate(() => navigator.onLine),true);
+      assert.equal(await page.locator('h1').textContent(),'Pagina non raggiungibile');
+      failNavigation = false;
+      await page.getByRole('button',{name:'Riprova'}).click();
+      await page.waitForSelector('.site-header');
       await context.setOffline(true);
       await page.goto(base + 'index.html');
-      assert.equal(await page.locator('h1').textContent(),'Sei senza connessione');
+      assert.equal(await page.locator('h1').textContent(),'Pagina non raggiungibile');
       assert.equal(await page.evaluate(async () => {
         try {await fetch('data/normalized/teams.json'); return 'stale';} catch {return 'unavailable';}
       }),'unavailable');
       await context.setOffline(false);
+      await page.waitForSelector('.site-header');
+      await page.goto(base + 'offline.html');
       await page.getByRole('button',{name:'Riprova'}).click();
+      await page.waitForURL(base);
       await page.waitForSelector('.site-header');
       await context.close();
     }

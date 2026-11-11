@@ -623,13 +623,28 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 .source-check{display:inline-flex;max-width:165px;padding:5px 8px;border-radius:8px;background:rgba(255,255,255,.06);color:var(--muted);font-size:10px;font-weight:800}
+.source-check.is-exact{background:rgba(39,209,127,.1);color:#65e7a4}
+.source-check.is-different{background:rgba(242,193,78,.1);color:#ffe39a}
 
 
 
 
 
+.standings-form{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.standings-form-result{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font:600 12px/1 var(--ds-font-body);color:#fff;background:#526174}
+.standings-form-result.is-win{background:#087f6c;color:#fff}
+.standings-form-result.is-draw{background:#e0e4e9;color:#233144}
+.standings-form-result.is-loss{background:#c83e49;color:#fff}
+.standings-form-empty{color:var(--ds-color-text-muted);font-size:12px}
+body[data-page="home"] .home-standings .standings-table :is(th,td):last-child{box-sizing:border-box;width:116px;min-width:116px;padding-left:6px;padding-right:12px;text-align:left;white-space:nowrap}
+body[data-page="home"] .home-standings .standings-table :is(th,td):nth-last-child(2){box-sizing:border-box;width:48px;padding-left:6px;padding-right:6px;text-align:center}
+body[data-page="home"] .home-standings .standings-table :is(th,td):last-child{width:182px;min-width:182px;padding-inline:10px;text-align:center}
 
-
+body[data-page="home"] .home-standings .standings-table :is(th,td):nth-last-child(2){width:56px;padding-inline:8px}
+.standings-form{vertical-align:middle;justify-content:center}
+.standings-form{gap:4px}
+.standings-form-result{width:20px;height:20px;font-size:10px}
+body[data-page="home"] .home-standings .standings-table :is(th,td):last-child{width:128px;min-width:128px;padding-inline:6px}
 /* home.css: original cascade position */
 .standings-switch{display:flex;gap:10px;margin:24px 0 8px;padding:7px;border:1px solid var(--line);border-radius:14px;background:rgba(8,24,43,.82)}
 .standings-switch button{flex:1;padding:11px 16px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--muted);font-weight:800;cursor:pointer}
@@ -842,6 +857,10 @@ body[data-page="home"] .home-standings .standings-table thead th:first-child:not
 .home-dashboard .home-match-summary .home-match-score{min-width:0;white-space:nowrap}
 .home-dashboard .home-match-teams .team-logo{width:22px;height:22px;flex-basis:22px}
 .home-dashboard .home-match-teams .team-logo img{width:18px;height:18px}}
+@media(min-width:901px){body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(3){box-sizing:border-box;width:160px}
+body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(n+4):not(:last-child){box-sizing:border-box;width:calc((100% - 396px)/9);padding-inline:8px;text-align:center}}
+@media(min-width:901px){body[data-page="home"] .home-standings .standings-table{width:100%;min-width:0}
+body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(n+4):not(:last-child){width:calc((100% - 342px)/9);padding-inline:6px}}
 /* matches.css: original cascade position */
 .match{display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:center;margin-bottom:10px}
 .match-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -5131,6 +5150,19 @@ button:disabled{
 
 
 @media(max-width:600px){
+
+
+
+
+}
+
+
+
+
+
+
+@media(min-width:901px){
+
 
 
 

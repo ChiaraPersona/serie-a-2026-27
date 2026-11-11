@@ -62,6 +62,10 @@ for (const obsoletePage of ((teamPagesOnly || presentationOnly) ? [] : ["calenda
   if (fs.existsSync(obsoletePath)) fs.unlinkSync(obsoletePath);
 }
 const renderedPages = readingPagesOnly ? pages.filter(([,id])=>bettingPageOnly?id==='betting':md3PagesOnly?['champions','betting'].includes(id):championsPageOnly?id==='champions':readingsIndexOnly?id==="readings":["readings","champions"].includes(id)) : teamPagesOnly ? [] : pages;
+// Rebuild the descriptive player projection from archived evidence, without any acquisition or forecast calculation.
+if (renderedPages.some(([,id])=>id==='champions') && fs.existsSync(path.join(root,'data/sources/champions-senior-national-history-acquisition-2025-26.json'))) {
+  require('./build-champions-player-history-context.cjs').main();
+}
 // Refresh the browser projection from the existing archive, including during a
 // presentation-only build. Never invoke the MD2 forecasting/integration builder.
 if (renderedPages.some(([,id]) => id === 'readings')) {

@@ -9,6 +9,7 @@ const directories = ['assets/', 'css/', 'js/', 'statistiche-squadra/',
   'data/generated/', 'data/normalized/', 'data/sources/', 'data/teams/', 'data/derived/',
   'data/predictions/', 'data/players/', 'data/champions-2026-27/'];
 const rootFiles = new Set(['.nojekyll', 'sw.js', 'manifest.webmanifest', 'CNAME', 'robots.txt', 'sitemap.xml', 'data/team-objectives.json']);
+const requiredRuntimeProjections = ['data/normalized/champions-player-history-context-2025-26.json'];
 // Research freezes and full referee archives have no browser consumers.
 // Public verification snapshots and generated referee projections remain included.
 const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-history/',
@@ -18,6 +19,10 @@ const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-h
   'data/normalized/xgot-history-seasons/', 'data/normalized/xgot-extended-seasons/', 'data/normalized/xgot-current-seasons/'];
 // Build inputs and superseded artifacts: browser consumers use the retained UI/v2 files.
 const internalFiles = new Set([
+  'data/sources/champions-player-senior-national-observations-2025-26.json',
+  'data/sources/champions-senior-national-history-acquisition-2025-26.json',
+  'data/sources/champions-senior-national-history-scope-2025-26.json',
+  'data/sources/champions-player-club-history-supplement-2025-26.json',
   // Build-only reports: pages consume the generated HTML / summary projections.
   'data/generated/head-to-head/first-leg-2026-27.json',
   'data/generated/fantacalcio-advice.json',
@@ -72,6 +77,11 @@ function publicContent(file) {
 function plan() {
   const tracked = execFileSync('git', ['ls-files', '-z'], {cwd: root, maxBuffer: 32 * 1024 * 1024})
     .toString().split('\0').filter(Boolean);
+  // Generated runtime projections must also be testable in a local package before committing.
+  for (const file of requiredRuntimeProjections) {
+    if (!fs.existsSync(path.join(root,file))) throw new Error('Missing runtime projection: ' + file);
+    if (!tracked.includes(file)) tracked.push(file);
+  }
   const browserScripts = new Set();
   for (const file of tracked.filter(f => f.endsWith('.html') && (!f.includes('/') || f.startsWith('statistiche-squadra/')))) {
     for (const match of fs.readFileSync(path.join(root, file), 'utf8').matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["']/gi)) {

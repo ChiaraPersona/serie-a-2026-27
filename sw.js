@@ -1,6 +1,6 @@
 'use strict';
 // Cache only the explicit offline screen. Sports data and pages always use the network.
-const CACHE = 'serie-a-offline-v3';
+const CACHE = 'serie-a-offline-v4';
 const offlineURL = new URL('offline.html', self.registration.scope).href;
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.add(new Request(offlineURL, {cache: 'reload'}))));

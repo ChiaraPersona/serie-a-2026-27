@@ -38,7 +38,7 @@ const teams = calendar.teams.map(teamName => teamByName.get(teamName)).map(team 
     const playerId = identity?.playerId || slug(name);
     const verified = identity && verifiedRegistry.teams.find(t => t.team === team.team)?.players.find(p => String(p.uefaPlayerId) === String(identity.uefaPlayerId));
     const localPath = path.join(root, `data/teams/${slug(team.team)}.json`);
-    const local = ['Inter','Napoli','Roma','Como'].includes(team.team) && fs.existsSync(localPath) ? JSON.parse(fs.readFileSync(localPath, 'utf8')).squad.find(p => p.id === playerId) : null;
+    const local = ['Inter','Napoli','Roma','Como'].includes(team.team) && fs.existsSync(localPath) ? JSON.parse(fs.readFileSync(localPath, 'utf8')).squad.find(p => p.id === (identity?.canonicalStatisticsPlayerId || playerId)) : null;
     const canonicalHistory = local?.previousSeason ? local : verified?.previousSeason ? verified : null;
     const historical = canonicalHistory ? {previousSeason: canonicalHistory.previousSeason, providerPlayerId: canonicalHistory.providerPlayerId || canonicalHistory.providerIds?.espn, dataQuality: 'complete', sourceMode: canonicalHistory.historicalSource || 'canonical-serie-a-profile'} : statsByPlayer.get(`${team.team}|${playerId}`) || null;
     const numberRecord = shirtNumbers.records.find(r => r.status === "accepted" && r.teamId === slug(team.team) && (r.playerId === playerId || r.playerIdAliases?.includes(playerId)));
@@ -55,7 +55,7 @@ const teams = calendar.teams.map(teamName => teamByName.get(teamName)).map(team 
       matchCallup: { status: null, fixtureId: null, updatedAt: null, source: null },
       officialLineup: { status: null, fixtureId: null, updatedAt: null, source: null },
       statistics: { season: "2026-27", competition: "UEFA Champions League", appearances: null, starts: null, minutes: null, goals: null, assists: null, shots: null, shotsOnTarget: null, yellowCards: null, redCards: null },
-      providerIds: { espn: historical?.providerPlayerId || null },
+      providerIds: { espn: identity?.providerIds?.espn || historical?.providerPlayerId || null },
       previousSeason: historical?.previousSeason || null,
       historicalDataQuality: historical?.dataQuality || "unavailable",
       historicalSourceMode: historical?.sourceMode || null,
