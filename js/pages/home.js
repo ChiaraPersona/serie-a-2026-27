@@ -92,7 +92,7 @@ function homeStandings(standings,currentHomeRows,currentAwayRows,previousStandin
           ? `<li class="home-match-date-heading">${date?dayHeading.format(new Date(date)):"Data da definire"}</li>`
           : "";
         previousDate=date;
-        return heading+homeMatchListItem(match,teams,{grouped,showKickoff:panel!==previousPanel});
+        return heading+homeMatchListItem(match,teams,{grouped,showKickoff:panel!==previousPanel||match.status!=="finished"});
       });
       panel.querySelector("[data-home-match-list]").innerHTML=rows.join("")||(panel.hidden?"":'<li class="muted">Programmazione in aggiornamento.</li>');
     };

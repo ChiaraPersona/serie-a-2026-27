@@ -173,8 +173,8 @@ for(const match of league){
   assert(/^\d{4}-\d{2}-\d{2}$/.test(match.matchdayDate)&&(!match.date||/^\d{4}-\d{2}-\d{2}$/.test(match.date)),`Formato data non valido: ${match.id}`);
   assert(match.timezone==="Europe/Rome"&&Array.isArray(match.sources)&&match.sources.length,`Timezone/fonti mancanti: ${match.id}`);
   if(match.dateStatus==="confirmed")assert(match.date&&match.kickoff,`Data confermata incompleta: ${match.id}`);
-  if(match.matchday>12)assert(match.date===null&&match.kickoff===null&&match.dateStatus==="tbd",`Data inventata oltre la dodicesima giornata: ${match.id}`);
-  if(match.matchday<=12)assert(match.date&&match.kickoff&&match.dateStatus==="confirmed",`Programmazione ufficiale mancante: ${match.id}`);
+  if(match.matchday>16)assert(match.date===null&&match.kickoff===null&&match.dateStatus==="tbd",`Data inventata oltre la sedicesima giornata: ${match.id}`);
+  if(match.matchday<=16)assert(match.date&&match.kickoff&&match.dateStatus==="confirmed",`Programmazione confermata mancante: ${match.id}`);
   const home=counters.get(match.homeTeam),away=counters.get(match.awayTeam);home.total++;home.home++;away.total++;away.away++;
   home.opponents.set(match.awayTeam,(home.opponents.get(match.awayTeam)||0)+1);away.opponents.set(match.homeTeam,(away.opponents.get(match.homeTeam)||0)+1);
 }

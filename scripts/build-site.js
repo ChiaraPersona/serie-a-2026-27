@@ -38,7 +38,7 @@ const footer = (depth = "") => `<footer class="site-footer"><div class="site-foo
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:opsz,wght@6..72,400..750&display=swap" rel="stylesheet">';
 const withFonts = input => {const html=applyStyleLinks(input);const prefix=(/<body[^>]*data-depth="team"/.test(html)?"../":"");const policyVersion='20261106-hide-competition-context-v1';return html.replace("</title>", `</title>${iconLinks(prefix)}${fontLinks}`).replace("</head>", `<script src="${prefix}js/public-presentation.js?v=${policyVersion}"></script></head>`)};
 const version = "20260901-coppa-round16-calendar-v1";
-const homeVersion = "20260919-roma-inter-juventus-fatigue-v1";
+const homeVersion = "20261112-home-upcoming-kickoffs-v1";
 const teamVersion = "20261018-no-player-media-v1";
 const leaderboardVersion = "20261013-md06-results-v1";
 const bettingVersion = "20261109-md11-results";
