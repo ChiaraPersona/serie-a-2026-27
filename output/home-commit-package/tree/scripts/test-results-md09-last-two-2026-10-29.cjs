@@ -1,0 +1,15 @@
+'use strict';
+const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');
+const dir='output/md09-last-two-2026-10-29',read=p=>JSON.parse(fs.readFileSync(p,'utf8')),baseline=read(dir+'/baseline.json'),before=read(dir+'/matches-before.json'),matches=read('data/normalized/matches.json');
+assert.deepEqual(matches.filter(m=>!baseline.matchIds.includes(m.id)),before.filter(m=>!baseline.matchIds.includes(m.id)));
+for(const [p,h]of Object.entries(baseline.protectedHashes))if(!p.includes('official-lineups'))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),h,p);
+const fro=matches.find(m=>m.id==='frosinone-lecce-2026-27-md-09'),fio=matches.find(m=>m.id==='fiorentina-atalanta-2026-27-md-09');
+assert.equal(fro.status,'finished');assert.deepEqual(fro.score,{home:5,away:1});assert.equal(fio.status,'finished');assert.deepEqual(fio.score,{home:2,away:2});assert.equal(matches.filter(m=>m.matchday===9&&m.status==='finished').length,10);
+const official=read('data/sources/official-lineups-2026-27.json'),oldOfficial=read(dir+'/official-before.json');assert.deepEqual(official.fixtures.filter(f=>f.matchId!==fro.id),oldOfficial.fixtures.filter(f=>f.matchId!==fro.id));
+for(const side of ['home','away']){const p=fro.playerStats[side];assert.equal(p.filter(p=>p.starter).length,11);for(const [pf,tf]of [['shots','shots'],['shotsOnTarget','shotsOnTarget'],['foulsCommitted','fouls'],['hitWoodwork','hitWoodwork']]){assert(p.every(p=>Number.isFinite(p[pf])));assert.equal(p.reduce((n,p)=>n+p[pf],0),fro.teamStats[side][tf]);}}
+assert(fro.playerStats.away.some(p=>p.playerId==='paco-esteban'&&p.starter));assert(!fro.playerStats.away.some(p=>p.playerId==='willem-geubbels'&&p.starter));
+const registry=read('data/normalized/official-starter-registry.json');const serialized=JSON.stringify(registry[fro.id]||registry.fixtures?.[fro.id]||registry);assert(serialized.includes('paco-esteban'));
+assert.deepEqual(fio.playerStats,{home:[],away:[]});assert.equal(fio.resultCoverage.playerStats,'unavailable');assert.equal(fio.teamStats.home,null);
+const tb=read(dir+'/teams-before.json');for(const [file,data]of Object.entries(tb)){if(['index.json','player-leaderboards.json','frosinone.json','lecce.json','fiorentina.json','atalanta.json'].includes(file))continue;assert.deepEqual(read('data/teams/'+file),data,file);}
+const report={fixtures:[{matchId:fro.id,score:fro.score,players:fro.playerStats.home.length+fro.playerStats.away.length,coverage:'complete'},{matchId:fio.id,score:fio.score,coverage:'result-only',missing:'Final team/player statistics, scorer timeline, bookings and substitutions unavailable'}],unrelatedFixturesPreserved:true,forecastsAndOddsPreserved:true,certifiedProviderSettlement:false,officialCorrection:{out:'willem-geubbels',in:'paco-esteban',retroactiveSelectionsAdded:false}};
+fs.writeFileSync(dir+'/integrity.json',JSON.stringify(report,null,2)+'\n');console.log('PASS final results, MD9 complete, canonical correction, individual/team totals, unavailable fields, frozen forecasts/odds and unrelated fixtures/teams');

@@ -1,0 +1,26 @@
+"use strict";
+const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
+const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const root=path.resolve(__dirname,'..'),types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.woff2':'font/woff2'};
+const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));if(!file.startsWith(root+path.sep))return res.writeHead(403).end();fs.readFile(file,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':types[path.extname(file)]||'application/octet-stream'});res.end(e?'Missing':b)})});
+(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({headless:true,channel:'msedge'});const out='reports/xgot-operational';fs.mkdirSync(out,{recursive:true});const report=[];
+try{for(const width of [1440,390]){
+ const page=await browser.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));const base='http://127.0.0.1:'+server.address().port+'/';
+ await page.goto(base+'statistiche-giocatori.html');await page.locator('[data-ranking-sort="xgot"]').first().waitFor();
+ await page.selectOption('[data-leader-period]','2025/26');await page.locator('[data-ranking-sort="xgot"][data-sort-mode="total"]').click();
+ assert((await page.locator('.global-player-table').textContent()).includes('xGOT'),'xGOT column missing');
+ await page.screenshot({path:`${out}/players-${width}.png`});
+ await page.goto(base+'statistiche-squadra/inter.html');await page.locator('[data-xgot-statistics]').waitFor();assert((await page.locator('[data-xgot-statistics]').textContent()).includes('Gare coperte'));
+ await page.locator('[data-xgot-statistics]').screenshot({path:`${out}/team-${width}.png`});
+ await page.goto(base+'champions-league.html?team=inter');await page.locator('[data-xgot-statistics]').waitFor();
+ const future=JSON.parse(fs.readFileSync(path.join(root,'data/generated/champions-shared-scenarios.json'))).fixtures.find(f=>f.matchday===5&&f.expectedGoals?.components?.xgot?.applied);
+ await page.goto(base+'champions-league.html?match='+future.fixtureId);await page.locator('[data-reading-ready="true"]').waitFor();assert.equal(await page.locator('[data-xgot-model]').count(),0);
+ await page.goto(base+'lettura.html?match=inter-como-2026-27-md-11');await page.locator('[data-reading-ready="true"]').waitFor();assert.equal(await page.locator('[data-xgot-model]').count(),0);await page.locator('[data-xgot-observed]').waitFor({state:'attached'});await page.locator('[data-player-xgot]').first().waitFor({state:'attached'});
+ await page.locator('[data-statistic="xgot"][data-xgot-ready="true"]').waitFor({state:'attached'});
+ assert.equal(await page.locator('.rd-diverging [data-statistic="xgot"]').count(),1);
+ assert.equal(await page.locator('[data-statistic="xgot"] .rd-diverging-half').count(),2);
+ await page.locator('[data-xgot-observed]').scrollIntoViewIfNeeded();await page.locator('.rd-diverging').screenshot({path:`${out}/comparison-${width}.png`});await page.screenshot({path:`${out}/reading-${width}.png`});
+ const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2);assert.equal(overflow,false,'Page overflows viewport');assert.deepEqual(errors,[]);
+ report.push({width,errors,players:true,team:true,champions:true,championsFutureReading:true,reading:true});await page.close();
+}fs.writeFileSync(`${out}/browser-audit.json`,JSON.stringify(report,null,2)+'\n');console.log('OK xGOT desktop/mobile: global player statistics, team statistics, Champions team and reading values; no script errors or page overflow');
+}finally{await browser.close();await new Promise(r=>server.close(r))}})().catch(e=>{console.error(e);server.close();process.exitCode=1});

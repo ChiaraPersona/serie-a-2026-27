@@ -1,0 +1,14 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+const {execFileSync}=require('node:child_process');
+const {captureInputs,assertInputsUnchanged}=require('./test-champions-validation-inputs.cjs');
+const {loadRegistry,currentModels}=require('./champions/validation-data.cjs');
+const before=captureInputs();
+const directory='data/predictions/champions-event-snapshots';
+const snapshotHashes=()=>Object.fromEntries(fs.readdirSync(directory,{recursive:true}).filter(p=>p.endsWith('.json')).sort().map(p=>[p,crypto.createHash('sha256').update(fs.readFileSync(path.join(directory,p))).digest('hex')]));
+const frozen=snapshotHashes();
+const output=execFileSync(process.execPath,['scripts/build-champions-event-validation.cjs'],{encoding:'utf8'});
+assertInputsUnchanged(before);assert.deepEqual(snapshotHashes(),frozen,'Refresh must not rewrite original pre-match evidence');
+const registry=loadRegistry();assert.deepEqual(registry.modelIds,currentModels().ids);
+for(const event of registry.events.filter(e=>e.approvable))assert.equal(event.protocol,'PREREGISTERED_FROZEN_FORECAST_TEMPORAL_HOLDOUT');
+console.log('PASS refresh registry: current versions, original snapshots and production inputs preserved. '+output.trim());

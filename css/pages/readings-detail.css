@@ -710,6 +710,7 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+
 .home-dashboard .home-match-row:has(a):hover{background:#edf2f4}
 
 
@@ -725,14 +726,19 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 @media(max-width:760px){
 }
-@media(max-width:1100px){
 
-.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams){grid-template-columns:minmax(0,1fr) auto;align-content:start;gap:10px;padding:16px;min-height:150px}
+
+@media(max-width:760px){
+
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams){position:relative;grid-template-columns:minmax(0,1fr);justify-items:center;align-content:center;gap:10px;padding:16px;min-height:104px;text-align:center}
 .home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>.home-editorial-icon{grid-area:1 / 1;width:28px;height:28px}
-.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>.home-editorial-arrow{grid-area:1 / 2}
-.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>div{grid-area:2 / 1 / 3 / -1}
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>.home-editorial-arrow{position:absolute;top:16px;right:16px}
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>div{grid-area:2 / 1}
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams) strong{margin:0}
 
-.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams) small{font-size:12px}}
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams) small{display:none}
+
+}
 @media(max-width:580px){
 
 
@@ -741,6 +747,8 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 }
+
+
 
 
 

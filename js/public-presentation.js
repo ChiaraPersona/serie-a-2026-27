@@ -12,6 +12,25 @@
  const privateKey=/^(?:font[ei]|sources?(?:[a-z_].*)?|references?|referenceUrl|provider|provenienza|provenance|origine|retrievedAt|importedAt)$/i;
  // Selection rows use source-section as an internal catalog group, not provenance UI.
  const dedicated='.source-list,.source-directory-list,.source-team-grid,.sources-directory,.champions-source-links,.reading-post-match-source,.fantasy-price-source,.team-referee-source,.source-check,[data-source-section]:not([data-selection-row])';
+ const headingSelector='h1,h2,h3,h4,h5,h6,[role="heading"],[class*="subtitle"],[class*="subheading"],.hero p,.section-heading p,.page-heading p';
+ function trimHeadingPeriods(root){
+  const headings=[...root.querySelectorAll(headingSelector)];
+  if(root.matches?.(headingSelector))headings.unshift(root);
+  for(const heading of headings){
+   if(protectedNode(heading))continue;
+   const walker=document.createTreeWalker(heading,NodeFilter.SHOW_TEXT),nodes=[];let node;
+   while((node=walker.nextNode()))if(!node.parentElement.closest('script,style,[aria-hidden="true"],svg'))nodes.push(node);
+   // Work backwards across inline markup, preserving icons and whitespace.
+   for(let i=nodes.length-1;i>=0;i--){
+    const text=nodes[i],value=text.nodeValue;
+    if(!value.trim())continue;
+    const next=value.replace(/\.+(\s*)$/u,'$1');
+    if(next===value)break;
+    text.nodeValue=next;
+    if(next.trim())break;
+   }
+  }
+ }
  function apply(root){
   if(!root?.querySelectorAll||protectedNode(root))return;
   root.querySelectorAll('figcaption,p,small').forEach(n=>{if(/©|copyright|CC[ -]BY|Creative Commons|tutti i diritti riservati/i.test(n.textContent))n.dataset.requiredAttribution=''});
@@ -35,7 +54,7 @@
     return;
    }
    // Mixed sections retain their actual statistics and lineup lists.
-   for(const node of h.childNodes)if(node.nodeType===3)node.nodeValue=node.nodeValue.replace(/,\s*fonti\s*e\s*/gi,' e ').replace(/\s+e fonti\b/gi,'').replace(/,?\s*e fonte\b/gi,'');
+   for(const node of h.childNodes)if(node.nodeType===3){const value=node.nodeValue.replace(/,\s*fonti\s*e\s*/gi,' e ').replace(/\s+e fonti\b/gi,'').replace(/,?\s*e fonte\b/gi,'');if(value!==node.nodeValue)node.nodeValue=value;}
   });
   root.querySelectorAll('p,small,span,div').forEach(n=>{
    if(protectedNode(n)||n.hasAttribute('data-private-provenance'))return;
@@ -74,13 +93,14 @@
     .replace(/\b(?:dal provider|dal modello e dalla fonte)\b/gi,'nei dati disponibili');
    if(value!==text.nodeValue)text.nodeValue=value;
   }
+  trimHeadingPeriods(root);
  }
  const pending=new Set();let scheduled=false;
  const observer=new MutationObserver(records=>{
-  for(const r of records)for(const n of r.addedNodes){const el=n.nodeType===1?n:n.parentElement;if(el&&!el.closest('script,style'))pending.add(el.parentElement||el)}
+  for(const r of records){const nodes=r.type==='characterData'?[r.target]:r.addedNodes;for(const n of nodes){const el=n.nodeType===1?n:n.parentElement;if(el&&!el.closest('script,style'))pending.add(el.parentElement||el)}}
   if(!scheduled&&pending.size){scheduled=true;queueMicrotask(()=>{scheduled=false;const roots=new Set(pending);pending.clear();for(const root of roots){let ancestor=root.parentElement;while(ancestor&&!roots.has(ancestor))ancestor=ancestor.parentElement;if(root.isConnected&&!ancestor)apply(root)}})}
  });
- observer.observe(document.documentElement,{childList:true,subtree:true});
+ observer.observe(document.documentElement,{childList:true,characterData:true,subtree:true});
  if(document.body)apply(document.body);
  document.addEventListener('DOMContentLoaded',()=>apply(document.body),{once:true});
 })();

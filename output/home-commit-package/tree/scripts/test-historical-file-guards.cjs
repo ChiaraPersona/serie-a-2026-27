@@ -1,0 +1,13 @@
+"use strict";
+const assert = require("node:assert/strict");
+const { gitSnapshotReader, assertHistoricalFile } = require("./test-support/historical-files");
+const path = "scripts/build-champions-pilot-predictions.js";
+const revision = "be95b1470714b023932f82da13586612c1c085b5";
+const sha256 = "135788a773b8607db7f1386a1c9d6b5d2fb8560fdab914d652318bfe95691be5";
+assert.equal(gitSnapshotReader(revision).hash(path).toLowerCase(), sha256);
+assert.equal(assertHistoricalFile({ path, sha256 }, revision), "VERIFIED_GIT_SNAPSHOT");
+assert.throws(() => assertHistoricalFile({ path, sha256: "0".repeat(64) }, revision), /historical content does not match/);
+assert.throws(() => assertHistoricalFile({ path, sha256 }), /HISTORICAL_EVIDENCE_MISSING/);
+assert.throws(() => gitSnapshotReader("HEAD"), /explicit full commit/);
+assert.throws(() => gitSnapshotReader(revision).bytes("../package.json"), /Invalid snapshot path/);
+console.log("OK historical guards: original hash, wrong hash, missing evidence, pinned revision and path isolation");

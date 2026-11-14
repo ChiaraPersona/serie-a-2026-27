@@ -1,0 +1,42 @@
+'use strict';
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const {teamFoulProjection} = require('./predictions/engine');
+const {buildProfiles} = require('./build-team-matchup-profiles');
+const {selectCompletedMatches} = require('./predictions/future-readiness');
+const read = file => JSON.parse(fs.readFileSync(file, 'utf8'));
+const matches = read('data/normalized/matches.json');
+const profiles = buildProfiles({asOfMatchday: 8}).profiles;
+const predictions = read('data/normalized/predictions.json').predictions;
+const discipline = read('data/normalized/team-referee-profiles.json').profiles;
+for (const teamId of ['monza', 'frosinone', 'venezia']) {
+  const profile = profiles.find(p => p.teamId === teamId);
+  const rows = selectCompletedMatches(matches, {competition: 'serie-a', season: '2026-27', teamId, asOfMatchday: 8});
+  const values = rows.map(m => m.teamStats[m.homeTeam === teamId ? 'home' : 'away']?.fouls);
+  assert.equal(values.length, 7);
+  assert(values.every(Number.isFinite));
+  const expected = Number((values.reduce((a, b) => a + b, 0) / values.length).toFixed(1));
+  const result = teamFoulProjection(discipline.find(p => p.teamId === teamId), profile);
+  assert.equal(result.fouls.central, expected);
+  assert.equal(result.basis.sampleSize, 7);
+  // Real call-site output, before publication: absent values must fail this test.
+  const fixture = matches.find(m => m.matchday === 8 && [m.homeTeam, m.awayTeam].includes(teamId));
+  const published = predictions.find(p => p.matchId === fixture.id).teamProjections.find(t => t.teamId === teamId);
+  assert.deepEqual(published.fouls, result.fouls, `${teamId}: falli previsti mancanti o errati`);
+  assert.deepEqual(published.foulsBasis, result.basis);
+  const invalid = structuredClone(profile);
+  invalid.discipline.current.foulsCommittedDistribution.sampleSize--;
+  assert.equal(teamFoulProjection(null, invalid).fouls, null, 'Campione incompleto');
+  invalid.discipline.current.foulsCommittedDistribution.sampleSize++;
+  invalid.dataCutoff.latestMatchdayUsed = 8;
+  assert.equal(teamFoulProjection(null, invalid).fouls, null, 'Gara target inclusa');
+  invalid.dataCutoff.asOfMatchdayExclusive = null;
+  assert.equal(teamFoulProjection(null, invalid).fouls, null, 'Cutoff non verificato');
+  assert.equal(teamFoulProjection(null, null).fouls, null);
+}
+const historic = {rows: [{appearances: 2, foulsAwardedAgainstPerAppearance: 10}, {appearances: 3, foulsAwardedAgainstPerAppearance: 15}]};
+assert.deepEqual(teamFoulProjection(historic, profiles[0]), {fouls: {min: 10, central: 13, max: 16}, basis: null});
+const early = buildProfiles({asOfMatchday: 3}).profiles.find(p => p.teamId === 'monza');
+assert(early.dataCutoff.latestMatchdayUsed < 3);
+assert.equal(teamFoulProjection(null, early).basis.sampleSize, 2, 'Usare solo gare precedenti');
+console.log('PASS: 3 neopromosse, medie reali, dati mancanti, cutoff, storico invariato');

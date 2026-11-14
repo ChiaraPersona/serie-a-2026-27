@@ -1,0 +1,66 @@
+"use strict";
+
+const normalizeMarketName = value => String(value || "").trim().replace(/\s+/g, " ").toUpperCase();
+
+const sisalMyComboMarketNames = new Set([
+  "1X2 ESITO FINALE",
+  "DOPPIA CHANCE",
+  "UNDER/OVER",
+  "GOAL/NOGOAL",
+  "MULTIGOAL",
+  "MULTIGOAL SQUADRA X",
+  "U/O SQUADRA X",
+  "SEGNANO ENTRAMBE ALMENO 2 GOAL",
+  "1 TEMPO: ESITO 1X2",
+  "2 TEMPO: ESITO 1X2",
+  "UNDER/OVER TEMPO X",
+  "GOAL/NOGOAL TEMPO X",
+  "MULTIGOAL TEMPO X",
+  "U/O GOAL SQUADRA TEMPO",
+  "MARCATORE SI/NO (DUO) INC TS",
+  "PRIMO MARCATORE (DUO) INC TS",
+  "GIOCATORE DOPPIETTA O PIÙ (DUO) INC TS",
+  "GIOCATORE (DUO) SEGNA O FA ASSIST INC TS",
+  "GIOCATORE (DUO) SEGNA O CARTELLINO INC TS",
+  "ASSIST (DUO) INC TS",
+  "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+  "U/O TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+  "U/O FALLI COMMESSI GIOCATORE",
+  "U/O FALLI SUBITI GIOCATORE",
+  "CARTELLINO SI/NO (DUO) INC TS",
+  "U/O TIRI IN PORTA",
+  "U/O TIRI IN PORTA SQUADRA X",
+  "1X2 TIRI IN PORTA",
+  "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA",
+  "SQUADRA X EFFETTUA ALMENO Y TIRI IN PORTA IN ENTRAMBI I TEMPI",
+  "U/O CORNER",
+  "U/O CORNER SQUADRA X",
+  "1X2 CORNER",
+  "1X2 HANDICAP CORNER",
+  "ALMENO X CORNER IN ENTRAMBI I TEMPI",
+  "SQUADRA CON PIU' CORNER IN ENTRAMBI I TEMPI",
+  "SQUADRA X ALMENO Y CORNER IN ENTRAMBI I TEMPI",
+  "ENTRAMBE ALMENO X CORNER IN ENTRAMBI I TEMPI",
+  "U/O PUNTI CARTELLINI",
+  "1X2 PUNTI CARTELLINI",
+  "ALMENO X GOAL E Y CORNER IN ENTRAMBI I TEMPI"
+].map(normalizeMarketName));
+
+const sisalMyComboMarketPatterns = [
+  /^PASSAGGIO TURNO(?:$|\s)/,
+  /^MODALIT[AÀ].*PASSAGGIO TURNO$/,
+  /^MARGINE (?:DI )?VITTORIA(?:$|\s)/,
+  /^RISULTATO ESATTO (?:26 ESITI|75 ESITI|A GRUPPI|MULTI ESITI \d+|MULTIPLO \d+ ESITI)$/
+];
+
+function isSisalMyComboMarketName(value) {
+  const name = normalizeMarketName(value);
+  return sisalMyComboMarketNames.has(name) || sisalMyComboMarketPatterns.some(pattern => pattern.test(name));
+}
+
+module.exports = {
+  isSisalMyComboMarketName,
+  normalizeMarketName,
+  sisalMyComboMarketNames,
+  sisalMyComboMarketPatterns
+};

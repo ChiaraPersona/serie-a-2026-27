@@ -195,8 +195,8 @@ main{padding-top:44px}
 .hero h1{max-width:760px;font-size:clamp(44px,6.4vw,82px);letter-spacing:-.055em;text-wrap:balance}
 
 .section{margin-top:72px}
-
-
+.section-heading{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}
+.section-heading h2{margin:0}
 body:not([data-page="home"]) .hero{display:flex;min-height:0;padding:32px 0 28px;overflow:visible;border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;box-shadow:none}
 body:not([data-page="home"]) .hero::after{display:none}
 body:not([data-page="home"]) .hero>div:first-child{width:100%}
@@ -211,7 +211,7 @@ main{padding-top:38px}
 body:not([data-page="home"]) .hero{padding:40px 4px 30px;border-bottom-color:rgba(255,255,255,.1)}
 body:not([data-page="home"]) .hero h1{font-weight:710;letter-spacing:-.055em}
 .section{margin-top:82px}
-
+.section-heading{margin-bottom:26px}
 .hero{border-color:rgba(119,178,248,.27);background:radial-gradient(circle at 86% 12%,rgba(59,133,231,.26),transparent 25rem),linear-gradient(145deg,rgba(16,67,139,.82),rgba(5,34,80,.92));box-shadow:0 34px 90px rgba(0,17,57,.34),inset 0 1px rgba(157,201,255,.12)}
 
 .hero{
@@ -708,6 +708,7 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+
 .home-dashboard .home-match-row:has(a):hover{background:#edf2f4}
 
 
@@ -723,14 +724,19 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 @media(max-width:760px){
 }
-@media(max-width:1100px){
 
-.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams){grid-template-columns:minmax(0,1fr) auto;align-content:start;gap:10px;padding:16px;min-height:150px}
+
+@media(max-width:760px){
+
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams){position:relative;grid-template-columns:minmax(0,1fr);justify-items:center;align-content:center;gap:10px;padding:16px;min-height:104px;text-align:center}
 .home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>.home-editorial-icon{grid-area:1 / 1;width:28px;height:28px}
-.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>.home-editorial-arrow{grid-area:1 / 2}
-.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>div{grid-area:2 / 1 / 3 / -1}
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>.home-editorial-arrow{position:absolute;top:16px;right:16px}
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>div{grid-area:2 / 1}
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams) strong{margin:0}
 
-.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams) small{font-size:12px}}
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams) small{display:none}
+
+}
 @media(max-width:580px){
 
 
@@ -739,6 +745,8 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 }
+
+
 
 
 
@@ -1036,7 +1044,7 @@ body,button,input,select,textarea{font-family:var(--font-body)}
   grid-template-columns:minmax(140px,.72fr) minmax(280px,1.55fr);
   padding-block:10px;
 }
-
+.section-heading>p{color:var(--muted);font-size:13px}
 
 
 
@@ -3386,7 +3394,7 @@ th,td{padding:10px}}
 .hero{padding:26px 22px;border-radius:22px}
 .hero h1{font-size:clamp(40px,13vw,58px)}
 
-
+.section-heading{align-items:flex-start;flex-direction:column}
 
 .team-directory-grid{padding-inline:0}
 .team-directory-card{border-radius:16px}}
@@ -5236,7 +5244,7 @@ body :is(.site-header,main,#team-squad-app,.site-footer-inner){
 body:not([data-page="home"]) main{padding-top:32px;padding-bottom:64px}
 body:not([data-page="home"]) .site-footer{margin-top:32px}
 body:not([data-page="home"]) main>.section{margin-top:68px}
-
+body:not([data-page="home"]) main>.section>.section-heading{margin-bottom:22px}
 body:not([data-page="home"]) :is(.detail-section,.subpage-header){padding-block:27px}
 
 
@@ -5256,7 +5264,7 @@ body :is(.site-header,main,#team-squad-app,.site-footer-inner){
 }
 body:not([data-page="home"]) main{padding-block:var(--ds-space-6) var(--ds-space-8)}
 body:not([data-page="home"]) main>.section{margin-top:var(--ds-space-8)}
-
+body main>.section>.section-heading{margin-bottom:var(--ds-space-5)}
 
 
 body #app>.hero h1,
@@ -5314,7 +5322,7 @@ body #app:has(>.readings-index>.page-heading){padding-top:var(--ds-space-6)}
   body #app:has(>.readings-index>.page-heading){padding-top:var(--ds-space-5)}}
 
 
-
+body #app>.section>.section-heading h2,
 body #app>.readings-index :is(.ri-heading-line>h2,.ri-section-title),
 body #app>.player-comparator>header h2{
   font-family:var(--ds-font-display);

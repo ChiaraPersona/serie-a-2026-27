@@ -1,0 +1,94 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const http = require('node:http');
+const assert = require('node:assert/strict');
+const {chromium} = require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const root = path.resolve(__dirname, '..');
+let failNavigation = false;
+const types = {'.html':'text/html', '.js':'text/javascript', '.mjs':'text/javascript', '.mjs':'text/javascript', '.css':'text/css', '.json':'application/json', '.webmanifest':'application/manifest+json', '.png':'image/png'};
+// Mount below a subpath too, as on repository-based static hosting.
+const server = http.createServer((req, res) => {
+  const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
+  if (failNavigation && pathname === '/demo/index.html') {req.socket.destroy(); return;}
+  const relative = pathname.replace(/^\/demo/, '');
+  const file = path.resolve(root, '.' + relative + (relative.endsWith('/') ? 'index.html' : ''));
+  if (!file.startsWith(root + path.sep)) {res.writeHead(403).end(); return;}
+  fs.readFile(file, (err, data) => {
+    res.writeHead(err ? 404 : 200, {'Content-Type':types[path.extname(file)] || 'application/octet-stream'});
+    res.end(err ? '' : data);
+  });
+});
+(async () => {
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  const base = `http://127.0.0.1:${server.address().port}/demo/`;
+  const browser = await chromium.launch({headless:true, channel:'chrome'});
+  try {
+    for (const mobile of [false, true]) {
+      const context = await browser.newContext({viewport:mobile ? {width:390,height:844} : {width:1440,height:1000}, ...(mobile ? {userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1',isMobile:true,hasTouch:true} : {})});
+      const page = await context.newPage();
+      page.on('pageerror', error => console.error('Browser:', error.message));
+      await page.goto(base + 'index.html');
+      await page.evaluate(async () => {
+        await navigator.serviceWorker.ready;
+        if (!navigator.serviceWorker.controller) await new Promise(resolve => navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));
+      });
+      const manifest = await page.evaluate(async () => (await fetch(document.querySelector('link[rel="manifest"]').href)).json());
+      assert.equal(manifest.display, 'standalone');
+      for (const icon of manifest.icons) {
+        assert.equal(await page.evaluate(async src => (await fetch(src)).status,base + icon.src),200);
+      }
+      assert.equal(await page.locator('.install-app-area, [data-install-android]').count(),0);
+      assert.equal(await page.locator('#site-nav a[href="download.html"]').count(),0);
+      await page.locator('.home-rail a[href="download.html"]').waitFor();
+      assert.equal(await page.locator('main').evaluate(el => el.scrollWidth <= innerWidth),true);
+      await page.locator('.home-rail a[href="download.html"]').click();
+      await page.waitForURL(base + 'download.html');
+      assert.equal(await page.locator('.download-card').count(),2);
+      assert.equal(await page.locator('.download-icon svg').count(),2);
+      assert.equal(await page.locator('main').evaluate(el => el.scrollWidth <= innerWidth),true);
+      assert.equal(await page.locator('#site-nav a[href="download.html"]').count(),0);
+      if (mobile) {
+        await page.getByRole('button',{name:'Menu',exact:true}).click();
+        assert.equal(await page.locator('.menu-button').getAttribute('aria-expanded'),'true');
+        assert(await page.getByText('iPhone e iPad',{exact:true}).isVisible());
+        assert(await page.getByText('Condividi',{exact:true}).isVisible());
+        await page.getByRole('button',{name:'Menu',exact:true}).click();
+      }
+      await page.evaluate(() => {
+        window.pwaPrompted = false;
+        const event = new Event('beforeinstallprompt', {cancelable:true});
+        event.prompt = async () => {window.pwaPrompted = true;};
+        event.userChoice = Promise.resolve({outcome:'accepted'});
+        window.dispatchEvent(event);
+      });
+      await page.getByRole('button',{name:'Installa su Android',exact:true}).click();
+      assert.equal(await page.evaluate(() => window.pwaPrompted),true);
+      const out = path.join(root,'output','app-download');
+      fs.mkdirSync(out,{recursive:true});
+      await page.screenshot({path:path.join(out,mobile ? 'mobile.png' : 'desktop.png'),fullPage:true});
+      await page.goto(base + 'statistiche-squadra/inter.html');
+      assert.equal(await page.locator('link[rel="manifest"]').getAttribute('href'),'../manifest.webmanifest');
+      failNavigation = true;
+      await page.goto(base + 'index.html');
+      assert.equal(await page.evaluate(() => navigator.onLine),true);
+      assert.equal(await page.locator('h1').textContent(),'Pagina non raggiungibile');
+      failNavigation = false;
+      await page.getByRole('button',{name:'Riprova'}).click();
+      await page.waitForSelector('.site-header');
+      await context.setOffline(true);
+      await page.goto(base + 'index.html');
+      assert.equal(await page.locator('h1').textContent(),'Pagina non raggiungibile');
+      assert.equal(await page.evaluate(async () => {
+        try {await fetch('data/normalized/teams.json'); return 'stale';} catch {return 'unavailable';}
+      }),'unavailable');
+      await context.setOffline(false);
+      await page.waitForSelector('.site-header');
+      await page.goto(base + 'offline.html');
+      await page.getByRole('button',{name:'Riprova'}).click();
+      await page.waitForURL(base);
+      await page.waitForSelector('.site-header');
+      await context.close();
+    }
+    console.log('PASS: desktop/mobile, installazione, sottocartella, offline, dati senza cache e riconnessione');
+  } finally {await browser.close(); server.close();}
+})().catch(error => {console.error(error); server.close(); process.exitCode=1;});
