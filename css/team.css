@@ -1083,6 +1083,10 @@ body #team-squad-app.team-dashboard-pilot .squad-table--compact{width:100%;min-w
 /* Phase 4: directory only; shared flip faces and Schedina stay independent. */
 body[data-page="team-stats"] #app>.team-directory-grid{gap:var(--ds-space-4);margin-bottom:var(--ds-space-5)}
 @media(min-width:761px){body[data-page="team-stats"] #app>.team-directory-grid .team-flip-card{height:280px}}
+/* Static card faces must contribute their full height to the directory rows. */
+@media(hover:none),(max-width:760px){
+  body[data-page="team-stats"] #app>.team-directory-grid .team-flip-card{height:auto}
+}
 
 /* Atalanta: keep the pitch on a transparent lineup container. */
 #team-squad-app.team-dashboard-pilot .probable-lineup-board{background:transparent;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;color:var(--text)}

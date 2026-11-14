@@ -1,9 +1,9 @@
 import {esc,number,pct,finite,metric,missing} from './format.mjs?v=20261022-assets-v1';
 import {lineupPositions} from '../../components/lineup-field.mjs?v=20261022-assets-v1';
 import {renderLineupKit} from '../../components/lineup-kit.mjs?v=20261024-solid-goalkeepers';
-import {individualPlayers} from './evidence.mjs?v=20261022-assets-v1';
+import {individualPlayers} from './evidence.mjs?v=20261113-lineup-reference';
 import {loadXgotStatistics,playerXgotMarkup} from '../../components/xgot-statistics.mjs?v=20261106-xgot';
-const label=s=>s==='official'?'Ufficiale':s==='probable'?'Probabile':s==='reference'?'Riferimento':'Da confermare';
+const label=s=>s==='official'?'Ufficiale':s==='probable'?'Probabile':s==='reference'?'Riferimento provvisorio':'Da confermare';
 function preserve(container,content,title){
  const original=[...container.childNodes];
  if(title){const backup=document.createElement('details');backup.className='rd-disclosure rd-original-detail';backup.innerHTML=`<summary>${esc(title)}</summary>`;original.forEach(n=>backup.append(n));container.replaceChildren(content,backup)}
@@ -17,7 +17,7 @@ export function formationMarkup(evidence){
   const team=evidence.directory?.teams?.find(t=>t.id===l.side.id)||l.side;
   return positions.map(pos=>`<div class="rd-field-player is-${i?'away':'home'}${pos.goalkeeper?' is-goalkeeper':''}" style="left:${pos.x}%;top:${pos.y}%"><span class="rd-kit" aria-label="Numero ${pos.name.shirtNumber??'non disponibile'}">${renderLineupKit(l.kitTeamId?{...team,id:l.kitTeamId}:team,{goalkeeper:pos.goalkeeper,competition:evidence.competition,shirtNumber:evidence.competition==='champions'?pos.name.shirtNumber:null})}${evidence.competition==='champions'?'':`<b>${esc(pos.name.shirtNumber??'—')}</b>`}</span><strong>${esc(pos.name.name)}</strong></div>`).join('');
  }).join('');
- const headings=`<div class="rd-lineup-head">${evidence.lineups.map(l=>`<div><h3>${esc(l.side.name)}</h3><b>${esc(l.formation||'Modulo N/D')} · ${label(l.status)}</b><span>Allenatore: ${esc(l.coach||'N/D')}</span></div>`).join('')}</div>`;
+ const headings=`<div class="rd-lineup-head">${evidence.lineups.map(l=>`<div><h3>${esc(l.side.name)}</h3><b>${esc(l.formation||'Modulo N/D')} · ${label(l.status)}</b>${l.reference?`<span data-lineup-reference="${esc(l.reference.fixtureId)}">Ultimo undici disponibile · ${esc(l.reference.date.split('-').reverse().join('/'))}. Formazione della prossima gara da confermare.</span>`:''}<span>Allenatore: ${esc(l.coach||'N/D')}</span></div>`).join('')}</div>`;
  // Internal note: one shared pitch; narrow screens retain horizontal scrolling and lists.
  // Missing shirt numbers are displayed as an em dash.
  const pitch=`<div class="rd-pitch-scroll" tabindex="0" role="region" aria-label="Campo delle formazioni, scorrimento orizzontale"><div class="rd-pitch"><svg viewBox="0 0 1080 600" aria-hidden="true"><g fill="none" stroke="currentColor"><rect x="14" y="14" width="1052" height="572"/><path d="M540 14V586M14 170H165V430H14M1066 170H915V430H1066"/><circle cx="540" cy="300" r="70"/></g></svg>${field}</div></div>`;
@@ -36,7 +36,7 @@ export function playersMarkup(model,evidence){
  });
  const assigned=new Set();
  const columns=[model.home,model.away].map((side,i)=>{
-  const sideRows=rows.filter(({player:p})=>!assigned.has(p)&&(p.team===side.name||p.team===side.id||p.source.teamId===side.id||evidence.lineups[i]?.players.some(q=>q.id&&q.id===p.id)));const goalkeeperIds=new Set(lineupPositions(evidence.lineups[i]||{players:[]}).filter(p=>p.goalkeeper&&p.name.id).map(p=>p.name.id));
+  const sideRows=rows.filter(({player:p})=>!assigned.has(p)&&(p.team===side.name||p.team===side.id||(!!side.id&&p.source.teamId===side.id)||evidence.lineups[i]?.players.some(q=>q.id&&q.id===p.id)));const goalkeeperIds=new Set(lineupPositions(evidence.lineups[i]||{players:[]}).filter(p=>p.goalkeeper&&p.name.id).map(p=>p.name.id));
   const isGoalkeeper=p=>goalkeeperIds.has(p.id)||/^(portiere|por|gk|goalkeeper)$/i.test(String(p.role||p.member?.role||p.source.role||'').trim());
   sideRows.sort((a,b)=>Number(isGoalkeeper(b.player))-Number(isGoalkeeper(a.player)));sideRows.forEach(r=>assigned.add(r.player));
   return `<section class="rd-player-team" data-player-team="${i?'away':'home'}" aria-label="Giocatori ${esc(side.name)}"><h3 class="rd-player-team-name">${esc(side.name)}</h3><div class="rd-player-column-labels" aria-hidden="true"><span>Giocatore</span><span>Tiri</span><span>SOT</span></div>${sideRows.map(r=>r.html).join('')||missing('Proiezioni individuali non disponibili.')}</section>`;

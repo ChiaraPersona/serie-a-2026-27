@@ -449,7 +449,7 @@ export function createPage(deps){
     const target=section||host;
     const markup=controller.championsWorkspaceMarkup(workspace,fixtureId);
     if(section){
-      target.insertAdjacentHTML('beforeend',`<details class="rd-disclosure rd-champions-catalog"><summary>${matchday===3?'Schedina personale e dettagli dei pronostici':'Catalogo completo, MyCombo e schedina personale'}</summary>${markup}</details>`);
+      target.insertAdjacentHTML('beforeend',`<details class="rd-disclosure rd-champions-catalog"><summary>${matchday===3?'Schedina personale e dettagli dei pronostici':'Dettagli dei pronostici e MyCombo'}</summary>${markup}</details>`);
       target.querySelectorAll('.betting-round-page > .rd-section-heading,.betting-round-page > .betting-round-heading').forEach(n=>n.remove());
     }else target.insertAdjacentHTML('beforeend',markup);
     const store=controller.mountChampionsWorkspace(workspace);
@@ -481,7 +481,7 @@ export function createPage(deps){
       const shared=await load('../generated/champions-shared-scenarios.json');
       const prediction=shared.fixtures.find(f=>f.fixtureId===requestedMatchId);
       if(prediction){
-        const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261104-player-history-v1');
+        const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261113-lineup-reference');
         const playerMatchHistory=loadGenerated?await loadGenerated('champions-player-match-history.json'):null;
         let probableFixture,probableMarkup;
         if(requestedCalendarFixture.matchday===4){
@@ -503,7 +503,7 @@ export function createPage(deps){
       const sevenOfficial=await loadDerived('champions-md03/official-individuals-seven-v2-2026-10-20.json');
       const todayOfficial=await loadDerived('champions-md03/official-individuals-2026-10-21.json');
       const probableFixture=todayOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||sevenOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||officialProbables.fixtures.find(f=>f.fixtureId===requestedMatchId)||probables.fixtures.find(f=>f.fixtureId===requestedMatchId);
-      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261104-player-history-v1');
+      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261113-lineup-reference');
       const playerMatchHistory=loadGenerated?await loadGenerated('champions-player-match-history.json'):null;
       await mountChampionsReading({fixture:requestedCalendarFixture,prediction:fixture.forecast,profile,probableFixture,playerMatchHistory,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:md3RefereeMarkup(requestedCalendarFixture,profile,branding),probableMarkup:md3ProbableMarkup(probableFixture),extend:({shell})=>appendSharedSchedina(3,requestedMatchId,shell)});
       return;
@@ -522,7 +522,7 @@ export function createPage(deps){
       let finishReading=null;
       if(isReadingPilot('champions',requestedMatchId,location.search)&&typeof document.createElement==='function'){
         try{
-          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261106-current-tactics-v1')]);
+          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs?v=20261022-assets-v1'),import('./reading-detail/shell.mjs?v=20261113-lineup-reference')]);
           const analysis={match:requestedCalendarFixture,matches:data.fixtures,lineups:md2MarketEntry?.lineups,availability:md2MarketEntry?.availability,referee:refereeProfile,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads,teamProfiles:activePilot.profiles};
           const model=adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[],analysis});
           const prepared=await prepareReadingShell(model);

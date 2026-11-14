@@ -1,25 +1,26 @@
+import {icon} from '../../components/icon.mjs';
 import {imageSource} from '../../core/image-source.mjs?v=20261022-assets-v1';
 import {installForecasts} from './forecasts.mjs?v=20261025-clean-copy';
 import {installScenario} from './scenario.mjs?v=20261104-european-result-v1';
-import {loadEvidence,readArtifact} from './evidence.mjs?v=20261104-tactical-profiles-v3';
-import {installPeople} from './people.mjs?v=20261025-player-history';
-import {installTacticsHistory} from './tactics-history.mjs?v=20261106-current-tactics-v6';
+import {loadEvidence,readArtifact} from './evidence.mjs?v=20261113-lineup-reference';
+import {installPeople} from './people.mjs?v=20261113-lineup-reference';
+import {installTacticsHistory} from './tactics-history.mjs?v=20261113-reading-parity';
 import {loadHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
 import {mountRefereeHistory} from './referee-history.mjs?v=20261104-tactical-profiles-v3';
 import {teamMatchHistoryMarkup} from '../../components/team-match-history.mjs?v=20261106-all-europe-v1';
+import {bookingsMarkup} from './bookings.mjs?v=20261113-reading-parity';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
-  ['scenario','Scenario','01','M4 16l5-5 4 3 7-10'],
-  ['pronostici','Pronostici','02','M4 6h16 M4 12h16 M4 18h16'],
-  ['formazioni','Formazioni','03','M3 5h18v14H3z M12 5v14 M9 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0'],
-  ['giocatori','Giocatori','04','M8 8a4 4 0 1 0 8 0a4 4 0 1 0-8 0 M4 21v-2a8 8 0 0 1 16 0v2'],
-  ['disciplina','Disciplina','05','M7 3h10v18H7z'],
-  ['tattica','Analisi tattica','06','M4 4h5v5H4z M15 15h5v5h-5z M6 9v8h9 M15 6h5 M18 3v6'],
-  ['storico','Precedenti','07','M4 8a9 9 0 1 1-1 8 M4 3v6h6 M12 7v6l4 2'],
-  ['verifica','Tabellino e risultati','08','M4 4h16v16H4z M8 12l3 3 5-6'],
-  ['fonti','Fonti e metodo','09','M5 3h10l4 4v14H5z M15 3v5h4 M8 12h8 M8 16h6']
+  ['scenario','Scenario','01','TrendingUp'],
+  ['pronostici','Pronostici','02','List'],
+  ['formazioni','Formazioni','03','Users'],
+  ['giocatori','Giocatori','04','UserRound'],
+  ['disciplina','Disciplina','05','RectangleVertical'],
+  ['tattica','Analisi tattica','06','Waypoints'],
+  ['storico','Precedenti','07','History'],
+  ['verifica','Tabellino e risultati','08','ClipboardCheck'],
+  ['fonti','Fonti e metodo','09','FileText']
 ];
-const icon=path=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`;
 
 export function readingSections(model){
   return definitions.filter(([key])=>!['verifica','fonti'].includes(key)&&(key!=='pronostici'||model.competition==='champions'||model.forecasts?.length>0))
@@ -85,7 +86,7 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     const collapsible=key==='pronostici';
     const section=document.createElement(collapsible?'details':'section');section.className='rd-section';section.id='lettura-'+key;
     const heading=collapsible?'summary':'header';
-    section.innerHTML=`<${heading} class="rd-section-heading"><span class="rd-section-number">${number}</span>${icon(path)}<h2>${title}</h2>${collapsible?'<span class="rd-forecast-toggle" aria-hidden="true">⌄</span>':''}</${heading}><div class="rd-section-content"></div>`;
+    section.innerHTML=`<${heading} class="rd-section-heading"><span class="rd-section-number">${number}</span>${icon(path)}<h2>${title}</h2>${collapsible?`<span class="rd-forecast-toggle" aria-hidden="true">${icon('ChevronDown')}</span>`:''}</${heading}><div class="rd-section-content"></div>`;
     return [key,section];
   }));
   const placements=[];
@@ -127,6 +128,10 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     if(model.competition==='serie-a'&&visibleDefinitions.some(([key])=>key==='pronostici')){const forecasts=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecasts.undo);}
     undo.push(installScenario(model,groups.get('scenario').lastElementChild));
     undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));
+    if(model.competition==='champions'&&!groups.get('disciplina').querySelector('.prediction-booked-panel')){
+      const bookings=document.createElement('div');bookings.innerHTML=bookingsMarkup(model,evidence);
+      groups.get('disciplina').lastElementChild.prepend(bookings.firstElementChild);
+    }
     undo.push(installTacticsHistory(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild]))));
     if(model.competition==='serie-a'){
       const history=await readArtifact('data/generated/serie-a-team-history.json');

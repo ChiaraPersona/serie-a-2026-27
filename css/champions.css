@@ -1407,9 +1407,9 @@ body[data-page="champions"] .champions-overview .champions-round-summary .table-
  body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td){box-sizing:border-box;padding:10px 6px}
  body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):first-child{width:42px}
  body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(3){width:200px;white-space:normal}
- body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(n+3):not(:last-child){width:calc((100% - 370px)/9)}
+ body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(n+4):not(:last-child){width:calc((100% - 370px)/9)}
  body[data-page="champions"] .champions-overview .champions-standings-table .team-with-logo{min-width:0;white-space:normal}
- body[data-page="champions"] .champions-overview .champions-standings-table .team-name{white-space:normal;overflow-wrap:anywhere}
+ body[data-page="champions"] .champions-overview .champions-standings-table .team-name{min-width:0;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:normal}
 }
 
 /* Matchday glass: misted on completed rounds, lifted on upcoming rounds. */
@@ -1466,12 +1466,14 @@ body[data-page="champions"] .champions-overview .champions-team-logo-scroll::-we
 /* Keep identity visible while the standings statistics scroll. */
 body[data-page="champions"] .champions-standings-table .champions-pinned-logo{display:none}
 @media(max-width:900px){
- body[data-page="champions"] .champions-overview .champions-standings-table{table-layout:fixed;width:1088px}
+ body[data-page="champions"] .champions-overview .champions-standings-table{table-layout:fixed;width:920px;min-width:920px}
  body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):first-child{position:sticky;left:0;z-index:3;box-sizing:border-box;width:50px;min-width:50px}
  body[data-page="champions"] .champions-overview .champions-standings-table .champions-pinned-logo{display:table-cell;position:sticky;left:50px;z-index:2;box-sizing:border-box;width:50px;min-width:50px;padding-inline:10px}
  body[data-page="champions"] .champions-standings-table .champions-pinned-logo .team-with-logo{justify-content:center}
  body[data-page="champions"] .champions-standings-table td:nth-child(3) .team-logo{display:none}
- body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(3){width:160px;white-space:normal}
+ body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(3){width:190px;white-space:normal}
+ body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(n+4):not(:last-child){width:56px;padding-inline:6px}
+ body[data-page="champions"] .champions-overview .champions-standings-table .team-name{min-width:0;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:normal}
 }
 
 @media(max-width:900px){body[data-page="champions"] .champions-overview .champions-standings-table tbody tr>td:first-child{position:sticky;left:0}}

@@ -59,7 +59,7 @@ export async function loadEvidence(model,{benchForecasts=true}={}){
 }
 export function playerLineupStatus(id,lineups){
  if(!id)return 'unknown';
- const relevant=lineups.filter(l=>['official','probable'].includes(l.status));
+ const relevant=lineups.filter(l=>['official','probable','reference'].includes(l.status));
  const starter=relevant.some(l=>l.players.some(p=>p.id===id)),bench=relevant.some(l=>(l.benchPlayerIds||[]).includes(id));
  return starter===bench?'unknown':starter?'starter':'bench';
 }
@@ -89,7 +89,7 @@ export function individualPlayers(model,evidence){
    row.number=p.shirtNumber??row.number;row.member=p.member||row.member;
    row.role=row.role||p.member?.role||null;
    if(status==='starter')assignedStarters.add(row);
-   if(status==='starter'||!assignedStarters.has(row))row.lineupStatus=['official','probable'].includes(l.status)?status:'unknown';
+   if(status==='starter'||!assignedStarters.has(row))row.lineupStatus=['official','probable','reference'].includes(l.status)?status:'unknown';
   }
  }
  return connectStarterScenarios(model,evidence,connectBenchForecasts(model,evidence,rows));

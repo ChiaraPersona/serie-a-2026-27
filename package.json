@@ -213,9 +213,13 @@
     "update:champions": "node scripts/update-matchday.cjs --competition champions",
     "build:volumes": "node scripts/build-team-volume-profiles.js",
     "build:champions:md03": "node scripts/update-matchday.cjs --competition champions --matchday 3",
-    "test:retired-sections": "node scripts/test-retired-sections.cjs"
+    "test:retired-sections": "node scripts/test-retired-sections.cjs",
+    "build:icons": "node scripts/build-lucide-icons.cjs"
   },
   "engines": {
     "node": ">=22.12.0"
+  },
+  "devDependencies": {
+    "lucide": "1.73.0"
   }
 }

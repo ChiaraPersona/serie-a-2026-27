@@ -16,6 +16,7 @@ const championsPageOnly = process.argv.includes('--champions-page-only');
 const md3PagesOnly = process.argv.includes('--md3-pages-only') || process.argv.includes('--champions-pages-only');
 const readingPagesOnly = bettingPageOnly || md3PagesOnly || championsPageOnly || readingsIndexOnly || process.argv.includes('--reading-pages-only');
 const teamPagesOnly = readingPagesOnly || process.argv.includes('--team-pages-only');
+if (!process.argv.includes('--team-pages-only') && !readingsIndexOnly && !bettingPageOnly) require('./build-champions-lineup-references.cjs').build();
 if (!teamPagesOnly && !presentationOnly) require('./apply-official-starter-policy.js').build();
 if (!teamPagesOnly && !presentationOnly && fs.existsSync(path.join(root,'data/sources/reading-referee-match-history.json'))) require('./build-reading-referee-history.js').build();
 // Readings consume a separate bench artifact; production starter forecasts stay untouched.

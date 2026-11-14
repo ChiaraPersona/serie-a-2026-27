@@ -1431,7 +1431,7 @@ body[data-page="champions"] .champions-overview .champions-standings-table :is(t
 
 
 
-
+.prediction-v2-empty{color:var(--muted);font-weight:750}
 
 
 
@@ -2334,6 +2334,7 @@ body[data-page="champions"] .champions-overview .champions-standings-table :is(t
 
 @media(max-width:700px){
 }
+
 
 
 
@@ -5287,9 +5288,9 @@ body[data-page="champions"] .champions-overview .champions-round-summary .table-
 body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td){box-sizing:border-box;padding:10px 6px}
 body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):first-child{width:42px}
 body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(3){width:200px;white-space:normal}
-body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(n+3):not(:last-child){width:calc((100% - 370px)/9)}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(n+4):not(:last-child){width:calc((100% - 370px)/9)}
 body[data-page="champions"] .champions-overview .champions-standings-table .team-with-logo{min-width:0;white-space:normal}
-body[data-page="champions"] .champions-overview .champions-standings-table .team-name{white-space:normal;overflow-wrap:anywhere}}
+body[data-page="champions"] .champions-overview .champions-standings-table .team-name{min-width:0;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:normal}}
 body[data-page="champions"] .champions-overview .champions-days{gap:12px;padding:12px 6px 18px;perspective:800px}
 body[data-page="champions"] .champions-overview .champions-day{position:relative;isolation:isolate;overflow:visible;border:0;outline:none;border-radius:14px;background:linear-gradient(150deg,#112b4e,#081a34);color:#c3d4e9;box-shadow:0 7px 14px #000b2466,inset 0 1px 1px #c2e2ff18,inset 0 -2px 4px #000b244d;transition:background .22s,box-shadow .22s,transform .22s}
 body[data-page="champions"] .champions-overview .champions-day::before{content:"";position:absolute;z-index:-1;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,#d6e8ff24,#b4d6ff09 55%,#d4ecff14);box-shadow:inset 0 1px 0 #e0f2ff26;opacity:.45;transform-origin:50% 0;transition:opacity .22s,transform .22s}
@@ -5330,12 +5331,14 @@ body[data-page="champions"] .champions-overview .champions-team-logo-grid a{flex
 body[data-page="champions"] .champions-overview .champions-team-logo-scroll{scrollbar-width:none;-ms-overflow-style:none}
 body[data-page="champions"] .champions-overview .champions-team-logo-scroll::-webkit-scrollbar{display:none;width:0;height:0}
 body[data-page="champions"] .champions-standings-table .champions-pinned-logo{display:none}
-@media(max-width:900px){body[data-page="champions"] .champions-overview .champions-standings-table{table-layout:fixed;width:1088px}
+@media(max-width:900px){body[data-page="champions"] .champions-overview .champions-standings-table{table-layout:fixed;width:920px;min-width:920px}
 body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):first-child{position:sticky;left:0;z-index:3;box-sizing:border-box;width:50px;min-width:50px}
 body[data-page="champions"] .champions-overview .champions-standings-table .champions-pinned-logo{display:table-cell;position:sticky;left:50px;z-index:2;box-sizing:border-box;width:50px;min-width:50px;padding-inline:10px}
 body[data-page="champions"] .champions-standings-table .champions-pinned-logo .team-with-logo{justify-content:center}
 body[data-page="champions"] .champions-standings-table td:nth-child(3) .team-logo{display:none}
-body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(3){width:160px;white-space:normal}}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(3){width:190px;white-space:normal}
+body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(n+4):not(:last-child){width:56px;padding-inline:6px}
+body[data-page="champions"] .champions-overview .champions-standings-table .team-name{min-width:0;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:normal}}
 @media(max-width:900px){body[data-page="champions"] .champions-overview .champions-standings-table tbody tr>td:first-child{position:sticky;left:0}}
 /* site-layout.css: original cascade position */
 body :is(.site-header,main,#team-squad-app,.site-footer-inner){
@@ -6686,57 +6689,37 @@ body[data-reading-detail-theme="champions"] .rd-compact-forecast-table [data-pub
 body[data-reading-detail-theme="champions"] .rd-shell .rd-diverging-row[data-statistic="fouls"]{--rd-home:var(--rd-accent)}
 body[data-reading-detail-theme="champions"] .rf-history tbody tr:hover,
 body[data-reading-detail-theme="champions"] .rf-history tbody tr:hover td{background:transparent;color:inherit}
-.rd-shell .rd-tactical-column[data-tactical-team]{gap:16px;padding:20px;border:1px solid var(--rd-line);border-radius:16px;background:var(--rd-soft);align-self:start}
-.rd-shell .rd-tactical-column[data-tactical-team]>p{margin:0}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-team h3{font-size:22px;line-height:1.25}
-.rd-shell .rd-tactical-column[data-tactical-team]>.rd-footnote:not(.rd-tactical-baseline){align-self:flex-start;padding:5px 10px;border:1px solid var(--rd-line);border-radius:7px;font-size:11px;line-height:1.5}
-.rd-shell .rd-tactical-column[data-tactical-team]>.rd-tactical-reading{font-size:13px;line-height:1.65;color:var(--rd-muted)}
-.rd-shell .rd-tactical-column[data-tactical-team]>.rd-tactical-baseline{border-top:1px solid var(--rd-line);padding-top:14px;font-size:10px;line-height:1.6}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px;row-gap:0}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics>div{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:5px 6px;padding:11px 0;min-width:0}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics dt{grid-column:1 / -1;font-size:11px;line-height:1.4;overflow-wrap:anywhere}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics dd{font-size:22px;line-height:1.25;letter-spacing:-.025em}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics small{font-size:10px;line-height:1.4;color:var(--rd-muted);white-space:nowrap}
-.rd-shell .rd-tactical-column[data-tactical-team]>.rd-disclosure{margin:0;padding:0 0 12px}
-.rd-shell .rd-tactical-column[data-tactical-team]>.rd-disclosure>summary{padding:10px 0;min-height:24px;font-size:11px;line-height:1.6;overflow-wrap:anywhere}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-directions{padding-top:4px}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-directions h4{margin:0 0 14px;font-size:11px;line-height:1.5;letter-spacing:.02em}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-channels{margin:0;gap:10px}
-@media(max-width:600px){.rd-shell .rd-tactical-column[data-tactical-team]{padding:16px;gap:14px}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-team h3{font-size:20px}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics{column-gap:16px}
-.rd-shell .rd-tactical-column[data-tactical-team] .rd-tactical-metrics dd{font-size:21px}}
-.rd-shell .rd-tactical-comparison:has(.rd-tactical-serie-a){align-items:start;gap:24px}
-.rd-shell .rd-tactical-serie-a{display:flex;flex-direction:column;grid-row:auto;gap:20px;min-width:0;padding:24px;border:1px solid var(--rd-line);border-radius:16px;background:var(--rd-paper,#fff)}
-.rd-shell .rd-tactical-serie-a .rd-tactical-team{padding-bottom:16px;border-bottom:2px solid var(--rd-home)}
-.rd-shell .rd-tactical-serie-a[data-tactical-side="away"] .rd-tactical-team{border-color:var(--rd-away)}
-.rd-shell .rd-tactical-serie-a .rd-tactical-team h3{font-size:26px;line-height:1.2}
-.rd-shell .rd-tactical-serie-a .rd-tactical-current{min-width:0}
+.rd-shell .rd-tactical-comparison:has(.rd-tactical-sheet){align-items:start;gap:24px}
+.rd-shell .rd-tactical-sheet{display:flex;flex-direction:column;grid-row:auto;gap:20px;min-width:0;padding:24px;border:1px solid var(--rd-line);border-radius:16px;background:var(--rd-surface)}
+.rd-shell .rd-tactical-sheet .rd-tactical-team{padding-bottom:16px;border-bottom:2px solid var(--rd-home)}
+.rd-shell .rd-tactical-sheet[data-tactical-side="away"] .rd-tactical-team{border-color:var(--rd-away)}
+.rd-shell .rd-tactical-sheet .rd-tactical-team h3{font-size:26px;line-height:1.2}
+.rd-shell .rd-tactical-sheet .rd-tactical-current{min-width:0}
 .rd-shell .rd-sample-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .rd-shell .rd-sample-heading h4{margin:0;font-size:14px;font-weight:700}
 .rd-shell .rd-sample-heading span,.rd-shell .rd-sample-dates{color:var(--rd-muted);font-size:11px;line-height:1.6}
 .rd-shell .rd-sample-dates{margin:5px 0 14px}
-.rd-shell .rd-tactical-serie-a .rd-tactical-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 16px;margin:0}
-.rd-shell .rd-tactical-serie-a .rd-tactical-metrics>div{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:5px;min-width:0;padding:14px 0;border-bottom:1px solid var(--rd-line)}
-.rd-shell .rd-tactical-serie-a .rd-tactical-metrics dt{font-size:11px;line-height:1.5;min-height:33px;overflow-wrap:anywhere}
-.rd-shell .rd-tactical-serie-a .rd-tactical-metrics dd{margin:0;font-size:25px;line-height:1.15;font-variant-numeric:tabular-nums}
-.rd-shell .rd-tactical-serie-a .rd-tactical-metrics small{font-size:10px;line-height:1.5;color:var(--rd-muted)}
-.rd-shell .rd-tactical-serie-a .rd-tactical-extra{margin:0;padding:0;border:1px solid var(--rd-line);border-radius:10px;background:var(--rd-soft)}
+.rd-shell .rd-tactical-sheet .rd-tactical-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 16px;margin:0}
+.rd-shell .rd-tactical-sheet .rd-tactical-metrics>div{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:5px;min-width:0;padding:14px 0;border-bottom:1px solid var(--rd-line)}
+.rd-shell .rd-tactical-sheet .rd-tactical-metrics dt{font-size:11px;line-height:1.5;min-height:33px;overflow-wrap:anywhere}
+.rd-shell .rd-tactical-sheet .rd-tactical-metrics dd{margin:0;font-size:25px;line-height:1.15;font-variant-numeric:tabular-nums}
+.rd-shell .rd-tactical-sheet .rd-tactical-metrics small{font-size:10px;line-height:1.5;color:var(--rd-muted)}
+.rd-shell .rd-tactical-sheet .rd-tactical-extra{margin:0;padding:0;border:1px solid var(--rd-line);border-radius:10px;background:var(--rd-soft)}
 .rd-shell .rd-tactical-extra>summary{display:flex;justify-content:space-between;gap:10px;cursor:pointer;padding:14px;font-size:12px;font-weight:600;list-style:none}
 .rd-shell .rd-tactical-extra>summary:after{content:'+';margin-left:auto}
 .rd-shell .rd-tactical-extra[open]>summary:after{content:'−'}
 .rd-shell .rd-tactical-extra>summary span{font-size:11px;color:var(--rd-muted);font-weight:400}
 .rd-shell .rd-tactical-extra>.rd-tactical-current{padding:0 14px 14px}
-.rd-shell .rd-tactical-serie-a .rd-tactical-directions{margin:0;padding-top:4px}
-.rd-shell .rd-tactical-serie-a .rd-tactical-directions h4{margin:0 0 14px;font-size:12px}
-.rd-shell .rd-tactical-serie-a .rd-channels{margin:0;gap:12px}
-@media(max-width:1000px){.rd-shell .rd-tactical-serie-a .rd-tactical-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px){.rd-shell .rd-tactical-comparison:has(.rd-tactical-serie-a){grid-template-columns:minmax(0,1fr);gap:20px}
-.rd-shell .rd-tactical-serie-a{padding:18px;gap:18px}
-.rd-shell .rd-tactical-serie-a+.rd-tactical-serie-a{padding-top:18px}
-.rd-shell .rd-tactical-serie-a .rd-tactical-team h3{font-size:24px}
-.rd-shell .rd-tactical-serie-a .rd-tactical-metrics dt{min-height:0}
-.rd-shell .rd-tactical-serie-a .rd-tactical-metrics dd{font-size:23px}}
+.rd-shell .rd-tactical-sheet .rd-tactical-directions{margin:0;padding-top:4px}
+.rd-shell .rd-tactical-sheet .rd-tactical-directions h4{margin:0 0 14px;font-size:12px}
+.rd-shell .rd-tactical-sheet .rd-channels{margin:0;gap:12px}
+@media(max-width:1000px){.rd-shell .rd-tactical-sheet .rd-tactical-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.rd-shell .rd-tactical-comparison:has(.rd-tactical-sheet){grid-template-columns:minmax(0,1fr);gap:20px}
+.rd-shell .rd-tactical-sheet{padding:18px;gap:18px}
+.rd-shell .rd-tactical-sheet+.rd-tactical-sheet{padding-top:18px}
+.rd-shell .rd-tactical-sheet .rd-tactical-team h3{font-size:24px}
+.rd-shell .rd-tactical-sheet .rd-tactical-metrics dt{min-height:0}
+.rd-shell .rd-tactical-sheet .rd-tactical-metrics dd{font-size:23px}}
 body .rd-shell :is(.rd-team-name,.rd-section-heading h2){
   font-family:var(--ds-font-display);
   font-weight:650;
