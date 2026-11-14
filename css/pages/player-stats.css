@@ -696,6 +696,8 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+
+
 .home-dashboard .home-matchday-button:is(:hover,:focus-visible,:active):not(:disabled){border-color:var(--ds-color-border);background:#d8e2e7;color:#152e42;box-shadow:inset 0 2px 9px rgba(20,43,59,.12);transform:none}
 
 
@@ -721,6 +723,14 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 @media(max-width:760px){
 }
+@media(max-width:1100px){
+
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams){grid-template-columns:minmax(0,1fr) auto;align-content:start;gap:10px;padding:16px;min-height:150px}
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>.home-editorial-icon{grid-area:1 / 1;width:28px;height:28px}
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>.home-editorial-arrow{grid-area:1 / 2}
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>div{grid-area:2 / 1 / 3 / -1}
+
+.home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams) small{font-size:12px}}
 @media(max-width:580px){
 
 
@@ -752,7 +762,31 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+@media(max-width:600px){
+
+}
+
+
+
+
+
+
+
+
 @media(max-width:900px){
+
 
 
 
@@ -764,7 +798,7 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 @media(min-width:1001px){
 
-
+.home-dashboard .home-next:has(.home-next-panel[data-home-matchday-panel="previous"][hidden])>.home-matchday-nav{margin-inline:4%}
 
 
 
@@ -772,6 +806,10 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+
+
+
+  .home-dashboard .home-match-row:has(+.home-match-date-heading)::after{content:none}
 
 
 
@@ -793,8 +831,11 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 }
 
 
+
 @media(max-width:760px){
+
 }
+
 
 
 
@@ -3210,6 +3251,9 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+
+
+
 @media(max-width:760px){
 
 
@@ -3695,7 +3739,9 @@ body:not([data-page="home"]) .hero h1{font-size:clamp(38px,11vw,54px)}
 @media(max-width:600px){:root{--page-gutter:16px}}
 
 @media(max-width:900px){.site-header{align-items:center}
-.site-header>.brand>span:last-child{display:none}
+.site-header>.brand{position:static}
+.site-header>.brand>span:last-child{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:calc(100% - 128px);text-align:center}
+.site-header>.brand small{display:none}
 .site-header>.menu-button{display:grid;place-content:center;gap:5px;width:44px;height:44px;padding:10px;font-size:0;flex-shrink:0}
 .site-header>.menu-button::before,.site-header>.menu-button::after{content:"";display:block;width:20px;height:2px;background:currentColor;transition:transform .18s ease}
 .site-header>.menu-button::before{box-shadow:0 6px currentColor;transform:translateY(-3px)}
@@ -5168,6 +5214,14 @@ button:disabled{
 @media(max-width:760px){
 }
 
+
+
+@media(max-width:900px){
+
+
+
+
+}
 
 /* site-layout.css: original cascade position */
 body :is(.site-header,main,#team-squad-app,.site-footer-inner){

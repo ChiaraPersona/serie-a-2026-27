@@ -195,13 +195,15 @@ body[data-page="home"] #app>section.hero h1{
 .home-dashboard .home-dashboard-grid{grid-template-columns:minmax(0,1fr);gap:32px}
 .home-dashboard .home-next{min-width:0;padding:22px 24px 10px;border:0;background:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
 .home-dashboard .home-next{display:grid;grid-template-columns:minmax(0,1fr);align-content:start}
-.home-dashboard .home-next-panel h3{display:flex;align-items:center;min-height:36px;margin:0 0 12px}
+.home-dashboard .home-next-panel h3{display:flex;align-items:center;justify-content:center;min-height:36px;margin:0 0 12px;padding-inline:44px}
 .home-dashboard .home-next-panel[data-home-matchday-panel="current"],
 .home-dashboard .home-matchday-nav{grid-area:1 / 1}
-.home-dashboard .home-matchday-nav{justify-self:end;align-self:start;z-index:2}
+.home-dashboard .home-matchday-nav{justify-self:stretch;align-self:start;margin-inline:4%;z-index:2;pointer-events:none}
 .home-dashboard .home-next h3{color:#142b3b;letter-spacing:0;text-transform:none}
 .home-dashboard .home-next h3>strong{display:block;font-family:var(--ds-font-display);font-size:clamp(22px,1.8vw,27px);line-height:1.25;font-weight:700;letter-spacing:normal;white-space:nowrap}
-.home-dashboard .home-matchday-nav{display:flex;flex-shrink:0;gap:8px}
+body[data-page="home"] #app .home-dashboard .home-next h3>strong{font-size:clamp(18px,1.5vw,21px);font-weight:550;color:var(--ds-color-text-muted)}
+.home-dashboard .home-matchday-nav{display:flex;justify-content:space-between;flex-shrink:0;gap:8px}
+.home-dashboard .home-matchday-nav>.home-matchday-button{pointer-events:auto}
 .home-dashboard .home-matchday-button{display:grid;place-items:center;width:36px;height:36px;min-height:36px;padding:0;border:1px solid var(--ds-color-border);border-radius:50%;background:#e6ebed;color:#283e4b;font:500 18px/1 Inter,sans-serif;box-shadow:inset 0 2px 5px rgba(20,43,59,.14);transform:none;transition:background-color .2s ease,box-shadow .2s ease,color .2s ease}
 .home-dashboard .home-matchday-button:is(:hover,:focus-visible,:active):not(:disabled){border-color:var(--ds-color-border);background:#d8e2e7;color:#152e42;box-shadow:inset 0 2px 9px rgba(20,43,59,.12);transform:none}
 .home-dashboard .home-matchday-button:disabled{opacity:.35}
@@ -232,6 +234,16 @@ body[data-page="home"] #app>section.hero h1{
  .home-dashboard .home-rail{grid-template-columns:1fr;gap:12px}
  .home-dashboard .home-rail a{padding:16px;min-height:104px}
 }
+@media(max-width:1100px){
+ body[data-page="home"] .home-dashboard .home-rail{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .home-dashboard .home-rail .home-editorial-readings{grid-column:1 / -1}
+ .home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams){grid-template-columns:minmax(0,1fr) auto;align-content:start;gap:10px;padding:16px;min-height:150px}
+ .home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>.home-editorial-icon{grid-area:1 / 1;width:28px;height:28px}
+ .home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>.home-editorial-arrow{grid-area:1 / 2}
+ .home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams)>div{grid-area:2 / 1 / 3 / -1}
+ body[data-page="home"] #app .home-rail :is(.home-editorial-champions,.home-editorial-teams) strong{font-size:20px}
+ .home-dashboard .home-rail :is(.home-editorial-champions,.home-editorial-teams) small{font-size:12px}
+}
 @media(max-width:580px){
  .home-dashboard .home-dashboard-grid{gap:24px}
  .home-dashboard .home-next{padding:18px 14px 6px}
@@ -255,12 +267,37 @@ body[data-page="home"] #app>section.hero h1{
 .home-dashboard .home-matchday-button>svg{display:block;width:18px;height:18px}
 .home-dashboard [data-home-previous-matchday]>svg{transform:rotate(180deg)}
 
-/* Solo intestazione della classifica in homepage. */
-.home-standings>.section-heading{margin-bottom:18px}
+/* Home section headings use shared typography and theme tokens. */
+.home-dashboard>.section-heading,.home-standings>.section-heading{margin-bottom:18px}
+body[data-page="home"] #app>:is(.home-dashboard,.home-standings)>.section-heading{justify-content:center;text-align:center}
 .home-standings>.section-heading .eyebrow{margin:0 0 10px}
-.home-standings>.section-heading h2{font-size:clamp(24px,2.6vw,34px);line-height:1.18}
+body[data-page="home"] #app>:is(.home-dashboard,.home-standings)>.section-heading h2{font-size:clamp(26px,3.2vw,35px);font-weight:750;-webkit-text-stroke:.2px currentColor;margin:0;color:var(--gold)}
+.home-section-subtitle{margin:var(--ds-space-2) 0 0;font-family:var(--ds-font-body);color:var(--ds-color-text-muted);font-size:var(--ds-text-compact);line-height:var(--ds-leading-body)}
 .home-standings>.standings-switch{margin:0 0 10px}
 .home-standings .standings-scope-switch{margin:0 0 14px}
+.home-standings-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.standings-timeline{margin:8px 0 18px}
+.standings-timeline-label{display:flex;justify-content:space-between;gap:12px;font-size:var(--ds-text-meta);color:var(--ds-color-text-muted)}
+.standings-timeline-label output{font-weight:700;color:var(--ds-color-text)}
+body[data-page="home"] #app .standings-timeline input[type="range"]{display:block;appearance:none;width:100%;height:28px;min-height:0;margin:8px 0 0;padding:0;border:0;border-radius:0;background:transparent;cursor:pointer;box-shadow:none}
+.standings-timeline input::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(to right,#abc9de var(--timeline-progress,100%),var(--ds-color-border) var(--timeline-progress,100%))}
+.standings-timeline input::-webkit-slider-thumb{appearance:none;width:16px;height:16px;margin-top:-6px;border:2px solid var(--gold);border-radius:50%;background:var(--ds-color-surface);box-shadow:0 1px 4px #142b3b20}
+.standings-timeline input::-moz-range-track{height:4px;border-radius:4px;background:var(--ds-color-border)}
+.standings-timeline input::-moz-range-progress{height:4px;background:#abc9de}
+.standings-timeline input::-moz-range-thumb{width:12px;height:12px;border:2px solid var(--gold);border-radius:50%;background:var(--ds-color-surface)}
+.standings-timeline input:focus-visible{outline:2px solid var(--ds-color-focus);outline-offset:3px}
+.standings-timeline-ticks{display:flex;justify-content:space-between;padding-inline:8px;font-size:10px;line-height:1.4;color:var(--ds-color-text-muted)}
+.standings-timeline-ticks span{position:relative;min-width:1px;text-align:center}
+.standings-timeline-ticks span::before{content:"";position:absolute;top:-4px;left:50%;height:3px;border-left:1px solid var(--ds-color-border)}
+.standings-timeline p,.standings-archive-note{margin:8px 0 0;font-size:var(--ds-text-meta);line-height:var(--ds-leading-body);color:var(--ds-color-text-muted)}
+body[data-page="home"] #app .home-standings-controls button:is(.active,[aria-pressed="true"]){background:#d3e5f2;border-color:#abc9de;color:#244b68;box-shadow:inset 0 1px 3px rgba(20,43,59,.1)}
+body[data-page="home"] #app .home-standings-controls button:is(.active,[aria-pressed="true"]):hover{background:#c6ddeb;border-color:#9dbed5;color:#244b68;box-shadow:inset 0 1px 4px rgba(20,43,59,.12)}
+body[data-page="home"] #app .home-standings-controls>:is(.standings-switch,.standings-scope-switch){display:flex;flex-direction:row;flex-wrap:nowrap;gap:8px;margin:0;padding:0}
+@media(max-width:600px){
+ body[data-page="home"] #app .home-standings-controls{gap:8px}
+ body[data-page="home"] #app .home-standings-controls>:is(.standings-switch,.standings-scope-switch){gap:4px}
+ body[data-page="home"] #app .home-standings-controls button{font-size:11px;min-width:0;width:auto;flex:0 0 auto;padding-inline:6px;white-space:nowrap}
+}
 
 body[data-page="home"] .home-standings [data-standings-scope-panel] > .table-wrap{
   padding:0 0 5px;
@@ -299,6 +336,7 @@ body[data-page="home"] .home-standings .standings-table thead th:not(.standings-
   body[data-page="home"] .home-standings tbody :is(.standing-pinned-logo,td:first-child){background-color:var(--ds-color-page);background-image:var(--site-page-background);background-attachment:fixed;background-repeat:no-repeat}
   body[data-page="home"] .home-standings .standings-table thead th:first-child:not(.standings-column-active){box-shadow:1px 0 0 var(--standings-heading-background)}
   .home-standings .standing-team>.standing-logo{display:none}
+  body[data-page="home"] .home-standings .standings-fading-content{display:block;mask-image:linear-gradient(to right,transparent var(--fade-left,-20px),#000 var(--fade-left-end,-2px),#000 var(--fade-right-start,100%),transparent var(--fade-right,110%))}
 }
 
 /* Il collegamento accessibile copre la riga, senza una colonna freccia. */
@@ -309,9 +347,9 @@ body[data-page="home"] .home-standings .standings-table thead th:not(.standings-
 
 @media(min-width:1001px){
   .home-dashboard .home-next{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 0;padding-inline:0}
-  .home-dashboard .home-matchday-nav{grid-area:1 / 1 / 2 / -1;justify-self:center}
+  .home-dashboard .home-matchday-nav{grid-area:1 / 1 / 2 / -1;justify-self:stretch;margin-inline:calc(2% - .48px)}
+  .home-dashboard .home-next:has(.home-next-panel[data-home-matchday-panel="previous"][hidden])>.home-matchday-nav{margin-inline:4%}
   .home-dashboard .home-next-panel[data-home-matchday-panel="previous"]{grid-area:1 / 1;position:relative;padding-inline-end:12px}
-  .home-dashboard .home-next-panel[data-home-matchday-panel="previous"]::after{content:"";position:absolute;inset:48px 0 0 auto;border-inline-end:1px solid var(--ds-color-border)}
   .home-dashboard .home-next-panel[data-home-matchday-panel="current"]{grid-area:1 / 2;padding-inline-start:12px}
   .home-dashboard .home-next-panel[data-home-matchday-panel="previous"][hidden]+.home-matchday-nav+.home-next-panel{grid-column:1 / -1;padding-inline:0}
   .home-dashboard .home-next-panel h3{justify-content:center}
@@ -319,8 +357,12 @@ body[data-page="home"] .home-standings .standings-table thead th:not(.standings-
 
 /* Shared calendar appearance at every screen width. */
   .home-dashboard .home-match-list{border-top:0}
-  .home-dashboard .home-match-date-heading{padding:5px 8px;background:#dce8f3;color:#283e4b;font-size:12px;font-weight:700;text-transform:capitalize}
+  .home-dashboard .home-match-date-heading{width:92%;margin-inline:auto;padding:5px 8px;background:#dce8f3;color:#283e4b;font-size:12px;font-weight:700;text-transform:capitalize;text-align:center}
   .home-dashboard .home-match-row{grid-template-columns:minmax(0,1fr);min-height:44px;gap:0;padding-block:4px}
+  .home-dashboard .home-match-row{border-bottom-color:transparent}
+  .home-dashboard .home-match-row::after{content:"";position:absolute;bottom:0;left:12%;right:12%;border-bottom:1px solid #e3e9ed;pointer-events:none}
+  .home-dashboard .home-match-row:last-child::after,
+  .home-dashboard .home-match-row:has(+.home-match-date-heading)::after{content:none}
   .home-dashboard .home-match-teams{grid-template-columns:minmax(0,1fr) 78px minmax(0,1fr);gap:4px}
   .home-dashboard .home-match-summary{display:flex;align-items:center;justify-content:center;gap:4px}
   .home-dashboard .home-match-kickoff{color:#526777;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -360,6 +402,9 @@ body[data-page="home"] .home-standings .standings-table :is(th,td):last-child{wi
 @media(max-width:1000px){
  .home-dashboard .home-match-date-heading{text-align:center}
 }
+@media(max-width:900px){
+ body[data-page="home"] .home-standings .standings-table :is(th,td):nth-child(3){padding-inline-start:26px}
+}
 
 /* Keep standings rows clean while retaining the vertical zone markers. */
 body[data-page="home"] .home-standings .standings-table tbody td{border-bottom:0;border-top:0}
@@ -367,7 +412,9 @@ body[data-page="home"] .home-standings .standings-table tbody td{border-bottom:0
 @media(max-width:760px){
  body[data-page="home"] main>.home-dashboard{margin-top:16px}
  .home-dashboard .home-next{padding-top:8px}
+ body[data-page="home"] .home-dashboard .home-match-date-heading{width:calc(100% + 48px);margin-inline:-24px}
 }
+@media(max-width:580px){body[data-page="home"] .home-dashboard .home-match-date-heading{width:calc(100% + 28px);margin-inline:-14px}}
 
 /* Draw the zone marker independently from the cell edges. */
 body[data-page="home"] .home-standings .standings-table tbody tr>td:first-child{position:relative;box-shadow:none;border-block:0}

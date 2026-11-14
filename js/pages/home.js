@@ -25,8 +25,28 @@ function standingsTable(rows,teams,fixtures=null,scope="general"){
   const body=rows.map((row,index)=>{const originalPosition=row.position||index+1,zone=originalPosition===1?"standing-zone-champion":originalPosition<=4?"standing-zone-top":originalPosition<=6?"standing-zone-europa":originalPosition===7?"standing-zone-conference":originalPosition>rows.length-3?"standing-zone-bottom":"";return `<tr class="${zone}" data-original-order="${index}">${standingsColumns.map(column=>{const current=value(row,column.key,index),sortValue=current===null||current===undefined?"":current,content=column.key==="teamName"?teamCell(row):column.key==="points"?`<strong>${display(column.key,current)}</strong>`:display(column.key,current);return `${column.key==="teamName"?`<td class="standing-pinned-logo"><span class="standing-logo" role="img" aria-label="${esc(name(row))}" title="${esc(name(row))}">${teamFor(row)?.logo?`<img src="${imageSource(teamFor(row).logo)}" alt="" onerror="this.hidden=true">`:""}</span></td>`:""}<td data-sort-value="${esc(sortValue)}">${content}</td>`}).join("")}<td>${form(row)}</td></tr>`}).join("");
   return `<div class="table-wrap"><table class="standings-table" data-sortable-standings><thead><tr>${head}<th scope="col" title="Ultime 5 partite, più recente a sinistra">Ultime 5</th></tr></thead><tbody>${body}</tbody></table></div>`;
 }
-function configureStandingsTables(){
-  document.querySelectorAll("[data-sortable-standings]").forEach(table=>{
+const standingsTableCleanup=new WeakMap();
+function configureStandingsTables(root=document){
+  root.querySelectorAll("[data-sortable-standings]").forEach(table=>{
+    if(table.dataset.sortConfigured)return;table.dataset.sortConfigured="true";
+    const scrollArea=table.closest('.table-wrap');
+    const fadingText=[...table.querySelectorAll('tr')].flatMap(row=>[...row.children].slice(2).filter(cell=>!cell.classList.contains('standing-pinned-logo')).map(cell=>{
+      const text=document.createElement('span');text.className='standings-fading-content';
+      text.append(...cell.childNodes);cell.append(text);return text;
+    }));
+    let fadeFrame;
+    const updateFade=()=>{
+      cancelAnimationFrame(fadeFrame);
+      fadeFrame=requestAnimationFrame(()=>{
+        const bounds=scrollArea.getBoundingClientRect();
+        const positions=fadingText.map(text=>{const rect=text.getBoundingClientRect();return [text,bounds.left+104-rect.left,bounds.right-rect.left]});
+        positions.forEach(([text,left,right])=>{text.style.setProperty('--fade-left',left+'px');text.style.setProperty('--fade-left-end',(left+18)+'px');text.style.setProperty('--fade-right-start',(right-16)+'px');text.style.setProperty('--fade-right',right+'px')});
+      });
+    };
+    scrollArea.addEventListener('scroll',updateFade,{passive:true});
+    const fadeResize=new ResizeObserver(()=>{if(!scrollArea.isConnected){fadeResize.disconnect();return}updateFade()});
+    fadeResize.observe(scrollArea);updateFade();
+    standingsTableCleanup.set(table,()=>{fadeResize.disconnect();cancelAnimationFrame(fadeFrame);scrollArea.removeEventListener("scroll",updateFade)});
     const tbody=table.querySelector("tbody"),buttons=[...table.querySelectorAll("[data-standings-sort]")];
     buttons.forEach(button=>button.addEventListener("click",()=>{
       const header=button.closest("th"),active=header.getAttribute("aria-sort"),direction=active==="ascending"?"desc":active==="descending"?"asc":button.dataset.defaultDirection,index=Number(button.dataset.columnIndex),numeric=button.dataset.sortType==="number";
@@ -42,20 +62,21 @@ function configureStandingsTables(){
   });
 }
 function homeStandings(standings,currentHomeRows,currentAwayRows,previousStandings,teams,standingsTeams,fixtures){
+  const lastMatchday=Math.max(1,...fixtures.filter(match=>match.status==="finished").map(match=>match.matchday));
   const currentViews=[
     {id:"general",label:"Generale",eyebrow:"",title:"",description:"",rows:standings},
-    {id:"home",label:"In casa",eyebrow:"",title:"",description:"",rows:currentHomeRows},
-    {id:"away",label:"Fuori casa",eyebrow:"",title:"",description:"",rows:currentAwayRows}
+    {id:"home",label:"Home",eyebrow:"",title:"",description:"",rows:currentHomeRows},
+    {id:"away",label:"Away",eyebrow:"",title:"",description:"",rows:currentAwayRows}
   ];
   const archiveViews=[
     {id:"general",label:"Generale",eyebrow:"",title:"",description:"",rows:previousStandings.rows},
-    {id:"home",label:"In casa",eyebrow:"",title:"",description:"",rows:previousStandings.homeRows},
-    {id:"away",label:"Fuori casa",eyebrow:"",title:"",description:"",rows:previousStandings.awayRows}
+    {id:"home",label:"Home",eyebrow:"",title:"",description:"",rows:previousStandings.homeRows},
+    {id:"away",label:"Away",eyebrow:"",title:"",description:"",rows:previousStandings.awayRows}
   ];
   const scopeTabs=views=>views.map(view=>`<button type="button" data-standings-scope-tab="${view.id}" aria-pressed="false">${view.label}</button>`).join("");
   const currentPanels=currentViews.map(view=>`<section class="section" data-standings-scope-panel="${view.id}">${view.eyebrow?`<p class="eyebrow">${view.eyebrow}</p>`:""}${view.title?`<h2>${view.title}</h2>`:""}${view.description?`<p class="muted">${view.description}</p>`:""}${standingsTable(view.rows,teams,fixtures,view.id)}</section>`).join("");
   const archivePanels=archiveViews.map(view=>`<section class="section historical-standings" data-standings-scope-panel="${view.id}">${view.eyebrow?`<p class="eyebrow">${view.eyebrow}</p>`:""}${view.title?`<h2>${view.title}</h2>`:""}${view.description?`<p class="muted">${view.description}</p>`:""}${standingsTable(view.rows,standingsTeams)}</section>`).join("");
-  return `<section class="section home-standings" id="classifiche"><header class="section-heading"><div><p class="eyebrow">Serie A · classifiche</p></div></header><nav class="standings-switch" aria-label="Selezione stagione"><button type="button" data-standings-tab="current">2026/27</button><button type="button" data-standings-tab="archive">2025/26</button></nav><div data-standings-panel="current"><nav class="standings-scope-switch" aria-label="Selezione rendimento 2026/27">${scopeTabs(currentViews)}</nav>${currentPanels}</div><div data-standings-panel="archive"><nav class="standings-scope-switch" aria-label="Selezione rendimento 2025/26">${scopeTabs(archiveViews)}</nav>${archivePanels}</div></section>`;
+  return `<section class="section home-standings" id="classifiche"><header class="section-heading"><div><h2>Classifiche</h2><p class="home-section-subtitle">Punti e rendimento delle squadre, in casa e in trasferta.</p></div></header><div class="home-standings-controls"><nav class="standings-switch" aria-label="Selezione stagione"><button type="button" data-standings-tab="current">2026/27</button><button type="button" data-standings-tab="archive">2025/26</button></nav><nav class="standings-scope-switch" aria-label="Selezione rendimento">${scopeTabs(currentViews)}</nav></div><div class="standings-timeline" data-standings-timeline><div class="standings-timeline-label"><label for="standings-matchday">Giornata di riferimento</label><output for="standings-matchday" data-standings-matchday-output>Giornata ${lastMatchday}</output></div><input id="standings-matchday" type="range" min="1" max="${lastMatchday}" step="1" value="${lastMatchday}" aria-valuetext="Giornata ${lastMatchday}"><div class="standings-timeline-ticks" aria-hidden="true">${Array.from({length:lastMatchday},(_,index)=>`<span>${index+1}</span>`).join("")}</div></div><p class="standings-archive-note" data-standings-archive-note hidden>2025/26: classifica finale. Dettaglio per giornata non disponibile.</p><div data-standings-panel="current">${currentPanels}</div><div data-standings-panel="archive">${archivePanels}</div></section>`;
 }
   function homeMatchdayPanel(side){
     return `<section class="home-next-panel" data-home-matchday-panel="${side}"><h3><strong>Giornata <span data-home-matchday-label aria-live="polite" aria-atomic="true"></span></strong></h3><ul class="home-match-list" data-home-match-list></ul></section>`;
@@ -69,7 +90,7 @@ function homeStandings(standings,currentHomeRows,currentAwayRows,previousStandin
     const completed=league.filter(match=>match.status==="finished").length;
     homeMatchdays=[...new Set(league.map(match=>match.matchday))].sort((left,right)=>left-right);
     activeHomeMatchday=homeMatchdays.find(matchday=>league.some(match=>match.matchday===matchday&&match.status!=="finished"))??homeMatchdays.at(-1);
-    html=hero("","Il calcio, giornata dopo giornata","Calendario, numeri e contesto della Serie A Enilive 2026/27. Ogni dato resta collegato alla propria fonte.",`<div class="hero-season"><span>Serie A</span><strong>26<span>/</span>27</strong><small>${completed}/380 partite concluse</small></div>`)+`<section class="section home-dashboard"><div class="home-dashboard-grid"><div class="home-next">${homeMatchdayPanel("previous")}<div class="home-matchday-nav"><button class="home-matchday-button" type="button" data-home-previous-matchday><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button><button class="home-matchday-button" type="button" data-home-next-matchday><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button></div>${homeMatchdayPanel("current")}</div><aside class="home-rail"><a class="home-editorial-readings" href="lettura.html"><svg class="home-editorial-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 10v44h46M22 43V32m12 11V24m12 19V14M18 24l14-10 12 3 12-10"/></svg><div><strong>Letture</strong><small>Analisi e pronostici delle partite</small></div><svg class="home-editorial-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a><a class="home-editorial-champions" href="champions-league.html"><svg class="home-editorial-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10h24v13a12 12 0 0 1-24 0V10Zm0 4H10v5a10 10 0 0 0 11 10m23-15h10v5a10 10 0 0 1-11 10M32 35v13m-12 6h24m-20 0v-6h16v6"/></svg><div><strong>Champions League</strong><small>Calendario, risultati e letture europee</small></div><svg class="home-editorial-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a><a class="home-editorial-teams" href="download.html"><svg class="home-editorial-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="18" y="5" width="28" height="54" rx="5"/><path d="M27 12h10M28 51h8M32 21v20m-8-8 8 8 8-8"/></svg><div><strong>Scarica l’app</strong><small>Il calendario e le letture sul tuo telefono</small></div><svg class="home-editorial-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a></aside></div></section>`+homeStandings(standings,currentHomeRows,currentAwayRows,previousStandings,teams,standingsTeams,league);
+    html=hero("","Il calcio, giornata dopo giornata","Calendario, numeri e contesto della Serie A Enilive 2026/27. Ogni dato resta collegato alla propria fonte.",`<div class="hero-season"><span>Serie A</span><strong>26<span>/</span>27</strong><small>${completed}/380 partite concluse</small></div>`)+`<section class="section home-dashboard"><header class="section-heading"><div><h2>Calendario</h2><p class="home-section-subtitle">Risultati e prossime partite.</p></div></header><div class="home-dashboard-grid"><div class="home-next">${homeMatchdayPanel("previous")}<div class="home-matchday-nav"><button class="home-matchday-button" type="button" data-home-previous-matchday><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button><button class="home-matchday-button" type="button" data-home-next-matchday><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12h16m-7-7 7 7-7 7"/></svg></button></div>${homeMatchdayPanel("current")}</div><aside class="home-rail"><a class="home-editorial-readings" href="lettura.html"><svg class="home-editorial-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 10v44h46M22 43V32m12 11V24m12 19V14M18 24l14-10 12 3 12-10"/></svg><div><strong>Letture</strong><small>Analisi e pronostici delle partite</small></div><svg class="home-editorial-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a><a class="home-editorial-champions" href="champions-league.html"><svg class="home-editorial-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10h24v13a12 12 0 0 1-24 0V10Zm0 4H10v5a10 10 0 0 0 11 10m23-15h10v5a10 10 0 0 1-11 10M32 35v13m-12 6h24m-20 0v-6h16v6"/></svg><div><strong>Champions League</strong><small>Calendario, risultati e letture europee</small></div><svg class="home-editorial-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a><a class="home-editorial-teams" href="download.html"><svg class="home-editorial-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="18" y="5" width="28" height="54" rx="5"/><path d="M27 12h10M28 51h8M32 21v20m-8-8 8 8 8-8"/></svg><div><strong>Scarica l’app</strong><small>Il calendario e le letture sul tuo telefono</small></div><svg class="home-editorial-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a></aside></div></section>`+homeStandings(standings,currentHomeRows,currentAwayRows,previousStandings,teams,standingsTeams,league);
   }
     document.querySelector("#app").innerHTML=html;
   if(page==="home"){
@@ -116,7 +137,23 @@ function homeStandings(standings,currentHomeRows,currentAwayRows,previousStandin
     nextButton.addEventListener("click",()=>moveMatchday(1));
     desktopCalendar.addEventListener("change",showMatchdays);
     showMatchdays();
-    const activate=value=>{document.querySelectorAll("[data-standings-panel]").forEach(panel=>panel.hidden=panel.dataset.standingsPanel!==value);document.querySelectorAll("[data-standings-tab]").forEach(button=>{const active=button.dataset.standingsTab===value;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active))});history.replaceState(null,"",value==="archive"?"#classifica-2025-26":location.pathname)};
+    const timeline=document.querySelector('[data-standings-timeline]'),matchdaySlider=document.querySelector('#standings-matchday');
+    const updateStandings=()=>{
+      const matchday=Number(matchdaySlider.value),fixtures=league.filter(match=>match.matchday<=matchday);
+      const panel=document.querySelector('[data-standings-panel="current"]');
+      panel.querySelectorAll('[data-standings-scope-panel]').forEach(section=>{
+        const scope=section.dataset.standingsScopePanel;
+        section.querySelectorAll("[data-sortable-standings]").forEach(table=>standingsTableCleanup.get(table)?.());
+        section.innerHTML=standingsTable(calculateStandings(teams,fixtures,scope),teams,fixtures,scope);
+      });
+      document.querySelector('[data-standings-matchday-output]').textContent='Giornata '+matchday;
+      matchdaySlider.setAttribute('aria-valuetext','Giornata '+matchday);
+      matchdaySlider.style.setProperty('--timeline-progress',((matchday-1)/Math.max(1,Number(matchdaySlider.max)-1)*100)+'%');
+      configureStandingsTables(panel);
+    };
+    matchdaySlider.addEventListener('input',updateStandings);
+    updateStandings();
+    const activate=value=>{timeline.hidden=value!=="current";document.querySelector("[data-standings-archive-note]").hidden=value!=="archive";document.querySelectorAll("[data-standings-panel]").forEach(panel=>panel.hidden=panel.dataset.standingsPanel!==value);document.querySelectorAll("[data-standings-tab]").forEach(button=>{const active=button.dataset.standingsTab===value;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active))});history.replaceState(null,"",value==="archive"?"#classifica-2025-26":location.pathname)};
     const activateScope=value=>{document.querySelectorAll("[data-standings-scope-panel]").forEach(panel=>panel.hidden=panel.dataset.standingsScopePanel!==value);document.querySelectorAll("[data-standings-scope-tab]").forEach(button=>{const active=button.dataset.standingsScopeTab===value;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active))})};
     document.querySelectorAll("[data-standings-tab]").forEach(button=>button.addEventListener("click",()=>activate(button.dataset.standingsTab)));
     document.querySelectorAll("[data-standings-scope-tab]").forEach(button=>button.addEventListener("click",()=>activateScope(button.dataset.standingsScopeTab)));
