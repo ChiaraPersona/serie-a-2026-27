@@ -24,11 +24,11 @@ button?.setAttribute("aria-label","Apri menu");
 button?.addEventListener("click",()=>setMenuOpen(!navigation.classList.contains("open")));
 navigation?.addEventListener("click",event=>{if(event.target.closest("a"))setMenuOpen(false)});
 document.addEventListener("keydown",event=>{
-  if(!navigation?.classList.contains("open")||!matchMedia("(max-width:900px)").matches)return;
+  if(!navigation?.classList.contains("open")||!matchMedia("(max-width:760px)").matches)return;
   if(event.key==="Escape"){setMenuOpen(false);button.focus()}
 
 });
-matchMedia("(max-width:900px)").addEventListener("change",()=>setMenuOpen(false));
+matchMedia("(max-width:760px)").addEventListener("change",()=>setMenuOpen(false));
 
 try{
   const pageModule=await loadPage(page,RELEASE);

@@ -1477,3 +1477,39 @@ body[data-page="champions"] .champions-standings-table .champions-pinned-logo{di
 }
 
 @media(max-width:900px){body[data-page="champions"] .champions-overview .champions-standings-table tbody tr>td:first-child{position:sticky;left:0}}
+
+body[data-page="champions"] .champions-overview .champions-standings-heading{text-align:center;padding-block:12px 20px}
+body[data-page="champions"] .champions-overview .champions-standings-heading h2{font-family:var(--ds-font-display);font-size:clamp(28px,3.2vw,36px);font-weight:650;color:var(--gold)}
+body[data-page="champions"] .champions-overview .champions-standings-heading p{margin:10px 0 0;font-size:13px;line-height:1.6;color:var(--ds-color-text-muted)}
+@media(max-width:900px){body[data-page="champions"] .champions-standings-table .standings-fading-content{display:block;mask-image:linear-gradient(to right,transparent var(--fade-left,-20px),#000 var(--fade-left-end,-2px),#000 var(--fade-right-start,100%),transparent var(--fade-right,110%))}}
+
+/* Leave the team name clear of the fade beside the pinned crest. */
+@media(max-width:900px){body[data-page="champions"] .champions-overview .champions-standings-table :is(th,td):nth-child(3){padding-inline-start:26px}}
+
+/* Fade the scrolling club badges into the edges of their viewport. */
+body[data-page="champions"] .champions-overview .champions-team-logo-scroll{mask-image:linear-gradient(to right,transparent,#000 20px,#000 calc(100% - 20px),transparent)}
+
+body[data-page="champions"] .champions-overview .champions-calendar-heading{display:block;text-align:center}
+body[data-page="champions"] .champions-overview .champions-calendar-heading>div{max-width:none;width:100%}
+body[data-page="champions"] .champions-overview .champions-fixture-day>header{display:block;text-align:center}
+body[data-page="champions"] .champions-overview .champions-fixture-day>header>span{display:block;margin-top:6px}
+
+body[data-page="champions"] .champions-overview #champions-calendar-title{display:block;width:100%;max-width:none;margin-inline:auto;text-align:center}
+
+@media(max-width:600px){
+ body[data-page="champions"] .champions-overview .champions-calendar-round-label{display:none}
+ body[data-page="champions"] .champions-overview .champions-days{align-items:center;scroll-snap-type:x proximity;padding-block:16px 22px}
+ body[data-page="champions"] .champions-overview .champions-day{scroll-snap-align:center;min-height:94px;opacity:.75}
+ body[data-page="champions"] .champions-overview .champions-day[aria-expanded="true"]{flex-basis:104px;min-height:112px;opacity:1;background:linear-gradient(145deg,#2866a7,#143c69);box-shadow:0 9px 20px #000b2473,0 0 0 1px #9ed4ff88,inset 0 2px 7px #a4d5ff33}
+ body[data-page="champions"] .champions-overview .champions-day[aria-expanded="true"] strong{font-size:36px}
+}
+
+/* Opening mobile view: the selected round leads, flanked by adjacent rounds. */
+@media(max-width:600px){
+ body[data-page="champions"] .champions-overview .champions-days{gap:4%;scrollbar-width:none}
+ body[data-page="champions"] .champions-overview .champions-days::-webkit-scrollbar{display:none}
+ body[data-page="champions"] .champions-overview .champions-day{flex-basis:27%;min-height:122px;padding-block:12px}
+ body[data-page="champions"] .champions-overview .champions-day strong{font-size:36px}
+ body[data-page="champions"] .champions-overview .champions-day[aria-expanded="true"]{flex-basis:36%;min-height:142px}
+ body[data-page="champions"] .champions-overview .champions-day[aria-expanded="true"] strong{font-size:46px}
+}

@@ -1,3 +1,4 @@
+import {configureStandingsScrollFade} from '../components/standings-scroll-fade.mjs';
 import {standingsForm} from '../components/standings-form.mjs?v=1c2e46f61176';
 import {imageSource} from '../core/image-source.mjs?v=20261022-assets-v1';
 import {championsStandingsDiscipline} from './champions-standings-discipline.mjs';
@@ -86,7 +87,7 @@ export function createPage(deps){
     }
     for(const row of rows.values())row.goalDifferenceLabel=(row.gf>row.ga?'+':'')+(row.gf-row.ga);
     const sorted=[...rows.values()].sort((a,b)=>b.points-a.points||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf||a.team.localeCompare(b.team));
-    return `<section class="champions-strength-panel champions-round-summary" aria-labelledby="champions-standings-title"><header class="champions-standings-heading"><h2 id="champions-standings-title">Classifica</h2></header><div class="champions-strength-table-wrap table-wrap"><table class="standings-table champions-standings-table"><thead><tr><th scope="col">#</th><th class="champions-pinned-logo" scope="col" aria-label="Logo squadra"></th><th scope="col">Squadra</th><th scope="col">PT</th><th scope="col" title="Partite giocate">PG</th><th scope="col" title="Vittorie">V</th><th scope="col" title="Pareggi">N</th><th scope="col" title="Sconfitte">P</th><th scope="col" title="Gol fatti">GF</th><th scope="col" title="Gol subiti">GS</th><th scope="col" title="Cartellini assegnati agli avversari">C+</th><th scope="col" title="Cartellini ricevuti dalla squadra">C-</th><th scope="col" title="Ultime 5 partite disponibili, più recente a sinistra">Ultime 5</th></tr></thead><tbody>${sorted.map((r,index)=>`<tr><td>${index+1}</td><td class="champions-pinned-logo">${teamBadge(r.team,branding,{showName:false})}</td><td>${teamBadge(r.team,branding)}</td><td><strong>${r.points}</strong></td><td>${r.played}</td><td>${r.won}</td><td>${r.drawn}</td><td>${r.lost}</td><td>${r.gf}</td><td>${r.ga}</td>${disciplineCells(r.team)}<td>${standingsForm(data.fixtures,r.team,{escape:esc})}</td></tr>`).join("")}</tbody></table></div></section>`;
+    return `<section class="champions-strength-panel champions-round-summary" aria-labelledby="champions-standings-title"><header class="champions-standings-heading"><h2 id="champions-standings-title">Classifica</h2><p>Punti, risultati e forma recente della fase campionato</p></header><div class="champions-strength-table-wrap table-wrap"><table class="standings-table champions-standings-table"><thead><tr><th scope="col">#</th><th class="champions-pinned-logo" scope="col" aria-label="Logo squadra"></th><th scope="col">Squadra</th><th scope="col">PT</th><th scope="col" title="Partite giocate">PG</th><th scope="col" title="Vittorie">V</th><th scope="col" title="Pareggi">N</th><th scope="col" title="Sconfitte">P</th><th scope="col" title="Gol fatti">GF</th><th scope="col" title="Gol subiti">GS</th><th scope="col" title="Cartellini assegnati agli avversari">C+</th><th scope="col" title="Cartellini ricevuti dalla squadra">C-</th><th scope="col" title="Ultime 5 partite disponibili, più recente a sinistra">Ultime 5</th></tr></thead><tbody>${sorted.map((r,index)=>`<tr><td>${index+1}</td><td class="champions-pinned-logo">${teamBadge(r.team,branding,{showName:false})}</td><td>${teamBadge(r.team,branding)}</td><td><strong>${r.points}</strong></td><td>${r.played}</td><td>${r.won}</td><td>${r.drawn}</td><td>${r.lost}</td><td>${r.gf}</td><td>${r.ga}</td>${disciplineCells(r.team)}<td>${standingsForm(data.fixtures,r.team,{escape:esc})}</td></tr>`).join("")}</tbody></table></div></section>`;
   }
 
   function fixtureCard(fixture,branding,pilotByFixture){
@@ -111,7 +112,7 @@ export function createPage(deps){
     }
     return [...groups.entries()].map(([key,items])=>{
       const [matchday,date]=key.split("|");
-      return `<section class="champions-fixture-day"><header><div><p>${matchdayLabel(Number(matchday))}</p><h3>${esc(dayLabel(date))}</h3></div><span>${items.length} ${items.length===1?"partita":"partite"}</span></header><div class="champions-fixture-grid">${items.map(fixture=>fixtureCard(fixture,branding,pilotByFixture)).join("")}</div></section>`;
+      return `<section class="champions-fixture-day"><header><div><h3>${esc(dayLabel(date))}</h3></div></header><div class="champions-fixture-grid">${items.map(fixture=>fixtureCard(fixture,branding,pilotByFixture)).join("")}</div></section>`;
     }).join("");
   }
 
@@ -587,13 +588,14 @@ export function createPage(deps){
       <section class="champions-hero champions-home-banner" aria-label="UEFA Champions League 2026/27"><img src="assets/images/optimized/champions-home-2026-27-1600.webp" srcset="assets/images/optimized/champions-home-2026-27-800.webp 800w, assets/images/optimized/champions-home-2026-27-1600.webp 1600w" sizes="(max-width: 760px) calc(100vw - 24px), 1050px" alt="UEFA Champions League, stadio illuminato in blu e viola" width="1920" height="1080" fetchpriority="high"></section>
       ${teamLogoDirectory(data.teamBranding,squads)}
       <section class="champions-calendar" aria-labelledby="champions-calendar-title">
-        <header class="champions-calendar-heading"><div><p class="eyebrow">UEFA Champions League 2026/27 · Fase campionato</p><h1 id="champions-calendar-title">Calendario</h1></div></header>
+        <header class="champions-calendar-heading"><div><p class="eyebrow">UEFA Champions League 2026/27<br>Fase campionato</p><h1 id="champions-calendar-title">Calendario</h1></div></header>
         <nav class="champions-days" aria-label="Giornate della fase campionato">
           ${matchdays.map(dayButton).join('')}
         </nav>
         <div id="champions-fixtures" role="region" aria-labelledby="champions-calendar-title"></div>
       </section>${roundTable(data,branding)}</div>`;
 
+    configureStandingsScrollFade(document.querySelector('.champions-standings-table'));
     const logoScroll=document.querySelector(".champions-team-logo-scroll");
     if(logoScroll){
       logoScroll.tabIndex=0;
@@ -618,15 +620,27 @@ export function createPage(deps){
       if(!reducedMotion.matches){logoTrack.style.willChange="transform";requestAnimationFrame(animate);}
     }
     const results=document.querySelector("#champions-fixtures");
+    const centerSelectedDay=()=>{
+      if(!matchMedia('(max-width:600px)').matches)return;
+      const active=document.querySelector('.champions-day[aria-expanded="true"]');
+      if(!active)return;
+      const nav=active.closest('.champions-days');
+      nav.scrollLeft+=active.getBoundingClientRect().left-nav.getBoundingClientRect().left-(nav.clientWidth-active.offsetWidth)/2;
+    };
     const applyFilters=()=>{
       const filtered=data.fixtures.filter(fixture=>fixture.matchday===selectedMatchday);
       results.innerHTML=selectedMatchday==null?'':fixtureGroups(filtered,branding,pilotByFixture);
       results.hidden=selectedMatchday==null;
-      document.querySelector('#champions-calendar-title').textContent=selectedMatchday==null?'Calendario':`Calendario · ${matchdayLabel(selectedMatchday)}`;
+      document.querySelector('#champions-calendar-title').innerHTML=selectedMatchday==null?'Calendario':`Calendario<span class="champions-calendar-round-label"> · ${matchdayLabel(selectedMatchday)}</span>`;
       document.querySelectorAll('[data-champions-day]').forEach(button=>button.setAttribute('aria-expanded',String(Number(button.dataset.championsDay)===selectedMatchday)));
+      centerSelectedDay();
     };
     document.querySelectorAll('[data-champions-day]').forEach(button=>button.addEventListener('click',()=>{const day=Number(button.dataset.championsDay);selectedMatchday=selectedMatchday===day?null:day;applyFilters()}));
     applyFilters();
+    const dayNavigation=document.querySelector('.champions-days');
+    const dayResize=new ResizeObserver(()=>{if(!dayNavigation.isConnected){dayResize.disconnect();return}centerSelectedDay()});
+    dayResize.observe(dayNavigation);
+    document.fonts.ready.then(()=>{if(dayNavigation.isConnected)centerSelectedDay()});
   }
   return {render};
 }

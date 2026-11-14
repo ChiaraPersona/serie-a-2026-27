@@ -940,6 +940,8 @@ body[data-page="home"] .home-standings .standings-table tbody tr:is(:hover,:focu
 @media(max-width:700px){.home-standings .standings-subtitle-detail{display:block}}
 @media(max-width:700px){body[data-page="home"] #app>.home-standings>.section-heading{display:block;width:100%;text-align:center}
 body[data-page="home"] #app>.home-standings>.section-heading>div{width:100%;text-align:center}}
+@media(min-width:761px) and (max-width:900px){body[data-page=home] .home-standings .standings-table{width:1066px;min-width:1066px}
+body[data-page=home] .home-standings .standings-table :is(th,td):nth-child(3){box-sizing:border-box;width:160px}}
 /* matches.css: original cascade position */
 .match{display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:center;margin-bottom:10px}
 .match-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -2533,6 +2535,9 @@ body[data-page="home"] #app>.home-standings>.section-heading>div{width:100%;text
 #team-squad-app.team-dashboard-pilot .squad-leader-card .leader-player:is(:hover,:focus-visible){color:var(--text);text-decoration:none;cursor:default;transition:none}
 #team-squad-app.team-dashboard-pilot .squad-table--compact tbody tr:is(:hover,:focus-within)>td{background-color:#eaecea}
 #team-squad-app.team-dashboard-pilot .squad-table--compact tbody tr:is(:hover,:focus-within)>td:first-child{background-color:#d5f1f2}
+@media(min-width:761px) and (max-width:1024px){
+
+}
 /* players.css: original cascade position */
 
 
@@ -3274,11 +3279,11 @@ body[data-page="home"] #app>.home-standings>.section-heading>div{width:100%;text
 
 
 /* responsive.css: original cascade position */
-@media(max-width:900px){.site-header{align-items:flex-start}
+@media(max-width:760px){.site-header{align-items:flex-start}
 .menu-button{display:block}
 .site-nav{display:none;position:absolute;top:74px;left:12px;right:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:0 18px 40px #0008}
-.site-nav.open{display:grid;grid-template-columns:1fr 1fr}
-.hero{grid-template-columns:1fr}
+.site-nav.open{display:grid;grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.hero{grid-template-columns:1fr}
 
 .match{grid-template-columns:1fr}}
 @media(max-width:580px){main{width:min(100% - 24px,var(--max));padding-top:28px}
@@ -3480,7 +3485,7 @@ body:not([data-page="home"]) .hero h1{font-size:clamp(38px,11vw,54px)}
     color:var(--glass-text);
     box-shadow:inset 0 1px 3px rgba(255,255,255,.72),0 4px 10px rgba(40,58,59,.07);
   }}
-@media(max-width:900px){.site-header{top:8px;width:calc(100% - 20px);min-height:62px;margin-top:8px;padding:7px 9px}
+@media(max-width:760px){.site-header{top:8px;width:calc(100% - 20px);min-height:62px;margin-top:8px;padding:7px 9px}
 .site-header>.site-nav{
     position:absolute;
     top:72px;
@@ -3749,7 +3754,7 @@ body:not([data-page="home"]) .hero h1{font-size:clamp(38px,11vw,54px)}
 body[data-page="home"] .home-dashboard-grid{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){:root{--page-gutter:16px}}
 :is(body,body[data-page="home"],body[data-page="champions"]) :is(.site-header,main,.site-footer-inner){width:var(--container-width)}
-@media(max-width:900px){.site-header{align-items:center}
+@media(max-width:760px){.site-header{align-items:center}
 .site-header>.brand{position:static}
 .site-header>.brand>span:last-child{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:calc(100% - 128px);text-align:center}
 .site-header>.brand small{display:none}
@@ -3760,7 +3765,7 @@ body[data-page="home"] .home-dashboard-grid{grid-template-columns:minmax(0,1fr)}
 .site-header>.menu-button[aria-expanded="true"]::before{box-shadow:none;transform:translateY(3.5px) rotate(45deg)}
 .site-header>.menu-button[aria-expanded="true"]::after{transform:translateY(-3.5px) rotate(-45deg)}}
 @media(prefers-reduced-motion:reduce){.site-header>.menu-button::before,.site-header>.menu-button::after{transition:none}}
-@media(max-width:900px){.site-header>.menu-button{position:relative;display:block;background:transparent;border:0;box-shadow:none;border-radius:0}
+@media(max-width:760px){.site-header>.menu-button{position:relative;display:block;background:transparent;border:0;box-shadow:none;border-radius:0}
 .site-header>.menu-button:is(:hover,:focus-visible,:active){background:transparent;box-shadow:none}
 .site-header>.menu-button::before,.site-header>.menu-button::after{position:absolute;left:12px;top:21px;margin:0}
 .site-header>.menu-button::before{transform:translateY(-4px);box-shadow:0 8px currentColor}
@@ -3947,7 +3952,7 @@ button:disabled{
   transform:none;
 }
 .menu-button{display:none}
-@media(max-width:900px){.menu-button{display:inline-flex}}
+@media(max-width:760px){.menu-button{display:inline-flex}}
 @media(max-width:580px){.button,.menu-button,.home-matchday-button,.standings-switch button,.standings-scope-switch button{min-height:42px}
 .standings-switch{flex-direction:row}
 .home-standings .standings-switch button,.home-standings .standings-scope-switch button{min-height:36px;padding:8px 14px}}
@@ -5325,6 +5330,28 @@ button:disabled{
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+@media(max-width:600px){
+
+
+
+}
+@media(max-width:600px){
+
+
+
+
+}
 /* site-layout.css: original cascade position */
 body :is(.site-header,main,#team-squad-app,.site-footer-inner){
   width:var(--container-width);
@@ -5472,7 +5499,7 @@ body .site-footer{font-family:var(--ds-font-body)}
 body .site-footer-inner{padding-block:var(--ds-space-7) var(--ds-space-5)}
 body .site-footer-top{padding-bottom:var(--ds-space-7)}
 body .site-footer-bottom{gap:var(--ds-space-5);padding-top:var(--ds-space-5)}
-@media(max-width:900px){body .site-header{padding:var(--ds-space-2) var(--ds-space-3)}
+@media(max-width:760px){body .site-header{padding:var(--ds-space-2) var(--ds-space-3)}
 body .site-header>.site-nav{
     background:var(--ds-color-surface);
     border-color:var(--ds-color-border);
@@ -5498,7 +5525,7 @@ body :is(.site-header .brand strong,.footer-brand strong){
 body :is(.standings-table,.rd-compact-forecast-table) td{
   font-variant-numeric:tabular-nums;
 }
-@media(max-width:900px){body[data-page] .site-header>.menu-button,
+@media(max-width:760px){body[data-page] .site-header>.menu-button,
  body[data-page] .site-header>.menu-button:is(:hover,:focus-visible,:active){background:transparent;border:0;box-shadow:none}
 body[data-page] .site-header>.site-nav{
   background:rgba(213,235,239,.9);
@@ -5508,7 +5535,7 @@ body[data-page] .site-header>.site-nav{
   -webkit-backdrop-filter:blur(24px) saturate(135%);
  }}
 @media(max-width:760px){body[data-page="home"] #app>.home-dashboard{margin-top:16px}}
-@media(max-width:900px){
+@media(max-width:760px){
 
 
 
@@ -5521,6 +5548,27 @@ body main>:last-child{margin-bottom:0}
 
 
 }
+@media(min-width:761px) and (max-width:1024px){body .site-header>.brand>span:last-child{display:none}
+body .site-header>.site-nav .page-link[href="index.html"]{display:none}
+body .site-header{gap:12px}
+body .site-header>.site-nav{flex-wrap:nowrap}
+body .site-header .page-link{white-space:nowrap;padding-inline:8px}}
+@media(min-width:761px) and (max-width:1024px){
+
+
+
+
+}
+@media(min-width:761px) and (max-width:1024px){
+
+}
+@media(min-width:761px) and (max-width:1024px){
+
+
+
+}
+
+
 /* page-background.css: original cascade position */
 body{
   --site-page-background:var(--ds-page-background);

@@ -1,5 +1,6 @@
 /* responsive.css - modulo del sistema grafico condiviso. */
-@media(max-width:900px){.site-header{align-items:flex-start}.menu-button{display:block}.site-nav{display:none;position:absolute;top:74px;left:12px;right:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:0 18px 40px #0008}.site-nav.open{display:grid;grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.match{grid-template-columns:1fr}}
+@media(max-width:760px){.site-header{align-items:flex-start}.menu-button{display:block}.site-nav{display:none;position:absolute;top:74px;left:12px;right:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:0 18px 40px #0008}.site-nav.open{display:grid;grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.match{grid-template-columns:1fr}}
 
 @media(max-width:580px){main{width:min(100% - 24px,var(--max));padding-top:28px}.brand small{display:none}.hero{padding:24px}.grid,.site-nav.open{grid-template-columns:1fr}th,td{padding:10px}}
 
@@ -129,7 +130,7 @@
   }
 }
 
-@media(max-width:900px){
+@media(max-width:760px){
   .site-header{top:8px;width:calc(100% - 20px);min-height:62px;margin-top:8px;padding:7px 9px}
   .site-header>.site-nav{
     position:absolute;
@@ -310,7 +311,7 @@
 :is(body,body[data-page="home"],body[data-page="champions"]) :is(.site-header,main,.site-footer-inner){width:var(--container-width)}
 
 /* Mobile navigation: compact brand and almost full-height menu. */
-@media(max-width:900px){
+@media(max-width:760px){
  .site-header{align-items:center}
  .site-header>.brand{position:static}
  .site-header>.brand>span:last-child{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:calc(100% - 128px);text-align:center}
@@ -324,7 +325,7 @@
 }
 @media(prefers-reduced-motion:reduce){.site-header>.menu-button::before,.site-header>.menu-button::after{transition:none}}
 
-@media(max-width:900px){
+@media(max-width:760px){
  .site-header>.menu-button{position:relative;display:block;background:transparent;border:0;box-shadow:none;border-radius:0}
  .site-header>.menu-button:is(:hover,:focus-visible,:active){background:transparent;box-shadow:none}
  .site-header>.menu-button::before,.site-header>.menu-button::after{position:absolute;left:12px;top:21px;margin:0}

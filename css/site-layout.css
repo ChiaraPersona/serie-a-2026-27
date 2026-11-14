@@ -185,7 +185,7 @@ body .site-footer-inner{padding-block:var(--ds-space-7) var(--ds-space-5)}
 body .site-footer-top{padding-bottom:var(--ds-space-7)}
 body .site-footer-bottom{gap:var(--ds-space-5);padding-top:var(--ds-space-5)}
 
-@media(max-width:900px){
+@media(max-width:760px){
   body .site-header{padding:var(--ds-space-2) var(--ds-space-3)}
   body .site-header>.site-nav{
     background:var(--ds-color-surface);
@@ -222,7 +222,7 @@ body :is(.standings-table,.rd-compact-forecast-table) td{
 }
 
 /* Final mobile navigation surfaces, consistent with the glass header. */
-@media(max-width:900px){
+@media(max-width:760px){
  body[data-page] .site-header>.menu-button,
  body[data-page] .site-header>.menu-button:is(:hover,:focus-visible,:active){background:transparent;border:0;box-shadow:none}
  body[data-page] .site-header>.site-nav{
@@ -236,7 +236,7 @@ body :is(.standings-table,.rd-compact-forecast-table) td{
 @media(max-width:760px){body[data-page="home"] #app>.home-dashboard{margin-top:16px}}
 
 /* Champions mobile menu follows the competition's blue glass palette. */
-@media(max-width:900px){
+@media(max-width:760px){
  body[data-page="champions"] .site-header>.site-nav{
   background:rgba(8,32,82,.9);
   border-color:rgba(147,200,255,.3);
@@ -264,3 +264,41 @@ body:is([data-page="team-stats"],[data-page="player-stats"],[data-page="betting"
  body #app>.readings-index{padding-bottom:0}
  body #app>.readings-index>:last-child{margin-bottom:0}
 }
+
+/* Tablet: the logo is the home link; keep navigation on one compact row. */
+@media(min-width:761px) and (max-width:1024px){
+ body .site-header>.brand>span:last-child{display:none}
+ body .site-header>.site-nav .page-link[href="index.html"]{display:none}
+ body .site-header{gap:12px}
+ body .site-header>.site-nav{flex-wrap:nowrap}
+ body .site-header .page-link{white-space:nowrap;padding-inline:8px}
+}
+
+@media(min-width:761px) and (max-width:1024px){
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-inner{min-height:132px;padding:10px;gap:8px;grid-template-columns:48px minmax(0,1fr)}
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-front img{width:48px;height:48px}
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-back{gap:4px}
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-back strong{margin-bottom:0;font-size:16px;line-height:1.25}
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-back span{font-size:11px;line-height:1.3}
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-back b{margin-top:4px;padding-top:6px;font-size:11px;line-height:1.3}
+}
+
+@media(min-width:761px) and (max-width:1024px){body[data-page="team-stats"] #app>.team-directory-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}body[data-page="team-stats"] #app>.team-directory-grid .team-flip-face{min-height:0;border:0;border-radius:0}body[data-page="team-stats"] #app>.team-directory-grid .team-flip-back{gap:3px}}
+
+/* Tablet directory: large crest beside one consistently aligned text block. */
+@media(min-width:761px) and (max-width:1024px){
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-inner{grid-template-columns:88px minmax(0,1fr);gap:14px;padding:12px 14px;align-items:center}
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-front img{width:88px;height:88px}
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-back{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;min-width:0;text-align:left}
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-back strong{font-size:18px}
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-back b{width:100%;margin:2px 0 0;padding:6px 0 0;text-align:left}
+}
+/* Champions navigation: translucent blue glass with visible edge reflections. */
+body[data-page="champions"] .site-header{
+ background:linear-gradient(115deg,rgba(190,221,255,.18),transparent 38%),linear-gradient(295deg,rgba(112,179,255,.1),transparent 55%),rgba(12,35,72,.52);
+ border-color:rgba(174,215,255,.4);
+ box-shadow:0 4px 8px -3px rgba(0,8,30,.32),0 14px 28px -8px rgba(0,8,30,.38),inset 0 1px 3px rgba(210,234,255,.34),inset 0 -1px 2px rgba(147,200,255,.12);
+ backdrop-filter:blur(26px) saturate(155%);
+ -webkit-backdrop-filter:blur(26px) saturate(155%);
+}
+@media(max-width:760px){body[data-page="champions"] .site-header>.site-nav{background:linear-gradient(115deg,rgba(190,221,255,.12),transparent 42%),rgba(8,32,82,.66);backdrop-filter:blur(26px) saturate(155%);-webkit-backdrop-filter:blur(26px) saturate(155%)}}
