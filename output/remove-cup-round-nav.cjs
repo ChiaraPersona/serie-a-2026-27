@@ -1,0 +1,1 @@
+const fs=require('fs');const p='js/pages/cup.js';let s=fs.readFileSync(p,'utf8');s=s.replace(/  const roundNavigation=.*\r?\n/,'');s=s.replace('<nav class="cup-round-nav" aria-label="Vai a un turno della Coppa Italia">${roundNavigation}</nav>','');s=s.replace(/    document\.querySelectorAll\("\.cup-round-nav a"\).*\r?\n/,'');fs.writeFileSync(p,s);

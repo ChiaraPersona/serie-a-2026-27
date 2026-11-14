@@ -860,6 +860,9 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+
+@media(max-width:700px){
+}
 /* matches.css: original cascade position */
 .match{display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:center;margin-bottom:10px}
 .match-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -1958,7 +1961,7 @@ body[data-page="readings"] main>.hero+.section{margin-top:24px}
 
 
 
-@media(max-width:760px){
+@media(max-width:1024px){
 
 
 
@@ -3667,7 +3670,7 @@ body:not([data-page="home"]) .hero h1{font-size:clamp(38px,11vw,54px)}
 
 }
 @media(max-width:760px){body:not([data-page="home"]) .hero{padding:40px 4px 30px}}
-@media(max-width:760px){.site-footer{display:none}}
+@media(max-width:1024px){.site-footer{display:none}}
 @media(max-width:760px){
 }
 @media(max-width:600px){:root{--page-gutter:16px}}
@@ -3690,6 +3693,8 @@ body:not([data-page="home"]) .hero h1{font-size:clamp(38px,11vw,54px)}
 .site-header>.menu-button::after{opacity:0;transform:none}
 .site-header>.menu-button[aria-expanded="true"]::before{transform:rotate(45deg);box-shadow:none}
 .site-header>.menu-button[aria-expanded="true"]::after{opacity:1;transform:rotate(-45deg)}}
+@media(min-width:761px) and (max-width:1024px){
+}
 /* buttons.css: original cascade position */
 :root{
   --button-blue:#1e5f9d;
@@ -5355,6 +5360,14 @@ body[data-page] .site-header>.site-nav{
 
 
 }
+
+
+
+@media(max-width:1024px){body main,body:not([data-page="home"]) main{min-height:0;padding-bottom:24px}
+body main>:last-child{margin-bottom:0}
+
+body #app>.readings-index{padding-bottom:0}
+body #app>.readings-index>:last-child{margin-bottom:0}}
 /* page-background.css: original cascade position */
 body{
   --site-page-background:var(--ds-page-background);

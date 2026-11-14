@@ -28,16 +28,14 @@ function cupRound(round,data){
   return collapsible?`<details class="cup-round cup-round--${round.id} cup-round-disclosure" id="coppa-${round.id}" data-stage="${round.id}">${heading}${cards}</details>`:`<section class="cup-round cup-round--${round.id}" id="coppa-${round.id}" data-stage="${round.id}">${heading}${cards}</section>`;
 }
 function cupBracket(data){
-  const roundNavigation=cupRoundConfig.map(round=>`<a href="#coppa-${round.id}"><span>${round.step}</span>${round.label}</a>`).join("");
-  return `<section class="section cup-stage"><nav class="cup-round-nav" aria-label="Vai a un turno della Coppa Italia">${roundNavigation}</nav><div class="cup-round-list">${cupRoundConfig.map(round=>cupRound(round,data)).join("")}</div><footer class="cup-stage-note"><span>Aggiornato al ${dateOnly(data.updatedAt)}</span><p>Fonte: <a href="${esc(data.source.url)}" target="_blank" rel="noreferrer">${esc(data.source.label)}</a>. Date, orari e programmazione TV sono riportati quando disponibili nella fonte.</p></footer></section>`;
+  return `<section class="section cup-stage"><div class="cup-round-list">${cupRoundConfig.map(round=>cupRound(round,data)).join("")}</div></section>`;
 }
 
   async function render(){
     const page="cup",cupBracketData=await load("coppa-italia-2026-27.json");
     let html="";
-  if(page==="cup")html=hero("Eliminazione diretta","Coppa Italia","Dai preliminari dell’8 agosto alla finale del 19 maggio: date, orari e percorsi della coppa in un tabellone distinto dal campionato.")+cupBracket(cupBracketData);
+  if(page==="cup")html=hero("Eliminazione diretta","Coppa Italia","").replace('</h1>','</h1><p class="statistics-subtitle">Segui il tabellone, il calendario e i risultati, turno dopo turno fino alla finale.</p>')+cupBracket(cupBracketData);
     document.querySelector("#app").innerHTML=html;
-    document.querySelectorAll(".cup-round-nav a").forEach(link=>link.addEventListener("click",()=>{const target=document.querySelector(link.getAttribute("href"));if(target?.matches("details.cup-round-disclosure"))target.open=true}));
     const hashTarget=location.hash?document.querySelector(location.hash):null;if(hashTarget?.matches("details.cup-round-disclosure"))hashTarget.open=true;
   }
   return {render};

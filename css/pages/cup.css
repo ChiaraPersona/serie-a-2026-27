@@ -854,6 +854,9 @@ body,button,input,select,textarea{font-family:var(--font-body)}
 
 
 
+
+@media(max-width:700px){
+}
 /* matches.css: original cascade position */
 .match{display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:center;margin-bottom:10px}
 .match-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -960,26 +963,11 @@ body[data-page="cup"]{
 
 
 
-.cup-stage-note{
-  display:flex;
-  align-items:baseline;
-  gap:15px;
-  margin-top:14px;
-  padding:0 5px;
-  color:var(--muted);
-  font-size:12px;
-}
-.cup-stage-note span{
-  color:#38546a;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.09em;
-  text-transform:uppercase;
-  white-space:nowrap;
-}
-.cup-stage-note p{margin:0}
-.cup-stage-note a{color:#385d78;font-weight:800}
-.cup-stage-note a:hover{text-decoration:none}
+
+
+
+
+
 .match.fixture-card{
   border-color:rgba(255,255,255,.9);
   background:linear-gradient(155deg,rgba(255,255,255,.92),rgba(248,250,253,.68));
@@ -1509,12 +1497,12 @@ body[data-page="cup"] #app>.cup-stage{overflow:hidden;padding:0;border:0;border-
 
 
 
-.cup-round-nav{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:26px 0 30px;padding:8px;border:1px solid rgba(36,90,120,.12);border-radius:18px;background:rgba(255,255,255,.44)}
-.cup-round-nav a{display:flex;align-items:center;gap:8px;min-width:0;padding:10px 11px;border-radius:12px;color:#36516d;font-size:11px;font-weight:850;line-height:1.2;text-decoration:none;transition:background .18s ease,color .18s ease,transform .18s ease}
-.cup-round-nav a:hover,.cup-round-nav a:focus-visible{background:#173d68;color:#fff;transform:translateY(-1px)}
-.cup-round-nav a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.cup-round-nav a span{display:grid;flex:0 0 25px;width:25px;height:25px;place-items:center;border:1px solid rgba(167,116,22,.25);border-radius:50%;background:rgba(244,207,114,.15);color:#9a6a17;font-size:9px}
-.cup-round-nav a:hover span,.cup-round-nav a:focus-visible span{border-color:rgba(244,207,114,.44);color:#f7d98e}
+
+
+
+
+
+
 .cup-round-list{display:grid;gap:18px}
 .cup-round{position:relative;scroll-margin-top:92px;padding:24px;border:1px solid rgba(36,90,120,.13);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(244,248,251,.54));box-shadow:inset 0 1px #fff,0 16px 42px rgba(32,49,73,.07)}
 .cup-round::before{position:absolute;top:26px;bottom:-19px;left:45px;width:1px;background:linear-gradient(rgba(167,116,22,.36),rgba(36,90,120,.1));content:""}
@@ -1552,7 +1540,7 @@ body[data-page="cup"] #app>.cup-stage{overflow:hidden;padding:0;border:0;border-
 .cup-round--final .cup-round-heading>small{background:rgba(255,255,255,.1);color:#dce7f7}
 .cup-round--final .cup-match-grid{position:relative;z-index:1;grid-template-columns:minmax(0,620px)}
 .cup-round--final .cup-match-card{border-color:rgba(242,193,78,.34);background:rgba(255,255,255,.95)}
-body[data-page="cup"] .cup-stage-note{margin-top:22px;padding:16px 18px;border:1px solid rgba(36,90,120,.11);border-radius:16px;background:rgba(255,255,255,.42)}
+
 body[data-page="cup"] main>.hero+.cup-stage{margin-top:24px}
 
 
@@ -1990,7 +1978,7 @@ body[data-page="cup"] main>.hero+.cup-stage{margin-top:24px}
 
 
 
-@media(max-width:760px){
+@media(max-width:1024px){
 
 
 
@@ -3415,14 +3403,10 @@ body:not([data-page="home"]) .hero h1{font-size:clamp(38px,11vw,54px)}
 .hero{border-radius:26px}
 .section{margin-top:64px}}
 @media(max-width:900px){
-.cup-stage-note{
-    align-items:flex-start;
-    flex-direction:column;
-    gap:4px;
-  }}
+}
 @media(max-width:580px){.cup-stage{margin-top:36px}
 
-.cup-stage-note{padding-inline:0}}
+}
 @media(hover:hover){.page-link:hover{
     border-color:rgba(255,255,255,.52);
     background:rgba(255,255,255,.34);
@@ -3626,11 +3610,11 @@ body:not([data-page="home"]) .hero h1{font-size:clamp(38px,11vw,54px)}
 }
 @media(max-width:430px){
 }
-@media(max-width:900px){.cup-round-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:900px){
 .cup-match-grid{grid-template-columns:1fr}}
 @media(max-width:580px){
-.cup-round-nav{grid-template-columns:repeat(2,minmax(0,1fr));margin:20px 0 24px}
-.cup-round-nav a{padding:8px;font-size:10px}
+
+
 .cup-round{padding:18px 14px;border-radius:20px}
 .cup-round::before{left:35px}
 .cup-round-heading{grid-template-columns:40px minmax(0,1fr);gap:10px}
@@ -3644,7 +3628,7 @@ body:not([data-page="home"]) .hero h1{font-size:clamp(38px,11vw,54px)}
 .cup-match-card>footer strong,.cup-result-source{display:block;margin-top:3px;text-align:left}
 .cup-round--final{padding:20px 14px}
 .cup-round--final::after{display:none}
-body[data-page="cup"] .cup-stage-note{padding:14px}}
+}
 @media(max-width:580px){body[data-page="cup"] main>.hero+.cup-stage{margin-top:20px}}
 @media(max-width:900px){
 
@@ -3693,7 +3677,7 @@ body[data-page="cup"] .cup-stage-note{padding:14px}}
 
 }
 @media(max-width:760px){body:not([data-page="home"]) .hero{padding:40px 4px 30px}}
-@media(max-width:760px){.site-footer{display:none}}
+@media(max-width:1024px){.site-footer{display:none}}
 @media(max-width:760px){
 }
 @media(max-width:600px){:root{--page-gutter:16px}}
@@ -3716,6 +3700,8 @@ body[data-page="cup"] .cup-stage-note{padding:14px}}
 .site-header>.menu-button::after{opacity:0;transform:none}
 .site-header>.menu-button[aria-expanded="true"]::before{transform:rotate(45deg);box-shadow:none}
 .site-header>.menu-button[aria-expanded="true"]::after{opacity:1;transform:rotate(-45deg)}}
+@media(min-width:761px) and (max-width:1024px){
+}
 /* buttons.css: original cascade position */
 :root{
   --button-blue:#1e5f9d;
@@ -5360,6 +5346,17 @@ body[data-page] .site-header>.site-nav{
 
 @media(max-width:900px){
 
+
+
+}
+body:is([data-page="team-stats"],[data-page="player-stats"],[data-page="betting"],[data-page="cup"]) #app>.page-heading,
+body:is([data-page="team-stats"],[data-page="player-stats"],[data-page="betting"],[data-page="cup"]) #app>.page-heading h1{text-align:center}
+body:is([data-page="team-stats"],[data-page="player-stats"],[data-page="betting"],[data-page="cup"]) #app>.page-heading h1{color:var(--gold)}
+body:is([data-page="team-stats"],[data-page="player-stats"],[data-page="betting"],[data-page="cup"]) #app>.page-heading .statistics-subtitle{
+ max-width:640px;margin:12px auto 0;color:var(--ds-color-text-muted);font-size:13px;line-height:1.6;text-wrap:balance;
+}
+@media(max-width:1024px){body main,body:not([data-page="home"]) main{min-height:0;padding-bottom:24px}
+body main>:last-child{margin-bottom:0}
 
 
 }

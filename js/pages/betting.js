@@ -441,7 +441,7 @@ export function createPage(deps){
       cards.push({date:firstDate(championsCalendar.fixtures.filter(f=>f.matchday===number)),html:championsArchiveCard(data,number)});
     }
     cards.sort((a,b)=>b.date.localeCompare(a.date));
-    return hero("","Schedina","Le schedine e le MyCombo sono raccolte separatamente giornata per giornata.")+`<section class="betting-archive" aria-label="Giornate Schedina"><div class="betting-archive-list team-directory-grid team-flip-grid">${cards.map(card=>card.html).join("")}</div></section>`;
+    return hero("","Schedina","").replace('</h1>','</h1><p class="statistics-subtitle">Consulta le selezioni per giornata e crea la tua schedina personale.</p>')+`<section class="betting-archive" aria-label="Giornate Schedina"><div class="betting-archive-list team-directory-grid team-flip-grid">${cards.map(card=>card.html).join("")}</div></section>`;
   }
 
   async function render(){

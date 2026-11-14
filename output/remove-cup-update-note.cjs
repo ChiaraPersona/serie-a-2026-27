@@ -1,0 +1,2 @@
+const fs=require('fs');const p='js/pages/cup.js';let s=fs.readFileSync(p,'utf8');s=s.replace(/<footer class="cup-stage-note">[\s\S]*?<\/footer>/,'');fs.writeFileSync(p,s);
+let check=fs.readFileSync('output/check-cup-heading.cjs','utf8');check=check.replace("assert.equal(await page.locator('.cup-round-nav').count(),0);","assert.equal(await page.locator('.cup-round-nav').count(),0);assert.equal(await page.locator('.cup-stage-note').count(),0);");fs.writeFileSync('output/check-cup-heading.cjs',check);

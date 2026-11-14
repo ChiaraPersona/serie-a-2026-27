@@ -247,3 +247,20 @@ body :is(.standings-table,.rd-compact-forecast-table) td{
  body[data-page="champions"] .site-header>.site-nav .page-link:is(:hover,:focus-visible){background:rgba(112,179,255,.14);color:#fff}
  body[data-page="champions"] .site-header>.menu-button{color:#eaf4ff}
 }
+
+/* Statistics landing pages share a centered editorial heading. */
+body:is([data-page="team-stats"],[data-page="player-stats"],[data-page="betting"],[data-page="cup"]) #app>.page-heading,
+body:is([data-page="team-stats"],[data-page="player-stats"],[data-page="betting"],[data-page="cup"]) #app>.page-heading h1{text-align:center}
+body:is([data-page="team-stats"],[data-page="player-stats"],[data-page="betting"],[data-page="cup"]) #app>.page-heading h1{color:var(--gold)}
+body:is([data-page="team-stats"],[data-page="player-stats"],[data-page="betting"],[data-page="cup"]) #app>.page-heading .statistics-subtitle{
+ max-width:640px;margin:12px auto 0;color:var(--ds-color-text-muted);font-size:13px;line-height:1.6;text-wrap:balance;
+}
+
+/* Compact page endings when the footer is hidden on mobile and tablet. */
+@media(max-width:1024px){
+ body main,body:not([data-page="home"]) main,body[data-page="home"] main{min-height:0;padding-bottom:24px}
+ body main>:last-child{margin-bottom:0}
+ body #app>.team-directory-grid:last-child{margin-bottom:0}
+ body #app>.readings-index{padding-bottom:0}
+ body #app>.readings-index>:last-child{margin-bottom:0}
+}

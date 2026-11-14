@@ -298,7 +298,7 @@
 }
 
 /* Il footer condiviso resta disponibile solo oltre il breakpoint mobile. */
-@media(max-width:760px){.site-footer{display:none}}
+@media(max-width:1024px){.site-footer{display:none}}
 
 @media(max-width:760px){
   body[data-page="home"] .home-rail{display:grid}
@@ -332,4 +332,10 @@
  .site-header>.menu-button::after{opacity:0;transform:none}
  .site-header>.menu-button[aria-expanded="true"]::before{transform:rotate(45deg);box-shadow:none}
  .site-header>.menu-button[aria-expanded="true"]::after{opacity:1;transform:rotate(-45deg)}
+}
+
+/* Keep the compact directory cards on tablets, including pointer devices. */
+@media(min-width:761px) and (max-width:1024px){
+ body[data-page="team-stats"] #app>.team-directory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-page="team-stats"] #app>.team-directory-grid .team-flip-card{height:auto}
 }

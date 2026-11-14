@@ -2,6 +2,7 @@ import {imageSource} from '../core/image-source.mjs?v=20261022-assets-v1';
 import {loadXgotStatistics,withXgotLeaderboards} from '../components/xgot-statistics.mjs?v=20261106-xgot';
 export function createPage(deps){
   const {esc,hero,playerRoleLabel,loadTeamDirectory}=deps;
+  const statisticsHeading=(title,description)=>hero("",title,"").replace('</h1>',`</h1><p class="statistics-subtitle">${esc(description)}</p>`);
   const loadPlayerLeaderboards=async()=>withXgotLeaderboards(await deps.loadPlayerLeaderboards(),await loadXgotStatistics());
 const teamDirectoryGrid=(data,standings)=>`<section class="team-directory-grid team-flip-grid" aria-label="Le 20 squadre">${data.teams.map(team=>{const current=standings.find(row=>row.team===team.id),logo=String(team.monochromeLogo||team.logo||"").replace(/^\.\.\//,""),[primary="#174fa5",secondary="#081d48"]=team.colors||[];return `<a class="team-directory-card team-flip-card" href="statistiche-squadra/${team.id}.html" style="--team-primary:${primary};--team-secondary:${secondary}" aria-label="${esc(team.name)}: apri rosa e statistiche"><span class="team-flip-inner"><span class="team-flip-face team-flip-front"><img src="${imageSource(`${esc(logo)}`)}" alt=""></span><span class="team-flip-face team-flip-back"><strong>${esc(team.name)}</strong><span>${current?`${standings.indexOf(current)+1}ª posizione · ${current.points} punti`:"Posizione N/D · Punti N/D"}</span><span>${esc(team.stadium||"Stadio N/D")}</span><span>Allenatore: ${esc(team.coach||"N/D")}</span><span>Modulo: ${esc(team.preferredFormation||"N/D")}</span><b>Apri scheda</b></span></span></a>`}).join("")}</section>`;
 let directory;
@@ -51,8 +52,8 @@ function comparatorResult(data,periodId,keys,mode="total"){
     if(page==="team-stats"&&["#top-15-calciatori","#comparatore-calciatori"].includes(location.hash)){location.replace("statistiche-giocatori.html"+location.hash);return}
     directory=teamDirectory;
     let html="";
-  if(page==="team-stats")html=hero("","Statistiche squadre","Consulta le rose e le statistiche delle 20 squadre.")+teamDirectoryGrid(teamDirectory,calculateStandings(await deps.load("teams.json"),await deps.load("matches.json")));
-  else html=hero("","Statistiche giocatori","Confronta le prestazioni e scopri i protagonisti del campionato.")+globalPlayerLeaderboards(playerLeaderboards)+playerComparator(playerLeaderboards);
+  if(page==="team-stats")html=statisticsHeading("Statistiche squadre","Esplora rose, statistiche e rendimento delle 20 squadre.")+teamDirectoryGrid(teamDirectory,calculateStandings(await deps.load("teams.json"),await deps.load("matches.json")));
+  else html=statisticsHeading("Statistiche giocatori","Esplora le classifiche individuali e confronta due giocatori per statistiche totali o per 90 minuti.")+globalPlayerLeaderboards(playerLeaderboards)+playerComparator(playerLeaderboards);
     document.querySelector("#app").innerHTML=html;
   if(page==="player-stats"){const target=document.querySelector("#global-player-leaderboard");let periodId="2026/27",metricId="goals",rankingSort={key:"goals",mode:"total",direction:"desc"};
 const renderRanking=()=>target.innerHTML=globalPlayerLeaderboardTable(playerLeaderboards,periodId,metricId,{team:document.querySelector('[data-ranking-team]').value,role:document.querySelector('[data-ranking-role]').value},rankingSort);
