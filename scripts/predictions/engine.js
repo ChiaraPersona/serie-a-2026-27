@@ -2115,17 +2115,20 @@ function matchScenarios(input, final, expected) {
   ];
 }
 
-function predictScenario(input) {
+function predictScenario(input, conditionDistribution = null) {
   const market = marketProbabilities(findMainOneXTwo(input.oddsEvent));
-  const expected = expectedGoals(input);
-  const matrix = scoreMatrix(expected.home, expected.away, 7);
+  const baseExpected = expectedGoals(input);
+  const baseMatrix = scoreMatrix(baseExpected.home, baseExpected.away, 7);
+  const conditioned = conditionDistribution?.({expected:baseExpected,matrix:baseMatrix});
+  const expected = conditioned?.expected || baseExpected;
+  const matrix = conditioned?.matrix || baseMatrix;
   const parts = {
     historical: technicalProbabilities(matrix),
     tactical: tacticalProbabilities(input.homeProfile, input.awayProfile),
     objectives: objectiveProbabilities(input.homeObjective, input.awayObjective)
   };
   const final = parts.historical;
-  const volumeFinal = expected.components.xgot?.applied
+  const volumeFinal = !conditioned?.applied && expected.components.xgot?.applied
     ? technicalProbabilities(scoreMatrix(expected.components.xgot.unadjusted.home, expected.components.xgot.unadjusted.away, 7)) : final;
   const crossCompetition = input.crossCompetitionBaseline ?? (input.homeProfile?.competition !== "Serie A" || input.awayProfile?.competition !== "Serie A");
   const completedSections = Object.values(input.reading?.sections || {}).filter(section => section?.content).length;
@@ -2138,7 +2141,7 @@ function predictScenario(input) {
   const topTwo = new Set(orderedOutcomes.slice(0, 2).map(item => item.outcome));
   const doubleChance = topTwo.has("1") && topTwo.has("X") ? "1X" : topTwo.has("X") && topTwo.has("2") ? "X2" : "12";
   const matrices = sensitivityMatrices(expected, matrix, null);
-  const forecast = scoreForecast(matrix, final);
+  const forecast = conditioned?.forecast || scoreForecast(matrix, final);
   const teamProjections = [
     teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, input.homeDiscipline, input.homeVolume, input.awayVolume, "home", volumeFinal[0], volumeFinal[2], expected.home, input.awayTeamMatchupProfile, input.homeTeamMatchupProfile),
     teamProjection(input.awayTeam, input.awayProfile, input.homeProfile, input.awaySquad, input.awayDiscipline, input.awayVolume, input.homeVolume, "away", volumeFinal[2], volumeFinal[0], expected.away, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile)

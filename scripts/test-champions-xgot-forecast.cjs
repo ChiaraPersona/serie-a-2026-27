@@ -1,0 +1,16 @@
+'use strict';
+const assert=require('node:assert/strict');
+const {forecastXgot}=require('./champions/xgot-forecast.cjs');
+const history=Array.from({length:8},(_,i)=>({providerMatchId:String(i),date:`2026-10-${String(i+1).padStart(2,'0')}`,kickoffUtc:`2026-10-${String(i+1).padStart(2,'0')}T12:00:00Z`,availableAt:'2026-11-01T00:00:00Z',competition:'champions-league',teams:[{providerTeamId:'1',xgot:1,shotsOnTarget:4},{providerTeamId:'2',xgot:1,shotsOnTarget:4}]}));
+const input={history,identities:{a:'1',b:'2'},teamIds:['a','b'],date:'2026-11-24',asOf:'2026-11-14T12:00:00Z',projections:[{shotsOnTarget:{central:6}},{shotsOnTarget:{central:2}}]};
+const result=forecastXgot(input);
+assert.equal(result.home,1.5);assert.equal(result.away,.5);assert.equal(result.total,2);assert.equal(result.statisticallyValidated,false);
+assert.equal(forecastXgot({...input,history:history.slice(0,5)}).home,null);
+assert.equal(forecastXgot({...input,asOf:'2026-10-31T00:00:00Z'}).home,null);
+assert.equal(forecastXgot({...input,teamIds:['missing','b']}).home,null);
+assert.equal(forecastXgot({...input,projections:[{shotsOnTarget:null},input.projections[1]]}).total,null);
+const future={...history[0],date:'2026-12-01',teams:history[0].teams.map(t=>({...t,xgot:100}))};
+assert.deepEqual(forecastXgot({...input,history:[...history,future]}),result);
+const late={...history[0],availableAt:'2026-12-01T00:00:00Z'};
+assert.deepEqual(forecastXgot({...input,history:[...history,late]}),result);
+console.log('OK Champions xGOT forecast: opponent quality, SOT scaling, minimum history, missing identities/SOT and temporal isolation');

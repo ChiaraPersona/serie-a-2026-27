@@ -11,10 +11,17 @@ const block1=source.records.filter(r=>(r.block||1)===1),block2=source.records.fi
 const block3a=source.records.filter(r=>r.block==='3A');
 assert.equal(block3a.length,73);
 assert.equal(block1.length,106);assert.equal(block2.length,237);assert.equal(source.unmatched.length,8);
-assert.equal(new Set(source.records.map(p=>p.stablePlayerId)).size,416);
+assert.equal(new Set(source.records.map(p=>p.stablePlayerId)).size,source.records.length);
 assert(source.records.every(r=>r.status==='accepted'&&r.shirtNumber===r.existingConfirmedNumber));
 for(const row of source.records){
- const team=md3.teams.find(t=>t.teamId===row.teamId);const p=team.players.find(p=>p.playerId===row.playerId);assert(p);assert.equal(p.shirtNumber,row.shirtNumber);
+ if(row.block==='uefa-archive-recovery'){
+  const html=fs.readFileSync(row.source.archive,'utf8');
+  assert(html.includes('2026/27'));
+  const matches=[...html.matchAll(/<pk-table-row class="row--squadlist">[\s\S]*?<\/pk-table-row>/g)].map(([r])=>({id:r.match(/clubs\/players\/(\d+)/)?.[1],number:Number(r.match(/itemprop="numberedPosition">\s*(\d+)/)?.[1])})).filter(r=>r.id===row.uefaPlayerId);
+  assert.equal(matches.length,1);assert.equal(matches[0].number,row.shirtNumber);
+ }else{
+  const team=md3.teams.find(t=>t.teamId===row.teamId);const p=team.players.find(p=>p.playerId===row.playerId);assert(p);assert.equal(p.shirtNumber,row.shirtNumber);
+ }
  assert.equal(championsShirtNumber(source,{id:row.teamId},{playerId:row.playerId}),row.shirtNumber);
  for(const aliasId of row.playerIdAliases||[])assert.equal(championsShirtNumber(source,{id:row.teamId},{playerId:aliasId}),row.shirtNumber);
  for(const name of row.aliases)assert.equal(championsShirtNumber(source,{id:row.teamId},name),row.shirtNumber);
@@ -30,7 +37,7 @@ for(const team of db.teams)for(const p of team.players){
  if(record){assert.equal(p.shirtNumber,record.shirtNumber);populated++;}
  else assert.equal(p.shirtNumber,undefined);
 }
-assert.equal(populated,337);
+assert.equal(populated,db.teams.reduce((sum,t)=>sum+t.players.length,0));
 console.log(JSON.stringify({accepted:source.records.length,block1:block1.length,block2:block2.length,block3a:block3a.length,registeredNumbers:populated,unmatched:source.unmatched.length,conflicts:source.records.filter(r=>r.status==='conflict').length}));
 
 for(const name of ['Akgün','Akgun','Yılmaz','Yilmaz'])assert.equal(championsShirtNumber(source,{id:'galatasaray'},name),null,`Ambiguous surname ${name} must not select a player`);

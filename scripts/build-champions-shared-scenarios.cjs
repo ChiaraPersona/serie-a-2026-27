@@ -17,6 +17,7 @@ async function build({asOf=new Date().toISOString(),matchday=null}={}){
  const updated=new Set(output.fixtures.map(f=>f.fixtureId));
  output.fixtures=[...(previous?.fixtures||[]).filter(p=>!updated.has(p.fixtureId)&&inputs.calendar.fixtures.some(f=>f.id===p.fixtureId)),...output.fixtures];
  output.inputs=Object.fromEntries(Object.entries(paths).map(([k,p])=>[k,{path:p,sha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex')}]));
+ for(const [key,p] of Object.entries({xgotForecastHistory:'data/normalized/xgot-team-research-v2.json',xgotForecastIdentities:'data/predictions/xgot-prospective/identity-registry.json',xgotForecastQualityProtocol:'docs/xgot-protocol-v2.json',europeanReadingModel:'scripts/champions/european-reading.cjs',europeanReadingPolicy:'data/sources/champions-european-result-policy.json'}))output.inputs[key]={path:p,sha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex')};
  fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,JSON.stringify(output,null,2)+'\n');
  console.log(`Scenario Champions condiviso: MD${day??'N/D'}, ${output.fixtures.filter(f=>inputs.calendar.fixtures.some(c=>c.id===f.fixtureId&&eligible(c,asOf))).length} gare future; righe concluse conservate per le letture storiche`);
  return output;

@@ -7,7 +7,7 @@
   "authorization": {
     "date": "2026-11-04",
     "instruction": "Preferisco di gran lunga questo modello e ti chiedo di applicarlo.",
-    "publication": "PRELIMINARY_RESULT_ONLY",
+    "publication": "PRELIMINARY_EUROPEAN_READING",
     "statisticalApproval": false
   },
   "parameters": {
@@ -23,5 +23,14 @@
     "halfLifeDays": null
   },
   "selection": "Existing verified regulation result contract; existing sports-support and minimum-odds rules; no straight draw.",
-  "scope": "Future fixtures only. Result and derived double chance. No goal matrix, exact score, player forecast or DUO probability conversion."
+  "readingModel": {
+    "enabled": true,
+    "activatedAt": "2026-11-14T00:00:00Z",
+    "authorization": "Il rating europeo Elo deve stimare l'intera Lettura, con previsioni collegate.",
+    "scoreDistribution": "minimum-relative-entropy-outcome-conditioning-v1",
+    "volumes": "Existing game-state context uses the same European outcome probabilities.",
+    "discipline": "Observed team outcome-conditional rates, shrunk by minimumEuropeanAppearances prior matches; neutral if unsupported.",
+    "statisticallyValidated": false
+  },
+  "scope": "Future fixtures only. European outcome distribution conditions scores, expected goals, offensive volumes, xGOT and downstream individual allocation when canonical fixture-specific lineups exist. Discipline uses observed outcome associations when covered. Missing evidence remains N/D or explicitly neutral. No DUO probability conversion or statistical approval."
 }

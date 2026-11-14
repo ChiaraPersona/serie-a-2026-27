@@ -115,7 +115,7 @@ async function buildTeamCatalog(scenarios,odds){
  return scenarios.fixtures.map(f=>{
   if(f.status!=='preliminary')return {matchId:f.fixtureId,homeTeam:f.homeTeam,awayTeam:f.awayTeam,selections:[],suggestions:[]};
   const event=odds.events.find(e=>e.canonicalMatchId===f.fixtureId);assert(event&&event.canonicalDate===f.date);
-  const matrix=scoreMatrix(f.expectedGoals.home,f.expectedGoals.away,7,null),legs=[];
+  const matrix=f.scoreDistribution||scoreMatrix(f.expectedGoals.home,f.expectedGoals.away,7,null),legs=[];
   for(const market of event.markets){
    // Only exact, ordinary regulation-time contracts. No extra-time, half,
    // substitute, woodwork or compound markets can inherit a marginal forecast.
@@ -164,7 +164,7 @@ async function build(){
  const current=read('data/normalized/champions-player-stats-2026-27.json'),registered=read('data/normalized/champions-registered-squads-2026-27.json'),oldDatabase=read('data/normalized/champions-md03-player-database-2026-27.json');
  require('./champions/md3-identity-corrections.cjs').applyIdentityCorrections(root,oldDatabase);
  const database=buildDatabase(lineups,current,registered,read('data/normalized/champions-player-stats-2025-26.json'),oldDatabase,read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json'));
- const scenarios=buildSharedScenarios({calendar:{...calendar,fixtures:targets},source:read('data/sources/champions-pilot-match-stats-2025-27.json'),styles:read('data/normalized/team-style-profiles.json'),odds,asOf,matchday:4,canonicalLineups:lineups,playerDatabase:database});
+ const scenarios=buildSharedScenarios({calendar:{...calendar,fixtures:targets},ratingCalendar:calendar,source:read('data/sources/champions-pilot-match-stats-2025-27.json'),styles:read('data/normalized/team-style-profiles.json'),odds,asOf,matchday:4,canonicalLineups:lineups,playerDatabase:database});
  assert(scenarios.fixtures.every(f=>f.provenance.lineupsApplied),'Incomplete team or canonical XI evidence: '+JSON.stringify(scenarios.fixtures.filter(f=>f.status!=='preliminary'||!f.provenance.lineupsApplied).map(f=>({id:f.fixtureId,status:f.status,lineups:f.provenance.lineupsApplied,samples:f.dataQuality.teamSamples}))));
  const evidence=collectRosterEvidence(root,lineups.teams.flatMap(t=>[...t.starters,...t.bench].map(p=>p.providerPlayerId)));
  const observed=loadObservedShooting(root,lineups.teams.map(t=>({...t,players:[...t.starters,...t.bench]})));

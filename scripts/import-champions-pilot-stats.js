@@ -298,6 +298,7 @@ async function main(argv = process.argv.slice(2)) {
     scoreboards: [...(previous.scoreboards || []).filter(item => !(selectedSeasonIds.has(item.season) && selectedLeagueSet.has(item.league))), ...scoreboards],
     matches
   };
+  if(fs.existsSync(path.join(root,'data/raw/xgot/sabah-recovery-2026-11-14/team.json.gz')))require('./champions/sabah-recovered-baseline.cjs').apply(output);
   writeJson(outputPath, output);
   console.log(`OK import Champions as-of ${args.asOf}: ${importedMatches.length} gare · ${args.selectedTeams.length} squadre (${args.selectedTeams.map(team => team.id).join(", ")})`);
   return output;

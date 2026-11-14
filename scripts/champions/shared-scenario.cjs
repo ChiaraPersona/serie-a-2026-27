@@ -33,10 +33,13 @@ function profileRows(source,team,cutoff){
 function eligible(fixture,asOf){
  return fixture.status==='scheduled'&&Date.parse(zonedLocalToUtc(fixture.date,fixture.kickoff,'Europe/Rome'))>Date.parse(asOf);
 }
-// Adapt observed domestic data to one common league scale. No Elo-derived goals,
-// guessed identities, copied lineups, or individual market publication.
-function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,canonicalLineups=null,playerDatabase=null}){
+// Normalize observed domestic profiles, then condition future scenarios on Elo
+// where covered. No guessed identities, copied XIs or individual publication.
+function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,canonicalLineups=null,playerDatabase=null,ratingCalendar=calendar}){
  if(!finite(Date.parse(asOf)))throw Error('Valid asOf required');
+ const europeanPolicy=require('../../data/sources/champions-european-result-policy.json');
+ const readingEnabled=europeanPolicy.enabled&&europeanPolicy.readingModel?.enabled&&Date.parse(asOf)>=Date.parse(europeanPolicy.readingModel.activatedAt);
+ const europeanContext=readingEnabled?require('./european-result-policy.cjs').loadContext(ratingCalendar,asOf):null;
  const targets=calendar.fixtures.filter(f=>eligible(f,asOf)&&(matchday===null||f.matchday===matchday));
  const metrics=['goals','totalShots','shotsOnTarget','wonCorners'];
  const output=targets.map(f=>{
@@ -90,8 +93,13 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,ca
    input[side+'Discipline']={rows:fouls.length?[{appearances:fouls.length,foulsAwardedAgainstPerAppearance:mean(fouls)}]:[]};
   });
   input.xgotContext=require('../predictions/xgot-operational.cjs').contextFor({homeTeamId:teams[0]?.id,awayTeamId:teams[1]?.id,date:f.date,generatedAt:asOf,eligible:true,competition:'champions-league'});
-  const result=covered?predictScenario(input):null;
-  const projections=result?result.teamProjections.map((p,i)=>{
+  let europeanResult=europeanContext?{...require('./european-result-policy.cjs').resultForFixture(f,europeanContext),readingModelId:europeanContext.readingModelId}:null;
+  let conditioned=false;
+  const result=covered?predictScenario(input,europeanContext?base=>{
+   europeanResult=require('./xgot-result.cjs').withEuropeanXgot(europeanResult,base.expected);
+   const output=require('./european-reading.cjs').conditionScores(base,europeanResult);conditioned=output.applied;return output;
+  }:null):null;
+  let projections=result?result.teamProjections.map((p,i)=>{
    const copy={...p};
    for(const [key,metric] of [['shotsTotal','totalShots'],['shotsOnTarget','shotsOnTarget'],['corners','wonCorners']]){
     const opponent=i?0:1,venue=i?'away':'home',opposite=i?'home':'away';
@@ -99,12 +107,16 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,ca
    }
    return copy;
   }):teams.map((t,i)=>({teamId:t?.id??null,venue:i?'away':'home',expectedGoals:null,shotsTotal:null,shotsOnTarget:null,corners:null,cards:null,fouls:null}));
+  if(conditioned){const component=result.expected.components.europeanReading;projections=require('./european-reading.cjs').conditionDiscipline(projections,rows,component.baselineProbabilities,component.targetProbabilities,europeanPolicy.minimumEuropeanAppearances);}
   const final=result?.final;
+  const xgotForecast=require('./xgot-forecast.cjs').forecastXgot({teamIds:teams.map(t=>t?.id),date:f.date,asOf,projections});
   return {fixtureId:f.id,matchday:f.matchday,date:f.date,kickoff:f.kickoff,homeTeam:f.homeTeam,awayTeam:f.awayTeam,
    engineVersion:ENGINE_VERSION,pipeline:'SHARED_SERIE_A_SCENARIO',status:covered?'preliminary':'insufficient-data',
-   expectedGoals:result?{...result.expected,method:'Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.'}:{home:null,away:null,total:null},
+   expectedGoals:result?{...result.expected,method:conditioned?result.expected.method:'Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.'}:{home:null,away:null,total:null},
    probabilities:{home:final?final[0]*100:null,draw:final?final[1]*100:null,away:final?final[2]*100:null},
    scoreForecast:result?.forecast??{display:[]},confidence:result?.confidenceResult??{value:null},surprise:result?.surprise??{value:null},teamProjections:projections,
+   xgotForecast,
+   ...(europeanResult?{resultModel:europeanResult,europeanReading:{applied:conditioned,status:conditioned?'experimental':europeanResult.status==='PRELIMINARY'?'fallback-insufficient-statistical-history':'fallback-insufficient-european-history',statisticallyValidated:false,modelId:europeanContext.readingModelId,dependencies:['scoreDistribution','expectedGoals','offensiveVolumes','xgotForecast','individualAllocationWhenLineupsAvailable','observedOutcomeConditionalDiscipline']},...(conditioned?{scoreDistribution:result.matrix}:{} )}:{}),
    matchProjection:result?Object.fromEntries(['shotsTotal','shotsOnTarget','corners'].map(k=>[k,projections.every(p=>p[k])?result.matchProjection[k]:null])):null,
    cards:{central:projections.every(p=>finite(p.cards?.central))?projections.reduce((n,p)=>n+p.cards.central,0):null},
    dataQuality:{label:'Stima preliminare · '+(covered?'copertura parziale':'dati insufficienti'),completenessPct:result?Math.round(result.dataCompleteness*100):null,missing,teamSamples:rows.map(rr=>rr.length),latestMatchDates:rows.map(rr=>rr.at(-1)?.date??null)},

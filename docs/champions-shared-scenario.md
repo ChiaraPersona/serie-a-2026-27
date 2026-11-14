@@ -1,5 +1,9 @@
 # Scenario Champions: motore condiviso
 
+Aggiornamento 14 novembre 2026: per le gare future coperte dal rating europeo,
+la [Lettura collegata a Elo](champions-european-reading.md) sostituisce la
+separazione fra 1X2 e scenario descritta nella policy precedente qui sotto.
+
 Dal 24 ottobre 2026 le nuove Letture Champions usano `predictScenario` in `scripts/predictions/engine.js`, chiamato anche da `predictMatch` per la Serie A, per la base tecnica di gol, volumi e disciplina. Dal 4 novembre, su richiesta esplicita dell'utente, l'1X2 e le doppie chance delle fixture future dalla MD4 usano il rating europeo tramite `scripts/champions/european-result-policy.cjs`. Formule e pesi del motore Serie A restano invariati; le previsioni delle gare iniziate restano quelle originali.
 
 ## Esito europeo dal 4 novembre

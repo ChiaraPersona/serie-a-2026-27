@@ -23,7 +23,8 @@ function loadContext(calendar,asOf){
   return [{id:f.id,date:f.date,competitionCode:'ucl',homeTeam:h,awayTeam:a,score90:s}];
  });
  const modelId='champions-european-result:'+digest({code:hash('scripts/research/european-rating-model.cjs'),params:policy.parameters,minimumAppearances:policy.minimumEuropeanAppearances});
- return {policy,history:history.matches,current,map,directory,modelId,skipped,states:new Map(),asOf,inputHashes:Object.fromEntries([policyPath,'data/normalized/uefa-europe-history-2023-26.json','data/normalized/champions-team-strength-2026-27.json','data/sources/champions-team-history-map-2026-27.json','data/normalized/champions-league-2026-27.json'].map(p=>[p,hash(p)]))};
+ const readingModelId=policy.readingModel?.enabled&&Date.parse(asOf)>=Date.parse(policy.readingModel.activatedAt)?'champions-european-reading:'+digest({code:hash('scripts/champions/european-reading.cjs'),engine:hash('scripts/predictions/engine.js'),policy:policy.readingModel,resultModelId:modelId}):null;
+ return {policy,history:history.matches,current,map,directory,modelId,readingModelId,skipped,states:new Map(),asOf,inputHashes:Object.fromEntries([policyPath,'data/normalized/uefa-europe-history-2023-26.json','data/normalized/champions-team-strength-2026-27.json','data/sources/champions-team-history-map-2026-27.json','data/normalized/champions-league-2026-27.json'].map(p=>[p,hash(p)]))};
 }
 function resultForFixture(f,context){
  const {policy,modelId}=context,cutoff=[f.date,context.asOf.slice(0,10)].sort()[0];
@@ -34,9 +35,17 @@ function resultForFixture(f,context){
  return {modelId,type:'EUROPEAN_RATING_RESULT',status:usable?'PRELIMINARY':'INSUFFICIENT_DATA',probabilities:usable?Object.fromEntries(Object.entries(forecast.probability).map(([k,v])=>[k,v*100])):{home:null,draw:null,away:null},samples:forecast?[forecast.features.home.appearances,forecast.features.away.appearances]:[null,null],features:forecast?.features||null,cutoff,asOf:context.asOf,statisticallyValidated:false,policyPath,inputHashes:context.inputHashes,missing:usable?[]:[forecast?'INSUFFICIENT_EUROPEAN_APPEARANCES':'EXACT_EUROPEAN_TEAM_ID_MISSING']};
 }
 function applyScenario(f,result){
+ if(f.europeanReading?.applied){
+  for(const key of ['home','draw','away']){
+   const mass=f.scoreDistribution.filter(s=>key==='home'?s.home>s.away:key==='draw'?s.home===s.away:s.home<s.away).reduce((n,s)=>n+s.probability,0)*100;
+   assert(Number.isFinite(result.probabilities[key])&&Math.abs(mass-result.probabilities[key])<1e-8,'Rebuild the linked Champions reading before changing its result distribution');
+  }
+ }
  f.resultModel=result;f.probabilities=result.probabilities;
- f.scoreForecast={primary:null,modal:null,alternatives:[],display:[],status:'N/D_EUROPEAN_RESULT_HAS_NO_SCORE_MATRIX'};
- f.confidence={value:null};f.surprise={value:null};
+ if(!f.europeanReading?.applied){
+  f.scoreForecast={primary:null,modal:null,alternatives:[],display:[],status:'N/D_EUROPEAN_RESULT_HAS_NO_SCORE_MATRIX'};
+  f.confidence={value:null};f.surprise={value:null};
+ }
  const p=result.probabilities,available=result.status==='PRELIMINARY';
  const ranked=[['1',p.home,f.homeTeam],['X',p.draw,'Pareggio'],['2',p.away,f.awayTeam]].sort((a,b)=>b[1]-a[1]);
  f.verdict=available?{outcome:ranked[0][0],probabilityPct:ranked[0][1],label:ranked[0][2],status:'PRELIMINARY'}:{outcome:'N/D',probabilityPct:null,label:'Dati insufficienti',status:'INSUFFICIENT_DATA'};
@@ -88,7 +97,12 @@ async function applyEuropeanResults({scenarios,catalog=null,calendar,odds=null,a
  for(const f of scenarios.fixtures){
   const official=calendar.fixtures.find(m=>m.id===f.fixtureId);
   if(!official||official.matchday<context.policy.minimumMatchday||!isFuture(official,asOf)||fixtureIds&&!fixtureIds.has(f.fixtureId))continue;
-  const result=require('./xgot-result.cjs').withEuropeanXgot(resultForFixture(official,context),f.expectedGoals);applyScenario(f,result);
+  // xGOT is applied once to the technical baseline, before Elo conditioning.
+  // Never feed the already-conditioned goal means back into that correction.
+  const technicalExpected=f.europeanReading?.applied?{...f.expectedGoals,...f.expectedGoals.components.europeanReading.baseline}:f.expectedGoals;
+  const currentResult=require('./xgot-result.cjs').withEuropeanXgot(resultForFixture(official,context),technicalExpected);
+  if(f.europeanReading?.applied)assert.equal(f.europeanReading.modelId,context.readingModelId,'Rebuild the linked Champions reading after a model change');
+  const result=f.europeanReading?.applied?{...currentResult,readingModelId:context.readingModelId}:currentResult;applyScenario(f,result);
   const match=catalog?.marketCatalog.matches.find(m=>m.matchId===f.fixtureId);
   const selected=match?await applyCatalogMatch(match,result,odds):null;
   updates.push({fixtureId:f.fixtureId,status:result.status,probabilities:result.probabilities,selected});

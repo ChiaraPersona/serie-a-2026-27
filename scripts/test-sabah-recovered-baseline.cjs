@@ -1,0 +1,16 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const {apply,ids}=require('./champions/sabah-recovered-baseline.cjs');
+const {profileRows}=require('./champions/shared-scenario.cjs');
+const source=JSON.parse(fs.readFileSync('data/sources/champions-pilot-match-stats-2025-27.json'));
+const own=m=>m.source.provider==='FotMob'&&ids.includes(Number(m.eventId));
+const other=source.matches.filter(m=>!own(m));
+apply(source);assert.deepEqual(source.matches.filter(m=>!own(m)),other);
+const rows=source.matches.filter(own);assert.equal(rows.length,7);
+assert(!rows.some(m=>m.eventId==='5987809'),'120-minute total leaked into baseline');
+const team=source.teams.find(t=>t.id==='sabah'),eligible=profileRows(source,team,'2026-11-15');
+assert.equal(eligible.length,7);assert.equal(eligible.filter(r=>r.venue==='home').length,3);assert.equal(eligible.filter(r=>r.venue==='away').length,4);
+assert.equal(profileRows(source,team,'2026-11-01').length,0,'late acquired recovery leaked into historical forecast');
+assert(rows.every(m=>m.coverageByMetric.shotsOnTarget&&m.source.sha256));
+const copy=JSON.stringify(source);apply(source);assert.equal(JSON.stringify(source),copy,'recovery not idempotent');
+console.log('OK Sabah: seven verified regulation matches, exact IDs, home/away coverage, cutoff, unrelated rows and idempotence');
