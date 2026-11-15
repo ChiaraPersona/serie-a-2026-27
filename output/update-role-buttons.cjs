@@ -1,0 +1,12 @@
+const fs=require('fs');
+const file='js/pages/teams.js';let text=fs.readFileSync(file,'utf8');
+const old='<label><span class="sr-only">Ruolo</span><select data-ranking-role><option value="">Ruolo</option><option value="goalkeepers">Portieri</option><option value="defenders">Difensori</option><option value="midfielders">Centrocampisti</option><option value="forwards">Attaccanti</option></select></label>';
+if(!text.includes(old))throw Error('Missing role select');
+text=text.replace(old,'<div class="ranking-role-buttons" role="group" aria-label="Filtra per ruolo">'+[['goalkeepers','P','Portieri'],['defenders','D','Difensori'],['midfielders','C','Centrocampisti'],['forwards','A','Attaccanti']].map(([value,letter,label])=>`<button type="button" class="ranking-role-button" data-ranking-role="${value}" aria-label="${label}" title="${label}" aria-pressed="false">${letter}</button>`).join('')+'</div>');
+text=text.replace("document.querySelector('[data-ranking-role]').value","(document.querySelector('[data-ranking-role][aria-pressed=\"true\"]')?.dataset.rankingRole||'')");
+const start=text.indexOf("document.querySelector('[data-ranking-role]').addEventListener('change'");
+const end=text.indexOf('\n',start);
+if(start<0)throw Error('Missing role handler');
+text=text.slice(0,start)+`document.querySelectorAll('[data-ranking-role]').forEach(button=>button.addEventListener('click',()=>{const selected=button.getAttribute('aria-pressed')!=='true';document.querySelectorAll('[data-ranking-role]').forEach(option=>option.setAttribute('aria-pressed',String(option===button&&selected)));const goalkeeper=selected&&button.dataset.rankingRole==='goalkeepers';if(goalkeeper&&!['name','currentTeam','appearances','minutes','goalsConceded','cards'].includes(rankingSort.key))rankingSort={key:'goalsConceded',mode:'total',direction:'asc'};else if(!goalkeeper&&rankingSort.key==='goalsConceded')rankingSort={key:'goals',mode:'total',direction:'desc'};renderRanking()}));`+text.slice(end);
+text=text.replace("document.querySelectorAll('[data-ranking-team],[data-ranking-role]')","document.querySelectorAll('[data-ranking-team]')");
+fs.writeFileSync(file,text);

@@ -347,3 +347,17 @@ body[data-page="player-stats"] #app #global-player-leaderboard::after{
  box-shadow:inset 0 3px 10px rgba(36,58,59,.15),inset 0 1px 3px rgba(36,58,59,.10);
  pointer-events:none;z-index:15;
 }
+
+/* Role controls share the recessed circular treatment of the home calendar. */
+body[data-page="player-stats"] #app .player-ranking-filters{width:100%;grid-template-columns:minmax(0,175px) auto;justify-content:space-between;align-items:center}
+body[data-page="player-stats"] #app .ranking-role-buttons{display:flex;justify-content:flex-end;gap:8px}
+body[data-page="player-stats"] #app .ranking-role-button{display:grid;place-items:center;width:36px;height:36px;min-height:36px;padding:0;border:1px solid var(--ds-color-border);border-radius:50%;background:#e6ebed;color:#283e4b;font:500 14px/1 Inter,sans-serif;box-shadow:inset 0 2px 5px rgba(20,43,59,.14);cursor:pointer;transition:background-color .2s ease,box-shadow .2s ease,color .2s ease}
+body[data-page="player-stats"] #app .ranking-role-button:is(:hover,:focus-visible){background:#d8e2e7;color:#152e42;box-shadow:inset 0 2px 9px rgba(20,43,59,.12)}
+body[data-page="player-stats"] #app .ranking-role-button[aria-pressed="true"]{background:#283e4b;color:#fff;box-shadow:inset 0 2px 5px rgba(20,43,59,.22)}
+@media(max-width:700px){
+ body[data-page="player-stats"] #app .player-ranking-filters{grid-template-columns:minmax(0,175px) auto;gap:12px}
+ body[data-page="player-stats"] #app .player-ranking-filters>label:first-child{grid-column:auto}
+ body[data-page="player-stats"] #app .ranking-role-buttons{gap:6px}
+ body[data-page="player-stats"] #app .ranking-role-button{width:32px;height:32px;min-height:32px}
+}
+@media(prefers-reduced-motion:reduce){body[data-page="player-stats"] #app .ranking-role-button{transition:none}}
