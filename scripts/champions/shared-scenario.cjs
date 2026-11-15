@@ -114,7 +114,7 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,ca
    engineVersion:ENGINE_VERSION,pipeline:'SHARED_SERIE_A_SCENARIO',status:covered?'preliminary':'insufficient-data',
    expectedGoals:result?{...result.expected,method:conditioned?result.expected.method:'Motore condiviso: attacco/difesa, forma, matchup e Poisson; tassi domestici normalizzati. Componenti non coperte disattivate.'}:{home:null,away:null,total:null},
    probabilities:{home:final?final[0]*100:null,draw:final?final[1]*100:null,away:final?final[2]*100:null},
-   scoreForecast:result?.forecast??{display:[]},confidence:result?.confidenceResult??{value:null},surprise:result?.surprise??{value:null},teamProjections:projections,
+   scoreForecast:result?.forecast??{display:[]},confidence:europeanResult?.estimatedInitialRating?{value:null,status:'UNCALIBRATED_ESTIMATED_INITIAL_ELO'}:result?.confidenceResult??{value:null},surprise:result?.surprise??{value:null},teamProjections:projections,
    xgotForecast,
    ...(europeanResult?{resultModel:europeanResult,europeanReading:{applied:conditioned,status:conditioned?'experimental':europeanResult.status==='PRELIMINARY'?'fallback-insufficient-statistical-history':'fallback-insufficient-european-history',statisticallyValidated:false,modelId:europeanContext.readingModelId,dependencies:['scoreDistribution','expectedGoals','offensiveVolumes','xgotForecast','individualAllocationWhenLineupsAvailable','observedOutcomeConditionalDiscipline']},...(conditioned?{scoreDistribution:result.matrix}:{} )}:{}),
    matchProjection:result?Object.fromEntries(['shotsTotal','shotsOnTarget','corners'].map(k=>[k,projections.every(p=>p[k])?result.matchProjection[k]:null])):null,

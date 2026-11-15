@@ -9,7 +9,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
  try{
   browser=await chromium.launch({headless:true,channel:'msedge'});fs.mkdirSync(out,{recursive:true});
   const data=JSON.parse(fs.readFileSync('data/generated/champions-shared-scenarios.json'));
-  const fixtures=[data.fixtures.find(f=>f.matchday===5&&f.europeanReading?.applied),data.fixtures.find(f=>f.matchday===5&&f.europeanReading&&!f.europeanReading.applied),data.fixtures.find(f=>f.matchday===4)];
+  const fixtures=[data.fixtures.find(f=>f.matchday===5&&f.europeanReading?.applied&&!f.resultModel?.estimatedInitialRating),data.fixtures.find(f=>f.matchday===5&&f.resultModel?.estimatedInitialRating)||data.fixtures.find(f=>f.matchday===5&&f.europeanReading&&!f.europeanReading.applied),data.fixtures.find(f=>f.matchday===4)];
   assert(fixtures.every(Boolean));const report=[];
   for(const width of [1440,390])for(const f of fixtures){
    const page=await browser.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
@@ -21,12 +21,13 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
     assert.equal(await page.locator('[data-european-reading="linked"]').count(),1);
     assert(text.includes('Lettura collegata'));assert(text.includes(f.scoreForecast.primary.score));
     assert.equal(await page.locator('[data-statistic="xgot-forecast"] [data-available="true"]').count(),2);
+    assert.equal(await page.locator('[data-estimated-elo]').count(),f.resultModel.estimatedInitialRating?1:0);
    }else if(f.europeanReading)assert(text.includes('Storico Elo insufficiente'));
    else assert.equal(await page.locator('[data-european-reading="linked"]').count(),0);
    await scenario.scrollIntoViewIfNeeded();await page.screenshot({path:`${out}/${f.fixtureId}-${width}.png`});
    assert(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2));assert.deepEqual(errors,[]);
    report.push({fixtureId:f.fixtureId,width,linked:!!f.europeanReading?.applied,errors});await page.close();
   }
-  fs.writeFileSync(`${out}/browser-audit.json`,JSON.stringify(report,null,2)+'\n');console.log('OK European reading desktop/mobile: linked scenario/exact scores/xGOT, explicit fallback, historical reading, no errors or overflow');
+  fs.writeFileSync(`${out}/browser-audit.json`,JSON.stringify(report,null,2)+'\n');console.log('OK European reading desktop/mobile: linked scenario/exact scores/xGOT, estimated-Elo uncertainty or explicit fallback, historical reading, no errors or overflow');
  }finally{if(browser)await browser.close();await new Promise(r=>server.close(r))}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1});

@@ -1,0 +1,155 @@
+{
+  "generatedAt": "2026-11-14T17:22:42.110Z",
+  "train": "Actual covered sparse histories 2024-25",
+  "diagnosticValidation": "Actual covered sparse histories 2025-26, plus separately reported simulated cold starts of established clubs 2025-26; simulated cases are not true European newcomers.",
+  "selection": "Lowest training cold-start log loss; then Brier; deterministic grid order. Diagnostic season never selects parameters.",
+  "configurations": [
+    {
+      "countryScale": 0,
+      "ppgScale": 0,
+      "goalDifferenceScale": 0
+    },
+    {
+      "countryScale": 0,
+      "ppgScale": 0,
+      "goalDifferenceScale": 50
+    },
+    {
+      "countryScale": 0,
+      "ppgScale": 0,
+      "goalDifferenceScale": 100
+    },
+    {
+      "countryScale": 0,
+      "ppgScale": 50,
+      "goalDifferenceScale": 0
+    },
+    {
+      "countryScale": 0,
+      "ppgScale": 50,
+      "goalDifferenceScale": 50
+    },
+    {
+      "countryScale": 0,
+      "ppgScale": 50,
+      "goalDifferenceScale": 100
+    },
+    {
+      "countryScale": 0,
+      "ppgScale": 100,
+      "goalDifferenceScale": 0
+    },
+    {
+      "countryScale": 0,
+      "ppgScale": 100,
+      "goalDifferenceScale": 50
+    },
+    {
+      "countryScale": 0,
+      "ppgScale": 100,
+      "goalDifferenceScale": 100
+    },
+    {
+      "countryScale": 0.5,
+      "ppgScale": 0,
+      "goalDifferenceScale": 0
+    },
+    {
+      "countryScale": 0.5,
+      "ppgScale": 0,
+      "goalDifferenceScale": 50
+    },
+    {
+      "countryScale": 0.5,
+      "ppgScale": 0,
+      "goalDifferenceScale": 100
+    },
+    {
+      "countryScale": 0.5,
+      "ppgScale": 50,
+      "goalDifferenceScale": 0
+    },
+    {
+      "countryScale": 0.5,
+      "ppgScale": 50,
+      "goalDifferenceScale": 50
+    },
+    {
+      "countryScale": 0.5,
+      "ppgScale": 50,
+      "goalDifferenceScale": 100
+    },
+    {
+      "countryScale": 0.5,
+      "ppgScale": 100,
+      "goalDifferenceScale": 0
+    },
+    {
+      "countryScale": 0.5,
+      "ppgScale": 100,
+      "goalDifferenceScale": 50
+    },
+    {
+      "countryScale": 0.5,
+      "ppgScale": 100,
+      "goalDifferenceScale": 100
+    },
+    {
+      "countryScale": 1,
+      "ppgScale": 0,
+      "goalDifferenceScale": 0
+    },
+    {
+      "countryScale": 1,
+      "ppgScale": 0,
+      "goalDifferenceScale": 50
+    },
+    {
+      "countryScale": 1,
+      "ppgScale": 0,
+      "goalDifferenceScale": 100
+    },
+    {
+      "countryScale": 1,
+      "ppgScale": 50,
+      "goalDifferenceScale": 0
+    },
+    {
+      "countryScale": 1,
+      "ppgScale": 50,
+      "goalDifferenceScale": 50
+    },
+    {
+      "countryScale": 1,
+      "ppgScale": 50,
+      "goalDifferenceScale": 100
+    },
+    {
+      "countryScale": 1,
+      "ppgScale": 100,
+      "goalDifferenceScale": 0
+    },
+    {
+      "countryScale": 1,
+      "ppgScale": 100,
+      "goalDifferenceScale": 50
+    },
+    {
+      "countryScale": 1,
+      "ppgScale": 100,
+      "goalDifferenceScale": 100
+    }
+  ],
+  "minimumDomesticGames": 4,
+  "minimumEuropeanAppearances": 6,
+  "priorWeight": "(6-EuropeanAppearances)/6 below six, zero thereafter",
+  "countryStrength": "Mean Elo of other observed clubs in the association with at least six European appearances; no club or result counted twice.",
+  "cohort": "Actual sparse European histories in exact-ID crosswalk, with domestic and country evidence for each sparse side. Established sides use unchanged Elo.",
+  "availability": "Retrospective acquisition; match-date ordering checked, original historical availability is not proven.",
+  "statisticallyValidated": false,
+  "inputHashes": {
+    "data/normalized/champions-elo-prior-domestic.json": "e303f684f3cd5ae5c197b8a785196657fdfbacd269a325502c7f82b01b926dfa",
+    "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+    "data/sources/champions-european-result-policy.json": "6b7b9146027577ea66eacaf330f8e2d742958dd7550517052ee7d0bb609bdd4e"
+  }
+}

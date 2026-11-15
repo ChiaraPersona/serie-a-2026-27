@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-11-14T17:44:53.944Z",
+  "parameters": {
+    "domesticTransferExponent": 1,
+    "countryScale": 1,
+    "ppgScale": 100,
+    "goalDifferenceScale": 100
+  },
+  "training": {
+    "unscaled": {
+      "fixtures": 47,
+      "logLoss": 0.9370155269356312,
+      "brier": 0.5468880811478806
+    },
+    "scaled": {
+      "fixtures": 47,
+      "logLoss": 0.9380318992481232,
+      "brier": 0.5473263189829527
+    }
+  },
+  "simulatedDiagnostic": {
+    "unscaled": {
+      "fixtures": 207,
+      "logLoss": 0.9752325352115226,
+      "brier": 0.5823542765770069
+    },
+    "scaled": {
+      "fixtures": 207,
+      "logLoss": 0.9825701827502842,
+      "brier": 0.5877475294155894
+    },
+    "uniqueFixtures": 132
+  },
+  "statisticallyValidated": false,
+  "limits": [
+    "47 training fixtures, same observed cohort as v1",
+    "207 dependent simulated scenarios across 132 unique fixtures, not true new entrants",
+    "2025/26 already inspected: diagnostic, not independent validation",
+    "Country ranking is an ordinal European-representative proxy; sparse country coverage remains",
+    "No club-specific override, rank target or retrospective forecast replacement"
+  ]
+}

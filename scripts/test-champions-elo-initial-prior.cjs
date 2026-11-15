@@ -1,0 +1,30 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require('node:crypto');
+const {domesticFeatures,countryFeature,estimateInitialPrior}=require('./champions/elo-initial-prior.cjs');
+const parameters={countryScale:1,ppgScale:50,goalDifferenceScale:100};
+const base={raw:1480,appearances:4,domestic:{ppgZ:1,gdZ:.5},country:{delta:60},parameters};
+assert(Math.abs(estimateInitialPrior(base).rating-(1480+160/3))<1e-10);
+assert.equal(estimateInitialPrior({...base,appearances:0}).priorWeight,1);
+assert.equal(estimateInitialPrior({...base,appearances:6}).rating,1480);
+assert.equal(estimateInitialPrior({...base,domestic:null}).applied,false);
+assert.equal(estimateInitialPrior({...base,country:null}).applied,false);
+const state=new Map([['a',{rating:1800,appearances:4,country:'ITA'}],['b',{rating:1550,appearances:10,country:'ITA'}],['c',{rating:1700,appearances:3,country:'ITA'}]]);
+assert.equal(countryFeature(state,{id:'a',countryCode:'ITA'}).rating,1550,'Sparse club counted in its own league prior');
+const dataset=JSON.parse(fs.readFileSync('data/normalized/champions-elo-prior-domestic.json'));
+const evidence=domesticFeatures(dataset,'2609356','2026-11-24','2026-11-14T20:00:00Z');assert(evidence&&evidence.played>=4);
+assert.equal(evidence.leagueId,262,'European results used as domestic standings');
+assert(evidence.latestMatchDate<'2026-11-14');
+assert.equal(domesticFeatures(dataset,'unknown','2026-11-24','2026-11-14T20:00:00Z'),null);
+assert.equal(domesticFeatures(dataset,'2609356','2025-10-01','2025-10-01T00:00:00Z'),null,'Retrospective acquisition leaked into operational past');
+const injected=structuredClone(dataset);for(const c of injected.calendars)c.matches.push({id:'future',date:'2026-12-01',kickoffUtc:'2026-12-01T12:00:00Z',homeId:'951893',awayId:'4150',homeGoals:100,awayGoals:0});
+assert.deepEqual(domesticFeatures(injected,'2609356','2026-11-24','2026-11-14T20:00:00Z'),evidence);
+for(const c of dataset.calendars){assert.equal(crypto.createHash('sha256').update(fs.readFileSync(c.rawPath)).digest('hex'),c.sha256);assert(c.matches.every(m=>Number.isInteger(m.homeGoals)&&Number.isInteger(m.awayGoals)));}
+const scenarios=JSON.parse(fs.readFileSync('data/generated/champions-shared-scenarios.json'));
+const future=scenarios.fixtures.filter(f=>f.matchday>=5);assert.equal(future.length,72);assert(future.every(f=>f.europeanReading.applied));
+const estimated=future.filter(f=>f.resultModel.estimatedInitialRating);assert.equal(estimated.length,12);
+for(const f of estimated){assert.equal(f.resultModel.statisticallyValidated,false);assert.equal(f.resultModel.status,'PRELIMINARY');assert.equal(f.confidence.value,null);for(const side of ['home','away']){const p=f.resultModel.features[side].initialPrior;if(p.applied){assert(p.domestic.played>=4);assert(p.country.peerClubs>=1);assert(p.europeanAppearances<6);assert.equal(p.uncertainty,'high');}}}
+const {loadContext,resultForFixture}=require('./champions/european-result-policy.cjs'),calendar=JSON.parse(fs.readFileSync('data/normalized/champions-league-2026-27.json'));
+const ctx=loadContext(calendar,'2026-11-14T20:00:00Z');ctx.initialPrior.dataset=structuredClone(ctx.initialPrior.dataset);delete ctx.initialPrior.dataset.identities['2609356'];
+const target=calendar.fixtures.find(f=>f.matchday===5&&(f.homeTeam==='Sabah'||f.awayTeam==='Sabah'));
+assert.equal(resultForFixture(target,ctx).status,'INSUFFICIENT_DATA','Sparse Elo accepted without required domestic identity');
+console.log('OK initial Elo: uniform sparse-history rule, fading weight, exact identities, domestic-only scores, no future/acquisition leakage, archive hashes, 72 linked readings and 12 explicitly estimated cases');

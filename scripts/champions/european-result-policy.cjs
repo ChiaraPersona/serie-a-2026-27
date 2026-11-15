@@ -22,17 +22,22 @@ function loadContext(calendar,asOf){
   if(!h||!a||![s?.home,s?.away].every(x=>Number.isInteger(x)&&x>=0)){skipped.push(f.id);return [];}
   return [{id:f.id,date:f.date,competitionCode:'ucl',homeTeam:h,awayTeam:a,score90:s}];
  });
- const modelId='champions-european-result:'+digest({code:hash('scripts/research/european-rating-model.cjs'),params:policy.parameters,minimumAppearances:policy.minimumEuropeanAppearances});
+ const priorActive=policy.initialPrior?.enabled&&Date.parse(asOf)>=Date.parse(policy.initialPrior.activatedAt);
+ const initialPrior=priorActive?{model:read(policy.initialPrior.modelPath),dataset:read(policy.initialPrior.domesticPath)}:null;
+ if(initialPrior)assert(Date.parse(initialPrior.model.trainedAt)<=Date.parse(asOf),'Initial-prior model unavailable at cutoff');
+ const modelId='champions-european-result:'+digest({code:hash('scripts/research/european-rating-model.cjs'),params:policy.parameters,minimumAppearances:policy.minimumEuropeanAppearances,...(initialPrior?{initialPriorModel:initialPrior.model.modelId,initialPriorCode:hash('scripts/champions/elo-initial-prior.cjs'),domesticData:hash(policy.initialPrior.domesticPath)}:{})});
  const readingModelId=policy.readingModel?.enabled&&Date.parse(asOf)>=Date.parse(policy.readingModel.activatedAt)?'champions-european-reading:'+digest({code:hash('scripts/champions/european-reading.cjs'),engine:hash('scripts/predictions/engine.js'),policy:policy.readingModel,resultModelId:modelId}):null;
- return {policy,history:history.matches,current,map,directory,modelId,readingModelId,skipped,states:new Map(),asOf,inputHashes:Object.fromEntries([policyPath,'data/normalized/uefa-europe-history-2023-26.json','data/normalized/champions-team-strength-2026-27.json','data/sources/champions-team-history-map-2026-27.json','data/normalized/champions-league-2026-27.json'].map(p=>[p,hash(p)]))};
+ return {policy,history:history.matches,current,map,directory,modelId,readingModelId,initialPrior,skipped,states:new Map(),asOf,inputHashes:Object.fromEntries([policyPath,'data/normalized/uefa-europe-history-2023-26.json','data/normalized/champions-team-strength-2026-27.json','data/sources/champions-team-history-map-2026-27.json','data/normalized/champions-league-2026-27.json',...(initialPrior?[policy.initialPrior.modelPath,policy.initialPrior.domesticPath,'scripts/champions/elo-initial-prior.cjs']:[])].map(p=>[p,hash(p)]))};
 }
 function resultForFixture(f,context){
  const {policy,modelId}=context,cutoff=[f.date,context.asOf.slice(0,10)].sort()[0];
  if(!context.states.has(cutoff))context.states.set(cutoff,sequence([...context.history,...context.current].filter(m=>m.date<cutoff),policy.parameters).state);
  const h=context.directory.get(context.map.get(f.homeTeam)),a=context.directory.get(context.map.get(f.awayTeam));
- const forecast=h&&a?predict(context.states.get(cutoff),{date:f.date,homeTeam:h,awayTeam:a},policy.parameters):null;
- const usable=forecast&&[forecast.features.home,forecast.features.away].every(t=>t.appearances>=policy.minimumEuropeanAppearances);
- return {modelId,type:'EUROPEAN_RATING_RESULT',status:usable?'PRELIMINARY':'INSUFFICIENT_DATA',probabilities:usable?Object.fromEntries(Object.entries(forecast.probability).map(([k,v])=>[k,v*100])):{home:null,draw:null,away:null},samples:forecast?[forecast.features.home.appearances,forecast.features.away.appearances]:[null,null],features:forecast?.features||null,cutoff,asOf:context.asOf,statisticallyValidated:false,policyPath,inputHashes:context.inputHashes,missing:usable?[]:[forecast?'INSUFFICIENT_EUROPEAN_APPEARANCES':'EXACT_EUROPEAN_TEAM_ID_MISSING']};
+ let forecast=h&&a?predict(context.states.get(cutoff),{date:f.date,homeTeam:h,awayTeam:a},policy.parameters):null;
+ if(forecast&&context.initialPrior)forecast=require('./elo-initial-prior.cjs').forecastWithInitialPriors({state:context.states.get(cutoff),match:{date:f.date,homeTeam:h,awayTeam:a},forecast,dataset:context.initialPrior.dataset,model:context.initialPrior.model,parameters:policy.parameters,asOf:context.asOf,minimumAppearances:policy.minimumEuropeanAppearances});
+ const usable=forecast&&[forecast.features.home,forecast.features.away].every(t=>t.appearances>=policy.minimumEuropeanAppearances||t.initialPrior?.applied);
+ const estimatedInitialRating=!!forecast&&[forecast.features.home,forecast.features.away].some(t=>t.initialPrior?.applied);
+ return {modelId,type:'EUROPEAN_RATING_RESULT',status:usable?'PRELIMINARY':'INSUFFICIENT_DATA',probabilities:usable?Object.fromEntries(Object.entries(forecast.probability).map(([k,v])=>[k,v*100])):{home:null,draw:null,away:null},samples:forecast?[forecast.features.home.appearances,forecast.features.away.appearances]:[null,null],features:forecast?.features||null,...(context.initialPrior?{estimatedInitialRating,initialPriorModelId:context.initialPrior.model.modelId}:{}),cutoff,asOf:context.asOf,statisticallyValidated:false,policyPath,inputHashes:context.inputHashes,missing:usable?[]:[forecast?'INSUFFICIENT_EUROPEAN_APPEARANCES_OR_PRIOR_EVIDENCE':'EXACT_EUROPEAN_TEAM_ID_MISSING']};
 }
 function applyScenario(f,result){
  if(f.europeanReading?.applied){

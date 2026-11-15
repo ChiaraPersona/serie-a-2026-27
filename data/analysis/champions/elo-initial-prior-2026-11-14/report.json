@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-14T17:22:43.217Z",
+  "training": {
+    "baseline": {
+      "fixtures": 47,
+      "logLoss": 1.0002095816171659,
+      "brier": 0.5948206006916641
+    },
+    "candidate": {
+      "fixtures": 47,
+      "logLoss": 0.9370155269356312,
+      "brier": 0.5468880811478806
+    }
+  },
+  "diagnosticValidation": {
+    "baseline": {
+      "fixtures": 0,
+      "logLoss": null,
+      "brier": null
+    },
+    "candidate": {
+      "fixtures": 0,
+      "logLoss": null,
+      "brier": null
+    }
+  },
+  "simulated2025_26": {
+    "baseline": {
+      "fixtures": 207,
+      "logLoss": 0.9828852928680829,
+      "brier": 0.589105268861637
+    },
+    "candidate": {
+      "fixtures": 207,
+      "logLoss": 0.9752325352115226,
+      "brier": 0.5823542765770069
+    },
+    "uniqueFixtures": 132,
+    "semantics": "Reset each established club separately; paired scenarios are dependent and are not additional independent fixtures."
+  },
+  "availableColdStartFixtures": 312,
+  "supported": 47,
+  "unsupported": 265,
+  "parameters": {
+    "countryScale": 1,
+    "ppgScale": 50,
+    "goalDifferenceScale": 100
+  },
+  "statisticallyValidated": false,
+  "limits": [
+    "Retrospective archives do not prove pre-match acquisition availability",
+    "Only exact crosswalk teams and covered domestic calendars",
+    "Country proxy may have one representative, especially Azerbaijan",
+    "No covered actual 2025/26 newcomers if diagnosticValidation.fixtures=0; simulated resets cannot replace that validation",
+    "2025/26 has already been inspected in earlier research; diagnostic, not a pristine holdout"
+  ],
+  "modelId": "champions-elo-initial-prior:1a587ab00cd60c1518fd507eb52ca8c1fbc9d675b96b8e687f470475ee4da0bc"
+}

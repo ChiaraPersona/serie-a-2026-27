@@ -1,5 +1,10 @@
 # Lettura Champions collegata al rating europeo
 
+Aggiornamento successivo del 14 novembre: il [rating iniziale stimato](champions-elo-initial-prior.md)
+consente il collegamento anche per club con poco storico e dati domestici sufficienti.
+La precedente esclusione di Como, Viking e Sabah descritta sotto è superata da
+questa nuova policy sperimentale, senza modificare gli archivi delle gare concluse.
+
 Attivazione sperimentale autorizzata il 14 novembre 2026: «il rating europeo elo
 voglio che stimi l'intera lettura e non solo 1x2. deve essere tutto collegato».
 Questa policy sostituisce per le sole gare future la precedente separazione
