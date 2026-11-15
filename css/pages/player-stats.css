@@ -2226,9 +2226,9 @@ body[data-page=home] .home-standings .standings-table :is(th,td):nth-child(3){bo
 
 
 
-.team-period-control{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin:0 0 14px;font:600 11px/1.5 var(--ds-font-body);color:var(--muted)}
-.team-period-control select{width:240px;max-width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--ds-color-surface,#fff);color:var(--text);font:500 13px/1.4 var(--ds-font-body)}
-.team-period-control select:focus-visible{outline:2px solid #246178;outline-offset:3px}
+
+
+
 
 
 
@@ -5238,6 +5238,7 @@ body:not([data-page="home"]) main>.section{margin-top:var(--ds-space-8)}
 body main>.section>.section-heading{margin-bottom:var(--ds-space-5)}
 
 
+body[data-page="player-stats"] #app .player-comparator-heading h2,
 body #app>.hero h1,
 body #app>.loading h1,
 body #team-squad-app>.loading h1{
@@ -5416,6 +5417,11 @@ body .site-header .page-link{white-space:nowrap;padding-inline:8px}}
 }
 
 
+body[data-page="player-stats"] #app .player-comparator-heading{display:block;width:100%;text-align:center;margin:0 0 var(--ds-space-6)}
+body[data-page="player-stats"] #app .player-comparator-heading h2{text-align:center;margin:0;color:var(--gold)}
+body[data-page="player-stats"] #app .player-comparator-heading .statistics-subtitle{max-width:640px;margin:12px auto 0;color:var(--ds-color-text-muted);font-size:13px;line-height:1.6;text-wrap:balance}
+body[data-page="player-stats"] #app .player-comparator .team-comparator-toolbar{justify-content:center}
+@media(max-width:760px){body[data-page="player-stats"] #app .statistics-subtitle{display:none}}
 /* page-background.css: original cascade position */
 body{
   --site-page-background:var(--ds-page-background);
@@ -5855,3 +5861,12 @@ body :is(#app,#team-squad-app) .comparator-editorial .team-comparator-toolbar{wi
 body :is(#app,#team-squad-app) .comparator-editorial .team-comparator-toolbar h2{flex:1 1 auto}
 body :is(#app,#team-squad-app) .comparator-editorial .team-comparator-options{flex:0 1 auto;max-width:100%}
 body[data-page="player-stats"] #app>.player-comparator.comparator-editorial{display:block}
+body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete{width:280px;max-width:100%}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-head article:last-child .player-autocomplete{margin-left:auto}
+body[data-page="player-stats"] #app .comparator-editorial input{height:36px;padding-top:6px;padding-bottom:6px;font-size:12px}
+body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete::after{top:10px}
+body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete::before{top:22px}
+body[data-page="player-stats"] #app .comparator-editorial .player-suggestions{top:42px}
+@media(max-width:700px){body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete{width:150px}
+body[data-page="player-stats"] #app .comparator-editorial input{font-size:11px;height:34px}
+body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete::before{top:20px}}

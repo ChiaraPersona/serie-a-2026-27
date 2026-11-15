@@ -40,6 +40,7 @@ body[data-page="home"] main{padding-block:var(--ds-space-5) var(--ds-space-7)}
 body[data-page="home"] main>.section{margin-top:var(--ds-space-7)}
 
 /* Explicit page-title roles; match-card, player and numerical headings excluded. */
+body[data-page="player-stats"] #app .player-comparator-heading h2,
 body #app>.hero h1,
 body #app>.loading h1,
 body #team-squad-app>.loading h1,
@@ -301,3 +302,12 @@ body[data-page="champions"] .site-header{
  -webkit-backdrop-filter:blur(26px) saturate(155%);
 }
 @media(max-width:760px){body[data-page="champions"] .site-header>.site-nav{background:linear-gradient(115deg,rgba(190,221,255,.12),transparent 42%),rgba(8,32,82,.66);backdrop-filter:blur(26px) saturate(155%);-webkit-backdrop-filter:blur(26px) saturate(155%)}}
+
+/* The player comparison shares the statistics page's editorial heading. */
+body[data-page="player-stats"] #app .player-comparator-heading{display:block;width:100%;text-align:center;margin:0 0 var(--ds-space-6)}
+body[data-page="player-stats"] #app .player-comparator-heading h2{text-align:center;margin:0;color:var(--gold)}
+body[data-page="player-stats"] #app .player-comparator-heading .statistics-subtitle{max-width:640px;margin:12px auto 0;color:var(--ds-color-text-muted);font-size:13px;line-height:1.6;text-wrap:balance}
+body[data-page="player-stats"] #app .player-comparator .team-comparator-toolbar{justify-content:center}
+
+
+@media(max-width:760px){body[data-page="player-stats"] #app .statistics-subtitle{display:none}}
