@@ -75,3 +75,16 @@ body :is(#app,#team-squad-app) .comparator-editorial .team-comparator-toolbar h2
 body :is(#app,#team-squad-app) .comparator-editorial .team-comparator-options{flex:0 1 auto;max-width:100%}
 
 body[data-page="player-stats"] #app>.player-comparator.comparator-editorial{display:block}
+
+/* Compact search fields in the player statistics comparison. */
+body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete{width:280px;max-width:100%}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-head article:last-child .player-autocomplete{margin-left:auto}
+body[data-page="player-stats"] #app .comparator-editorial input{height:36px;padding-top:6px;padding-bottom:6px;font-size:12px}
+body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete::after{top:10px}
+body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete::before{top:22px}
+body[data-page="player-stats"] #app .comparator-editorial .player-suggestions{top:42px}
+@media(max-width:700px){
+ body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete{width:150px}
+ body[data-page="player-stats"] #app .comparator-editorial input{font-size:11px;height:34px}
+ body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete::before{top:20px}
+}
