@@ -2,9 +2,19 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
 import {loadChampionsWorkspaceMd3Derived} from '../js/pages/champions-workspace-catalog.mjs';
 const require=createRequire(import.meta.url),policy=require('../js/official-starter-policy.js');
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),cache=new Map();
+const cacheName='champions-reading-build-manifest.json';
+const cacheFile=path.join(root,'data/generated/champions-readings',cacheName);
+const digest=file=>createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex');
+if(!process.argv.includes('--force')&&fs.existsSync(cacheFile)){
+ const previous=JSON.parse(fs.readFileSync(cacheFile,'utf8'));
+ if(previous.schemaVersion===1&&[...previous.inputs,...previous.outputs].every(r=>fs.existsSync(path.join(root,r.path))&&digest(r.path)===r.sha256)){
+  console.log(JSON.stringify({fixtures:previous.fixtures,reused:true}));process.exit(0);
+ }
+}
 const write=(file,text)=>{
  if(fs.existsSync(file)&&fs.readFileSync(file,'utf8')===text)return;
  fs.writeFileSync(file+'.tmp',text);
@@ -79,4 +89,8 @@ for(const fixture of calendar.fixtures.filter(f=>f.status==='finished'&&[2,3,4].
  write(file,text);
  bytes+=Buffer.byteLength(text);count++;
 }
-console.log(JSON.stringify({fixtures:count,bytes}));
+const codeFiles=['scripts/build-champions-reading-data.mjs','js/official-starter-policy.js',...fs.readdirSync(path.join(root,'js/pages'),{recursive:true}).filter(f=>/\.(mjs|js)$/.test(f)).map(f=>'js/pages/'+f.replaceAll('\\','/'))];
+const inputs=[...new Set([...cache.keys(),...codeFiles])].map(file=>({path:file,sha256:digest(file)}));
+const outputs=fs.readdirSync(output).filter(f=>f.endsWith('.json')&&f!==cacheName).map(file=>({path:'data/generated/champions-readings/'+file,sha256:digest('data/generated/champions-readings/'+file)}));
+write(cacheFile,JSON.stringify({schemaVersion:1,fixtures:count,inputs,outputs},null,2)+'\n');
+console.log(JSON.stringify({fixtures:count,bytes,reused:false}));

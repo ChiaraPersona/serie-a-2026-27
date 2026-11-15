@@ -56,7 +56,25 @@ function comparatorResult(data,periodId,keys,mode="total"){
   else html=statisticsHeading("Statistiche giocatori","Esplora le classifiche individuali e confronta due giocatori per statistiche totali o per 90 minuti.")+globalPlayerLeaderboards(playerLeaderboards)+playerComparator(playerLeaderboards);
     document.querySelector("#app").innerHTML=html;
   if(page==="player-stats"){const target=document.querySelector("#global-player-leaderboard");let periodId="2026/27",metricId="goals",rankingSort={key:"goals",mode:"total",direction:"desc"};
-let rankingFadeFrame,rankingFadeCache;
+let rankingFadeFrame,rankingFadeCache,rankingWindow;
+const updateRankingWindow=scroll=>{
+ const table=scroll.querySelector('table'),tbody=table.tBodies[0];
+ if(rankingWindow?.scroll!==scroll||rankingWindow.width!==scroll.clientWidth){
+  const rows=rankingWindow?.scroll===scroll?rankingWindow.rows:[...tbody.rows];
+  if(rankingWindow?.scroll===scroll){tbody.style.setProperty('--ranking-pad-top','0px');tbody.style.setProperty('--ranking-pad-bottom','0px');tbody.replaceChildren(...rows)}
+  const offsets=[0];rows.forEach(row=>offsets.push(offsets.at(-1)+row.getBoundingClientRect().height));
+  const height=rows[0]?.getBoundingClientRect().height||44;
+  rankingWindow={scroll,table,tbody,rows,height,offsets,width:scroll.clientWidth,start:-1,end:-1};table.setAttribute('aria-rowcount',String(rows.length+2));
+  rows.forEach((row,index)=>row.setAttribute('aria-rowindex',String(index+3)));
+ }
+ const state=rankingWindow,height=state.rows[0]?.getBoundingClientRect().height||state.height;
+ state.height=height;
+ const start=Math.max(0,Math.floor(Math.max(0,scroll.scrollTop-table.tHead.offsetHeight)/(height*16))*16-8),end=Math.min(state.rows.length,start+Math.ceil(scroll.clientHeight/height)+34);
+ if(start===state.start&&end===state.end)return;
+ state.start=start;state.end=end;
+ tbody.style.setProperty('--ranking-pad-top',state.offsets[start]+'px');tbody.style.setProperty('--ranking-pad-bottom',(state.offsets.at(-1)-state.offsets[end])+'px');
+ tbody.replaceChildren(...state.rows.slice(start,end));rankingFadeCache=null;
+};
 const prepareRankingFade=scroll=>{
  const table=scroll.querySelector('table');
  const rows=[...table.rows];
@@ -78,6 +96,7 @@ const updateRankingFade=()=>{
  const scroll=target.querySelector('.player-ranking-scroll');if(!scroll)return;
  cancelAnimationFrame(rankingFadeFrame);rankingFadeFrame=requestAnimationFrame(()=>{
   if(!scroll.isConnected)return;
+  updateRankingWindow(scroll);
   if(rankingFadeCache?.scroll!==scroll)rankingFadeCache=prepareRankingFade(scroll);
   const cache=rankingFadeCache,bounds=scroll.getBoundingClientRect(),origin=cache.table.getBoundingClientRect(),pinned=scroll.querySelector('tbody tr td:nth-child(2)');
   const left=(pinned?.getBoundingClientRect().right||bounds.left)-origin.left,right=bounds.right-origin.left,top=scroll.scrollTop,bottom=top+scroll.clientHeight,next=new Set();
@@ -85,15 +104,15 @@ const updateRankingFade=()=>{
    if(!row.header&&(row.bottom<top||row.top>bottom))return;
    row.cells.forEach(({text,x,width})=>{
     if(!((x<left+18&&x+width>left)||(x<right&&x+width>right-16)))return;
-    next.add(text);text.style.setProperty('--fade-left',(left-x)+'px');text.style.setProperty('--fade-left-end',(left+18-x)+'px');text.style.setProperty('--fade-right-start',(right-16-x)+'px');text.style.setProperty('--fade-right',(right-x)+'px');
+    next.add(text);if(cache.left===left&&cache.right===right&&cache.active.has(text))return;text.style.setProperty('--fade-left',(left-x)+'px');text.style.setProperty('--fade-left-end',(left+18-x)+'px');text.style.setProperty('--fade-right-start',(right-16-x)+'px');text.style.setProperty('--fade-right',(right-x)+'px');
     if(!cache.active.has(text))text.classList.add('is-fading');
    });
   });
-  cache.active.forEach(text=>{if(!next.has(text))text.classList.remove('is-fading')});cache.active=next;
+  cache.active.forEach(text=>{if(!next.has(text))text.classList.remove('is-fading')});cache.active=next;cache.left=left;cache.right=right;
  });
 };
 const renderRanking=()=>{target.innerHTML=globalPlayerLeaderboardTable(playerLeaderboards,periodId,metricId,{team:document.querySelector('[data-ranking-team]').value,role:document.querySelector('[data-ranking-role]').value},rankingSort);updateRankingFade()};
-target.addEventListener('scroll',updateRankingFade,true);
+target.addEventListener('scroll',updateRankingFade,{capture:true,passive:true});
 const rankingResize=new ResizeObserver(()=>{rankingFadeCache=null;updateRankingFade()});rankingResize.observe(target);updateRankingFade();
 target.addEventListener('click',event=>{const button=event.target.closest('[data-ranking-sort]');if(!button)return;const key=button.dataset.rankingSort,mode=button.dataset.sortMode;rankingSort={key,mode,direction:rankingSort.key===key&&rankingSort.mode===mode?(rankingSort.direction==="desc"?"asc":"desc"):(mode==="text"?"asc":"desc")};const scroll=target.querySelector('.player-ranking-scroll'),left=scroll?.scrollLeft||0;renderRanking();target.querySelector('.player-ranking-scroll')?.scrollTo({left,top:0});target.querySelector(`[data-ranking-sort="${key}"][data-sort-mode="${mode}"]`)?.focus({preventScroll:true})});
 document.querySelector('[data-ranking-role]').addEventListener('change',()=>{const goalkeeper=document.querySelector('[data-ranking-role]').value==='goalkeepers';if(goalkeeper&&!['name','currentTeam','appearances','minutes','goalsConceded','cards'].includes(rankingSort.key))rankingSort={key:'goalsConceded',mode:'total',direction:'asc'};else if(!goalkeeper&&rankingSort.key==='goalsConceded')rankingSort={key:'goals',mode:'total',direction:'desc'};renderRanking()});

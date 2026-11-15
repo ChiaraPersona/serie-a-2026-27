@@ -1,5 +1,7 @@
 # Report storici e audit
 
+- [Letture Champions per partita e copia interna superata](champions-fixture-loading-2026-11-15.md)
+
 - [Spazio degli archivi interni — 15 novembre 2026](internal-archive-storage-2026-11-15.md)
 
 - [Letture archiviate leggere — Serie A e Champions](archived-readings-size-2026-11-15.md)

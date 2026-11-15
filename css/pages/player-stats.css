@@ -100,6 +100,21 @@ body[data-reading-detail-theme="champions"],body[data-competition-theme="champio
 /* base.css: original cascade position */
 :root{--bg:#07110f;--surface:#101b18;--surface2:#162521;--line:#284039;--text:#f4f7f5;--muted:#9db0a9;--accent:#27d17f;--gold:#f2c14e;--danger:#ff6b6b;--max:var(--ds-content-max);--page-gutter:24px;--container-width:min(var(--max),calc(100% - 2 * var(--page-gutter)));color-scheme:dark;font-family:Inter,Segoe UI,Arial,sans-serif}
 *{box-sizing:border-box}
+@media (any-hover:hover) and (any-pointer:fine){:root{
+    --scrollbar-thumb:#a77416;
+    --scrollbar-thumb-hover:#80580f;
+    --scrollbar-track:rgba(128,139,148,.14);
+  }
+:where(html,body,body *){
+    scrollbar-width:thin;
+    scrollbar-color:var(--scrollbar-thumb) var(--scrollbar-track);
+  }
+:where(html,body,body *)::-webkit-scrollbar{width:10px;height:10px}
+:where(html,body,body *)::-webkit-scrollbar-track{background:var(--scrollbar-track);border-radius:999px}
+:where(html,body,body *)::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border:2px solid transparent;background-clip:padding-box;border-radius:999px}
+:where(html,body,body *)::-webkit-scrollbar-thumb:hover{background-color:var(--scrollbar-thumb-hover)}
+:where(html,body,body *)::-webkit-scrollbar-corner{background:transparent}}
+@media (forced-colors:active){:where(html,body,body *){scrollbar-color:auto;scrollbar-width:auto}}
 html{scroll-behavior:smooth}
 body{margin:0;background:radial-gradient(circle at 80% 0,#16392c 0,transparent 28rem),var(--bg);line-height:1.55}
 a{color:inherit}
@@ -5688,6 +5703,35 @@ body[data-page="player-stats"] #app .ranking-fading-content.is-fading{
 }
 body[data-page="player-stats"] #app .global-player-table .ranking-sort{min-height:24px;padding-block:2px;line-height:18px}
 body[data-page="player-stats"] #app .player-ranking-scroll{border:0;border-radius:0;box-shadow:none;background:transparent}
+body[data-page="player-stats"] #app .global-player-table tbody::before,
+body[data-page="player-stats"] #app .global-player-table tbody::after{content:"";display:table-row}
+body[data-page="player-stats"] #app .global-player-table tbody::before{height:var(--ranking-pad-top,0px)}
+body[data-page="player-stats"] #app .global-player-table tbody::after{height:var(--ranking-pad-bottom,0px)}
+body[data-page="player-stats"] #app .player-ranking-scroll{overflow-anchor:none}
+body[data-page="player-stats"] #app .global-player-table col.ranking-col-base,
+body[data-page="player-stats"] #app .global-player-table col.ranking-col-stat{width:90px}
+body[data-page="player-stats"] #app .global-player-table tbody td:nth-child(n+4),
+body[data-page="player-stats"] #app .global-player-table thead tr:nth-child(2)>th{text-align:center;padding-inline:12px}
+@media(max-width:700px){body[data-page="player-stats"] #app .global-player-table col.ranking-col-base,
+ body[data-page="player-stats"] #app .global-player-table col.ranking-col-stat{width:72px}
+body[data-page="player-stats"] #app .global-player-table tbody td:nth-child(n+4),
+ body[data-page="player-stats"] #app .global-player-table thead tr:nth-child(2)>th{padding-inline:8px}}
+body[data-page="player-stats"] #app>.global-player-leaders{border-radius:0;overflow:visible}
+body[data-page="player-stats"] #app .player-ranking-filters{width:min(100%,360px);gap:10px}
+body[data-page="player-stats"] #app .player-ranking-filters select{height:36px;min-height:36px;padding:6px 26px 6px 10px;font-size:12px}
+@media(max-width:700px){body[data-page="player-stats"] #app .player-ranking-filters{width:min(100%,320px);gap:8px}}
+body[data-page="player-stats"] #app .player-ranking-scroll{
+ border:1px solid #d5dcdf;border-radius:var(--ds-radius-card);background:#eef1f1;
+ /* Clip the native scrollbar corner to the same curve as the panel. */
+ clip-path:inset(0 round var(--ds-radius-card));
+ box-shadow:inset 0 3px 10px rgba(36,58,59,.15),inset 0 1px 3px rgba(36,58,59,.10);
+}
+body[data-page="player-stats"] #app #global-player-leaderboard{position:relative}
+body[data-page="player-stats"] #app #global-player-leaderboard::after{
+ content:"";position:absolute;inset:0;border-radius:var(--ds-radius-card);
+ box-shadow:inset 0 3px 10px rgba(36,58,59,.15),inset 0 1px 3px rgba(36,58,59,.10);
+ pointer-events:none;z-index:15;
+}
 /* component-system.css: original cascade position */
 body .readings-index :is(.ri-archive,.ri-future){
   border:0;

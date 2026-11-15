@@ -305,3 +305,45 @@ body[data-page="player-stats"] #app .global-player-table .ranking-sort{min-heigh
 
 /* The player ranking remains open, without an enclosing panel. */
 body[data-page="player-stats"] #app .player-ranking-scroll{border:0;border-radius:0;box-shadow:none;background:transparent}
+
+/* Preserve the full scroll range while keeping nearby rows in the live table. */
+body[data-page="player-stats"] #app .global-player-table tbody::before,
+body[data-page="player-stats"] #app .global-player-table tbody::after{content:"";display:table-row}
+body[data-page="player-stats"] #app .global-player-table tbody::before{height:var(--ranking-pad-top,0px)}
+body[data-page="player-stats"] #app .global-player-table tbody::after{height:var(--ranking-pad-bottom,0px)}
+
+body[data-page="player-stats"] #app .player-ranking-scroll{overflow-anchor:none}
+
+/* Equal spacing for every statistical column, including appearances and minutes. */
+body[data-page="player-stats"] #app .global-player-table col.ranking-col-base,
+body[data-page="player-stats"] #app .global-player-table col.ranking-col-stat{width:90px}
+body[data-page="player-stats"] #app .global-player-table tbody td:nth-child(n+4),
+body[data-page="player-stats"] #app .global-player-table thead tr:nth-child(2)>th{text-align:center;padding-inline:12px}
+@media(max-width:700px){
+ body[data-page="player-stats"] #app .global-player-table col.ranking-col-base,
+ body[data-page="player-stats"] #app .global-player-table col.ranking-col-stat{width:72px}
+ body[data-page="player-stats"] #app .global-player-table tbody td:nth-child(n+4),
+ body[data-page="player-stats"] #app .global-player-table thead tr:nth-child(2)>th{padding-inline:8px}
+}
+
+/* Remove the outer section's remaining rounded clipping as well. */
+body[data-page="player-stats"] #app>.global-player-leaders{border-radius:0;overflow:visible}
+body[data-page="player-stats"] #app .player-ranking-filters{width:min(100%,360px);gap:10px}
+body[data-page="player-stats"] #app .player-ranking-filters select{height:36px;min-height:36px;padding:6px 26px 6px 10px;font-size:12px}
+@media(max-width:700px){
+ body[data-page="player-stats"] #app .player-ranking-filters{width:min(100%,320px);gap:8px}
+}
+
+/* Recess the ranking into the page using the shared panel radius. */
+body[data-page="player-stats"] #app .player-ranking-scroll{
+ border:1px solid #d5dcdf;border-radius:var(--ds-radius-card);background:#eef1f1;
+ /* Clip the native scrollbar corner to the same curve as the panel. */
+ clip-path:inset(0 round var(--ds-radius-card));
+ box-shadow:inset 0 3px 10px rgba(36,58,59,.15),inset 0 1px 3px rgba(36,58,59,.10);
+}
+body[data-page="player-stats"] #app #global-player-leaderboard{position:relative}
+body[data-page="player-stats"] #app #global-player-leaderboard::after{
+ content:"";position:absolute;inset:0;border-radius:var(--ds-radius-card);
+ box-shadow:inset 0 3px 10px rgba(36,58,59,.15),inset 0 1px 3px rgba(36,58,59,.10);
+ pointer-events:none;z-index:15;
+}

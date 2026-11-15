@@ -30,6 +30,7 @@ const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-h
   'data/normalized/xgot-history-seasons/', 'data/normalized/xgot-extended-seasons/', 'data/normalized/xgot-current-seasons/'];
 // Build inputs and superseded artifacts: browser consumers use the retained UI/v2 files.
 const internalFiles = new Set([
+  'data/generated/champions-readings/champions-reading-build-manifest.json',
   'data/normalized/champions-md03-settlement.json',
   'data/derived/champions-md03/sabah-dortmund-volumes-v1-2026-10-20.json',
   // Acquisition inputs and technical histories have no public runtime consumers.
