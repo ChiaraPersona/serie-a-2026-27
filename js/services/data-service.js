@@ -1,5 +1,7 @@
 import '../official-starter-policy.js';
 import './archive-json.js?v=20261115-archive-v1';
+import './reading-shared.js?v=20261115-shared-v1';
+const sharedReading=globalThis[Symbol.for('prima-del-fischio.reading-shared')];
 const unpackArchive=globalThis[Symbol.for('prima-del-fischio.archive-json')].unpack;
 import {requestJson,clearJsonRequests} from './json-requests.mjs?v=20261115-archive-v1';
 export function createDataService(release,{deduplicate=false}={}){
@@ -8,7 +10,9 @@ export function createDataService(release,{deduplicate=false}={}){
   if(deduplicate)clearJsonRequests();
   const fetchJson=(url,label=url)=>{
     if(deduplicate&&requests.has(url))return requests.get(url);
-    const versioned=`${url}${url.includes("?")?"&":"?"}v=${release}`,options={cache:label==='official starters'?'no-store':'default',label};
+    const immutable=/\/readings\/shared\/[a-f0-9]{64}\.json$/.test(url);
+    const live=label==='official starters'||/\/readings\/(?:matches\/|index\.json)/.test(url);
+    const versioned=immutable?url:`${url}${url.includes("?")?"&":"?"}v=${release}`,options={cache:immutable?'force-cache':live?'no-store':'default',label};
     const request=deduplicate?requestJson(versioned,options):(async()=>{const response=await fetch(versioned,{cache:options.cache});if(!response.ok)throw new Error(`${label}: ${response.status}`);return unpackArchive(await response.json())})();
     if(deduplicate){requests.set(url,request);request.catch(()=>{if(requests.get(url)===request)requests.delete(url)});}
     return request;
@@ -42,11 +46,15 @@ export function createDataService(release,{deduplicate=false}={}){
       if(data.schemaVersion!==1||data.fixtureId!==id)throw Error('Proiezione Champions non coerente');
       return data;
     },
-    loadReading:async id=>{
-      const [registry,data]=await Promise.all([
+    loadReading:async (id,sharedIndex)=>{
+      const blocks=new Map();
+      const loadBlock=hash=>{if(!blocks.has(hash))blocks.set(hash,fetchJson(`data/generated/readings/shared/${hash}.json`));return blocks.get(hash)};
+      const preload=Promise.all(sharedReading.hints(sharedIndex,id).map(loadBlock));
+      const [registry,wire]=await Promise.all([
         fetchJson(`${DATA}official-starter-registry.json`,'official starters'),
-        fetchJson(`data/generated/readings/matches/${encodeURIComponent(id)}.json`)
+        fetchJson(`data/generated/readings/matches/${encodeURIComponent(id)}.json`),preload
       ]);
+      const data=await sharedReading.hydrate(wire,loadBlock);
       globalThis.officialStarterPolicy.configure(registry);
       data.predictionDataset=globalThis.officialStarterPolicy.filter(data.predictionDataset);
       data.forecastDataset=data.forecastDataset?globalThis.officialStarterPolicy.filter(data.forecastDataset):null;

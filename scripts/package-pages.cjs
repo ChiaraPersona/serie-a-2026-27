@@ -6,16 +6,19 @@ const {execFileSync} = require('node:child_process');
 const {gzipSync}=require('node:zlib');
 const {pack}=require('./reading-archive-codec.cjs');
 const {scope}=require('./reading-archive-scope.cjs');
+const {publicWire,publicSharedFiles}=require('./reading-shared-storage.cjs');
 const root = path.resolve(__dirname, '..');
 const maximumBytes = 950_000_000;
 const directories = ['assets/', 'css/', 'js/', 'statistiche-squadra/',
   'data/generated/', 'data/normalized/', 'data/sources/', 'data/teams/', 'data/derived/',
   'data/predictions/', 'data/players/', 'data/champions-2026-27/'];
 const rootFiles = new Set(['.nojekyll', 'sw.js', 'manifest.webmanifest', 'CNAME', 'robots.txt', 'sitemap.xml', 'data/team-objectives.json']);
-const requiredRuntimeProjections = ['data/normalized/champions-player-history-context-2025-26.json','js/services/archive-json.js'];
+const requiredRuntimeProjections = ['js/services/archive-json.js','js/services/reading-shared.js','js/pages/champions-team-data.mjs'];
 // Browser MD3 uses the compiled Schedina UI or fixture projections. These
 // originals remain compiler inputs; literal names also address embedded datasets.
 const projectionInternalFiles=new Set([
+ 'data/normalized/champions-md03-player-database-2026-27.json',
+ 'data/normalized/champions-player-history-context-2025-26.json',
  'data/normalized/champions-md03-preliminary-2026-27.json',
  'data/normalized/champions-md03-probable-individuals-2026-27.json',
  'data/normalized/schedina-champions-md03.json',
@@ -23,13 +26,14 @@ const projectionInternalFiles=new Set([
 ]);
 // Research freezes and full referee archives have no browser consumers.
 // Public verification snapshots and generated referee projections remain included.
-const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-history/',
+const internalDirectories = ['data/generated/readings/wire/','data/normalized/odds/', 'data/normalized/referee-history/',
   'data/predictions/champions-event-snapshots/', 'data/predictions/exact-score-research/',
   'data/predictions/player-spatial-prospective/', 'data/predictions/player-spatial-v2-prospective/',
   'data/predictions/spatial-prospective/', 'data/predictions/xgot-prospective/',
   'data/normalized/xgot-history-seasons/', 'data/normalized/xgot-extended-seasons/', 'data/normalized/xgot-current-seasons/'];
 // Build inputs and superseded artifacts: browser consumers use the retained UI/v2 files.
 const internalFiles = new Set([
+  'data/generated/champions-teams/build-manifest.json',
   'data/generated/champions-readings/champions-reading-build-manifest.json',
   'data/normalized/champions-md03-settlement.json',
   'data/derived/champions-md03/sabah-dortmund-volumes-v1-2026-10-20.json',
@@ -95,15 +99,17 @@ const internalFiles = new Set([
 function publicContent(file,archives=null,stats=null) {
   const source = fs.readFileSync(path.join(root, file));
   if(!file.endsWith('.json'))return source;
+  const wire=publicWire(file,source);if(wire)return wire;
   const data=JSON.parse(source.toString('utf8'));
   const plain=Buffer.from(JSON.stringify(data)+'\n');
-  if(!archives?.has(file))return plain;
+  const clubProjection=/^data\/generated\/champions-teams\/(?!index\.json$)[a-z0-9-]+\.json$/.test(file);
+  if(!archives?.has(file)&&!clubProjection)return plain;
   const packed=Buffer.from(JSON.stringify(pack(data))+'\n');
   if(packed.length>=plain.length)return plain;
   const gzipBefore=gzipSync(plain).length,gzipAfter=gzipSync(packed).length;
   // Reject encodings that save disk space at the cost of network transfer.
   if(gzipAfter>=gzipBefore)return plain;
-  if(stats)stats.push({file,competition:archives.get(file),beforeBytes:plain.length,afterBytes:packed.length,gzipBefore,gzipAfter});
+  if(stats)stats.push({file,competition:clubProjection?'champions-team':archives.get(file),beforeBytes:plain.length,afterBytes:packed.length,gzipBefore,gzipAfter});
   return packed;
 }
 
@@ -111,6 +117,10 @@ function plan() {
   const tracked = execFileSync('git', ['ls-files', '-z'], {cwd: root, maxBuffer: 32 * 1024 * 1024})
     .toString().split('\0').filter(Boolean);
   // Generated runtime projections must also be testable in a local package before committing.
+  const sharedFiles=new Set(publicSharedFiles());
+  for(const file of sharedFiles)if(!tracked.includes(file))tracked.push(file);
+  const clubFiles=new Set(require('./build-champions-team-data.cjs').verify());
+  for(const file of clubFiles)if(!tracked.includes(file))tracked.push(file);
   for (const file of requiredRuntimeProjections) {
     if (!fs.existsSync(path.join(root,file))) throw new Error('Missing runtime projection: ' + file);
     if (!tracked.includes(file)) tracked.push(file);
@@ -126,7 +136,7 @@ function plan() {
       if (target.startsWith('scripts/')) browserScripts.add(target);
     }
   }
-  const files = tracked.filter(file => !internalFiles.has(file) && !projectionInternalFiles.has(file) && !internalDirectories.some(dir => file.startsWith(dir)) &&
+  const files = tracked.filter(file => (!file.startsWith('data/generated/champions-teams/')||clubFiles.has(file)) && (!file.startsWith('data/generated/readings/shared/')||sharedFiles.has(file)) && !internalFiles.has(file) && !projectionInternalFiles.has(file) && !internalDirectories.some(dir => file.startsWith(dir)) &&
     (rootFiles.has(file) || (!file.includes('/') && file.endsWith('.html')) ||
       browserScripts.has(file) || directories.some(dir => file.startsWith(dir))));
   for (const file of files) {

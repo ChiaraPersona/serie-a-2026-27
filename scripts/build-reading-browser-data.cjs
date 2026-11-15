@@ -61,6 +61,7 @@ function build({matchday=null,refreshArchived=false}={}){
   const history=historyMatches.filter(m=>m.id===id||m.status==='finished'&&m.score&&m.date<match.date&&ids.some(t=>m.homeTeam===t||m.awayTeam===t));
   write(`matches/${id}.json`,{teams,matches:history,readings:readings.filter(r=>r.matchId===id),objectiveProfiles:objectives,teamDirectory:{...directory,officialLineups:Object.fromEntries(Object.entries(directory.officialLineups||{}).filter(([key])=>key.startsWith(id+':')))},teamStyleProfiles:{...styles,profiles:styles.profiles.filter(p=>ids.includes(p.teamId))},predictionDataset:{predictions:predictions.predictions.filter(p=>p.matchId===id).map(p=>withReadingDuels(p,duelSquads))},headToHeadData:{fixtures:h2h.fixtures.filter(f=>f.fixtureId===id||[f.homeTeamId,f.awayTeamId].sort().join('|')===ids.slice().sort().join('|'))},refereeProfiles:{...referees,profiles:referees.profiles.filter(p=>p.refereeSlug===match.refereeAssignment?.referee?.slug)},forecastDataset,finishedIds,artifacts});
  }
+ require('./build-reading-shared-data.cjs').build();
  require('./spatial-prospective/auto-capture.cjs').autoCapture(root);
  require('./research/player-spatial/auto-capture.cjs').autoCapture(root);
  require('./research/player-spatial-v2/auto-capture.cjs').autoCapture(root);

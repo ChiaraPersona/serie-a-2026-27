@@ -5,6 +5,7 @@ import {championsStandingsDiscipline} from './champions-standings-discipline.mjs
 import {championsShirtNumber} from '../components/champions-shirt-numbers.mjs?v=20261022-assets-v1';
 import {renderLineupField} from '../components/lineup-field.mjs?v=20261022-assets-v1';
 import {isReadingPilot} from './reading-detail/view-model.mjs?v=20261022-assets-v1';
+import {teamDataLoader} from './champions-team-data.mjs?v=20261115-club-v1';
 export function createPage(deps){
   const {esc}=deps;
   let {load,loadDerived,loadGenerated}=deps;
@@ -479,6 +480,7 @@ export function createPage(deps){
     setReadingArtifacts(null);
     const requestedMatchId=new URLSearchParams(location.search).get("match");
     const requestedTeamId=new URLSearchParams(location.search).get("team");
+    if(requestedTeamId&&!requestedMatchId)load=teamDataLoader(load,loadGenerated,requestedTeamId);
     if(/^ucl-2026-27-md0[234]-(?:0[1-9]|1[0-8])$/.test(requestedMatchId||'')&&deps.loadChampionsReading){
       try{
         readingProjection=await deps.loadChampionsReading(requestedMatchId);
@@ -574,6 +576,7 @@ export function createPage(deps){
     }
     const requestedTeam=requestedTeamId?squads.teams.find(team=>team.id===requestedTeamId):null;
     if(requestedTeam){
+      if(requestedMatchId)load=teamDataLoader(load,loadGenerated,requestedTeamId);
       const md2TeamPilot=await load("champions-pilot-predictions-md02-2026-27.json");
       const teamPilot={...pilot,fixtures:[...pilot.fixtures,...md2TeamPilot.fixtures]};
       // Current rosters retain verified statistics through exact UEFA player IDs.

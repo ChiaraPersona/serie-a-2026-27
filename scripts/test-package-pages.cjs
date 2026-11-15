@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {plan, internalFiles,projectionInternalFiles} = require('./package-pages.cjs');
 const {unpack}=require('./reading-archive-codec.cjs');
+const {hydrateSync}=require('../js/services/reading-shared.js');
 const result = plan(), files = new Set(result.files);
 assert(files.has('js/services/archive-json.js'),'Missing archived reading decoder');
 for(const file of projectionInternalFiles)assert(!files.has(file),'Projection compiler input published: '+file);
@@ -30,7 +31,7 @@ for (const file of ['index.html', 'offline.html', 'download.html', 'manifest.web
   'data/generated/readings/index.json', 'data/generated/schedina-index-2026-27.json',
   'data/sources/official-lineups-2026-27.json', 'data/sources/team-pages/shirt-numbers-2026-27.json',
   'data/normalized/champions-md02-ui-2026-27.json',
-  'data/normalized/champions-player-history-context-2025-26.json',
+  'data/generated/champions-teams/index.json', 'js/pages/champions-team-data.mjs',
   'data/predictions/snapshots/manifest.json']) {
   assert(files.has(file), 'Missing runtime dependency: ' + file);
 }
@@ -68,7 +69,11 @@ if (siteIndex >= 0) {
   for (const file of result.files) {
     const source = fs.readFileSync(file), published = fs.readFileSync(path.join(site, file));
     bytes += published.length;
-    if (file.endsWith('.json')) assert.deepEqual(unpack(JSON.parse(published)), JSON.parse(source), 'JSON data changed: ' + file);
+    if (file.endsWith('.json')) assert.deepEqual(hydrateSync(unpack(JSON.parse(published)),hash=>{
+      const block=JSON.parse(fs.readFileSync(path.join(site,'data/generated/readings/shared/'+hash+'.json')));
+      assert.equal(require('node:crypto').createHash('sha256').update(JSON.stringify(block.value)).digest('hex'),hash);
+      return block;
+    }), JSON.parse(source), 'JSON data changed: ' + file);
     else assert(source.equals(published), 'Static asset changed: ' + file);
   }
   assert.equal(bytes, result.totalBytes, 'Planned and actual package sizes differ');

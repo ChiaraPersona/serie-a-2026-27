@@ -215,7 +215,7 @@ function renderTacticalBaselines(match,dataset,teams){
     const requestedMatchday=Number(requestedMatchId?.match(/-md-(\d{2})$/)?.[1]);
     // The directory never needs forecasts, rosters, events or historical archives.
     const index=await loadGenerated('readings/index.json');
-    const payload=requestedMatchId&&index.fixtureIds.includes(requestedMatchId)?await loadReading(requestedMatchId):index;
+    const payload=requestedMatchId&&index.fixtureIds.includes(requestedMatchId)?await loadReading(requestedMatchId,index.sharedReadings):index;
     const {teams,matches,readings=[],objectiveProfiles=null,teamDirectory=null,teamStyleProfiles=null,predictionDataset=null,headToHeadData=null,refereeProfiles=null,forecastDataset=null}=payload;
     setReadingArtifacts(payload.artifacts||null);
     const league=matches.filter(m=>m.competition==="serie-a");

@@ -43,9 +43,9 @@ const homeVersion = "20261112-home-upcoming-kickoffs-v1";
 const teamVersion = "20261018-no-player-media-v1";
 const leaderboardVersion = "20261013-md06-results-v1";
 const bettingVersion = "20261109-md11-results";
-const readingVersion = "20261106-current-tactics-v1";
+const readingVersion = "20261115-shared-readings-v1";
 const cupVersion = "20261025-coppa-round16-disclosure-v1";
-const championsVersion = "20261106-current-tactics-v1";
+const championsVersion = "20261115-club-projections-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (!teamPagesOnly && !presentationOnly && fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));
@@ -67,6 +67,7 @@ const renderedPages = readingPagesOnly ? pages.filter(([,id])=>bettingPageOnly?i
 if (renderedPages.some(([,id])=>id==='champions') && fs.existsSync(path.join(root,'data/sources/champions-senior-national-history-acquisition-2025-26.json'))) {
   require('./build-champions-player-history-context.cjs').main();
 }
+if(renderedPages.some(([,id])=>id==='champions'))require('./build-champions-team-data.cjs').build();
 // Refresh the browser projection from the existing archive, including during a
 // presentation-only build. Never invoke the MD2 forecasting/integration builder.
 if (renderedPages.some(([,id]) => id === 'readings')) {
