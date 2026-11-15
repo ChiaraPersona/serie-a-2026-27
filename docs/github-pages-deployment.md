@@ -1,5 +1,18 @@
 # GitHub Pages
 
+### Archived readings — 15 November 2026
+
+The deploy copy uses `readings-lossless-v1` for eligible completed Serie A and
+Champions archives. Repeated keys and long strings become dictionaries;
+`js/services/archive-json.js` restores the complete original JSON before any
+starter policy, renderer or result evaluation runs. Canonical repository files
+remain plain JSON. The package chooses this encoding only if both the file and
+its gzip representation are smaller. Scheduled fixtures remain outside scope.
+
+`npm run test:readings:archive` checks every eligible file and both browser data
+paths. The optional `--site` package audit compares decoded JSON with canonical
+inputs, including all original contracts, identities, nulls and precision.
+
 ### Additional package reduction — 8 November 2026
 
 The package excludes the offline `fantachampions-2026-27/` analysis workspace

@@ -3,13 +3,16 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const {execFileSync} = require('node:child_process');
+const {gzipSync}=require('node:zlib');
+const {pack}=require('./reading-archive-codec.cjs');
+const {scope}=require('./reading-archive-scope.cjs');
 const root = path.resolve(__dirname, '..');
 const maximumBytes = 950_000_000;
 const directories = ['assets/', 'css/', 'js/', 'statistiche-squadra/',
   'data/generated/', 'data/normalized/', 'data/sources/', 'data/teams/', 'data/derived/',
   'data/predictions/', 'data/players/', 'data/champions-2026-27/'];
 const rootFiles = new Set(['.nojekyll', 'sw.js', 'manifest.webmanifest', 'CNAME', 'robots.txt', 'sitemap.xml', 'data/team-objectives.json']);
-const requiredRuntimeProjections = ['data/normalized/champions-player-history-context-2025-26.json'];
+const requiredRuntimeProjections = ['data/normalized/champions-player-history-context-2025-26.json','js/services/archive-json.js'];
 // Research freezes and full referee archives have no browser consumers.
 // Public verification snapshots and generated referee projections remain included.
 const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-history/',
@@ -78,11 +81,19 @@ const internalFiles = new Set([
 ]);
 
 // Compact only the deploy copy. Canonical files and parsed JSON values stay intact.
-function publicContent(file) {
+function publicContent(file,archives=null,stats=null) {
   const source = fs.readFileSync(path.join(root, file));
-  return file.endsWith('.json')
-    ? Buffer.from(JSON.stringify(JSON.parse(source.toString('utf8'))) + '\n')
-    : source;
+  if(!file.endsWith('.json'))return source;
+  const data=JSON.parse(source.toString('utf8'));
+  const plain=Buffer.from(JSON.stringify(data)+'\n');
+  if(!archives?.has(file))return plain;
+  const packed=Buffer.from(JSON.stringify(pack(data))+'\n');
+  if(packed.length>=plain.length)return plain;
+  const gzipBefore=gzipSync(plain).length,gzipAfter=gzipSync(packed).length;
+  // Reject encodings that save disk space at the cost of network transfer.
+  if(gzipAfter>=gzipBefore)return plain;
+  if(stats)stats.push({file,competition:archives.get(file),beforeBytes:plain.length,afterBytes:packed.length,gzipBefore,gzipAfter});
+  return packed;
 }
 
 function plan() {
@@ -107,11 +118,12 @@ function plan() {
     if (!fs.lstatSync(path.join(root, file)).isFile()) throw new Error('Unsupported Pages entry: ' + file);
   }
   const sourceBytes = files.reduce((sum, file) => sum + fs.statSync(path.join(root, file)).size, 0);
+  const archives=scope(root,files),archiveStats=[];
   const totalBytes = files.reduce((sum, file) => sum + (file.endsWith('.json')
-    ? publicContent(file).length : fs.statSync(path.join(root, file)).size), 0);
+    ? publicContent(file,archives,archiveStats).length : fs.statSync(path.join(root, file)).size), 0);
   if (totalBytes > maximumBytes) throw new Error(`Pages package is ${totalBytes} bytes; budget is ${maximumBytes}`);
   for (const file of browserScripts) if (!files.includes(file)) throw new Error('Missing browser script: ' + file);
-  return {files, totalBytes, sourceBytes, savedBytes: sourceBytes - totalBytes, maximumBytes};
+  return {files, totalBytes, sourceBytes, savedBytes: sourceBytes - totalBytes, maximumBytes,archiveStats};
 }
 
 function build(destination = path.join(root, 'output', 'pages-site')) {
@@ -121,10 +133,11 @@ function build(destination = path.join(root, 'output', 'pages-site')) {
   if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) throw new Error('Pages destination must be inside output/');
   if (fs.existsSync(target)) throw new Error('Pages destination already exists: ' + target);
   const result = plan();
+  const archives=new Map(result.archiveStats.map(row=>[row.file,row.competition]));
   for (const file of result.files) {
     const output = path.join(target, file);
     fs.mkdirSync(path.dirname(output), {recursive: true});
-    if (file.endsWith('.json')) fs.writeFileSync(output, publicContent(file));
+    if (file.endsWith('.json')) fs.writeFileSync(output, publicContent(file,archives));
     else fs.copyFileSync(path.join(root, file), output);
   }
   return {...result, destination: target};
@@ -134,4 +147,4 @@ if (require.main === module) {
   const result = process.argv.includes('--check') ? plan() : build(process.argv[2]);
   console.log(JSON.stringify({files: result.files.length, totalBytes: result.totalBytes, sourceBytes: result.sourceBytes, savedBytes: result.savedBytes, remainingBytes: maximumBytes - result.totalBytes, maximumBytes, destination: result.destination}, null, 2));
 }
-module.exports = {plan, build, internalFiles};
+module.exports = {plan, build, internalFiles,publicContent};

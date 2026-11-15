@@ -3,7 +3,13 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const {plan, internalFiles} = require('./package-pages.cjs');
+const {unpack}=require('./reading-archive-codec.cjs');
 const result = plan(), files = new Set(result.files);
+assert(files.has('js/services/archive-json.js'),'Missing archived reading decoder');
+for(const row of result.archiveStats){
+  assert(row.afterBytes<row.beforeBytes,'Archive grew: '+row.file);
+  assert(row.gzipAfter<row.gzipBefore,'Archive transfer grew: '+row.file);
+}
 assert(result.totalBytes < result.sourceBytes, 'Deploy JSON should be compacted');
 assert.equal(result.savedBytes, result.sourceBytes - result.totalBytes);
 assert(result.totalBytes < 1_000_000_000, 'Published site must fit the Pages limit');
@@ -59,7 +65,7 @@ if (siteIndex >= 0) {
   for (const file of result.files) {
     const source = fs.readFileSync(file), published = fs.readFileSync(path.join(site, file));
     bytes += published.length;
-    if (file.endsWith('.json')) assert.deepEqual(JSON.parse(published), JSON.parse(source), 'JSON data changed: ' + file);
+    if (file.endsWith('.json')) assert.deepEqual(unpack(JSON.parse(published)), JSON.parse(source), 'JSON data changed: ' + file);
     else assert(source.equals(published), 'Static asset changed: ' + file);
   }
   assert.equal(bytes, result.totalBytes, 'Planned and actual package sizes differ');

@@ -1,5 +1,7 @@
 import '../official-starter-policy.js';
-import {requestJson,clearJsonRequests} from './json-requests.mjs?v=20261022-assets-v1';
+import './archive-json.js?v=20261115-archive-v1';
+const unpackArchive=globalThis[Symbol.for('prima-del-fischio.archive-json')].unpack;
+import {requestJson,clearJsonRequests} from './json-requests.mjs?v=20261115-archive-v1';
 export function createDataService(release,{deduplicate=false}={}){
   const DATA="data/normalized/";
   const requests=new Map();
@@ -7,7 +9,7 @@ export function createDataService(release,{deduplicate=false}={}){
   const fetchJson=(url,label=url)=>{
     if(deduplicate&&requests.has(url))return requests.get(url);
     const versioned=`${url}${url.includes("?")?"&":"?"}v=${release}`,options={cache:label==='official starters'?'no-store':'default',label};
-    const request=deduplicate?requestJson(versioned,options):(async()=>{const response=await fetch(versioned,{cache:options.cache});if(!response.ok)throw new Error(`${label}: ${response.status}`);return response.json()})();
+    const request=deduplicate?requestJson(versioned,options):(async()=>{const response=await fetch(versioned,{cache:options.cache});if(!response.ok)throw new Error(`${label}: ${response.status}`);return unpackArchive(await response.json())})();
     if(deduplicate){requests.set(url,request);request.catch(()=>{if(requests.get(url)===request)requests.delete(url)});}
     return request;
   };

@@ -3,10 +3,11 @@ const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const {withReadingDuels}=require('./reading-duel-presentation.cjs');
 const {spatialMatchup}=require('./shot-events/matchup.cjs');
+const {canReuse}=require('./reading-archive-reuse.cjs');
 const read=f=>JSON.parse(fs.readFileSync(path.join(root,f),'utf8'));
 const write=(f,data)=>{const file=path.join(root,'data/generated/readings',f),text=JSON.stringify(data)+'\n';fs.mkdirSync(path.dirname(file),{recursive:true});if(!fs.existsSync(file)||fs.readFileSync(file,'utf8')!==text)fs.writeFileSync(file,text);};
 const pick=(o,keys)=>Object.fromEntries(keys.filter(k=>k in o).map(k=>[k,o[k]]));
-function build({matchday=null}={}){
+function build({matchday=null,refreshArchived=false}={}){
  const teamHistory=require('./build-serie-a-team-history.cjs').build();
  const matches=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'),teams=read('data/normalized/teams.json');
  const historyMatches=[...matches,...require('./build-serie-a-team-history.cjs').europeanFixtures(teams,read('data/normalized/champions-league-2026-27.json'),require('./build-serie-a-team-history.cjs').loadEuropeanResults())];
@@ -21,12 +22,18 @@ function build({matchday=null}={}){
  write('index.json',{teams:teams.map(t=>pick(t,['id','name','shortName','logo','colors'])),matches:matches.map(m=>pick(m,['id','competition','homeTeam','awayTeam','matchday','date','matchdayDate','dateStatus','kickoff','status','score'])),fixtureIds:matches.map(m=>m.id)});
  const finishedIds=matches.filter(m=>m.status==='finished'&&m.score).map(m=>m.id),catalogs=new Map(),cache=new Map();
  const artifact=f=>{if(!cache.has(f))cache.set(f,fs.existsSync(path.join(root,f))?read(f):null);return cache.get(f)};
+ let reused=0;
  for(const match of matches.filter(m=>matchday===null||m.matchday===matchday)){
   const id=match.id,ids=[match.homeTeam,match.awayTeam],day=match.matchday,code=String(day).padStart(2,'0'),forecastFile=day===1?'schedina.json':`schedina-md${code}.json`;
   if(!catalogs.has(day))catalogs.set(day,artifact(`data/normalized/reading-md${code}-market-catalog.json`)||artifact('data/normalized/'+forecastFile));
   const source=catalogs.get(day),catalog=source?.marketCatalog;
   // Only suggested contracts can reach sharedForecastsForMatch/reconciliation.
   const forecastDataset=source?{matchday:day,marketCatalog:{matches:(catalog?.matches||[]).filter(m=>m.matchId===id).map(m=>({matchId:m.matchId,selections:m.selections.filter(l=>l.suggestionAnalysis?.suggested===true)}))}}:null;
+  const previousFile=`data/generated/readings/matches/${id}.json`;
+  if(!refreshArchived&&matchday===null&&match.status==='finished'&&fs.existsSync(path.join(root,previousFile))&&fs.existsSync(path.join(root,`data/generated/readings/catalogs/${id}.json`))){
+   const officialFixtures=artifact('data/sources/official-lineups-2026-27.json')?.fixtures.filter(f=>f.matchId===id);
+   if(canReuse({previous:read(previousFile),match,readings:readings.filter(r=>r.matchId===id),predictions:predictions.predictions.filter(p=>p.matchId===id),forecastDataset,officialFixtures})){reused++;continue;}
+  }
   write(`catalogs/${id}.json`,{forecastDataset,finishedIds});
   const artifacts={};
   // Result-link availability only. Do not download a whole day's contracts
@@ -57,7 +64,7 @@ function build({matchday=null}={}){
  require('./spatial-prospective/auto-capture.cjs').autoCapture(root);
  require('./research/player-spatial/auto-capture.cjs').autoCapture(root);
  require('./research/player-spatial-v2/auto-capture.cjs').autoCapture(root);
- console.log(`Lettura: indice e ${matches.filter(m=>matchday===null||m.matchday===matchday).length} dettagli generati senza ricalcoli.`);
+ console.log(`Lettura: ${reused} archivi conclusi riutilizzati; ${matches.filter(m=>matchday===null||m.matchday===matchday).length-reused} dettagli aggiornati senza ricalcoli previsionali.`);
 }
-module.exports={build};if(require.main===module){const i=process.argv.indexOf('--matchday');const matchday=i<0?null:Number(process.argv[i+1]);if(matchday!==null&&(!Number.isInteger(matchday)||matchday<1||matchday>38))throw Error('Giornata non valida');build({matchday});}
+module.exports={build};if(require.main===module){const i=process.argv.indexOf('--matchday');const matchday=i<0?null:Number(process.argv[i+1]);if(matchday!==null&&(!Number.isInteger(matchday)||matchday<1||matchday>38))throw Error('Giornata non valida');build({matchday,refreshArchived:process.argv.includes('--refresh-archived')});}
 

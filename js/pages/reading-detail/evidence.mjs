@@ -1,7 +1,7 @@
 import {championsShirtNumber} from '../../components/champions-shirt-numbers.mjs?v=20261022-assets-v1';
 import {shirtNumberAt} from './shirt-numbers.mjs?v=20261022-assets-v1';
 import {projectedArtifact} from './projected-artifacts.mjs?v=20261022-assets-v1';
-import {requestJson} from '../../services/json-requests.mjs?v=20261022-assets-v1';
+import {requestJson} from '../../services/json-requests.mjs?v=20261115-archive-v1';
 import {connectBenchForecasts,connectStarterScenarios} from './bench-contract.mjs?v=20261022-assets-v1';
 // Read existing public artifacts only; no builder, importer, or model dependency.
 export async function readArtifact(path){
