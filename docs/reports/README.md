@@ -1,5 +1,7 @@
 # Report storici e audit
 
+- [Esportazione storica Champions alleggerita](historical-export-cleanup-2026-11-15.md)
+
 - [Deduplicazione degli screenshot storici](screenshot-dedup-2026-11-15.md)
 
 - [Letture Champions per partita e copia interna superata](champions-fixture-loading-2026-11-15.md)
