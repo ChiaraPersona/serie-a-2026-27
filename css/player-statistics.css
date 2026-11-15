@@ -266,3 +266,21 @@ body[data-page="player-stats"] #app .global-player-table tbody tr .global-leader
  body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th:first-child{position:sticky;left:0;top:auto;z-index:12;background:#c5bdb6}
  body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th:nth-child(2){position:sticky;left:34px;top:auto;z-index:12;background:#c5bdb6}
 }
+
+/* Compact mobile overview with accessible filters and a bounded table. */
+body[data-page="player-stats"] #app .player-ranking-filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:700px){
+ body[data-page="player-stats"] #app>.page-heading{margin-bottom:22px}
+ body[data-page="player-stats"] #app>.page-heading h1,
+ body[data-page="player-stats"] #app .player-comparator-heading h2{font-size:clamp(28px,8.1vw,36px);line-height:1.15}
+ body[data-page="player-stats"] #app .player-ranking-filters{gap:10px;margin:0 0 16px;align-items:end}
+ body[data-page="player-stats"] #app .player-ranking-filters>label:first-child{grid-column:auto}
+ body[data-page="player-stats"] #app .player-ranking-filters>label{min-width:0;font-size:11px;gap:5px}
+ body[data-page="player-stats"] #app .player-ranking-filters select{font-size:12px;padding-left:8px;padding-right:24px}
+ body[data-page="player-stats"] #app .player-ranking-scroll{max-height:55svh;scrollbar-gutter:auto}
+ body[data-page="player-stats"] #app .global-player-table tbody td{height:48px;padding-block:7px}
+ body[data-page="player-stats"] #app>.global-player-leaders+.player-comparator{margin-top:24px;padding-top:24px}
+ body[data-page="player-stats"] #app .player-comparator-heading{margin-bottom:20px}
+}
+
+body[data-page="player-stats"] #app .player-ranking-filters .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}

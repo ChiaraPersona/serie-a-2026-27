@@ -40,3 +40,25 @@ repository temporaneo e verifica recupero, commit e conservazione dei lock
 recenti, non vuoti o con processi attivi. Non crea commit nel progetto.
 
 L'alias è locale e non viene copiato dai cloni; gli script npm sono versionati.
+
+## Comandi npm e limiti del recupero
+
+Gli script npm sono versionati e disponibili anche nei nuovi cloni:
+
+```powershell
+npm run git:repair
+npm run git:safe -- add -- percorso/del/file
+npm run git:commit -- -m "Descrizione della modifica"
+```
+
+Il commit usa solo i file già nello staging, non aggiunge altri file e non esegue
+push. Il recupero non termina processi e non modifica lo staging. Si può eseguire
+la verifica isolata anche con `npm run test:git-safe`.
+
+I permessi della sandbox sono un problema distinto: recuperare il lock non
+risolve la mancanza di accesso a `.git/config` o `.git/index`. Le scritture Git
+richiedono i permessi previsti dall'ambiente.
+
+File dati grandi possono allungare lo staging: lasciare terminare le operazioni
+ancora in corso. La causa dell'interruzione che ha generato il lock originale
+non è stata determinata.

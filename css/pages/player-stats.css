@@ -5663,6 +5663,19 @@ body[data-page="player-stats"] #app .global-player-table thead tr>th,
  body[data-page="player-stats"] #app .global-player-table thead tr:nth-child(2)>th{position:static;top:auto;left:auto;background-color:#c5bdb6;border:0;outline:0;box-shadow:none}
 body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th:first-child{position:sticky;left:0;top:auto;z-index:12;background:#c5bdb6}
 body[data-page="player-stats"] #app .global-player-table thead tr:first-child>th:nth-child(2){position:sticky;left:34px;top:auto;z-index:12;background:#c5bdb6}}
+body[data-page="player-stats"] #app .player-ranking-filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:700px){body[data-page="player-stats"] #app>.page-heading{margin-bottom:22px}
+body[data-page="player-stats"] #app>.page-heading h1,
+ body[data-page="player-stats"] #app .player-comparator-heading h2{font-size:clamp(28px,8.1vw,36px);line-height:1.15}
+body[data-page="player-stats"] #app .player-ranking-filters{gap:10px;margin:0 0 16px;align-items:end}
+body[data-page="player-stats"] #app .player-ranking-filters>label:first-child{grid-column:auto}
+body[data-page="player-stats"] #app .player-ranking-filters>label{min-width:0;font-size:11px;gap:5px}
+body[data-page="player-stats"] #app .player-ranking-filters select{font-size:12px;padding-left:8px;padding-right:24px}
+body[data-page="player-stats"] #app .player-ranking-scroll{max-height:55svh;scrollbar-gutter:auto}
+body[data-page="player-stats"] #app .global-player-table tbody td{height:48px;padding-block:7px}
+body[data-page="player-stats"] #app>.global-player-leaders+.player-comparator{margin-top:24px;padding-top:24px}
+body[data-page="player-stats"] #app .player-comparator-heading{margin-bottom:20px}}
+body[data-page="player-stats"] #app .player-ranking-filters .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 /* component-system.css: original cascade position */
 body .readings-index :is(.ri-archive,.ri-future){
   border:0;
@@ -5806,7 +5819,7 @@ body :is(#app,#team-squad-app) .comparator-editorial .player-comparator-controls
 body :is(#app,#team-squad-app) .comparator-editorial .player-comparator-controls:empty{display:none}
 body :is(#app,#team-squad-app) .comparator-editorial .player-comparator-head{display:grid;grid-template-columns:minmax(0,1fr) 100px minmax(0,1fr);align-items:stretch;gap:24px;margin:0 0 28px}
 body :is(#app,#team-squad-app) .comparator-editorial .player-comparator-head article{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:1fr auto;gap:16px;min-width:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;text-align:left}
-body :is(#app,#team-squad-app) .comparator-editorial .player-comparator-head article:last-child .player-comparison-details{text-align:right}
+body :is(#app,#team-squad-app) .comparator-editorial .player-comparator-head article:last-of-type .player-comparison-details{text-align:right}
 body :is(#app,#team-squad-app) .comparator-editorial .player-comparison-details h3{margin:0 0 7px;font:700 clamp(17px,1.7vw,21px)/1.25 var(--ds-font-body);letter-spacing:-.025em;overflow-wrap:anywhere;color:#243a3b}
 body :is(#app,#team-squad-app) .comparator-editorial .player-comparison-details p{margin:0 0 7px;font:400 14px/1.5 var(--ds-font-body);color:#43595b}
 body :is(#app,#team-squad-app) .comparator-editorial .player-comparison-details strong{font:400 14px/1.5 var(--ds-font-body);color:#243a3b}
@@ -5862,7 +5875,7 @@ body :is(#app,#team-squad-app) .comparator-editorial .team-comparator-toolbar h2
 body :is(#app,#team-squad-app) .comparator-editorial .team-comparator-options{flex:0 1 auto;max-width:100%}
 body[data-page="player-stats"] #app>.player-comparator.comparator-editorial{display:block}
 body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete{width:280px;max-width:100%}
-body[data-page="player-stats"] #app .comparator-editorial .player-comparator-head article:last-child .player-autocomplete{margin-left:auto}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-head article:last-of-type .player-autocomplete{margin-left:auto}
 body[data-page="player-stats"] #app .comparator-editorial input{height:36px;padding-top:6px;padding-bottom:6px;font-size:12px}
 body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete::after{top:10px}
 body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete::before{top:22px}
@@ -5870,3 +5883,30 @@ body[data-page="player-stats"] #app .comparator-editorial .player-suggestions{to
 @media(max-width:700px){body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete{width:150px}
 body[data-page="player-stats"] #app .comparator-editorial input{font-size:11px;height:34px}
 body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete::before{top:20px}}
+body[data-page="player-stats"] #app .player-comparator .team-comparator-toolbar[hidden]{display:none}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) 180px minmax(0,1fr);align-items:center;gap:24px}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls>label{margin:0;font-size:0;min-width:0}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls>label:last-child .player-autocomplete{margin-left:auto}
+body[data-page="player-stats"] #app .comparator-editorial .comparison-mode select{width:100%;height:36px;padding:6px 24px 6px 10px;font-size:12px}
+@media(max-width:700px){body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls{grid-template-columns:minmax(0,1fr) 108px minmax(0,1fr);gap:8px}
+body[data-page="player-stats"] #app .comparator-editorial .comparison-mode select{height:34px;padding-left:6px;padding-right:18px;font-size:10px}}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls{min-width:0;width:100%}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls>label{display:block;width:100%;max-width:100%;line-height:0}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls .player-autocomplete{width:100%;max-width:280px;min-width:0}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls :is(input,select){box-sizing:border-box;min-width:0;width:100%;max-width:100%;min-height:44px;line-height:1.4;margin:0}
+@media(max-width:700px){body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls{grid-template-columns:minmax(0,1fr) 104px minmax(0,1fr);gap:6px}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls input{font-size:11px;padding-left:7px;padding-right:22px}
+body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete::after{top:15px}
+body[data-page="player-stats"] #app .comparator-editorial .player-autocomplete::before{top:25px}
+body[data-page="player-stats"] #app .comparator-editorial .player-suggestions{top:48px;width:max(100%,150px);max-width:calc(100vw - 32px)}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls>label:last-child .player-suggestions{left:auto;right:0}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-head{gap:12px 8px}
+body[data-page="player-stats"] #app .comparator-editorial .comparison-row{grid-template-columns:30px minmax(0,1fr) 94px minmax(0,1fr) 30px;gap:5px;min-height:48px;padding:10px 6px}
+body[data-page="player-stats"] #app .comparator-editorial .comparison-label{font-size:10px}
+body[data-page="player-stats"] #app .comparator-editorial .comparison-row>strong{font-size:12px}}
+body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls>.comparison-mode{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0}
+body[data-page="player-stats"] #app .comparator-editorial .comparison-mode button{flex:1;min-width:0;min-height:44px;padding:6px 2px;border:0;border-radius:0;background:transparent;box-shadow:none;color:#43595b;font:500 11px/1.3 var(--ds-font-body);white-space:nowrap;cursor:pointer}
+body[data-page="player-stats"] #app .comparator-editorial .comparison-mode button[aria-pressed="true"]{color:var(--gold);font-weight:700}
+body[data-page="player-stats"] #app .comparator-editorial .comparison-mode button:focus-visible{outline:2px solid var(--ds-color-focus);outline-offset:2px}
+@media(max-width:700px){body[data-page="player-stats"] #app .comparator-editorial .player-comparator-controls>.comparison-mode{flex-direction:column;gap:0}
+body[data-page="player-stats"] #app .comparator-editorial .comparison-mode button{flex:none;width:100%;min-height:36px;padding:6px 2px;font-size:11px}}

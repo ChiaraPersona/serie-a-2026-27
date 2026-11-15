@@ -19,6 +19,17 @@ const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-h
   'data/normalized/xgot-history-seasons/', 'data/normalized/xgot-extended-seasons/', 'data/normalized/xgot-current-seasons/'];
 // Build inputs and superseded artifacts: browser consumers use the retained UI/v2 files.
 const internalFiles = new Set([
+  // Acquisition inputs and technical histories have no public runtime consumers.
+  'data/normalized/champions-elo-prior-domestic.json',
+  'data/sources/champions-results-md04-2026-27.json',
+  'data/sources/champions-md03-squads-2026-27.json',
+  'data/sources/fantasy-external-stats-2025-26.json',
+  'data/sources/prediction-archive-md04-2026-27.json',
+  'data/sources/champions-shirt-numbers-2026-27.json',
+  'data/sources/uefa-secondary-history-2023-26.json',
+  'data/sources/reading-referee-match-history.json',
+  'data/normalized/champions-referee-match-history-md04-2026-27.json',
+  'data/normalized/champions-referee-dataset-md03-2026-27.json',
   'data/sources/champions-player-senior-national-observations-2025-26.json',
   'data/sources/champions-senior-national-history-acquisition-2025-26.json',
   'data/sources/champions-senior-national-history-scope-2025-26.json',

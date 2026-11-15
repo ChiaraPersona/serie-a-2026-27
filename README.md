@@ -2,6 +2,12 @@
 
 Sito statico autonomo per Serie A, Coppa Italia e statistiche arbitrali, compatibile con GitHub Pages.
 
+## Documentazione
+
+Consultare l'[indice della documentazione](docs/README.md) per guide operative,
+modelli, protocolli di ricerca e report storici. Le istruzioni per gli agenti
+sono in [AGENTS.md](AGENTS.md).
+
 ## Procedura di manutenzione e aggiornamento
 
 Usare Node >=22.12 (verificato con Node 24.19). Node 22.11 richiede flag sperimentali per i moduli ESM e non e supportato dal build.

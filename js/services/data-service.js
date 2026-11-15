@@ -15,9 +15,11 @@ export function createDataService(release,{deduplicate=false}={}){
     // One cache per rendered view. A later render refreshes the official registry.
     beginView:()=>{requests.clear();if(deduplicate)clearJsonRequests();},
     load:async name=>{
-      const registry=await fetchJson(`${DATA}official-starter-registry.json`,'official starters');
+      const [registry,data]=await Promise.all([
+        fetchJson(`${DATA}official-starter-registry.json`,'official starters'),
+        fetchJson(`${DATA}${name}`,name)
+      ]);
       globalThis.officialStarterPolicy.configure(registry);
-      const data=await fetchJson(`${DATA}${name}`,name);
       // Preserve observed match reports, including substitutes. Public contracts
       // use the official-starter filter even after the fixture has finished.
       if(name==='matches.json'||name==='champions-league-2026-27.json')return data;
@@ -29,9 +31,11 @@ export function createDataService(release,{deduplicate=false}={}){
     },
     loadGenerated:path=>fetchJson(`data/generated/${path}`,path),
     loadReading:async id=>{
-      const registry=await fetchJson(`${DATA}official-starter-registry.json`,'official starters');
+      const [registry,data]=await Promise.all([
+        fetchJson(`${DATA}official-starter-registry.json`,'official starters'),
+        fetchJson(`data/generated/readings/matches/${encodeURIComponent(id)}.json`)
+      ]);
       globalThis.officialStarterPolicy.configure(registry);
-      const data=await fetchJson(`data/generated/readings/matches/${encodeURIComponent(id)}.json`);
       data.predictionDataset=globalThis.officialStarterPolicy.filter(data.predictionDataset);
       data.forecastDataset=data.forecastDataset?globalThis.officialStarterPolicy.filter(data.forecastDataset):null;
       return data;

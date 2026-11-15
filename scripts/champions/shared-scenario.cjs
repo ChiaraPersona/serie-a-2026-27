@@ -42,15 +42,31 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,ca
  const europeanContext=readingEnabled?require('./european-result-policy.cjs').loadContext(ratingCalendar,asOf):null;
  const targets=calendar.fixtures.filter(f=>eligible(f,asOf)&&(matchday===null||f.matchday===matchday));
  const metrics=['goals','totalShots','shotsOnTarget','wonCorners'];
+ // Invocation-local cache: the same league/cutoff has identical observed rows.
+ // Keep the original reduction order and null semantics; no persisted forecasts.
+ const leagueCache=new Map();
  const output=targets.map(f=>{
   const cutoff=[asOf,f.date].sort()[0],sides=[f.homeTeam,f.awayTeam];
   const teams=sides.map(name=>source.teams.find(t=>t.name===name));
   const rows=teams.map(t=>t?profileRows(source,t,cutoff):[]);
   const missing=[];
   const leagueRows=t=>t?source.matches.filter(m=>m.league===t.league&&usableProfileMatch(m)&&m.date<cutoff&&m.source?.retrievedAt&&m.source.retrievedAt<cutoff):[];
-  const leagues=teams.map(leagueRows);
-  const baseline=(i,venue,metric)=>mean(leagues[i].map(m=>metric==='goals'?m[venue].score:m[venue].statistics?.[metric]).filter(finite));
-  const target=(venue,metric)=>mean([0,1].map(i=>baseline(i,venue,metric)).filter(finite));
+  const leagues=teams.map(t=>{
+   const key=JSON.stringify([t?.league??null,cutoff]);
+   if(!leagueCache.has(key))leagueCache.set(key,{rows:leagueRows(t),means:new Map()});
+   return leagueCache.get(key);
+  });
+  const baseline=(i,venue,metric)=>{
+   const key=venue+':'+metric,league=leagues[i];
+   if(!league.means.has(key))league.means.set(key,mean(league.rows.map(m=>metric==='goals'?m[venue].score:m[venue].statistics?.[metric]).filter(finite)));
+   return league.means.get(key);
+  };
+  const targets=new Map();
+  const target=(venue,metric)=>{
+   const key=venue+':'+metric;
+   if(!targets.has(key))targets.set(key,mean([0,1].map(i=>baseline(i,venue,metric)).filter(finite)));
+   return targets.get(key);
+  };
   const normalized=rows.map((rr,i)=>rr.map(r=>({...r,for:Object.fromEntries(metrics.map(k=>[k,finite(r.for[k])&&baseline(i,r.venue,k)>0?r.for[k]/baseline(i,r.venue,k)*target(r.venue,k):null])),against:Object.fromEntries(metrics.map(k=>{const other=r.venue==='home'?'away':'home';return [k,finite(r.against[k])&&baseline(i,other,k)>0?r.against[k]/baseline(i,other,k)*target(other,k):null];}))})));
   const covered=normalized.every(rr=>rr.length>=6&&['home','away'].every(v=>rr.filter(r=>r.venue===v&&finite(r.for.goals)&&finite(r.against.goals)).length>=2));
   const volumes=normalized.map(rr=>({venues:Object.fromEntries(['home','away','overall'].map(v=>[v,Object.fromEntries(metrics.slice(1).map(k=>[k,Object.fromEntries(['for','against'].map(side=>[side,summarize(rr.filter(r=>v==='overall'||r.venue===v).map(r=>r[side][k]))]))]))])),recent:Object.fromEntries(metrics.slice(1).map(k=>[k,{for:recentStats(rr,k)}]))}));
