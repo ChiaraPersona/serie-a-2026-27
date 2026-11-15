@@ -1,5 +1,7 @@
 # Report storici e audit
 
+- [Spazio degli archivi interni — 15 novembre 2026](internal-archive-storage-2026-11-15.md)
+
 - [Letture archiviate leggere — Serie A e Champions](archived-readings-size-2026-11-15.md)
 
 - [Ottimizzazione delle prestazioni — 15 novembre 2026](performance-cleanup-2026-11-15.md)
