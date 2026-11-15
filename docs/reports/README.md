@@ -1,5 +1,7 @@
 # Report storici e audit
 
+- [Ottimizzazione delle prestazioni — 15 novembre 2026](performance-cleanup-2026-11-15.md)
+
 Resoconti datati: descrivono le operazioni e le verifiche del momento, non lo stato corrente del sito. Conservare fonti, limiti statistici e risultati originali.
 
 Tornare all'[indice della documentazione](../README.md) per le guide operative.

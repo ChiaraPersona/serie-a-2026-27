@@ -1,5 +1,5 @@
 import {createReadingView} from './view-model.mjs?v=20261022-assets-v1';
-import {heroMarkup} from './shell.mjs?v=20261104-tactical-profiles-v3';
+import {heroMarkup} from './shell.mjs?v=20261115-result-availability';
 import {esc} from './format.mjs?v=20261022-assets-v1';
 import {whistle} from './referee-dashboard.mjs?v=20261104-tactical-profiles-v3';
 const finite=v=>typeof v==='number'&&Number.isFinite(v);

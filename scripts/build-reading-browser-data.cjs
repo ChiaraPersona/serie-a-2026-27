@@ -29,6 +29,12 @@ function build({matchday=null}={}){
   const forecastDataset=source?{matchday:day,marketCatalog:{matches:(catalog?.matches||[]).filter(m=>m.matchId===id).map(m=>({matchId:m.matchId,selections:m.selections.filter(l=>l.suggestionAnalysis?.suggested===true)}))}}:null;
   write(`catalogs/${id}.json`,{forecastDataset,finishedIds});
   const artifacts={};
+  // Result-link availability only. Do not download a whole day's contracts
+  // merely to check whether this fixture has archived selections.
+  if([6,8].includes(day)){
+   const results=artifact('data/normalized/'+forecastFile);
+   artifacts['data/generated/reading-result-availability.json']={fixtureId:id,matchday:results?.matchday??null,selectionsAvailable:Boolean(results?.marketCatalog?.matches?.find(m=>m.matchId===id)?.selections?.length)};
+  }
   artifacts['data/generated/serie-a-team-history.json']={...teamHistory,teams:Object.fromEntries(ids.map(teamId=>[teamId,(teamHistory.teams[teamId]||[]).filter(row=>!match.date||row.date.slice(0,10)<match.date.slice(0,10)).slice(0,10)]))};
   if(spatial)artifacts['data/generated/reading-spatial-matchup.json']=spatialMatchup(match,historyMatches,spatial,technical);
   const add=(f,project=x=>x)=>{const d=artifact(f);if(d!==null)artifacts[f]=project(d)};

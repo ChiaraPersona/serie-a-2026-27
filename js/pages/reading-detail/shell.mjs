@@ -9,6 +9,7 @@ import {loadHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
 import {mountRefereeHistory} from './referee-history.mjs?v=20261104-tactical-profiles-v3';
 import {teamMatchHistoryMarkup} from '../../components/team-match-history.mjs?v=20261106-all-europe-v1';
 import {bookingsMarkup} from './bookings.mjs?v=20261113-reading-parity';
+import {projectedArtifact} from './projected-artifacts.mjs?v=20261022-assets-v1';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
   ['scenario','Scenario','01','TrendingUp'],
@@ -33,6 +34,8 @@ export async function readingResultsDestination(model,read=readArtifact){
     // These are the existing result-capable routes, not an extension of market gates.
     if(model.competition==='serie-a'&&[6,8].includes(Number(model.fixture.matchday))){
       const day=Number(model.fixture.matchday),code=String(day).padStart(2,'0');
+      const available=projectedArtifact('data/generated/reading-result-availability.json')?.value;
+      if(available?.fixtureId===model.fixture.id&&Number(available.matchday)===day&&typeof available.selectionsAvailable==='boolean')return available.selectionsAvailable?`schedina.html?giornata=${day}`:null;
       const data=await read(`data/normalized/schedina-md${code}.json`);
       const fixture=data.marketCatalog?.matches?.find(f=>f.matchId===model.fixture.id);
       if(Number(data.matchday)===day&&fixture?.selections?.length)return `schedina.html?giornata=${day}`;

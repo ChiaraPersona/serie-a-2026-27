@@ -52,7 +52,7 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,ca
   const missing=[];
   const leagueRows=t=>t?source.matches.filter(m=>m.league===t.league&&usableProfileMatch(m)&&m.date<cutoff&&m.source?.retrievedAt&&m.source.retrievedAt<cutoff):[];
   const leagues=teams.map(t=>{
-   const key=JSON.stringify([t?.league??null,cutoff]);
+   const key=JSON.stringify([Boolean(t),t?.league??null,cutoff]);
    if(!leagueCache.has(key))leagueCache.set(key,{rows:leagueRows(t),means:new Map()});
    return leagueCache.get(key);
   });

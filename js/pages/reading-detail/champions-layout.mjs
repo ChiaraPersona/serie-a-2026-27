@@ -1,6 +1,6 @@
 import {esc,number} from './format.mjs?v=20261022-assets-v1';
 import {createReadingView} from './view-model.mjs?v=20261022-assets-v1';
-import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261113-lineup-reference';
+import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261115-result-availability';
 import {recentPlayerMatches,playerHistoryMarkup} from './champions-player-history.mjs';
 import {readArtifact} from './evidence.mjs?v=20261113-lineup-reference';
 import {latestReferenceLineups} from './champions-lineup-reference.mjs?v=20261113-lineup-reference';
