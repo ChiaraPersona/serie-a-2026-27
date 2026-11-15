@@ -32,6 +32,16 @@ export function createDataService(release,{deduplicate=false}={}){
       return globalThis.officialStarterPolicy.filter(data);
     },
     loadGenerated:path=>fetchJson(`data/generated/${path}`,path),
+    loadChampionsReading:async id=>{
+      if(!/^ucl-2026-27-md0[234]-(?:0[1-9]|1[0-8])$/.test(id))throw Error('Fixture Champions non valida');
+      const [registry,data]=await Promise.all([
+        fetchJson(`${DATA}official-starter-registry.json`,'official starters'),
+        fetchJson(`data/generated/champions-readings/${id}.json`)
+      ]);
+      globalThis.officialStarterPolicy.configure(registry);
+      if(data.schemaVersion!==1||data.fixtureId!==id)throw Error('Proiezione Champions non coerente');
+      return data;
+    },
     loadReading:async id=>{
       const [registry,data]=await Promise.all([
         fetchJson(`${DATA}official-starter-registry.json`,'official starters'),

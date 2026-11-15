@@ -127,6 +127,10 @@ export async function loadChampionsWorkspace(load,matchday){
 // A versioned MD3 view over the archived publication. The historical source,
 // slips and MyCombo stay bound to their original snapshot.
 export async function loadChampionsWorkspaceMd3Derived(load,matchday,{upcoming=true}={}){
+  if(matchday===3&&typeof window!=='undefined'){
+    const {restoreMd3Workspace}=await import('./champions-md3-browser-workspace.mjs?v=20261022-assets-v1');
+    return restoreMd3Workspace(await load('schedina-champions-md03-ui.json'));
+  }
   const workspace=await loadChampionsWorkspace(load,matchday);
   if(matchday!==3)return workspace;
   const derived=await load('../derived/champions-md03/market-catalog-v2-2026-10-20.json');

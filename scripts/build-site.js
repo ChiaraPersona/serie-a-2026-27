@@ -78,6 +78,7 @@ if (renderedPages.some(([,id]) => id === 'readings')) {
 if (renderedPages.some(([,id]) => id === 'champions')) {
   require('./build-champions-md02-browser-data.cjs').build();
   require('./build-champions-player-match-history.cjs').build();
+  require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-champions-reading-data.mjs')],{cwd:root,stdio:'inherit'});
 }
 if (renderedPages.some(([,id]) => id === 'betting')) require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-schedina-browser-data.mjs'),...(process.argv.includes('--matchday')?['--matchday',process.argv[process.argv.indexOf('--matchday')+1]]:[])],{cwd:root,stdio:'inherit'});
 if (!process.argv.includes('--matchday') && renderedPages.some(([,id]) => id === 'betting')) require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-champions-md3-browser-data.mjs')],{cwd:root,stdio:'inherit'});

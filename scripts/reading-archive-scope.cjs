@@ -8,6 +8,10 @@ function scope(root,files){
   const closedDays=fixtures=>new Set([...new Set(fixtures.map(f=>f.matchday))].filter(day=>fixtures.filter(f=>f.matchday===day).every(f=>f.status==='finished')));
   const saDays=closedDays(serieA),clDays=closedDays(champions),result=new Map();
   for(const file of files){
+    const reading=file.match(/^data\/generated\/champions-readings\/ucl-2026-27-md0([234])-\d{2}\.json$/);
+    if(reading&&clDays.has(Number(reading[1]))){result.set(file,'champions');continue;}
+    const registry=file.match(/^data\/generated\/champions-readings\/registry-md([234])\.json$/);
+    if(registry&&clDays.has(Number(registry[1]))){result.set(file,'champions');continue;}
     const match=file.match(/^data\/generated\/(?:readings\/(?:matches|catalogs)|reading-bench-starter-scenarios)\/([^/]+)\.json$/);
     if(match&&finishedIds.has(match[1])){result.set(file,'serie-a');continue;}
     const day=file.match(/^data\/normalized\/(?:schedina|predictions)-md(\d{2})\.json$/);

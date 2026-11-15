@@ -4,7 +4,7 @@ const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-sett
 const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261102-champions-no-draw`);
 const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts,publicForecastLabel,meetsMinimumPublicOdds,isExcludedStraightDraw}=await import(`./shared-forecast-contract.mjs?v=20261102-champions-no-draw`);
 
-const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=20261104-champions-results`);
+const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=20261115-fixture-data`);
 const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=20261022-assets-v1`);
 const {settleMd3Leg}=await import(`./champions-md3-results.mjs?v=20261022-assets-v1`);
 

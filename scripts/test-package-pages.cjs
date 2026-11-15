@@ -2,10 +2,15 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const {plan, internalFiles} = require('./package-pages.cjs');
+const {plan, internalFiles,projectionInternalFiles} = require('./package-pages.cjs');
 const {unpack}=require('./reading-archive-codec.cjs');
 const result = plan(), files = new Set(result.files);
 assert(files.has('js/services/archive-json.js'),'Missing archived reading decoder');
+for(const file of projectionInternalFiles)assert(!files.has(file),'Projection compiler input published: '+file);
+for(const day of [2,3,4]){
+ assert(files.has(`data/generated/champions-readings/registry-md${day}.json`),'Missing shared contract registry');
+ for(let i=1;i<=18;i++)assert(files.has(`data/generated/champions-readings/ucl-2026-27-md0${day}-${String(i).padStart(2,'0')}.json`),'Missing fixture reading projection');
+}
 for(const row of result.archiveStats){
   assert(row.afterBytes<row.beforeBytes,'Archive grew: '+row.file);
   assert(row.gzipAfter<row.gzipBefore,'Archive transfer grew: '+row.file);
@@ -26,9 +31,7 @@ for (const file of ['index.html', 'offline.html', 'download.html', 'manifest.web
   'data/sources/official-lineups-2026-27.json', 'data/sources/team-pages/shirt-numbers-2026-27.json',
   'data/normalized/champions-md02-ui-2026-27.json',
   'data/normalized/champions-player-history-context-2025-26.json',
-  'data/derived/champions-md03/market-catalog-official-seven-v2-2026-10-20.json',
-  'data/derived/champions-md03/official-individuals-seven-v2-2026-10-20.json',
-  'data/derived/champions-md03/upcoming-forecasts.json', 'data/predictions/snapshots/manifest.json']) {
+  'data/predictions/snapshots/manifest.json']) {
   assert(files.has(file), 'Missing runtime dependency: ' + file);
 }
 // These URLs are composed at runtime and cannot be covered by basename scans.

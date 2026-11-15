@@ -6,7 +6,9 @@ import {championsShirtNumber} from '../components/champions-shirt-numbers.mjs?v=
 import {renderLineupField} from '../components/lineup-field.mjs?v=20261022-assets-v1';
 import {isReadingPilot} from './reading-detail/view-model.mjs?v=20261022-assets-v1';
 export function createPage(deps){
-  const {esc,load,loadDerived,loadGenerated}=deps;
+  const {esc}=deps;
+  let {load,loadDerived,loadGenerated}=deps;
+  let readingProjection=null;
   const dayLabel=value=>new Intl.DateTimeFormat("it-IT",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Europe/Rome"}).format(new Date(`${value}T12:00:00+01:00`));
   const matchdayLabel=number=>`${number}ª giornata`;
   const shortDate=value=>new Intl.DateTimeFormat("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"Europe/Rome"}).format(new Date(`${value}T12:00:00Z`));
@@ -443,8 +445,16 @@ export function createPage(deps){
 
   async function appendSharedSchedina(matchday,fixtureId,host){
     if(!host||typeof host.insertAdjacentHTML!=="function")return;
-    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261104-champions-results'),import('./betting.js?v=20261104-champions-results')]);
-    const workspace=await loadChampionsWorkspaceMd3Derived(load,matchday);
+    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261115-fixture-data'),import('./betting.js?v=20261104-champions-results')]);
+    let workspace;
+    if(readingProjection?.fixtureId===fixtureId){
+      const registry=await deps.loadGenerated(`champions-readings/registry-md${matchday}.json`);
+      if(registry.matchday!==matchday)throw Error('Registro Champions non coerente');
+      workspace=readingProjection.workspace;
+      const byId=new Map(registry.all.map(leg=>[leg.selectionId,leg]));
+      const matches=workspace.marketCatalog.matches.map(({selectionIds,...match})=>({...match,selections:selectionIds.map(id=>{if(!byId.has(id))throw Error('Contratto Champions mancante');return byId.get(id);})}));
+      workspace={...workspace,all:globalThis.officialStarterPolicy.filter(registry.all),marketCatalog:globalThis.officialStarterPolicy.filter({...workspace.marketCatalog,matches})};
+    }else workspace=await loadChampionsWorkspaceMd3Derived(load,matchday);
     const controller=createBettingPage({...deps,dateOnly:deps.dateOnly||(value=>String(value||"").slice(0,10))});
     const section=host.querySelector('#lettura-pronostici .rd-section-content');
     const target=section||host;
@@ -464,8 +474,28 @@ export function createPage(deps){
   }
 
   async function render(){
+    ({load,loadDerived,loadGenerated}=deps);readingProjection=null;
+    const {setReadingArtifacts}=await import('./reading-detail/projected-artifacts.mjs?v=20261022-assets-v1');
+    setReadingArtifacts(null);
     const requestedMatchId=new URLSearchParams(location.search).get("match");
     const requestedTeamId=new URLSearchParams(location.search).get("team");
+    if(/^ucl-2026-27-md0[234]-(?:0[1-9]|1[0-8])$/.test(requestedMatchId||'')&&deps.loadChampionsReading){
+      try{
+        readingProjection=await deps.loadChampionsReading(requestedMatchId);
+        const datasets=readingProjection.datasets;
+        const key=(prefix,name)=>new URL(name,'https://projection.invalid/'+prefix).pathname.slice(1);
+        load=async name=>{
+          const path=key('data/normalized/',name);
+          if(!Object.hasOwn(datasets,path))return deps.load(name);
+          const data=datasets[path];
+          if(name==='champions-league-2026-27.json'||name==='champions-md04-probable-individuals-2026-27.json')return data;
+          return globalThis.officialStarterPolicy.filter(data);
+        };
+        loadDerived=async name=>Object.hasOwn(datasets,'data/derived/'+name)?datasets['data/derived/'+name]:deps.loadDerived(name);
+        loadGenerated=async name=>Object.hasOwn(datasets,'data/generated/'+name)?datasets['data/generated/'+name]:deps.loadGenerated(name);
+        setReadingArtifacts(datasets);
+      }catch(error){readingProjection=null;throw error;}
+    }
     const [data,strength,history,model,h2h,pilot,backtest,squads,motivation,styleProfiles,attackChannels,surpriseFactors,playerMarkets]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json"),load("champions-pilot-volume-backtest.json"),load("champions-registered-squads-2026-27.json"),load("champions-motivation-md01-2026-27.json"),load("team-style-profiles.json"),load("champions-attack-channels-2025-26.json"),load("champions-surprise-factor-md01-2026-27.json"),load("champions-player-markets-md01-2026-27.json")]);
     const profiles=new Map(strength.teams.map(profile=>[profile.team,profile]));
     const histories=new Map(history.teams.map(profile=>[profile.team,profile]));

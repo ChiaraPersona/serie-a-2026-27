@@ -13,6 +13,14 @@ const directories = ['assets/', 'css/', 'js/', 'statistiche-squadra/',
   'data/predictions/', 'data/players/', 'data/champions-2026-27/'];
 const rootFiles = new Set(['.nojekyll', 'sw.js', 'manifest.webmanifest', 'CNAME', 'robots.txt', 'sitemap.xml', 'data/team-objectives.json']);
 const requiredRuntimeProjections = ['data/normalized/champions-player-history-context-2025-26.json','js/services/archive-json.js'];
+// Browser MD3 uses the compiled Schedina UI or fixture projections. These
+// originals remain compiler inputs; literal names also address embedded datasets.
+const projectionInternalFiles=new Set([
+ 'data/normalized/champions-md03-preliminary-2026-27.json',
+ 'data/normalized/champions-md03-probable-individuals-2026-27.json',
+ 'data/normalized/schedina-champions-md03.json',
+ ...['probable-individuals-v2-2026-10-20','market-catalog-v2-2026-10-20','market-catalog-official-two-v1-2026-10-20','market-catalog-sabah-dortmund-v1-2026-10-20','market-catalog-official-seven-v2-2026-10-20','market-catalog-official-2026-10-21','official-individuals-two-v1-2026-10-20','official-individuals-seven-v2-2026-10-20','official-individuals-2026-10-21','upcoming-forecasts'].map(name=>'data/derived/champions-md03/'+name+'.json')
+]);
 // Research freezes and full referee archives have no browser consumers.
 // Public verification snapshots and generated referee projections remain included.
 const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-history/',
@@ -22,6 +30,8 @@ const internalDirectories = ['data/normalized/odds/', 'data/normalized/referee-h
   'data/normalized/xgot-history-seasons/', 'data/normalized/xgot-extended-seasons/', 'data/normalized/xgot-current-seasons/'];
 // Build inputs and superseded artifacts: browser consumers use the retained UI/v2 files.
 const internalFiles = new Set([
+  'data/normalized/champions-md03-settlement.json',
+  'data/derived/champions-md03/sabah-dortmund-volumes-v1-2026-10-20.json',
   // Acquisition inputs and technical histories have no public runtime consumers.
   'data/normalized/champions-elo-prior-domestic.json',
   'data/sources/champions-results-md04-2026-27.json',
@@ -104,6 +114,10 @@ function plan() {
     if (!fs.existsSync(path.join(root,file))) throw new Error('Missing runtime projection: ' + file);
     if (!tracked.includes(file)) tracked.push(file);
   }
+  const readingDirectory=path.join(root,'data/generated/champions-readings');
+  if(fs.existsSync(readingDirectory))for(const name of fs.readdirSync(readingDirectory).filter(n=>/^(?:ucl-2026-27-md0[234]-\d{2}|registry-md[234])\.json$/.test(n))){
+    const file='data/generated/champions-readings/'+name;if(!tracked.includes(file))tracked.push(file);
+  }
   const browserScripts = new Set();
   for (const file of tracked.filter(f => f.endsWith('.html') && (!f.includes('/') || f.startsWith('statistiche-squadra/')))) {
     for (const match of fs.readFileSync(path.join(root, file), 'utf8').matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["']/gi)) {
@@ -111,7 +125,7 @@ function plan() {
       if (target.startsWith('scripts/')) browserScripts.add(target);
     }
   }
-  const files = tracked.filter(file => !internalFiles.has(file) && !internalDirectories.some(dir => file.startsWith(dir)) &&
+  const files = tracked.filter(file => !internalFiles.has(file) && !projectionInternalFiles.has(file) && !internalDirectories.some(dir => file.startsWith(dir)) &&
     (rootFiles.has(file) || (!file.includes('/') && file.endsWith('.html')) ||
       browserScripts.has(file) || directories.some(dir => file.startsWith(dir))));
   for (const file of files) {
@@ -147,4 +161,4 @@ if (require.main === module) {
   const result = process.argv.includes('--check') ? plan() : build(process.argv[2]);
   console.log(JSON.stringify({files: result.files.length, totalBytes: result.totalBytes, sourceBytes: result.sourceBytes, savedBytes: result.savedBytes, remainingBytes: maximumBytes - result.totalBytes, maximumBytes, destination: result.destination}, null, 2));
 }
-module.exports = {plan, build, internalFiles,publicContent};
+module.exports = {plan, build, internalFiles,projectionInternalFiles,publicContent};
