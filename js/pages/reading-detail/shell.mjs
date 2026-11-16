@@ -4,7 +4,7 @@ import {installForecasts} from './forecasts.mjs?v=20261025-clean-copy';
 import {installScenario} from './scenario.mjs?v=20261114-european-reading';
 import {loadEvidence,readArtifact} from './evidence.mjs?v=20261115-archive-v1';
 import {installPeople} from './people.mjs?v=20261113-lineup-reference';
-import {installTacticsHistory} from './tactics-history.mjs?v=20261113-reading-parity';
+import {installTacticsHistory} from './tactics-history.mjs?v=20261115-tactical-no-possession';
 import {loadHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
 import {mountRefereeHistory} from './referee-history.mjs?v=20261104-tactical-profiles-v3';
 import {teamMatchHistoryMarkup} from '../../components/team-match-history.mjs?v=20261106-all-europe-v1';
@@ -127,7 +127,6 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
       shell.append(group);
       const link=document.createElement('a');link.href='#'+group.id;link.textContent=title;link.dataset.sectionLink=key;linkStrip.append(link);
     }
-    const mini=document.createElement('div');mini.className='rd-mini';mini.innerHTML=`<span>${escape(model.home.name)}</span><b>VS</b><span>${escape(model.away.name)}</span>`;mini.setAttribute('aria-hidden','true');nav.prepend(mini);
     if(model.competition==='serie-a'&&visibleDefinitions.some(([key])=>key==='pronostici')){const forecasts=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecasts.undo);}
     undo.push(installScenario(model,groups.get('scenario').lastElementChild));
     undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));
