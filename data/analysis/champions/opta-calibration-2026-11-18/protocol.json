@@ -1,0 +1,16 @@
+{
+  "experiment": "opta-club-rating-1x2-calibration-v1",
+  "status": "research_only",
+  "writtenBeforeFit": true,
+  "training": "match date < 2025-01-01",
+  "validation": "2025-01-01 <= match date < 2025-07-01",
+  "test": "match date >= 2025-07-01",
+  "candidate": "Three-parameter symmetric multinomial logit: logits home=(homeIntercept+slope*ratingGap/10)/2, draw=drawIntercept, away=-home. Slope constrained nonnegative. No extra league feature.",
+  "regularization": "Sum negative log likelihood + lambda/2 times squared parameters; lambda selected from [0.1,1,10] on validation log loss only. Refit on train+validation once; test never used for fitting or selection.",
+  "references": ["Training empirical outcome-frequency baseline with add-one smoothing", "Existing European Elo formula and current fixed policy parameters replayed using results strictly before match date; current prior and xGOT not added"],
+  "primaryMetric": "test log loss",
+  "secondaryMetrics": ["multiclass Brier (sum of 3 errors)", "top-outcome accuracy", "confidence calibration bins", "draw mean vs frequency"],
+  "uncertainty": "2000 paired match-date-cluster bootstrap replicates, fixed seed 20261118; descriptive, multiple comparisons not an approval test",
+  "limitations": ["Independent collector timestamp evidence, not provider publication certification", "Cohort selected from 35 current Champions participants, Sabah unresolved", "Existing Elo policy parameters were selected later: replay is a retrospective reference, not proof of original prematch forecast performance", "Calibration is 1X2 only; no full Reading, volume, DUO, EV or ROI claim"],
+  "productionPromotion": false
+}

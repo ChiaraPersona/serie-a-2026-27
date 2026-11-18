@@ -1,0 +1,1248 @@
+{
+  "status": "EXPERIMENTAL_NOT_PROMOTED",
+  "protocol": "98c5940acbfc6b22bde37c514cd42d9c5bfdd0d16fa73d352f44b948db064528",
+  "inputs": {
+    "data\\analysis\\champions\\opta-historical-feasibility-2026-11-18\\historical-match-pairs.jsonl.gz": "00e6a902c6c44cb1891199a3e132601f43e37a8ddba8a3351239eb03217c2f04",
+    "data\\normalized\\uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+    "data\\sources\\champions-european-result-policy.json": "6b7b9146027577ea66eacaf330f8e2d742958dd7550517052ee7d0bb609bdd4e",
+    "data\\analysis\\champions\\opta-calibration-2026-11-18\\protocol.json": "98c5940acbfc6b22bde37c514cd42d9c5bfdd0d16fa73d352f44b948db064528",
+    "scripts\\research\\european-rating-model.cjs": "f9ced2ddfd1b79311f706e414679faa104d5875df9fbbd18df0de27fa7bafbdd"
+  },
+  "split": {
+    "train": 57,
+    "validation": 42,
+    "test": 37,
+    "testFrom": "2025-09-17",
+    "testThrough": "2026-01-21"
+  },
+  "selection": [
+    {
+      "lam": 0.1,
+      "theta": [
+        0.8108503054929032,
+        0.8578312945249753,
+        -0.5153543856023645
+      ],
+      "validation": {
+        "n": 42,
+        "logLoss": 0.9755603483750086,
+        "brier": 0.5830918266471882,
+        "accuracy": 0.5476190476190477,
+        "correct": 23,
+        "drawMean": 0.21201038006045222,
+        "drawFrequency": 0.16666666666666666,
+        "calibrationBins": [
+          {
+            "low": 0,
+            "high": 0.4,
+            "n": 2,
+            "meanConfidence": 0.3916397268891336,
+            "accuracy": 1.0
+          },
+          {
+            "low": 0.4,
+            "high": 0.5,
+            "n": 8,
+            "meanConfidence": 0.4389693552390221,
+            "accuracy": 0.625
+          },
+          {
+            "low": 0.5,
+            "high": 0.6,
+            "n": 24,
+            "meanConfidence": 0.5513476477383209,
+            "accuracy": 0.375
+          },
+          {
+            "low": 0.6,
+            "high": 0.7,
+            "n": 7,
+            "meanConfidence": 0.6585165147472644,
+            "accuracy": 0.8571428571428571
+          },
+          {
+            "low": 0.7,
+            "high": 1,
+            "n": 1,
+            "meanConfidence": 0.7418171245483232,
+            "accuracy": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "lam": 1.0,
+      "theta": [
+        0.7393438957959435,
+        0.6761101551195011,
+        -0.49220839912788633
+      ],
+      "validation": {
+        "n": 42,
+        "logLoss": 0.9795764445700162,
+        "brier": 0.5851552142736656,
+        "accuracy": 0.5238095238095238,
+        "correct": 22,
+        "drawMean": 0.21949435055748648,
+        "drawFrequency": 0.16666666666666666,
+        "calibrationBins": [
+          {
+            "low": 0.4,
+            "high": 0.5,
+            "n": 12,
+            "meanConfidence": 0.44693801919273907,
+            "accuracy": 0.5
+          },
+          {
+            "low": 0.5,
+            "high": 0.6,
+            "n": 23,
+            "meanConfidence": 0.5389398304606516,
+            "accuracy": 0.43478260869565216
+          },
+          {
+            "low": 0.6,
+            "high": 0.7,
+            "n": 7,
+            "meanConfidence": 0.6352760934862,
+            "accuracy": 0.8571428571428571
+          }
+        ]
+      }
+    },
+    {
+      "lam": 10.0,
+      "theta": [
+        0.41711426543373076,
+        0.2302363704266495,
+        -0.30645049068836
+      ],
+      "validation": {
+        "n": 42,
+        "logLoss": 1.0139644357245503,
+        "brier": 0.6080303244352717,
+        "accuracy": 0.5238095238095238,
+        "correct": 22,
+        "drawMean": 0.2643064692170475,
+        "drawFrequency": 0.16666666666666666,
+        "calibrationBins": [
+          {
+            "low": 0.4,
+            "high": 0.5,
+            "n": 41,
+            "meanConfidence": 0.4430452883449725,
+            "accuracy": 0.5121951219512195
+          },
+          {
+            "low": 0.5,
+            "high": 0.6,
+            "n": 1,
+            "meanConfidence": 0.5043944101811273,
+            "accuracy": 1.0
+          }
+        ]
+      }
+    }
+  ],
+  "frozenModel": {
+    "type": "symmetric-multinomial-logit",
+    "homeIntercept": 0.6906894602286507,
+    "slopePerTenRatingPoints": 1.0304200103705112,
+    "drawIntercept": -0.6437721807210015,
+    "regularization": 0.1,
+    "trainingMatches": 99,
+    "trainedThrough": "2025-05-31",
+    "ratingScale": "Opta 0-100",
+    "extraLeagueBonus": false
+  },
+  "test": {
+    "candidate": {
+      "n": 37,
+      "logLoss": 0.9030406885997732,
+      "brier": 0.5323262808809506,
+      "accuracy": 0.5945945945945946,
+      "correct": 22,
+      "drawMean": 0.19271965884516265,
+      "drawFrequency": 0.10810810810810811,
+      "calibrationBins": [
+        {
+          "low": 0.4,
+          "high": 0.5,
+          "n": 11,
+          "meanConfidence": 0.44417609814349324,
+          "accuracy": 0.45454545454545453
+        },
+        {
+          "low": 0.5,
+          "high": 0.6,
+          "n": 17,
+          "meanConfidence": 0.5505670768502373,
+          "accuracy": 0.5882352941176471
+        },
+        {
+          "low": 0.6,
+          "high": 0.7,
+          "n": 7,
+          "meanConfidence": 0.6639835388068779,
+          "accuracy": 0.8571428571428571
+        },
+        {
+          "low": 0.7,
+          "high": 1,
+          "n": 2,
+          "meanConfidence": 0.7037274197404392,
+          "accuracy": 0.5
+        }
+      ]
+    },
+    "eloReplay": {
+      "n": 37,
+      "logLoss": 0.9440716694070407,
+      "brier": 0.5662850012984444,
+      "accuracy": 0.5675675675675675,
+      "correct": 21,
+      "drawMean": 0.1866265673270471,
+      "drawFrequency": 0.10810810810810811,
+      "calibrationBins": [
+        {
+          "low": 0,
+          "high": 0.4,
+          "n": 2,
+          "meanConfidence": 0.3954071308187349,
+          "accuracy": 0.0
+        },
+        {
+          "low": 0.4,
+          "high": 0.5,
+          "n": 16,
+          "meanConfidence": 0.4563036077067139,
+          "accuracy": 0.625
+        },
+        {
+          "low": 0.5,
+          "high": 0.6,
+          "n": 12,
+          "meanConfidence": 0.5446007571340575,
+          "accuracy": 0.5833333333333334
+        },
+        {
+          "low": 0.6,
+          "high": 0.7,
+          "n": 5,
+          "meanConfidence": 0.6372448347048808,
+          "accuracy": 0.6
+        },
+        {
+          "low": 0.7,
+          "high": 1,
+          "n": 2,
+          "meanConfidence": 0.7259247263140751,
+          "accuracy": 0.5
+        }
+      ]
+    },
+    "frequency": {
+      "n": 37,
+      "logLoss": 0.9741277144253763,
+      "brier": 0.586448039735237,
+      "accuracy": 0.5405405405405406,
+      "correct": 20,
+      "drawMean": 0.19607843137254904,
+      "drawFrequency": 0.10810810810810811,
+      "calibrationBins": [
+        {
+          "low": 0.5,
+          "high": 0.6,
+          "n": 37,
+          "meanConfidence": 0.5294117647058826,
+          "accuracy": 0.5405405405405406
+        }
+      ]
+    }
+  },
+  "paired": {
+    "candidateVsElo": {
+      "clusters": 17,
+      "logLossDelta": -0.041030980807267685,
+      "logLoss95": [
+        -0.09364967930473386,
+        0.020177357810616216
+      ],
+      "brierDelta": -0.033958720417493746,
+      "brier95": [
+        -0.07303439628671986,
+        0.012793232008151861
+      ]
+    },
+    "candidateVsFrequency": {
+      "clusters": 17,
+      "logLossDelta": -0.0710870258256035,
+      "logLoss95": [
+        -0.14636529495057293,
+        0.007140760187313446
+      ],
+      "brierDelta": -0.054121758854286287,
+      "brier95": [
+        -0.11110259182976283,
+        0.005495094565102956
+      ]
+    }
+  },
+  "eloEligibleCohort": {
+    "n": 37,
+    "candidate": {
+      "n": 37,
+      "logLoss": 0.9030406885997732,
+      "brier": 0.5323262808809506,
+      "accuracy": 0.5945945945945946,
+      "correct": 22,
+      "drawMean": 0.19271965884516265,
+      "drawFrequency": 0.10810810810810811,
+      "calibrationBins": [
+        {
+          "low": 0.4,
+          "high": 0.5,
+          "n": 11,
+          "meanConfidence": 0.44417609814349324,
+          "accuracy": 0.45454545454545453
+        },
+        {
+          "low": 0.5,
+          "high": 0.6,
+          "n": 17,
+          "meanConfidence": 0.5505670768502373,
+          "accuracy": 0.5882352941176471
+        },
+        {
+          "low": 0.6,
+          "high": 0.7,
+          "n": 7,
+          "meanConfidence": 0.6639835388068779,
+          "accuracy": 0.8571428571428571
+        },
+        {
+          "low": 0.7,
+          "high": 1,
+          "n": 2,
+          "meanConfidence": 0.7037274197404392,
+          "accuracy": 0.5
+        }
+      ]
+    },
+    "elo": {
+      "n": 37,
+      "logLoss": 0.9440716694070407,
+      "brier": 0.5662850012984444,
+      "accuracy": 0.5675675675675675,
+      "correct": 21,
+      "drawMean": 0.1866265673270471,
+      "drawFrequency": 0.10810810810810811,
+      "calibrationBins": [
+        {
+          "low": 0,
+          "high": 0.4,
+          "n": 2,
+          "meanConfidence": 0.3954071308187349,
+          "accuracy": 0.0
+        },
+        {
+          "low": 0.4,
+          "high": 0.5,
+          "n": 16,
+          "meanConfidence": 0.4563036077067139,
+          "accuracy": 0.625
+        },
+        {
+          "low": 0.5,
+          "high": 0.6,
+          "n": 12,
+          "meanConfidence": 0.5446007571340575,
+          "accuracy": 0.5833333333333334
+        },
+        {
+          "low": 0.6,
+          "high": 0.7,
+          "n": 5,
+          "meanConfidence": 0.6372448347048808,
+          "accuracy": 0.6
+        },
+        {
+          "low": 0.7,
+          "high": 1,
+          "n": 2,
+          "meanConfidence": 0.7259247263140751,
+          "accuracy": 0.5
+        }
+      ]
+    }
+  },
+  "predictions": [
+    {
+      "fixtureId": "2045911",
+      "date": "2025-09-17",
+      "home": "Liverpool FC",
+      "away": "Atlético de Madrid",
+      "actual": 0,
+      "candidate": [
+        0.7013841622532484,
+        0.16238103504897364,
+        0.13623480269777802
+      ],
+      "elo": [
+        0.5190564520932848,
+        0.1866662595585017,
+        0.2942772883482136
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045914",
+      "date": "2025-09-17",
+      "home": "SK Slavia Praha",
+      "away": "FK Bodø/Glimt",
+      "actual": 1,
+      "candidate": [
+        0.5538988662612384,
+        0.19565329833411685,
+        0.2504478354046448
+      ],
+      "elo": [
+        0.41453622390842404,
+        0.21324676811224463,
+        0.3722170079793313
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045915",
+      "date": "2025-09-18",
+      "home": "Manchester City",
+      "away": "SSC Napoli",
+      "actual": 0,
+      "candidate": [
+        0.6283561626850126,
+        0.18155113151448501,
+        0.19009270580050242
+      ],
+      "elo": [
+        0.5797170096644337,
+        0.1720888911158451,
+        0.24819409921972116
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045921",
+      "date": "2025-09-30",
+      "home": "FC Internazionale Milano",
+      "away": "SK Slavia Praha",
+      "actual": 0,
+      "candidate": [
+        0.6902349977888651,
+        0.1656681516169759,
+        0.14409685059415897
+      ],
+      "elo": [
+        0.7355517609462614,
+        0.1334845753403884,
+        0.13096366371335022
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045927",
+      "date": "2025-09-30",
+      "home": "Galatasaray A.Ş.",
+      "away": "Liverpool FC",
+      "actual": 0,
+      "candidate": [
+        0.2642135879520611,
+        0.19801177874478493,
+        0.5377746333031539
+      ],
+      "elo": [
+        0.27283424436577963,
+        0.17983906765860036,
+        0.54732668797562
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045933",
+      "date": "2025-10-01",
+      "home": "SSC Napoli",
+      "away": "Sporting Clube de Portugal",
+      "actual": 0,
+      "candidate": [
+        0.5479207947720917,
+        0.1965563444117366,
+        0.25552286081617176
+      ],
+      "elo": [
+        0.44345334162971817,
+        0.20559246470627826,
+        0.3509541936640036
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045938",
+      "date": "2025-10-01",
+      "home": "FC Barcelona",
+      "away": "Paris Saint-Germain",
+      "actual": 2,
+      "candidate": [
+        0.5257706473999342,
+        0.1996082260016619,
+        0.2746211265984039
+      ],
+      "elo": [
+        0.5097231134998313,
+        0.18894160257474057,
+        0.3013352839254281
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046173",
+      "date": "2025-10-02",
+      "home": "AS Roma",
+      "away": "LOSC Lille",
+      "actual": 2,
+      "candidate": [
+        0.581374421590591,
+        0.19106767421717671,
+        0.22755790419223232
+      ],
+      "elo": [
+        0.47393437427725166,
+        0.19780717355045183,
+        0.3282584521722965
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046175",
+      "date": "2025-10-02",
+      "home": "Feyenoord",
+      "away": "Aston Villa",
+      "actual": 2,
+      "candidate": [
+        0.40013720648756773,
+        0.20800811576589104,
+        0.3918546777465413
+      ],
+      "elo": [
+        0.33348592309338915,
+        0.19957096828540216,
+        0.46694310862120875
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045940",
+      "date": "2025-10-21",
+      "home": "Arsenal FC",
+      "away": "Atlético de Madrid",
+      "actual": 0,
+      "candidate": [
+        0.6771306689162838,
+        0.16936152836683438,
+        0.15350780271688186
+      ],
+      "elo": [
+        0.5410690846721556,
+        0.18134338189422575,
+        0.27758753343361864
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045942",
+      "date": "2025-10-21",
+      "home": "Villarreal CF",
+      "away": "Manchester City",
+      "actual": 2,
+      "candidate": [
+        0.36174389436215837,
+        0.20738894277102424,
+        0.43086716286681737
+      ],
+      "elo": [
+        0.44590578045374285,
+        0.20495630681855925,
+        0.3491379127276979
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045943",
+      "date": "2025-10-21",
+      "home": "PSV Eindhoven",
+      "away": "SSC Napoli",
+      "actual": 0,
+      "candidate": [
+        0.4496160057216518,
+        0.20654392241936184,
+        0.3438400718589863
+      ],
+      "elo": [
+        0.5178035482639078,
+        0.18697097959584433,
+        0.29522547214024786
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045953",
+      "date": "2025-10-22",
+      "home": "Galatasaray A.Ş.",
+      "away": "FK Bodø/Glimt",
+      "actual": 0,
+      "candidate": [
+        0.5948195222525002,
+        0.1885618412064294,
+        0.21661863654107022
+      ],
+      "elo": [
+        0.46816401433603094,
+        0.199262085329708,
+        0.33257390033426104
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045956",
+      "date": "2025-10-22",
+      "home": "FC Bayern München",
+      "away": "Club Brugge KV",
+      "actual": 0,
+      "candidate": [
+        0.6754657998435556,
+        0.16981778545567588,
+        0.15471641470076866
+      ],
+      "elo": [
+        0.6012014739277232,
+        0.1669577431096935,
+        0.2318407829625834
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046195",
+      "date": "2025-10-23",
+      "home": "Fenerbahçe SK",
+      "away": "VfB Stuttgart",
+      "actual": 0,
+      "candidate": [
+        0.49510387750691437,
+        0.20306793622288716,
+        0.3018281862701986
+      ],
+      "elo": [
+        0.5672726944282164,
+        0.17506152114722193,
+        0.2576657844245617
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045957",
+      "date": "2025-11-04",
+      "home": "Paris Saint-Germain",
+      "away": "FC Bayern München",
+      "actual": 2,
+      "candidate": [
+        0.551909435409425,
+        0.195957569808723,
+        0.25213299478185197
+      ],
+      "elo": [
+        0.5314637583326631,
+        0.18365943900723072,
+        0.28487680266010623
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045958",
+      "date": "2025-11-04",
+      "home": "Liverpool FC",
+      "away": "Real Madrid C.F.",
+      "actual": 0,
+      "candidate": [
+        0.557867653199411,
+        0.19503511946061652,
+        0.24709722733997241
+      ],
+      "elo": [
+        0.4620722670974865,
+        0.20080705785731154,
+        0.33712067504520193
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045964",
+      "date": "2025-11-04",
+      "home": "SK Slavia Praha",
+      "away": "Arsenal FC",
+      "actual": 2,
+      "candidate": [
+        0.23405861392052305,
+        0.19245802307116938,
+        0.5734833630083076
+      ],
+      "elo": [
+        0.24274068309246527,
+        0.17037854042914632,
+        0.5868807764783883
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045966",
+      "date": "2025-11-05",
+      "home": "Manchester City",
+      "away": "Borussia Dortmund",
+      "actual": 0,
+      "candidate": [
+        0.6427356945216193,
+        0.178207210188228,
+        0.1790570952901528
+      ],
+      "elo": [
+        0.4223695242335382,
+        0.21114353555133186,
+        0.36648694021513
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045969",
+      "date": "2025-11-05",
+      "home": "Club Brugge KV",
+      "away": "FC Barcelona",
+      "actual": 1,
+      "candidate": [
+        0.4103834365060465,
+        0.20790911267775364,
+        0.3817074508161998
+      ],
+      "elo": [
+        0.37493660417693814,
+        0.21425659976519715,
+        0.4108067960578647
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046224",
+      "date": "2025-11-06",
+      "home": "VfB Stuttgart",
+      "away": "Feyenoord",
+      "actual": 0,
+      "candidate": [
+        0.5237409231146113,
+        0.19986471845204706,
+        0.27639435843334154
+      ],
+      "elo": [
+        0.47412943092746157,
+        0.19775813257117508,
+        0.3281124365013634
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045977",
+      "date": "2025-11-25",
+      "home": "Borussia Dortmund",
+      "away": "Villarreal CF",
+      "actual": 0,
+      "candidate": [
+        0.5929117589017298,
+        0.18892793971048244,
+        0.21816030138778786
+      ],
+      "elo": [
+        0.6547522661111691,
+        0.15404427184616548,
+        0.1912034620426655
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045985",
+      "date": "2025-11-26",
+      "home": "Liverpool FC",
+      "away": "PSV Eindhoven",
+      "actual": 2,
+      "candidate": [
+        0.6584956480492526,
+        0.17430426090150344,
+        0.167200091049244
+      ],
+      "elo": [
+        0.6590273442371135,
+        0.1529979924846938,
+        0.18797466327819262
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045986",
+      "date": "2025-11-26",
+      "home": "Arsenal FC",
+      "away": "FC Bayern München",
+      "actual": 0,
+      "candidate": [
+        0.5696892645576205,
+        0.19310543798079113,
+        0.23720529746158836
+      ],
+      "elo": [
+        0.4869772486792001,
+        0.19454681816164138,
+        0.31847593315915845
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045987",
+      "date": "2025-11-26",
+      "home": "Atlético de Madrid",
+      "away": "FC Internazionale Milano",
+      "actual": 0,
+      "candidate": [
+        0.5237409231146113,
+        0.19986471845204706,
+        0.27639435843334154
+      ],
+      "elo": [
+        0.40258106406206423,
+        0.21650430285578254,
+        0.3809146330821533
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045989",
+      "date": "2025-11-26",
+      "home": "Sporting Clube de Portugal",
+      "away": "Club Brugge KV",
+      "actual": 0,
+      "candidate": [
+        0.5499167250116112,
+        0.19625859393259348,
+        0.25382468105579525
+      ],
+      "elo": [
+        0.4431667159594872,
+        0.2056669369671296,
+        0.35116634707338323
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045993",
+      "date": "2025-12-09",
+      "home": "FC Bayern München",
+      "away": "Sporting Clube de Portugal",
+      "actual": 0,
+      "candidate": [
+        0.6754657998435556,
+        0.16981778545567588,
+        0.15471641470076866
+      ],
+      "elo": [
+        0.6609359148070775,
+        0.1525298538392668,
+        0.18653423135365577
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045994",
+      "date": "2025-12-09",
+      "home": "FC Internazionale Milano",
+      "away": "Liverpool FC",
+      "actual": 2,
+      "candidate": [
+        0.5257706473999342,
+        0.1996082260016619,
+        0.2746211265984039
+      ],
+      "elo": [
+        0.5334041291655022,
+        0.18319082200184306,
+        0.2834050488326549
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2045998",
+      "date": "2025-12-09",
+      "home": "PSV Eindhoven",
+      "away": "Atlético de Madrid",
+      "actual": 2,
+      "candidate": [
+        0.48892433155762327,
+        0.20365696342600495,
+        0.30741870501637186
+      ],
+      "elo": [
+        0.3930280354046915,
+        0.21915195252883066,
+        0.3878200120664778
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046002",
+      "date": "2025-12-10",
+      "home": "Borussia Dortmund",
+      "away": "FK Bodø/Glimt",
+      "actual": 1,
+      "candidate": [
+        0.70607067722763,
+        0.16095887959313157,
+        0.13297044317923845
+      ],
+      "elo": [
+        0.7162976916818887,
+        0.13857350658114803,
+        0.14512880173696335
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046007",
+      "date": "2025-12-10",
+      "home": "Club Brugge KV",
+      "away": "Arsenal FC",
+      "actual": 2,
+      "candidate": [
+        0.2927271150991897,
+        0.20202186268245198,
+        0.5052510222183584
+      ],
+      "elo": [
+        0.30892121868195743,
+        0.19140716633044633,
+        0.4996716149875963
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046010",
+      "date": "2025-12-10",
+      "home": "Real Madrid C.F.",
+      "away": "Manchester City",
+      "actual": 2,
+      "candidate": [
+        0.4806682981193111,
+        0.20438697103944614,
+        0.3149447308412428
+      ],
+      "elo": [
+        0.6103071744413204,
+        0.1647791108838085,
+        0.22491371467487112
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046012",
+      "date": "2026-01-20",
+      "home": "FC Internazionale Milano",
+      "away": "Arsenal FC",
+      "actual": 2,
+      "candidate": [
+        0.4042301203129516,
+        0.20798162053079194,
+        0.3877882591562565
+      ],
+      "elo": [
+        0.3977862262327784,
+        0.21782803037537835,
+        0.3843857433918433
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046015",
+      "date": "2026-01-20",
+      "home": "Sporting Clube de Portugal",
+      "away": "Paris Saint-Germain",
+      "actual": 0,
+      "candidate": [
+        0.4206711088028969,
+        0.20770107490534537,
+        0.37162781629175773
+      ],
+      "elo": [
+        0.3158481112385653,
+        0.19367920017561785,
+        0.4904726885858169
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046017",
+      "date": "2026-01-20",
+      "home": "FK Bodø/Glimt",
+      "away": "Manchester City",
+      "actual": 0,
+      "candidate": [
+        0.25904107385030084,
+        0.19715922121079607,
+        0.5437997049389031
+      ],
+      "elo": [
+        0.3119337602907906,
+        0.19239271021867843,
+        0.49567352949053095
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046023",
+      "date": "2026-01-21",
+      "home": "SK Slavia Praha",
+      "away": "FC Barcelona",
+      "actual": 2,
+      "candidate": [
+        0.3188512910290808,
+        0.20473787786851838,
+        0.4764108311024008
+      ],
+      "elo": [
+        0.2477262964406373,
+        0.1719421650956934,
+        0.5803315384636694
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    },
+    {
+      "fixtureId": "2046025",
+      "date": "2026-01-21",
+      "home": "Galatasaray A.Ş.",
+      "away": "Atlético de Madrid",
+      "actual": 1,
+      "candidate": [
+        0.4289247005942439,
+        0.20745647782322232,
+        0.3636188215825336
+      ],
+      "elo": [
+        0.2926846506534632,
+        0.18615505677551986,
+        0.5211602925710168
+      ],
+      "eloEligible": true,
+      "frequencyBaseline": [
+        0.5294117647058824,
+        0.19607843137254902,
+        0.27450980392156865
+      ]
+    }
+  ],
+  "limitations": [
+    "Independent collector timestamp evidence, not provider publication certification",
+    "Cohort selected from 35 current Champions participants, Sabah unresolved",
+    "Existing Elo policy parameters were selected later: replay is a retrospective reference, not proof of original prematch forecast performance",
+    "Calibration is 1X2 only; no full Reading, volume, DUO, EV or ROI claim"
+  ],
+  "checksPassed": [
+    "chronological split",
+    "pre-match rating dates",
+    "unique fixtures",
+    "probability simplex",
+    "nonnegative strength slope",
+    "team-swap symmetry without home advantage",
+    "monotonic home win probability",
+    "input hashes unchanged"
+  ]
+}

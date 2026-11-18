@@ -1,0 +1,2952 @@
+{
+  "protocol": {
+    "design": "retrospective-current-ranking-direction-only",
+    "candidateDate": "2026-11-18",
+    "primary": "MD3 earliest immutable prematch snapshots",
+    "bootstrap": "2000 paired fixture resamples; fixed seed; descriptive only, cannot remove time leakage",
+    "promotion": false
+  },
+  "summary": {
+    "finishedFixtures": 72,
+    "validFrozenFixtures": 18,
+    "invalidChronology": 0,
+    "oldIndexVsOpta": {
+      "n": 68,
+      "excluded": 4,
+      "baselineCorrect": 47,
+      "candidateCorrect": 48,
+      "baselinePct": 69.11764705882354,
+      "candidatePct": 70.58823529411765,
+      "deltaPp": 1.4705882352941178,
+      "changed": 7,
+      "gained": 3,
+      "lost": 2,
+      "drawTargets": 7
+    },
+    "byMatchday": [
+      {
+        "matchday": 1,
+        "n": 17,
+        "excluded": 1,
+        "baselineCorrect": 14,
+        "candidateCorrect": 14,
+        "baselinePct": 82.3529411764706,
+        "candidatePct": 82.3529411764706,
+        "deltaPp": 0,
+        "changed": 0,
+        "gained": 0,
+        "lost": 0,
+        "drawTargets": 2
+      },
+      {
+        "matchday": 2,
+        "n": 17,
+        "excluded": 1,
+        "baselineCorrect": 10,
+        "candidateCorrect": 10,
+        "baselinePct": 58.8235294117647,
+        "candidatePct": 58.8235294117647,
+        "deltaPp": 0,
+        "changed": 2,
+        "gained": 1,
+        "lost": 1,
+        "drawTargets": 1
+      },
+      {
+        "matchday": 3,
+        "n": 17,
+        "excluded": 1,
+        "baselineCorrect": 10,
+        "candidateCorrect": 11,
+        "baselinePct": 58.8235294117647,
+        "candidatePct": 64.70588235294117,
+        "deltaPp": 5.882352941176471,
+        "changed": 3,
+        "gained": 1,
+        "lost": 0,
+        "drawTargets": 3
+      },
+      {
+        "matchday": 4,
+        "n": 17,
+        "excluded": 1,
+        "baselineCorrect": 13,
+        "candidateCorrect": 13,
+        "baselinePct": 76.47058823529412,
+        "candidatePct": 76.47058823529412,
+        "deltaPp": 0,
+        "changed": 2,
+        "gained": 1,
+        "lost": 1,
+        "drawTargets": 1
+      }
+    ],
+    "frozenReadingOutcome": {
+      "n": 18,
+      "excluded": 0,
+      "baselineCorrect": 10,
+      "candidateCorrect": 12,
+      "baselinePct": 55.55555555555556,
+      "candidatePct": 66.66666666666667,
+      "deltaPp": 11.11111111111111,
+      "changed": 4,
+      "gained": 2,
+      "lost": 0,
+      "drawTargets": 3
+    },
+    "metrics": {
+      "goals": {
+        "n": 18,
+        "excluded": 0,
+        "baselineCorrect": 10,
+        "candidateCorrect": 12,
+        "baselinePct": 55.55555555555556,
+        "candidatePct": 66.66666666666667,
+        "deltaPp": 11.11111111111111,
+        "changed": 4,
+        "gained": 2,
+        "lost": 0,
+        "drawTargets": 3,
+        "decisiveTargets": {
+          "n": 15,
+          "excluded": 0,
+          "baselineCorrect": 10,
+          "candidateCorrect": 12,
+          "baselinePct": 66.66666666666667,
+          "candidatePct": 80,
+          "deltaPp": 13.333333333333334,
+          "changed": 2,
+          "gained": 2,
+          "lost": 0,
+          "drawTargets": 0
+        },
+        "pairedFixtureBootstrap95DeltaPp": [
+          0,
+          27.77777777777778
+        ],
+        "baselineMAE": 1.0958333333333334,
+        "candidateMAE": null
+      },
+      "shots": {
+        "n": 17,
+        "excluded": 0,
+        "baselineCorrect": 12,
+        "candidateCorrect": 10,
+        "baselinePct": 70.58823529411765,
+        "candidatePct": 58.8235294117647,
+        "deltaPp": -11.764705882352942,
+        "changed": 5,
+        "gained": 1,
+        "lost": 3,
+        "drawTargets": 1,
+        "decisiveTargets": {
+          "n": 16,
+          "excluded": 0,
+          "baselineCorrect": 12,
+          "candidateCorrect": 10,
+          "baselinePct": 75,
+          "candidatePct": 62.5,
+          "deltaPp": -12.5,
+          "changed": 4,
+          "gained": 1,
+          "lost": 3,
+          "drawTargets": 0
+        },
+        "pairedFixtureBootstrap95DeltaPp": [
+          -35.294117647058826,
+          11.764705882352942
+        ],
+        "baselineMAE": 3.175294117647059,
+        "candidateMAE": null
+      },
+      "sot": {
+        "n": 17,
+        "excluded": 0,
+        "baselineCorrect": 12,
+        "candidateCorrect": 10,
+        "baselinePct": 70.58823529411765,
+        "candidatePct": 58.8235294117647,
+        "deltaPp": -11.764705882352942,
+        "changed": 6,
+        "gained": 1,
+        "lost": 3,
+        "drawTargets": 2,
+        "decisiveTargets": {
+          "n": 15,
+          "excluded": 0,
+          "baselineCorrect": 12,
+          "candidateCorrect": 10,
+          "baselinePct": 80,
+          "candidatePct": 66.66666666666667,
+          "deltaPp": -13.333333333333334,
+          "changed": 4,
+          "gained": 1,
+          "lost": 3,
+          "drawTargets": 0
+        },
+        "pairedFixtureBootstrap95DeltaPp": [
+          -35.294117647058826,
+          11.764705882352942
+        ],
+        "baselineMAE": 1.9835294117647053,
+        "candidateMAE": null
+      },
+      "corners": {
+        "n": 17,
+        "excluded": 0,
+        "baselineCorrect": 7,
+        "candidateCorrect": 10,
+        "baselinePct": 41.1764705882353,
+        "candidatePct": 58.8235294117647,
+        "deltaPp": 17.647058823529413,
+        "changed": 7,
+        "gained": 4,
+        "lost": 1,
+        "drawTargets": 2,
+        "decisiveTargets": {
+          "n": 15,
+          "excluded": 0,
+          "baselineCorrect": 7,
+          "candidateCorrect": 10,
+          "baselinePct": 46.666666666666664,
+          "candidatePct": 66.66666666666667,
+          "deltaPp": 20,
+          "changed": 5,
+          "gained": 4,
+          "lost": 1,
+          "drawTargets": 0
+        },
+        "pairedFixtureBootstrap95DeltaPp": [
+          -5.882352941176471,
+          41.1764705882353
+        ],
+        "baselineMAE": 1.840294117647059,
+        "candidateMAE": null
+      }
+    }
+  },
+  "limitations": [
+    "Opta snapshot is dated 2026-11-18, after all evaluated matches: look-ahead contamination; no predictive validation claim.",
+    "Direction-only sensitivity: stronger club is not an entire reading, and the candidate has no home advantage or draw model.",
+    "Old ESI is a descriptive index, not the actual 1X2 engine: keep index-vs-index separate from frozen reading comparison.",
+    "No arbitrary conversion from 0-100 Opta to Elo, probabilities, goals, volumes, DUO, EV or ROI.",
+    "MAE/Brier/log loss improvement of the candidate is unavailable without a calibrated integration and historical prematch Opta ratings.",
+    "Higher strength does not imply more fouls or cards; no directional proxy evaluated for discipline.",
+    "Snapshot integrity is local pre-kickoff capture, not independent external timestamp certification."
+  ],
+  "inputs": {
+    "data/analysis/champions/opta-ranking-test-2026-11-18/comparison.json": "002fffc1e848fd22ac8a3276c3e47005e57b04990edaf9020455cdb1ace8ee59",
+    "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8",
+    "data/normalized/champions-league-2026-27.json": "bcfc4ff047f4196eecd7d50074590dc0917c98667848faea70f57a3fb1360b09",
+    "data/normalized/champions-md03-preliminary-2026-27.json": "d26b35e51c804872c8beae51a6044d69d46f97190d6ea4536d23fde8a44f7c66",
+    "data/sources/champions-results-md01-2026-27.json": "645cbba24771ed373557cc8aa6103bcefbc7105d4e138a157d6502409e8f91e9",
+    "data/sources/champions-results-md02-2026-27.json": "e82f8929965d50d2b13c857e1d31445895a1c9ba760024daf99505ab0734b7db",
+    "data/sources/champions-results-md03-2026-27.json": "08356b377bca70c69b9509c6c0ddabc5c84c7ee8d5f314076af3cd0727ba91d0",
+    "data/sources/champions-results-md04-2026-27.json": "da4565fa63b7a6c2c41f48c915466f07ee0c9fd42780bbbe3e86f7b1597feff2",
+    "data/raw/champions-results/2026-10-22/401915403.json": "911d2c3c0fecfe4781216011e945c4b53231a568973d5bb0e24d93cce0b08c0f",
+    "data/raw/champions-results/2026-10-22/401915404.json": "23e72e5de666bf666f48266fa64aabb6ba5d1d3f4718133cfff278452e8d7ff4",
+    "data/raw/champions-results/2026-10-22/401915402.json": "1f29dce8ecff15bfbe419f59954669a74ca5bfea16588270ec8e257e3b50964a",
+    "data/raw/champions-results/2026-10-22/401915398.json": "d56d6b7027e501a1363bb5982370846429b740a397315407abe1e71db5decfb0",
+    "data/raw/champions-results/2026-10-22/401915397.json": "3c426f5918d366268faec1add75e97a7baeff6b8ccc8381323bb487e4ae3ef80",
+    "data/raw/champions-results/2026-10-22/401915401.json": "890b5f30c58847231657fce5f1ef0563d9acbc42a6e74a2f81b62c74cc64dd8f",
+    "data/raw/champions-results/2026-10-22/401915399.json": "828684b6e56446da11d274244ad29ab36a8c0777849ed2b67e1906443c00b3b4",
+    "data/raw/champions-results/2026-10-22/401915400.json": "a6bf07a7a8390aba58b99c640a263cf55c232719cf0b65ce4745305fabb0dc49",
+    "data/raw/champions-results/2026-10-22/401915392.json": "fa862fae2b00ab99d48f0d1a8427f0383969c84a748db81f611c2fbd5d49ece1",
+    "data/raw/champions-results/2026-10-22/401915395.json": "6416bfd14902a339c39b08dcdde3d9ceaea1b8ff205296dbd9bee4b596048944",
+    "data/raw/champions-results/2026-10-22/401915396.json": "bd39413b17803d73f5f603558b558fcb813e6b3018e87b6b25b2b5d081fcd0ab",
+    "data/raw/champions-results/2026-10-22/401915394.json": "873dc51f8005d9cbefc632bb1fb1493960b968d1245cdf6ce6a95b8db8b7ae31",
+    "data/raw/champions-results/2026-10-22/401915388.json": "35716411590453e4ea19dcd884a26c4037b2e556373338e47af693ebd0c4d307",
+    "data/raw/champions-results/2026-10-22/401915312.json": "a988daeb25132d1efcb07a3b6269c395c0b6f8093b052b6bfa37c4546d17d287",
+    "data/raw/champions-results/2026-10-22/401915390.json": "77402c1b317543b8f4d31d587616fea54316e2de9e063ec47c3824fef356aca5",
+    "data/raw/champions-results/2026-10-22/401915313.json": "8ecfe1ef9725adc64d55e039b2861bfa35663da5ddd4b10e1ec2b70d2412d6da",
+    "data/raw/champions-results/2026-10-22/401915389.json": "6a81424373e00bf90fc886ac66ef247983f1b2a1bb6851ea72a72d17e809e6fb",
+    "data/raw/champions-results/2026-10-22/401915391.json": "a60961d4fa62b06cc8d52353cb749d0cbe5662abc61559219c45f16aca51d1ae"
+  },
+  "records": [
+    {
+      "fixtureId": "ucl-2026-27-md01-01",
+      "matchday": 1,
+      "date": "2026-09-08",
+      "homeTeam": "AEK Athens",
+      "awayTeam": "LASK",
+      "homeUefaId": "50129",
+      "awayUefaId": "63405",
+      "score": {
+        "home": 1,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 86.8,
+        "away": 84.8
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-02",
+      "matchday": 1,
+      "date": "2026-09-08",
+      "homeTeam": "Club Brugge",
+      "awayTeam": "Aston Villa",
+      "homeUefaId": "50043",
+      "awayUefaId": "52683",
+      "score": {
+        "home": 2,
+        "away": 3
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 92.5,
+        "away": 93.6
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-03",
+      "matchday": 1,
+      "date": "2026-09-08",
+      "homeTeam": "Borussia Dortmund",
+      "awayTeam": "Villarreal",
+      "homeUefaId": "52758",
+      "awayUefaId": "70691",
+      "score": {
+        "home": 3,
+        "away": 2
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 92.9,
+        "away": 88.4
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-04",
+      "matchday": 1,
+      "date": "2026-09-08",
+      "homeTeam": "Porto",
+      "awayTeam": "Manchester City",
+      "homeUefaId": "50064",
+      "awayUefaId": "52919",
+      "score": {
+        "home": 0,
+        "away": 2
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 91.3,
+        "away": 97.1
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-05",
+      "matchday": 1,
+      "date": "2026-09-08",
+      "homeTeam": "Lille",
+      "awayTeam": "Real Betis",
+      "homeUefaId": "75797",
+      "awayUefaId": "52265",
+      "score": {
+        "home": 2,
+        "away": 3
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.2,
+        "away": 89.8
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-06",
+      "matchday": 1,
+      "date": "2026-09-08",
+      "homeTeam": "Real Madrid",
+      "awayTeam": "Inter",
+      "homeUefaId": "50051",
+      "awayUefaId": "50138",
+      "score": {
+        "home": 2,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 96.5,
+        "away": 94.2
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-07",
+      "matchday": 1,
+      "date": "2026-09-09",
+      "homeTeam": "Barcelona",
+      "awayTeam": "Feyenoord",
+      "homeUefaId": "50080",
+      "awayUefaId": "52749",
+      "score": {
+        "home": 5,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 97.6,
+        "away": 86.7
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-08",
+      "matchday": 1,
+      "date": "2026-09-09",
+      "homeTeam": "Stuttgart",
+      "awayTeam": "Viking",
+      "homeUefaId": "50107",
+      "awayUefaId": "52319",
+      "score": {
+        "home": 3,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 89.8,
+        "away": 87.9
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-09",
+      "matchday": 1,
+      "date": "2026-09-09",
+      "homeTeam": "Liverpool",
+      "awayTeam": "Atlético de Madrid",
+      "homeUefaId": "7889",
+      "awayUefaId": "50124",
+      "score": {
+        "home": 2,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 95.3,
+        "away": 92.1
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-10",
+      "matchday": 1,
+      "date": "2026-09-09",
+      "homeTeam": "Paris Saint-Germain",
+      "awayTeam": "Slovan Bratislava",
+      "homeUefaId": "52747",
+      "awayUefaId": "52797",
+      "score": {
+        "home": 6,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 97.7,
+        "away": 80.7
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-11",
+      "matchday": 1,
+      "date": "2026-09-09",
+      "homeTeam": "Sporting CP",
+      "awayTeam": "Galatasaray",
+      "homeUefaId": "50149",
+      "awayUefaId": "50067",
+      "score": {
+        "home": 3,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 91.6,
+        "away": 88.8
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-12",
+      "matchday": 1,
+      "date": "2026-09-09",
+      "homeTeam": "Napoli",
+      "awayTeam": "Arsenal",
+      "homeUefaId": "50136",
+      "awayUefaId": "52280",
+      "score": {
+        "home": 0,
+        "away": 1
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.7,
+        "away": 100
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-13",
+      "matchday": 1,
+      "date": "2026-09-10",
+      "homeTeam": "Fenerbahçe",
+      "awayTeam": "Roma",
+      "homeUefaId": "52692",
+      "awayUefaId": "50137",
+      "score": {
+        "home": 1,
+        "away": 1
+      },
+      "actual": "X",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.2,
+        "away": 91.7
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-14",
+      "matchday": 1,
+      "date": "2026-09-10",
+      "homeTeam": "PSV Eindhoven",
+      "awayTeam": "Shakhtar Donetsk",
+      "homeUefaId": "50062",
+      "awayUefaId": "52707",
+      "score": {
+        "home": 1,
+        "away": 1
+      },
+      "actual": "X",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 89.7,
+        "away": 84.3
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-15",
+      "matchday": 1,
+      "date": "2026-09-10",
+      "homeTeam": "Como",
+      "awayTeam": "Leipzig",
+      "homeUefaId": "79946",
+      "awayUefaId": "2603790",
+      "score": {
+        "home": 4,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 92.4,
+        "away": 90
+      },
+      "previousIndexDirection": null,
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-16",
+      "matchday": 1,
+      "date": "2026-09-10",
+      "homeTeam": "Bayern München",
+      "awayTeam": "Bodø/Glimt",
+      "homeUefaId": "50037",
+      "awayUefaId": "59333",
+      "score": {
+        "home": 5,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 99.8,
+        "away": 90.2
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-17",
+      "matchday": 1,
+      "date": "2026-09-10",
+      "homeTeam": "Manchester United",
+      "awayTeam": "Sabah",
+      "homeUefaId": "52682",
+      "awayUefaId": "2609356",
+      "score": {
+        "home": 4,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 91.5,
+        "away": 83.2
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-18",
+      "matchday": 1,
+      "date": "2026-09-10",
+      "homeTeam": "Slavia Praha",
+      "awayTeam": "Lens",
+      "homeUefaId": "52498",
+      "awayUefaId": "52277",
+      "score": {
+        "home": 2,
+        "away": 3
+      },
+      "actual": "2",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 88.7,
+        "away": 87.5
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md01-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-01",
+      "matchday": 2,
+      "date": "2026-10-13",
+      "homeTeam": "Lens",
+      "awayTeam": "Sporting CP",
+      "homeUefaId": "52277",
+      "awayUefaId": "50149",
+      "score": {
+        "home": 0,
+        "away": 2
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 87.5,
+        "away": 91.6
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-02",
+      "matchday": 2,
+      "date": "2026-10-13",
+      "homeTeam": "Sabah",
+      "awayTeam": "Slavia Praha",
+      "homeUefaId": "2609356",
+      "awayUefaId": "52498",
+      "score": {
+        "home": 2,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 83.2,
+        "away": 88.7
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-03",
+      "matchday": 2,
+      "date": "2026-10-13",
+      "homeTeam": "Arsenal",
+      "awayTeam": "Lille",
+      "homeUefaId": "52280",
+      "awayUefaId": "75797",
+      "score": {
+        "home": 3,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 100,
+        "away": 88.2
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-04",
+      "matchday": 2,
+      "date": "2026-10-13",
+      "homeTeam": "Atlético de Madrid",
+      "awayTeam": "Manchester United",
+      "homeUefaId": "50124",
+      "awayUefaId": "52682",
+      "score": {
+        "home": 2,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 92.1,
+        "away": 91.5
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-05",
+      "matchday": 2,
+      "date": "2026-10-13",
+      "homeTeam": "Inter",
+      "awayTeam": "Club Brugge",
+      "homeUefaId": "50138",
+      "awayUefaId": "50043",
+      "score": {
+        "home": 3,
+        "away": 4
+      },
+      "actual": "2",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 94.2,
+        "away": 92.5
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-06",
+      "matchday": 2,
+      "date": "2026-10-13",
+      "homeTeam": "Galatasaray",
+      "awayTeam": "Barcelona",
+      "homeUefaId": "50067",
+      "awayUefaId": "50080",
+      "score": {
+        "home": 1,
+        "away": 4
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.8,
+        "away": 97.6
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-07",
+      "matchday": 2,
+      "date": "2026-10-13",
+      "homeTeam": "Leipzig",
+      "awayTeam": "PSV Eindhoven",
+      "homeUefaId": "2603790",
+      "awayUefaId": "50062",
+      "score": {
+        "home": 1,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 90,
+        "away": 89.7
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-08",
+      "matchday": 2,
+      "date": "2026-10-13",
+      "homeTeam": "Viking",
+      "awayTeam": "Bayern München",
+      "homeUefaId": "52319",
+      "awayUefaId": "50037",
+      "score": {
+        "home": 3,
+        "away": 3
+      },
+      "actual": "X",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 87.9,
+        "away": 99.8
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-09",
+      "matchday": 2,
+      "date": "2026-10-13",
+      "homeTeam": "Villarreal",
+      "awayTeam": "Napoli",
+      "homeUefaId": "70691",
+      "awayUefaId": "50136",
+      "score": {
+        "home": 3,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.4,
+        "away": 88.7
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-10",
+      "matchday": 2,
+      "date": "2026-10-14",
+      "homeTeam": "Feyenoord",
+      "awayTeam": "Como",
+      "homeUefaId": "52749",
+      "awayUefaId": "79946",
+      "score": {
+        "home": 3,
+        "away": 2
+      },
+      "actual": "1",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 86.7,
+        "away": 92.4
+      },
+      "previousIndexDirection": null,
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-11",
+      "matchday": 2,
+      "date": "2026-10-14",
+      "homeTeam": "LASK",
+      "awayTeam": "Liverpool",
+      "homeUefaId": "63405",
+      "awayUefaId": "7889",
+      "score": {
+        "home": 3,
+        "away": 6
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 84.8,
+        "away": 95.3
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-12",
+      "matchday": 2,
+      "date": "2026-10-14",
+      "homeTeam": "Roma",
+      "awayTeam": "Real Madrid",
+      "homeUefaId": "50137",
+      "awayUefaId": "50051",
+      "score": {
+        "home": 3,
+        "away": 4
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 91.7,
+        "away": 96.5
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-13",
+      "matchday": 2,
+      "date": "2026-10-14",
+      "homeTeam": "Aston Villa",
+      "awayTeam": "Fenerbahçe",
+      "homeUefaId": "52683",
+      "awayUefaId": "52692",
+      "score": {
+        "home": 6,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 93.6,
+        "away": 88.2
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-14",
+      "matchday": 2,
+      "date": "2026-10-14",
+      "homeTeam": "Shakhtar Donetsk",
+      "awayTeam": "AEK Athens",
+      "homeUefaId": "52707",
+      "awayUefaId": "50129",
+      "score": {
+        "home": 3,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 84.3,
+        "away": 86.8
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-15",
+      "matchday": 2,
+      "date": "2026-10-14",
+      "homeTeam": "Bodø/Glimt",
+      "awayTeam": "Borussia Dortmund",
+      "homeUefaId": "59333",
+      "awayUefaId": "52758",
+      "score": {
+        "home": 1,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 90.2,
+        "away": 92.9
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-16",
+      "matchday": 2,
+      "date": "2026-10-14",
+      "homeTeam": "Manchester City",
+      "awayTeam": "Paris Saint-Germain",
+      "homeUefaId": "52919",
+      "awayUefaId": "52747",
+      "score": {
+        "home": 2,
+        "away": 4
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 97.1,
+        "away": 97.7
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-17",
+      "matchday": 2,
+      "date": "2026-10-14",
+      "homeTeam": "Real Betis",
+      "awayTeam": "Porto",
+      "homeUefaId": "52265",
+      "awayUefaId": "50064",
+      "score": {
+        "home": 3,
+        "away": 2
+      },
+      "actual": "1",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 89.8,
+        "away": 91.3
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-18",
+      "matchday": 2,
+      "date": "2026-10-14",
+      "homeTeam": "Slovan Bratislava",
+      "awayTeam": "Stuttgart",
+      "homeUefaId": "52797",
+      "awayUefaId": "50107",
+      "score": {
+        "home": 0,
+        "away": 3
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 80.7,
+        "away": 89.8
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md02-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-01",
+      "matchday": 3,
+      "date": "2026-10-20",
+      "homeTeam": "Fenerbahçe",
+      "awayTeam": "Slavia Praha",
+      "homeUefaId": "52692",
+      "awayUefaId": "52498",
+      "score": {
+        "home": 2,
+        "away": 2
+      },
+      "actual": "X",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.2,
+        "away": 88.7
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-01--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-20T16:45:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "X",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              2.2,
+              0.93
+            ],
+            "actualValues": [
+              2,
+              2
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "X",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              17.57,
+              12
+            ],
+            "actualValues": [
+              15,
+              15
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "X",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              7.14,
+              3.67
+            ],
+            "actualValues": [
+              4,
+              4
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              5.74,
+              3.39
+            ],
+            "actualValues": [
+              3,
+              5
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-02",
+      "matchday": 3,
+      "date": "2026-10-20",
+      "homeTeam": "Sabah",
+      "awayTeam": "Borussia Dortmund",
+      "homeUefaId": "2609356",
+      "awayUefaId": "52758",
+      "score": {
+        "home": 1,
+        "away": 2
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 83.2,
+        "away": 92.9
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-02--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-20T16:45:00.000Z",
+        "baselineOutcome": "2",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "2",
+            "optaDirection": "2",
+            "baselineValues": [
+              1.62,
+              1.7
+            ],
+            "actualValues": [
+              1,
+              2
+            ]
+          },
+          "shots": {
+            "status": "missing"
+          },
+          "sot": {
+            "status": "missing"
+          },
+          "corners": {
+            "status": "missing"
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-03",
+      "matchday": 3,
+      "date": "2026-10-20",
+      "homeTeam": "Roma",
+      "awayTeam": "Slovan Bratislava",
+      "homeUefaId": "50137",
+      "awayUefaId": "52797",
+      "score": {
+        "home": 4,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 91.7,
+        "away": 80.7
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-03--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-20T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              2.4,
+              0.63
+            ],
+            "actualValues": [
+              4,
+              0
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              19.78,
+              7.73
+            ],
+            "actualValues": [
+              26,
+              1
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              7.05,
+              2.42
+            ],
+            "actualValues": [
+              10,
+              0
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              6.35,
+              2.17
+            ],
+            "actualValues": [
+              8,
+              1
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-04",
+      "matchday": 3,
+      "date": "2026-10-20",
+      "homeTeam": "Porto",
+      "awayTeam": "PSV Eindhoven",
+      "homeUefaId": "50064",
+      "awayUefaId": "50062",
+      "score": {
+        "home": 0,
+        "away": 1
+      },
+      "actual": "2",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 91.3,
+        "away": 89.7
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-04--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-20T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              2.17,
+              1.37
+            ],
+            "actualValues": [
+              0,
+              1
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              15.15,
+              12.29
+            ],
+            "actualValues": [
+              14,
+              18
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.48,
+              4.44
+            ],
+            "actualValues": [
+              4,
+              3
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.55,
+              4.86
+            ],
+            "actualValues": [
+              2,
+              3
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-05",
+      "matchday": 3,
+      "date": "2026-10-20",
+      "homeTeam": "Liverpool",
+      "awayTeam": "Villarreal",
+      "homeUefaId": "7889",
+      "awayUefaId": "70691",
+      "score": {
+        "home": 4,
+        "away": 3
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 95.3,
+        "away": 88.4
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-05--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-20T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              2.3,
+              0.73
+            ],
+            "actualValues": [
+              4,
+              3
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              16.57,
+              10.89
+            ],
+            "actualValues": [
+              22,
+              14
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.26,
+              3.83
+            ],
+            "actualValues": [
+              7,
+              5
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.81,
+              4.24
+            ],
+            "actualValues": [
+              8,
+              2
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-06",
+      "matchday": 3,
+      "date": "2026-10-20",
+      "homeTeam": "Manchester City",
+      "awayTeam": "AEK Athens",
+      "homeUefaId": "52919",
+      "awayUefaId": "50129",
+      "score": {
+        "home": 5,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 97.1,
+        "away": 86.8
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-06--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-20T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              1.92,
+              1.17
+            ],
+            "actualValues": [
+              5,
+              1
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              15.25,
+              11.52
+            ],
+            "actualValues": [
+              17,
+              11
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.72,
+              4.01
+            ],
+            "actualValues": [
+              7,
+              3
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              6.36,
+              4.15
+            ],
+            "actualValues": [
+              8,
+              3
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-07",
+      "matchday": 3,
+      "date": "2026-10-20",
+      "homeTeam": "Paris Saint-Germain",
+      "awayTeam": "Barcelona",
+      "homeUefaId": "52747",
+      "awayUefaId": "50080",
+      "score": {
+        "home": 4,
+        "away": 2
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 97.7,
+        "away": 97.6
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-07--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-20T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              2.55,
+              1.6
+            ],
+            "actualValues": [
+              4,
+              2
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              17.11,
+              13.93
+            ],
+            "actualValues": [
+              22,
+              18
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              6.44,
+              5.2
+            ],
+            "actualValues": [
+              14,
+              5
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.89,
+              4.55
+            ],
+            "actualValues": [
+              2,
+              3
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-08",
+      "matchday": 3,
+      "date": "2026-10-20",
+      "homeTeam": "Napoli",
+      "awayTeam": "Bodø/Glimt",
+      "homeUefaId": "50136",
+      "awayUefaId": "59333",
+      "score": {
+        "home": 4,
+        "away": 3
+      },
+      "actual": "1",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.7,
+        "away": 90.2
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-08--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-20T19:00:00.000Z",
+        "baselineOutcome": "2",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "2",
+            "optaDirection": "2",
+            "baselineValues": [
+              1.62,
+              1.72
+            ],
+            "actualValues": [
+              4,
+              3
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              14.25,
+              13.24
+            ],
+            "actualValues": [
+              17,
+              15
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              5.06,
+              4.57
+            ],
+            "actualValues": [
+              8,
+              6
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              5.93,
+              4.64
+            ],
+            "actualValues": [
+              2,
+              5
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-09",
+      "matchday": 3,
+      "date": "2026-10-20",
+      "homeTeam": "Stuttgart",
+      "awayTeam": "Atlético de Madrid",
+      "homeUefaId": "50107",
+      "awayUefaId": "50124",
+      "score": {
+        "home": 1,
+        "away": 1
+      },
+      "actual": "X",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 89.8,
+        "away": 92.1
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-09--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-20T19:00:00.000Z",
+        "baselineOutcome": "2",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "X",
+            "baselineDirection": "2",
+            "optaDirection": "2",
+            "baselineValues": [
+              1.37,
+              1.82
+            ],
+            "actualValues": [
+              1,
+              1
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              15.79,
+              11.69
+            ],
+            "actualValues": [
+              18,
+              10
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              5.79,
+              4.19
+            ],
+            "actualValues": [
+              5,
+              3
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              5.89,
+              4.56
+            ],
+            "actualValues": [
+              9,
+              4
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-10",
+      "matchday": 3,
+      "date": "2026-10-21",
+      "homeTeam": "Como",
+      "awayTeam": "Manchester United",
+      "homeUefaId": "79946",
+      "awayUefaId": "52682",
+      "score": {
+        "home": 4,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 92.4,
+        "away": 91.5
+      },
+      "previousIndexDirection": null,
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-10--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-21T16:45:00.000Z",
+        "baselineOutcome": "2",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "2",
+            "optaDirection": "1",
+            "baselineValues": [
+              1.45,
+              1.6
+            ],
+            "actualValues": [
+              4,
+              1
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              16.24,
+              12.28
+            ],
+            "actualValues": [
+              11,
+              13
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.59,
+              3.93
+            ],
+            "actualValues": [
+              8,
+              4
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.62,
+              3.77
+            ],
+            "actualValues": [
+              1,
+              4
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-11",
+      "matchday": 3,
+      "date": "2026-10-21",
+      "homeTeam": "Lille",
+      "awayTeam": "Galatasaray",
+      "homeUefaId": "75797",
+      "awayUefaId": "50067",
+      "score": {
+        "home": 2,
+        "away": 4
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.2,
+        "away": 88.8
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-11--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-21T16:45:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              1.9,
+              1.3
+            ],
+            "actualValues": [
+              2,
+              4
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              15.43,
+              10.3
+            ],
+            "actualValues": [
+              15,
+              10
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              5.88,
+              3.72
+            ],
+            "actualValues": [
+              5,
+              4
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "X",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              5.35,
+              3.66
+            ],
+            "actualValues": [
+              3,
+              3
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-12",
+      "matchday": 3,
+      "date": "2026-10-21",
+      "homeTeam": "Aston Villa",
+      "awayTeam": "Viking",
+      "homeUefaId": "52683",
+      "awayUefaId": "52319",
+      "score": {
+        "home": 3,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 93.6,
+        "away": 87.9
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-12--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-21T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              2.45,
+              0.78
+            ],
+            "actualValues": [
+              3,
+              1
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              13.09,
+              12.94
+            ],
+            "actualValues": [
+              21,
+              10
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "2",
+            "optaDirection": "1",
+            "baselineValues": [
+              4.53,
+              4.8
+            ],
+            "actualValues": [
+              10,
+              3
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "2",
+            "optaDirection": "1",
+            "baselineValues": [
+              4.94,
+              5.75
+            ],
+            "actualValues": [
+              8,
+              6
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-13",
+      "matchday": 3,
+      "date": "2026-10-21",
+      "homeTeam": "Club Brugge",
+      "awayTeam": "Lens",
+      "homeUefaId": "50043",
+      "awayUefaId": "52277",
+      "score": {
+        "home": 3,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 92.5,
+        "away": 87.5
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-13--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-21T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              2.3,
+              1.52
+            ],
+            "actualValues": [
+              3,
+              0
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              16.74,
+              14.32
+            ],
+            "actualValues": [
+              11,
+              19
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              6.24,
+              4.74
+            ],
+            "actualValues": [
+              5,
+              7
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.86,
+              5.49
+            ],
+            "actualValues": [
+              1,
+              5
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-14",
+      "matchday": 3,
+      "date": "2026-10-21",
+      "homeTeam": "Bayern München",
+      "awayTeam": "Arsenal",
+      "homeUefaId": "50037",
+      "awayUefaId": "52280",
+      "score": {
+        "home": 2,
+        "away": 2
+      },
+      "actual": "X",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 99.8,
+        "away": 100
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-14--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-21T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "X",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              2.12,
+              1.75
+            ],
+            "actualValues": [
+              2,
+              2
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              17.05,
+              11.04
+            ],
+            "actualValues": [
+              13,
+              14
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "X",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              6.24,
+              4.06
+            ],
+            "actualValues": [
+              5,
+              5
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "2",
+            "baselineValues": [
+              5.96,
+              4.1
+            ],
+            "actualValues": [
+              3,
+              5
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-15",
+      "matchday": 3,
+      "date": "2026-10-21",
+      "homeTeam": "Inter",
+      "awayTeam": "Shakhtar Donetsk",
+      "homeUefaId": "50138",
+      "awayUefaId": "52707",
+      "score": {
+        "home": 1,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 94.2,
+        "away": 84.3
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-15--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-21T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              2.5,
+              1.37
+            ],
+            "actualValues": [
+              1,
+              0
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              15.65,
+              12.84
+            ],
+            "actualValues": [
+              13,
+              12
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.58,
+              4.92
+            ],
+            "actualValues": [
+              5,
+              4
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.54,
+              3.84
+            ],
+            "actualValues": [
+              5,
+              4
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-16",
+      "matchday": 3,
+      "date": "2026-10-21",
+      "homeTeam": "Real Madrid",
+      "awayTeam": "Leipzig",
+      "homeUefaId": "50051",
+      "awayUefaId": "2603790",
+      "score": {
+        "home": 4,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 96.5,
+        "away": 90
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-16--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-21T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              2.65,
+              0.88
+            ],
+            "actualValues": [
+              4,
+              1
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              17.3,
+              13.21
+            ],
+            "actualValues": [
+              18,
+              11
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              6.58,
+              4.23
+            ],
+            "actualValues": [
+              11,
+              6
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.84,
+              4.65
+            ],
+            "actualValues": [
+              7,
+              1
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-17",
+      "matchday": 3,
+      "date": "2026-10-21",
+      "homeTeam": "Real Betis",
+      "awayTeam": "Feyenoord",
+      "homeUefaId": "52265",
+      "awayUefaId": "52749",
+      "score": {
+        "home": 1,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 89.8,
+        "away": 86.7
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-17--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-21T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              2.3,
+              1.1
+            ],
+            "actualValues": [
+              1,
+              0
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              14.42,
+              13.93
+            ],
+            "actualValues": [
+              23,
+              12
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.32,
+              5.15
+            ],
+            "actualValues": [
+              10,
+              2
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "X",
+            "baselineDirection": "2",
+            "optaDirection": "1",
+            "baselineValues": [
+              4.19,
+              5.24
+            ],
+            "actualValues": [
+              4,
+              4
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-18",
+      "matchday": 3,
+      "date": "2026-10-21",
+      "homeTeam": "Sporting CP",
+      "awayTeam": "LASK",
+      "homeUefaId": "50149",
+      "awayUefaId": "63405",
+      "score": {
+        "home": 2,
+        "away": 3
+      },
+      "actual": "2",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 91.6,
+        "away": 84.8
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md03-2026-27.json",
+      "reading": {
+        "snapshot": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-18--2026-10-20T14-33-07-250Z.json",
+        "createdAt": "2026-10-20T14:33:07.250Z",
+        "kickoffAt": "2026-10-21T19:00:00.000Z",
+        "baselineOutcome": "1",
+        "metrics": {
+          "goals": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              2.62,
+              1.1
+            ],
+            "actualValues": [
+              2,
+              3
+            ]
+          },
+          "shots": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              15.35,
+              12.87
+            ],
+            "actualValues": [
+              16,
+              11
+            ]
+          },
+          "sot": {
+            "status": "available",
+            "actualDirection": "2",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.63,
+              4.37
+            ],
+            "actualValues": [
+              4,
+              7
+            ]
+          },
+          "corners": {
+            "status": "available",
+            "actualDirection": "1",
+            "baselineDirection": "1",
+            "optaDirection": "1",
+            "baselineValues": [
+              5.6,
+              4.65
+            ],
+            "actualValues": [
+              7,
+              4
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-01",
+      "matchday": 4,
+      "date": "2026-11-03",
+      "homeTeam": "Shakhtar Donetsk",
+      "awayTeam": "Sporting CP",
+      "homeUefaId": "52707",
+      "awayUefaId": "50149",
+      "score": {
+        "home": 0,
+        "away": 1
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 84.3,
+        "away": 91.6
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-02",
+      "matchday": 4,
+      "date": "2026-11-03",
+      "homeTeam": "Galatasaray",
+      "awayTeam": "Stuttgart",
+      "homeUefaId": "50067",
+      "awayUefaId": "50107",
+      "score": {
+        "home": 2,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.8,
+        "away": 89.8
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-03",
+      "matchday": 4,
+      "date": "2026-11-03",
+      "homeTeam": "Atlético de Madrid",
+      "awayTeam": "Bayern München",
+      "homeUefaId": "50124",
+      "awayUefaId": "50037",
+      "score": {
+        "home": 0,
+        "away": 2
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 92.1,
+        "away": 99.8
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-04",
+      "matchday": 4,
+      "date": "2026-11-03",
+      "homeTeam": "Barcelona",
+      "awayTeam": "Aston Villa",
+      "homeUefaId": "50080",
+      "awayUefaId": "52683",
+      "score": {
+        "home": 3,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 97.6,
+        "away": 93.6
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-05",
+      "matchday": 4,
+      "date": "2026-11-03",
+      "homeTeam": "Feyenoord",
+      "awayTeam": "Inter",
+      "homeUefaId": "52749",
+      "awayUefaId": "50138",
+      "score": {
+        "home": 0,
+        "away": 3
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 86.7,
+        "away": 94.2
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-06",
+      "matchday": 4,
+      "date": "2026-11-03",
+      "homeTeam": "Bodø/Glimt",
+      "awayTeam": "Lille",
+      "homeUefaId": "59333",
+      "awayUefaId": "75797",
+      "score": {
+        "home": 0,
+        "away": 0
+      },
+      "actual": "X",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 90.2,
+        "away": 88.2
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-07",
+      "matchday": 4,
+      "date": "2026-11-03",
+      "homeTeam": "LASK",
+      "awayTeam": "Slovan Bratislava",
+      "homeUefaId": "63405",
+      "awayUefaId": "52797",
+      "score": {
+        "home": 4,
+        "away": 0
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 84.8,
+        "away": 80.7
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-08",
+      "matchday": 4,
+      "date": "2026-11-03",
+      "homeTeam": "Manchester United",
+      "awayTeam": "Roma",
+      "homeUefaId": "52682",
+      "awayUefaId": "50137",
+      "score": {
+        "home": 3,
+        "away": 2
+      },
+      "actual": "1",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 91.5,
+        "away": 91.7
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-09",
+      "matchday": 4,
+      "date": "2026-11-03",
+      "homeTeam": "Villarreal",
+      "awayTeam": "Paris Saint-Germain",
+      "homeUefaId": "70691",
+      "awayUefaId": "52747",
+      "score": {
+        "home": 0,
+        "away": 6
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.4,
+        "away": 97.7
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-10",
+      "matchday": 4,
+      "date": "2026-11-04",
+      "homeTeam": "AEK Athens",
+      "awayTeam": "Real Madrid",
+      "homeUefaId": "50129",
+      "awayUefaId": "50051",
+      "score": {
+        "home": 2,
+        "away": 3
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 86.8,
+        "away": 96.5
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-11",
+      "matchday": 4,
+      "date": "2026-11-04",
+      "homeTeam": "Fenerbahçe",
+      "awayTeam": "Liverpool",
+      "homeUefaId": "52692",
+      "awayUefaId": "7889",
+      "score": {
+        "home": 3,
+        "away": 2
+      },
+      "actual": "1",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.2,
+        "away": 95.3
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-12",
+      "matchday": 4,
+      "date": "2026-11-04",
+      "homeTeam": "Borussia Dortmund",
+      "awayTeam": "Real Betis",
+      "homeUefaId": "52758",
+      "awayUefaId": "52265",
+      "score": {
+        "home": 2,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 92.9,
+        "away": 89.8
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-13",
+      "matchday": 4,
+      "date": "2026-11-04",
+      "homeTeam": "Porto",
+      "awayTeam": "Napoli",
+      "homeUefaId": "50064",
+      "awayUefaId": "50136",
+      "score": {
+        "home": 4,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 91.3,
+        "away": 88.7
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-14",
+      "matchday": 4,
+      "date": "2026-11-04",
+      "homeTeam": "PSV Eindhoven",
+      "awayTeam": "Club Brugge",
+      "homeUefaId": "50062",
+      "awayUefaId": "50043",
+      "score": {
+        "home": 1,
+        "away": 2
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 89.7,
+        "away": 92.5
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-15",
+      "matchday": 4,
+      "date": "2026-11-04",
+      "homeTeam": "Leipzig",
+      "awayTeam": "Manchester City",
+      "homeUefaId": "2603790",
+      "awayUefaId": "52919",
+      "score": {
+        "home": 2,
+        "away": 3
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 90,
+        "away": 97.1
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-16",
+      "matchday": 4,
+      "date": "2026-11-04",
+      "homeTeam": "Lens",
+      "awayTeam": "Como",
+      "homeUefaId": "52277",
+      "awayUefaId": "79946",
+      "score": {
+        "home": 1,
+        "away": 9
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 87.5,
+        "away": 92.4
+      },
+      "previousIndexDirection": null,
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-17",
+      "matchday": 4,
+      "date": "2026-11-04",
+      "homeTeam": "Slavia Praha",
+      "awayTeam": "Arsenal",
+      "homeUefaId": "52498",
+      "awayUefaId": "52280",
+      "score": {
+        "home": 1,
+        "away": 2
+      },
+      "actual": "2",
+      "optaDirection": "2",
+      "optaRatings": {
+        "home": 88.7,
+        "away": 100
+      },
+      "previousIndexDirection": "2",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-18",
+      "matchday": 4,
+      "date": "2026-11-04",
+      "homeTeam": "Viking",
+      "awayTeam": "Sabah",
+      "homeUefaId": "52319",
+      "awayUefaId": "2609356",
+      "score": {
+        "home": 4,
+        "away": 1
+      },
+      "actual": "1",
+      "optaDirection": "1",
+      "optaRatings": {
+        "home": 87.9,
+        "away": 83.2
+      },
+      "previousIndexDirection": "1",
+      "sourceFile": "data/sources/champions-results-md04-2026-27.json",
+      "reading": null
+    }
+  ]
+}

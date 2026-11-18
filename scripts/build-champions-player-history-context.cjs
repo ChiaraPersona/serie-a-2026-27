@@ -67,6 +67,13 @@ function compactClub(history,sourcePath){
   competitions:[...new Set((history.entries||[]).map(e=>e.competition).filter(Boolean))],sourcePath};
 }
 function main(){
+ const verifiedByPlayer=new Map();
+ const verified=read('data/sources/champions-verified-player-statistics-2026-27.json');
+ for(const {teamId,playerId,uefaPlayerId,...entry} of verified.entries){
+  const key=JSON.stringify([teamId,playerId,uefaPlayerId]);
+  if(!verifiedByPlayer.has(key))verifiedByPlayer.set(key,[]);
+  verifiedByPlayer.get(key).push(entry);
+ }
  const squads=read('data/normalized/champions-registered-squads-2026-27.json');
  const historical=read('data/normalized/champions-player-stats-2025-26.json');
  const current=read('data/normalized/champions-player-stats-2026-27.json');
@@ -146,7 +153,9 @@ function main(){
    const candidates=(currentTeam?.players||[]).filter(p=>espn?String(p.providerPlayerId)===espn:p.id===player.id);
    const currentSeason=candidates.length===1?candidates[0].currentSeason:null;
    const currentProjection=currentSeason?{totals:compactClub(currentSeason,'data/normalized/champions-player-stats-2026-27.json').totals,totalsScope:currentSeason.totalsScope}:null;
-   return {playerId:player.id,uefaPlayerId:player.uefaPlayerId||null,providerPlayerId:espn,name:player.name,currentSeason:currentProjection,club:compactClub(history,historySource),
+   const verifiedCurrentStats=verifiedByPlayer.get(JSON.stringify([team.id,player.id,String(player.uefaPlayerId)]));
+   return {playerId:player.id,uefaPlayerId:player.uefaPlayerId||null,providerPlayerId:espn,name:player.name,currentSeason:currentProjection,
+    ...(verifiedCurrentStats?{verifiedCurrentStats}:{}),club:compactClub(history,historySource),
     nationalOfficial:nationalGroup(national.filter(o=>o.scope==='official'),'senior-national-official'),
     nationalFriendly:nationalGroup(national.filter(o=>o.scope==='friendly'),'senior-national-friendly')};
   });
@@ -160,7 +169,11 @@ function main(){
    withAnyNationalHistory:players.filter(p=>p.nationalOfficial.appearancesObserved+p.nationalFriendly.appearancesObserved>0).length,
    nationalAppearances:observations.filter(o=>targets.has(o.providerPlayerId)).length,unresolvedProviderIdentities:players.filter(p=>!p.providerPlayerId).length},teams};
  const source={schemaVersion:2,observationParserVersion:3,season:'2025/26',scope,allSeniorAppearances:true,acquisitionDigest,acquisitionPath:'data/sources/champions-senior-national-history-acquisition-2025-26.json',observations,excluded};
- fs.writeFileSync(path.join(root,observationPath),JSON.stringify(source,null,2)+'\n');
+ const observationFile=path.join(root,observationPath);
+ const observationJson=JSON.stringify(source,null,2)+'\n';
+ if(!cached||fs.readFileSync(observationFile,'utf8').replace(/\r\n/g,'\n')!==observationJson){
+  fs.writeFileSync(observationFile,observationJson);
+ }
  fs.writeFileSync(path.join(root,'data/normalized/champions-player-history-context-2025-26.json'),JSON.stringify(output)+'\n');
  console.log(JSON.stringify(output.summary));
 }

@@ -12,7 +12,7 @@ for(const m of round){
  assert.equal(d.readings.length,1,'Lettura mancante '+m.id);
  assert(Object.values(d.readings[0].sections).every(s=>s.content),'Sezioni incomplete '+m.id);
  assert.equal(d.predictionDataset.predictions.length,1,'Pronostico non integrato '+m.id);
- const p=d.predictionDataset.predictions[0];assert.equal(p.futureDataDiagnostics.dataCutoff.matchdayExclusive,12);assert(p.dataQuality.lineupResolved.complete);assert(p.dataQuality.outfieldPlayersModeled.complete);assert.equal(p.market.status,'unavailable');
+ const p=d.predictionDataset.predictions[0];assert.equal(p.futureDataDiagnostics.dataCutoff.matchdayExclusive,12);assert(p.dataQuality.lineupResolved.complete);assert(p.dataQuality.outfieldPlayersModeled.complete);assert.deepEqual(p.market,read('data/normalized/predictions.json').predictions.find(q=>q.matchId===m.id).market);
  assert(!(d.forecastDataset?.marketCatalog?.matches||[]).some(m=>m.selections.length),'Selezioni senza quote');
 }
 if(process.argv.includes('--data-only')){console.log('OK MD12: 10 Letture complete, previsioni integrate, altre giornate preservate.');process.exit(0)}

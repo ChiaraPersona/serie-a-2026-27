@@ -1,0 +1,2787 @@
+{
+  "schemaVersion": 1,
+  "stage": 1,
+  "status": "HISTORICAL_DATA_NOT_ACQUIRED",
+  "asOf": "2026-11-18",
+  "productionPromotion": false,
+  "gates": {
+    "historicalBacktest": "NOT_READY",
+    "probabilityCalibration": "NOT_READY",
+    "parallelFullReading": "NOT_READY"
+  },
+  "summary": {
+    "finishedFixtures": 72,
+    "frozenReadingFixtures": 18,
+    "teamFixtureSlots": 144,
+    "uniqueTeamDateRequests": 144,
+    "uniqueRankDates": [
+      "2026-09-07",
+      "2026-09-08",
+      "2026-09-09",
+      "2026-10-12",
+      "2026-10-13",
+      "2026-10-19",
+      "2026-11-02",
+      "2026-11-03"
+    ],
+    "historicalRatingsAcquired": 0,
+    "completeHistoricalFixtures": 0,
+    "optaIdentityMappingsVerified": 0,
+    "currentSnapshotExcludedFixtures": 72
+  },
+  "candidate": "Direct individual Opta club rating; no extra league strength bonus",
+  "requiredRecord": [
+    "uefaTeamId",
+    "optaContestantId",
+    "rankDt",
+    "rating",
+    "sourceUrl",
+    "rawPath",
+    "rawSha256",
+    "acquiredAt",
+    "historicalAvailabilityEvidence"
+  ],
+  "rules": [
+    "Exact verified provider ID crosswalk; no fuzzy name matching.",
+    "Use latest demonstrably available rating BEFORE forecast cutoff. rankDt alone does not prove publication time.",
+    "Same-day date-only ratings are ineligible without a pre-cutoff publication timestamp.",
+    "Do not substitute retrievedAt for rankDt or historical availability. Revisions/lastUpdated require an explicit audit.",
+    "Current 2026-11-18 snapshot is ineligible for all 72 past matches.",
+    "Missing IDs, ratings or baseline snapshots remain N/D; report coverage and exclusions.",
+    "Source season averages/minima/maxima calculated later are not prematch features."
+  ],
+  "nextStages": {
+    "calibration": "Fit an isolated mapping to 1X2 on dated earlier matches only; chronological train/validation/test; freeze parameters before test outcomes; no production weight changes.",
+    "reading": "Only after calibration, use existing outcome-conditioning seam and retain technical score shape, volume formulas and discipline gates.",
+    "evaluation": "Paired common fixtures; 1X2 log loss/Brier/calibration, goals/count MAE by metric, fixture-cluster intervals; no retrospective market substitutions or DUO probabilities."
+  },
+  "inputs": {
+    "data/normalized/champions-league-2026-27.json": "bcfc4ff047f4196eecd7d50074590dc0917c98667848faea70f57a3fb1360b09",
+    "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+    "data/analysis/champions/opta-ranking-test-2026-11-18/comparison.json": "002fffc1e848fd22ac8a3276c3e47005e57b04990edaf9020455cdb1ace8ee59"
+  },
+  "snapshotHashes": {
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-01--2026-10-20T14-33-07-250Z.json": "9f011f73cfcd25c821e5b29d897de08e86aeab90b55b6cf7a1c1e23c45da3cf7",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-01--2026-10-20T14-34-48-393Z.json": "f550ccb9b9302fb777c8979fc119f1d00d672af4dd75d302c7323b83916277d9",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-01--2026-10-20T14-36-53-313Z.json": "a1c7b65fba44c10db07f3fbf2f471000edbefd1d3f4322f6902a620c9f988772",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-01--2026-10-20T14-44-39-690Z.json": "4c8efb6ac226eaa2fff9fcee3c4390d06e3c819995852fbdc6e516cc5709a34e",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-01--2026-10-20T14-46-47-929Z.json": "3df8bd02bf39d79b29b5460160ee11ad04ceafe92a4f8c83f5977584939c3cb5",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-01--2026-10-20T14-48-25-429Z.json": "17524a5dc58f6d39075b91bf7f004045458822c6a4852253051d05724bc4d6ee",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-01--2026-10-20T14-49-50-524Z.json": "59cfb603ac93ab86d1675da0ae8367e5fad44c653f9961b5496ce24e82d8a58f",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-02--2026-10-20T14-33-07-250Z.json": "a9c5a8b1a3bd05423e9028d2aac2cde370c6837aa9dc2c35d5359b3f6009d5b0",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-02--2026-10-20T14-34-48-393Z.json": "25bfb673ec5b84c89f9391d516f3d00ba2665214b5ff2c339159042212b4bede",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-02--2026-10-20T14-36-53-313Z.json": "99520dacfb949aba1226bde5832c91713035d2c45506d91df59cf049c24f14dd",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-02--2026-10-20T14-44-39-690Z.json": "0e51357067b7b603502916ae8bad9d57846e18d722cb904d72b1ebf2f6e6d94a",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-02--2026-10-20T14-46-47-929Z.json": "8d7a07cbc02bdd651666ea292060b0ec64928c08db811c5d084823c56b00140a",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-02--2026-10-20T14-48-25-429Z.json": "19d3517bf2bb60bb077cb7e21691afbea140cdad1fcfcaeee2ccb41da0546529",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-02--2026-10-20T14-49-50-524Z.json": "9b53a352be8df2314997db94067fdb6c640db6f3d5fca128773a1a7900017fee",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-03--2026-10-20T14-33-07-250Z.json": "d04b053dab242b785470ed9a22e162bd740c944f32b45527892d95fff426e31e",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-03--2026-10-20T14-34-48-393Z.json": "17f73e247876d6659a2816f6d67643abae2142a5e9ccd23741c02a56e71e6baa",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-03--2026-10-20T14-36-53-313Z.json": "cf4a121e6796330c9729071240568c1fcde133b800e5aece74ff71ac42ca6058",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-03--2026-10-20T14-44-39-690Z.json": "30261be110ac370a170cab983bb9d2b2899d557afae7deed9fec118315c77211",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-03--2026-10-20T14-46-47-929Z.json": "8df6f5d8a4bb9bedfc5ed1a2f07fc268ea4d992231686515294bc665ec9d3d54",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-03--2026-10-20T14-48-25-429Z.json": "d46821713822623079186238b8a176752ae8956f7594cb52d152100d6bf1cfe1",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-03--2026-10-20T14-49-50-524Z.json": "a2b058f2a6becff459ec42a3141e78875c9273bf300600dae407eb59a9f6091a",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-04--2026-10-20T14-33-07-250Z.json": "8f0ab1f0354bb1131e78d3021790830e582991747485e8d7cd702c24c3c80c16",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-04--2026-10-20T14-34-48-393Z.json": "c92339a91ed6eca34ce2b702906539b145efc0128f12b9d208a9e299e0e1f8ed",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-04--2026-10-20T14-36-53-313Z.json": "39938b158dde568fc6e9028a0c56469ab94df76d8f6a2aa024f7b1e6122f4d49",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-04--2026-10-20T14-44-39-690Z.json": "488c0139075a3fd02fd667641fde5a2192cedba564531c700c1f0eb2048c7d0c",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-04--2026-10-20T14-46-47-929Z.json": "241f29e06cf23ae73fc0e5c68d4399b2194779ce611dca45c1fa2663f3cad255",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-04--2026-10-20T14-48-25-429Z.json": "fbf08971804e1039ef78eaf0dcab066a803c2e070ad808bdddbbc85fd186efe9",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-04--2026-10-20T14-49-50-524Z.json": "cce520d401509be61eff8b05dd5c6897d676d95d8a98601398f57345088897bc",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-05--2026-10-20T14-33-07-250Z.json": "1876a0590f09448041d987c35c8c551c395ac265797e483660e0c989435b7fd2",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-05--2026-10-20T14-34-48-393Z.json": "efd4bd04db15916c912fb00b748204f03ea6bdc1268e291555e511b1300f7f79",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-05--2026-10-20T14-36-53-313Z.json": "76cc389984b0a49c7d4db239aedab8ea1e77fd01632fa4aa275f9a1b8c2d4e97",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-05--2026-10-20T14-44-39-690Z.json": "2bfcf64753846c73d33efddcd589085c4072a31bedbe2fede46d935edba69174",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-05--2026-10-20T14-46-47-929Z.json": "2a37027d8320955f37f2d999c60f09b124ac4eb885407104e1fcf8977be1f2e6",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-05--2026-10-20T14-48-25-429Z.json": "6b52b8f9e936c86104992228f6ee12f071683b69534dc3f6cdea49664f096f52",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-05--2026-10-20T14-49-50-524Z.json": "de8115034e271c84f82dadb259bf5cd91941d71782e841d74b74ee203abc31a6",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-06--2026-10-20T14-33-07-250Z.json": "5037c263a36389eb190307a6fb37819b5b89fadc3d7d3766fe5535562868dc83",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-06--2026-10-20T14-34-48-393Z.json": "f92487a5e140e0e91e6ef06d8535f014a647fb55e4b24f9605b8721c63969578",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-06--2026-10-20T14-36-53-313Z.json": "25c4c6e7e4980d730425d4e4a6abb2825f06af3d3a9e32b1132e17f94a545c9a",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-06--2026-10-20T14-44-39-690Z.json": "4db94025cf96bfe9a1a1abd14d240641447123ef64a4eb498fe1ba63c13c8f20",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-06--2026-10-20T14-46-47-929Z.json": "de009b2a91aa6d99f088d22b189425b7b7d6eefa36c9b1c724a32c1fd662b43d",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-06--2026-10-20T14-48-25-429Z.json": "25f0d1586df4e1c7df515dbabab64eaffbd0987f60ac8bac341f2ed0f406c303",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-06--2026-10-20T14-49-50-524Z.json": "2417dba3e868d1e3ae882b66c678c34ac1099d8c1d04c3cdc6e56900d86df5d5",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-07--2026-10-20T14-33-07-250Z.json": "132522535df6364b051fa27572e36936ee6a4836b6351747c5e53647eb62a2eb",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-07--2026-10-20T14-34-48-393Z.json": "b8bd67aea03cae821fa254b9e9be68aa4f39febc40af6a1db500a10c983f9e4f",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-07--2026-10-20T14-36-53-313Z.json": "e36bd3029e9efd3a48dfb06875dc02d6910d85658fc4ccbc8027a786e89aa012",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-07--2026-10-20T14-44-39-690Z.json": "0bfa6c1ba9a7098aba41a8ff5b1180e7b10ec19a27756379d32a4bacc33482f5",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-07--2026-10-20T14-46-47-929Z.json": "734db4942ecfca0b3447585fdd24816d22a8aa8bb80b27aa25c13528f17aab0f",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-07--2026-10-20T14-48-25-429Z.json": "eaebf42e6a1fd510f780c5670bfb9a5c69fdc6703820c6af27eff8ca2518734f",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-07--2026-10-20T14-49-50-524Z.json": "b75a00427533983b8339976782872ff25a8eb47800d21795c95cf7e09002849c",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-08--2026-10-20T14-33-07-250Z.json": "ec3720022e2d1ee390e31d1f4e4a7eff27384a37d98c083432f2ec1d9e180138",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-08--2026-10-20T14-34-48-393Z.json": "a473f37aa988f247b64b9e92271fcfa9de03f488bbabc664cdf599e70a3ccd89",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-08--2026-10-20T14-36-53-313Z.json": "4feee58ac78b406e059620d1c17d4be3e166033a92d19fe5a924ef9476be0643",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-08--2026-10-20T14-44-39-690Z.json": "aaf516f9d60d880820d0cf73c58a901f623c9c7fad64a18c5ed2dc390ad1fa5a",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-08--2026-10-20T14-46-47-929Z.json": "6c10719134b1fc092b6f96113a6f512622510c106bc6588d8e3e45be3481311f",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-08--2026-10-20T14-48-25-429Z.json": "74b5d64fd9e2363a624ac58685e2a85d73b9b1abdb28dddc3346a1d401435b9e",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-08--2026-10-20T14-49-50-524Z.json": "404fe9355cb742fe5314904e70d71912e1a50fceadee4cd3f0b7114e79bddd71",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-09--2026-10-20T14-33-07-250Z.json": "44accb11deb458902591ff2f27b07c7642826f13a8b7bb28fcdfd3d0e7d80f1a",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-09--2026-10-20T14-34-48-393Z.json": "5c7eebf5c33d5e4a6ab56120cb31f9855d463c13b20d05c0e2cbc5872bf3ce42",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-09--2026-10-20T14-36-53-313Z.json": "361e9fb34acc2674a8a3feed204fa47f801987f54a035a0a19ff4a1e419e7129",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-09--2026-10-20T14-44-39-690Z.json": "74c4808291cec2cb838a6b0095fc704e67dde6d36ced4f002532fe192dee1aea",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-09--2026-10-20T14-46-47-929Z.json": "21c02eccba3630bf40430859695e6b2218f8496af5be1d545b8ac248559af5ea",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-09--2026-10-20T14-48-25-429Z.json": "ea9e8079b7196f58a15d116b80835217f7764b75b82531ebbbc849c68b7483db",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-09--2026-10-20T14-49-50-524Z.json": "ee031b16e57b7686dbb92e98ef412e6d8668b0d15d9d6d75db95ec42bf345223",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-10--2026-10-20T14-33-07-250Z.json": "6b6a8adcf6beef74352381ec9a0d14ac079da8a75ddc6da62904ad7df087e7e4",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-10--2026-10-20T14-34-48-393Z.json": "0d4ba210935829e43ca29bbdb23551ba4359e0c95fcc988d3cbef89d5e6ef425",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-10--2026-10-20T14-36-53-313Z.json": "1388fdcf4cd763ba68312fe5b71c570b0d1acc942a459f9dc33907184c28095d",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-10--2026-10-20T14-44-39-690Z.json": "32283b20771b90dde43aa7cd9c03a0eb13bb734eb120c01ece00ff7f8ea027a8",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-10--2026-10-20T14-46-47-929Z.json": "a5c97b1914309ea69b472a596991c5b9ff4deab7d8e550991ed32bb43f4f8a9f",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-10--2026-10-20T14-48-25-429Z.json": "f16833a283156ef38efe403d91a4eacc4f474e1563ee89e7fe94d943470efdae",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-10--2026-10-20T14-49-50-524Z.json": "2d7814d96d49ea3551384d6268dc629fbbd65894b6a0f1c2d5ba4424d618ed92",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-11--2026-10-20T14-33-07-250Z.json": "368b4043533342ad963c1ea21c13586f9dda2c9c2224c0d77350e393ce7be9f3",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-11--2026-10-20T14-34-48-393Z.json": "044ddd17d7f9e461f52db55e78c231b6cbf20a25ae566e73deebc42fff43c262",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-11--2026-10-20T14-36-53-313Z.json": "5ef3b563b0037f9a739add33b775ed575f12c9f7db19ca7261bb3dc36266843d",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-11--2026-10-20T14-44-39-690Z.json": "2fe84bbee4a363012a5e88ebaa1f936022ce918b997560c28712bf193e95e3b9",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-11--2026-10-20T14-46-47-929Z.json": "ee21308fb1c3050ddea18ba268bf3e80f989bbe22e34f35ac802bbc4391a253c",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-11--2026-10-20T14-48-25-429Z.json": "77c81f776b370774c85d2d28461f88d2c7aabe41379b600f47b8d9ec69f1f8e4",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-11--2026-10-20T14-49-50-524Z.json": "c1ac71addc04a7a521e14ef33b5c3d425f307411435911585ba00840c3d9ba40",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-12--2026-10-20T14-33-07-250Z.json": "6086a3fff363ed20f2a0cd4abd63bf800434f2de85e42aca4cb5103d076461f2",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-12--2026-10-20T14-34-48-393Z.json": "e98fca2524b6175b0bb4fbc430c77d19a8e2d06bf16140b7e71a34869e6abbfc",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-12--2026-10-20T14-36-53-313Z.json": "6f22495363a4d062bfbb5a08f444d34cfb1ae6536ba8db0b642cd2015fd6b8f5",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-12--2026-10-20T14-44-39-690Z.json": "b8c6eaf922ca75a43221dbd1fa757f3abc3d9ac0c9fea43aece5c589812582e4",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-12--2026-10-20T14-46-47-929Z.json": "d0325dd77d7a6cd5dc487828d5ba3e268613adcbd139d62137008354c28e268b",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-12--2026-10-20T14-48-25-429Z.json": "3633ffc9436d3124f6fee307b1def133364a6815523849bf1ea633b81a72db08",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-12--2026-10-20T14-49-50-524Z.json": "8d0db07bacfb843910403e2948b345c956e74fd04944589339f4c777ba05ae43",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-13--2026-10-20T14-33-07-250Z.json": "1d3f0b1016327e8eacba80bb3ae15745ea7aa405ca8ff8b2410ae8d20717e4d4",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-13--2026-10-20T14-34-48-393Z.json": "fee7ab54c7643d795b2b00177b89e50c77bc1a3050027f69e91e626a5e181f98",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-13--2026-10-20T14-36-53-313Z.json": "436ecd5e3f229f6aa68bed730fc770c9628a1a286cb137043c2cb1928ad897c9",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-13--2026-10-20T14-44-39-690Z.json": "f31a99b17f0f7049effedecc718fdf662e5e7b665ab34b58f2a09b22400505d1",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-13--2026-10-20T14-46-47-929Z.json": "3d6ade4b2667e6e68f3dc7a783ac381a64127757e82d550d6cb233041e1869f4",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-13--2026-10-20T14-48-25-429Z.json": "c26f7146ee803f644e5bf08bb9cf53b6e796691160c0cc58ef93fb87e3085c7f",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-13--2026-10-20T14-49-50-524Z.json": "5a0c4820c78c77b56412f44394c3d0a9fa4453b4073523d513bfe49d25d3f2a6",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-14--2026-10-20T14-33-07-250Z.json": "5b2815ed41183af88f507ffa795d20f730dd9a90c1e320ce5dc9bc2225922d0f",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-14--2026-10-20T14-34-48-393Z.json": "51fd57b81d90a75cbc5a4d7eae6621a2ec35099f9010f30c6d934b296fc7c655",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-14--2026-10-20T14-36-53-313Z.json": "769f3817d278d5307bc42904fc32e5bccf87c7d3c9748f7dfdfbbe3d83a40d3e",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-14--2026-10-20T14-44-39-690Z.json": "1add2285be8cceada75d0c118aaff75df1b6ce3ff9e1cbb46d65268a862a489d",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-14--2026-10-20T14-46-47-929Z.json": "f8e430fed36db9b97cb19b95ecd22bef464decffab852442e6b1a96d9dd0c252",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-14--2026-10-20T14-48-25-429Z.json": "ea89bce98d4694daca54cceac6399a4e4035d07edaf49f0b1875bd5c9c06ba7c",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-14--2026-10-20T14-49-50-524Z.json": "6833bdedbe616f1580ab51b7f93da7cab22fb1cc87e1eab3e430a792eeda92f2",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-15--2026-10-20T14-33-07-250Z.json": "64199297e796aad9eefd87a39d2029a687bbbdf4f0efa1225e733bb595a2fab0",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-15--2026-10-20T14-34-48-393Z.json": "3a74c77474df1db7ff56baeaf66c59f9571c1542d541fdddf7666c40e445ad20",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-15--2026-10-20T14-36-53-313Z.json": "5eb70239e6613a87b65f37daed76e7543bcd0b2390c48028fd16b32de71fbfcb",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-15--2026-10-20T14-44-39-690Z.json": "80982d4e70d732ddc0f8c6b00e9994f88501aa7d38070b892338bcf3d7cb86c7",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-15--2026-10-20T14-46-47-929Z.json": "fca9b8b892cb0e6f88ae6f93d2d05cb4b2a5964e9cdaedd2dee449a905c789b9",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-15--2026-10-20T14-48-25-429Z.json": "30918bc061d6bcb723de85978576c2e4707010be9dce30914932fa6d4fe847af",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-15--2026-10-20T14-49-50-524Z.json": "2922b520fe6185f3a13d609fb4f86ed3e753cf58db9081379d857cec35d05272",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-16--2026-10-20T14-33-07-250Z.json": "785a2aabdeb42738db24a3aaa3d0ad2a4a3474ed3f61b0d6cf876dea5456e205",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-16--2026-10-20T14-34-48-393Z.json": "8f1d936e8391c9bd8f295d9a2a4b65250a70aa980188c8f808662f6ac9ecdc20",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-16--2026-10-20T14-36-53-313Z.json": "c0d6ece08b8bafdf22c2eef94f0f628284cb0bb38522203bfc5fe4f45c5f42b3",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-16--2026-10-20T14-44-39-690Z.json": "2250e4381f936aba0918e5eda43127b7ef8ab172155823268d0bb643df87649f",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-16--2026-10-20T14-46-47-929Z.json": "cdd5fe2d8ab04b9fbaf8444fcc06f37e37ada0f52c37fd80e60a7f5acdd832d0",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-16--2026-10-20T14-48-25-429Z.json": "5f9f8f6ab21b0801af9881d5676a9546800c16b0355d6825fe9b1eca4d6ed890",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-16--2026-10-20T14-49-50-524Z.json": "15cb670f2f9ccc410e44f09a7d839363860eabbe11e6c7028c8d3caab3c12aaf",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-17--2026-10-20T14-33-07-250Z.json": "59aa83cd95eb5e29f89301e085378666b4cfc6e9a57cc3a3a11f964d556cdea4",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-17--2026-10-20T14-34-48-393Z.json": "80930a3eaef6d715f6da9171c4b5fcc8477bbae03e7adb7c21e36285a7f8cb39",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-17--2026-10-20T14-36-53-313Z.json": "bb3a441539c9e0f366bba21161a9fa537911c24b602c02d0e054b4dadfa3b340",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-17--2026-10-20T14-44-39-690Z.json": "3a370ed39300a49754414203cba8e613bd60a7a25ba9aeb926052b58c96d3953",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-17--2026-10-20T14-46-47-929Z.json": "62cf179d42f660ea7f76d7b1c6c6cc166eeb44dce630e29e4c8b41db19d1c26d",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-17--2026-10-20T14-48-25-429Z.json": "bb575e3bae80feb1db8d64241483d44b17811e9c8645e00f37113b7307fe9ea2",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-17--2026-10-20T14-49-50-524Z.json": "82b842b310ded53dd75ad61e0b4b5187a30659f2c7610df71af6121f9822b4c9",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-18--2026-10-20T14-33-07-250Z.json": "47d9d87cd85f25834a3c51f169b591845af007761e55d0ccc309f1362ae45fdc",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-18--2026-10-20T14-34-48-393Z.json": "3860cb080e6e1e203282a19a96749410ade627759414de99c8aeb43971103094",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-18--2026-10-20T14-36-53-313Z.json": "faed778704f68595349148e0869939d1e6d10cf46aa11a8b13699b13e71fab46",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-18--2026-10-20T14-44-39-690Z.json": "e4d2439115fc1f55abe4d9be6b073c241c1b176a0eadd94fe8a98526404b3617",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-18--2026-10-20T14-46-47-929Z.json": "a50ce2d22bf9ccf1d93c6feb37362269966bc9e6dd2b479d8be9a5218e4a7a63",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-18--2026-10-20T14-48-25-429Z.json": "cff1bb25f734405ed52c18e18240e08c54ce94d3ae8521304d699fdff218d67f",
+    "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-18--2026-10-20T14-49-50-524Z.json": "7805b3d1406a23c5f0a0563346f71a5552edaaaf59f43b9985e4e3deefa936d1"
+  },
+  "requirements": [
+    {
+      "fixtureId": "ucl-2026-27-md01-01",
+      "matchday": 1,
+      "kickoffAt": "2026-09-08T16:45:00.000Z",
+      "cutoffAt": "2026-09-08T16:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-07",
+      "teams": [
+        {
+          "side": "home",
+          "team": "AEK Athens",
+          "uefaTeamId": "50129",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "LASK",
+          "uefaTeamId": "63405",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-02",
+      "matchday": 1,
+      "kickoffAt": "2026-09-08T16:45:00.000Z",
+      "cutoffAt": "2026-09-08T16:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-07",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Club Brugge",
+          "uefaTeamId": "50043",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Aston Villa",
+          "uefaTeamId": "52683",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-03",
+      "matchday": 1,
+      "kickoffAt": "2026-09-08T19:00:00.000Z",
+      "cutoffAt": "2026-09-08T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-07",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Borussia Dortmund",
+          "uefaTeamId": "52758",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Villarreal",
+          "uefaTeamId": "70691",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-04",
+      "matchday": 1,
+      "kickoffAt": "2026-09-08T19:00:00.000Z",
+      "cutoffAt": "2026-09-08T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-07",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Porto",
+          "uefaTeamId": "50064",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Manchester City",
+          "uefaTeamId": "52919",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-05",
+      "matchday": 1,
+      "kickoffAt": "2026-09-08T19:00:00.000Z",
+      "cutoffAt": "2026-09-08T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-07",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Lille",
+          "uefaTeamId": "75797",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Real Betis",
+          "uefaTeamId": "52265",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-06",
+      "matchday": 1,
+      "kickoffAt": "2026-09-08T19:00:00.000Z",
+      "cutoffAt": "2026-09-08T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-07",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Real Madrid",
+          "uefaTeamId": "50051",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Inter",
+          "uefaTeamId": "50138",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-07",
+      "matchday": 1,
+      "kickoffAt": "2026-09-09T16:45:00.000Z",
+      "cutoffAt": "2026-09-09T16:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-08",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Barcelona",
+          "uefaTeamId": "50080",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Feyenoord",
+          "uefaTeamId": "52749",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-08",
+      "matchday": 1,
+      "kickoffAt": "2026-09-09T16:45:00.000Z",
+      "cutoffAt": "2026-09-09T16:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-08",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Stuttgart",
+          "uefaTeamId": "50107",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Viking",
+          "uefaTeamId": "52319",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-09",
+      "matchday": 1,
+      "kickoffAt": "2026-09-09T19:00:00.000Z",
+      "cutoffAt": "2026-09-09T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-08",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Liverpool",
+          "uefaTeamId": "7889",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Atlético de Madrid",
+          "uefaTeamId": "50124",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-10",
+      "matchday": 1,
+      "kickoffAt": "2026-09-09T19:00:00.000Z",
+      "cutoffAt": "2026-09-09T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-08",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Paris Saint-Germain",
+          "uefaTeamId": "52747",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Slovan Bratislava",
+          "uefaTeamId": "52797",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-11",
+      "matchday": 1,
+      "kickoffAt": "2026-09-09T19:00:00.000Z",
+      "cutoffAt": "2026-09-09T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-08",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Sporting CP",
+          "uefaTeamId": "50149",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Galatasaray",
+          "uefaTeamId": "50067",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-12",
+      "matchday": 1,
+      "kickoffAt": "2026-09-09T19:00:00.000Z",
+      "cutoffAt": "2026-09-09T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-08",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Napoli",
+          "uefaTeamId": "50136",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Arsenal",
+          "uefaTeamId": "52280",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-13",
+      "matchday": 1,
+      "kickoffAt": "2026-09-10T16:45:00.000Z",
+      "cutoffAt": "2026-09-10T16:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-09",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Fenerbahçe",
+          "uefaTeamId": "52692",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Roma",
+          "uefaTeamId": "50137",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-14",
+      "matchday": 1,
+      "kickoffAt": "2026-09-10T16:45:00.000Z",
+      "cutoffAt": "2026-09-10T16:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-09",
+      "teams": [
+        {
+          "side": "home",
+          "team": "PSV Eindhoven",
+          "uefaTeamId": "50062",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Shakhtar Donetsk",
+          "uefaTeamId": "52707",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-15",
+      "matchday": 1,
+      "kickoffAt": "2026-09-10T19:00:00.000Z",
+      "cutoffAt": "2026-09-10T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-09",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Como",
+          "uefaTeamId": "79946",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Leipzig",
+          "uefaTeamId": "2603790",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-16",
+      "matchday": 1,
+      "kickoffAt": "2026-09-10T19:00:00.000Z",
+      "cutoffAt": "2026-09-10T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-09",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Bayern München",
+          "uefaTeamId": "50037",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Bodø/Glimt",
+          "uefaTeamId": "59333",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-17",
+      "matchday": 1,
+      "kickoffAt": "2026-09-10T19:00:00.000Z",
+      "cutoffAt": "2026-09-10T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-09",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Manchester United",
+          "uefaTeamId": "52682",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Sabah",
+          "uefaTeamId": "2609356",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-18",
+      "matchday": 1,
+      "kickoffAt": "2026-09-10T19:00:00.000Z",
+      "cutoffAt": "2026-09-10T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-09-09",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Slavia Praha",
+          "uefaTeamId": "52498",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Lens",
+          "uefaTeamId": "52277",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-01",
+      "matchday": 2,
+      "kickoffAt": "2026-10-13T16:45:00.000Z",
+      "cutoffAt": "2026-10-13T16:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-12",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Lens",
+          "uefaTeamId": "52277",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Sporting CP",
+          "uefaTeamId": "50149",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-02",
+      "matchday": 2,
+      "kickoffAt": "2026-10-13T16:45:00.000Z",
+      "cutoffAt": "2026-10-13T16:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-12",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Sabah",
+          "uefaTeamId": "2609356",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Slavia Praha",
+          "uefaTeamId": "52498",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-03",
+      "matchday": 2,
+      "kickoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-12",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Arsenal",
+          "uefaTeamId": "52280",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Lille",
+          "uefaTeamId": "75797",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-04",
+      "matchday": 2,
+      "kickoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-12",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Atlético de Madrid",
+          "uefaTeamId": "50124",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Manchester United",
+          "uefaTeamId": "52682",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-05",
+      "matchday": 2,
+      "kickoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-12",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Inter",
+          "uefaTeamId": "50138",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Club Brugge",
+          "uefaTeamId": "50043",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-06",
+      "matchday": 2,
+      "kickoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-12",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Galatasaray",
+          "uefaTeamId": "50067",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Barcelona",
+          "uefaTeamId": "50080",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-07",
+      "matchday": 2,
+      "kickoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-12",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Leipzig",
+          "uefaTeamId": "2603790",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "PSV Eindhoven",
+          "uefaTeamId": "50062",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-08",
+      "matchday": 2,
+      "kickoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-12",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Viking",
+          "uefaTeamId": "52319",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Bayern München",
+          "uefaTeamId": "50037",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-09",
+      "matchday": 2,
+      "kickoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffAt": "2026-10-13T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-12",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Villarreal",
+          "uefaTeamId": "70691",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Napoli",
+          "uefaTeamId": "50136",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-10",
+      "matchday": 2,
+      "kickoffAt": "2026-10-14T16:45:00.000Z",
+      "cutoffAt": "2026-10-14T16:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-13",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Feyenoord",
+          "uefaTeamId": "52749",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Como",
+          "uefaTeamId": "79946",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-11",
+      "matchday": 2,
+      "kickoffAt": "2026-10-14T16:45:00.000Z",
+      "cutoffAt": "2026-10-14T16:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-13",
+      "teams": [
+        {
+          "side": "home",
+          "team": "LASK",
+          "uefaTeamId": "63405",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Liverpool",
+          "uefaTeamId": "7889",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-12",
+      "matchday": 2,
+      "kickoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-13",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Roma",
+          "uefaTeamId": "50137",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Real Madrid",
+          "uefaTeamId": "50051",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-13",
+      "matchday": 2,
+      "kickoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-13",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Aston Villa",
+          "uefaTeamId": "52683",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Fenerbahçe",
+          "uefaTeamId": "52692",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-14",
+      "matchday": 2,
+      "kickoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-13",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Shakhtar Donetsk",
+          "uefaTeamId": "52707",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "AEK Athens",
+          "uefaTeamId": "50129",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-15",
+      "matchday": 2,
+      "kickoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-13",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Bodø/Glimt",
+          "uefaTeamId": "59333",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Borussia Dortmund",
+          "uefaTeamId": "52758",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-16",
+      "matchday": 2,
+      "kickoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-13",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Manchester City",
+          "uefaTeamId": "52919",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Paris Saint-Germain",
+          "uefaTeamId": "52747",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-17",
+      "matchday": 2,
+      "kickoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-13",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Real Betis",
+          "uefaTeamId": "52265",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Porto",
+          "uefaTeamId": "50064",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-18",
+      "matchday": 2,
+      "kickoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffAt": "2026-10-14T19:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-10-13",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Slovan Bratislava",
+          "uefaTeamId": "52797",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Stuttgart",
+          "uefaTeamId": "50107",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-01",
+      "matchday": 3,
+      "kickoffAt": "2026-10-20T16:45:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Fenerbahçe",
+          "uefaTeamId": "52692",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Slavia Praha",
+          "uefaTeamId": "52498",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-02",
+      "matchday": 3,
+      "kickoffAt": "2026-10-20T16:45:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Sabah",
+          "uefaTeamId": "2609356",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Borussia Dortmund",
+          "uefaTeamId": "52758",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-03",
+      "matchday": 3,
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Roma",
+          "uefaTeamId": "50137",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Slovan Bratislava",
+          "uefaTeamId": "52797",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-04",
+      "matchday": 3,
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Porto",
+          "uefaTeamId": "50064",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "PSV Eindhoven",
+          "uefaTeamId": "50062",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-05",
+      "matchday": 3,
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Liverpool",
+          "uefaTeamId": "7889",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Villarreal",
+          "uefaTeamId": "70691",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-06",
+      "matchday": 3,
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Manchester City",
+          "uefaTeamId": "52919",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "AEK Athens",
+          "uefaTeamId": "50129",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-07",
+      "matchday": 3,
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Paris Saint-Germain",
+          "uefaTeamId": "52747",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Barcelona",
+          "uefaTeamId": "50080",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-08",
+      "matchday": 3,
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Napoli",
+          "uefaTeamId": "50136",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Bodø/Glimt",
+          "uefaTeamId": "59333",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-09",
+      "matchday": 3,
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Stuttgart",
+          "uefaTeamId": "50107",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Atlético de Madrid",
+          "uefaTeamId": "50124",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-10",
+      "matchday": 3,
+      "kickoffAt": "2026-10-21T16:45:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Como",
+          "uefaTeamId": "79946",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Manchester United",
+          "uefaTeamId": "52682",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-11",
+      "matchday": 3,
+      "kickoffAt": "2026-10-21T16:45:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Lille",
+          "uefaTeamId": "75797",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Galatasaray",
+          "uefaTeamId": "50067",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-12",
+      "matchday": 3,
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Aston Villa",
+          "uefaTeamId": "52683",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Viking",
+          "uefaTeamId": "52319",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-13",
+      "matchday": 3,
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Club Brugge",
+          "uefaTeamId": "50043",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Lens",
+          "uefaTeamId": "52277",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-14",
+      "matchday": 3,
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Bayern München",
+          "uefaTeamId": "50037",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Arsenal",
+          "uefaTeamId": "52280",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-15",
+      "matchday": 3,
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Inter",
+          "uefaTeamId": "50138",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Shakhtar Donetsk",
+          "uefaTeamId": "52707",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-16",
+      "matchday": 3,
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Real Madrid",
+          "uefaTeamId": "50051",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Leipzig",
+          "uefaTeamId": "2603790",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-17",
+      "matchday": 3,
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Real Betis",
+          "uefaTeamId": "52265",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Feyenoord",
+          "uefaTeamId": "52749",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-18",
+      "matchday": 3,
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "cutoffAt": "2026-10-20T14:33:07.250Z",
+      "cutoffBasis": "earliest-immutable-reading-snapshot",
+      "recommendedRankDt": "2026-10-19",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Sporting CP",
+          "uefaTeamId": "50149",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "LASK",
+          "uefaTeamId": "63405",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-01",
+      "matchday": 4,
+      "kickoffAt": "2026-11-03T17:45:00.000Z",
+      "cutoffAt": "2026-11-03T17:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-02",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Shakhtar Donetsk",
+          "uefaTeamId": "52707",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Sporting CP",
+          "uefaTeamId": "50149",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-02",
+      "matchday": 4,
+      "kickoffAt": "2026-11-03T17:45:00.000Z",
+      "cutoffAt": "2026-11-03T17:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-02",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Galatasaray",
+          "uefaTeamId": "50067",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Stuttgart",
+          "uefaTeamId": "50107",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-03",
+      "matchday": 4,
+      "kickoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-02",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Atlético de Madrid",
+          "uefaTeamId": "50124",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Bayern München",
+          "uefaTeamId": "50037",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-04",
+      "matchday": 4,
+      "kickoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-02",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Barcelona",
+          "uefaTeamId": "50080",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Aston Villa",
+          "uefaTeamId": "52683",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-05",
+      "matchday": 4,
+      "kickoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-02",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Feyenoord",
+          "uefaTeamId": "52749",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Inter",
+          "uefaTeamId": "50138",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-06",
+      "matchday": 4,
+      "kickoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-02",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Bodø/Glimt",
+          "uefaTeamId": "59333",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Lille",
+          "uefaTeamId": "75797",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-07",
+      "matchday": 4,
+      "kickoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-02",
+      "teams": [
+        {
+          "side": "home",
+          "team": "LASK",
+          "uefaTeamId": "63405",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Slovan Bratislava",
+          "uefaTeamId": "52797",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-08",
+      "matchday": 4,
+      "kickoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-02",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Manchester United",
+          "uefaTeamId": "52682",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Roma",
+          "uefaTeamId": "50137",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-09",
+      "matchday": 4,
+      "kickoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffAt": "2026-11-03T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-02",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Villarreal",
+          "uefaTeamId": "70691",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Paris Saint-Germain",
+          "uefaTeamId": "52747",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-10",
+      "matchday": 4,
+      "kickoffAt": "2026-11-04T17:45:00.000Z",
+      "cutoffAt": "2026-11-04T17:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-03",
+      "teams": [
+        {
+          "side": "home",
+          "team": "AEK Athens",
+          "uefaTeamId": "50129",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Real Madrid",
+          "uefaTeamId": "50051",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-11",
+      "matchday": 4,
+      "kickoffAt": "2026-11-04T17:45:00.000Z",
+      "cutoffAt": "2026-11-04T17:45:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-03",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Fenerbahçe",
+          "uefaTeamId": "52692",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Liverpool",
+          "uefaTeamId": "7889",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-12",
+      "matchday": 4,
+      "kickoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-03",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Borussia Dortmund",
+          "uefaTeamId": "52758",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Real Betis",
+          "uefaTeamId": "52265",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-13",
+      "matchday": 4,
+      "kickoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-03",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Porto",
+          "uefaTeamId": "50064",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Napoli",
+          "uefaTeamId": "50136",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-14",
+      "matchday": 4,
+      "kickoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-03",
+      "teams": [
+        {
+          "side": "home",
+          "team": "PSV Eindhoven",
+          "uefaTeamId": "50062",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Club Brugge",
+          "uefaTeamId": "50043",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-15",
+      "matchday": 4,
+      "kickoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-03",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Leipzig",
+          "uefaTeamId": "2603790",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Manchester City",
+          "uefaTeamId": "52919",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-16",
+      "matchday": 4,
+      "kickoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-03",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Lens",
+          "uefaTeamId": "52277",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Como",
+          "uefaTeamId": "79946",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-17",
+      "matchday": 4,
+      "kickoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-03",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Slavia Praha",
+          "uefaTeamId": "52498",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Arsenal",
+          "uefaTeamId": "52280",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-18",
+      "matchday": 4,
+      "kickoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffAt": "2026-11-04T20:00:00.000Z",
+      "cutoffBasis": "kickoff-only-no-frozen-reading-proven",
+      "recommendedRankDt": "2026-11-03",
+      "teams": [
+        {
+          "side": "home",
+          "team": "Viking",
+          "uefaTeamId": "52319",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        },
+        {
+          "side": "away",
+          "team": "Sabah",
+          "uefaTeamId": "2609356",
+          "optaContestantId": null,
+          "rating": null,
+          "availabilityStatus": "NOT_ACQUIRED"
+        }
+      ]
+    }
+  ],
+  "uniqueRequests": [
+    {
+      "team": "AEK Athens",
+      "uefaTeamId": "50129",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "LASK",
+      "uefaTeamId": "63405",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "Club Brugge",
+      "uefaTeamId": "50043",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "Aston Villa",
+      "uefaTeamId": "52683",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "Borussia Dortmund",
+      "uefaTeamId": "52758",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "Villarreal",
+      "uefaTeamId": "70691",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "Porto",
+      "uefaTeamId": "50064",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "Manchester City",
+      "uefaTeamId": "52919",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "Lille",
+      "uefaTeamId": "75797",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "Real Betis",
+      "uefaTeamId": "52265",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "Real Madrid",
+      "uefaTeamId": "50051",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "Inter",
+      "uefaTeamId": "50138",
+      "rankDt": "2026-09-07"
+    },
+    {
+      "team": "Barcelona",
+      "uefaTeamId": "50080",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Feyenoord",
+      "uefaTeamId": "52749",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Stuttgart",
+      "uefaTeamId": "50107",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Viking",
+      "uefaTeamId": "52319",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Liverpool",
+      "uefaTeamId": "7889",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Atlético de Madrid",
+      "uefaTeamId": "50124",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Paris Saint-Germain",
+      "uefaTeamId": "52747",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Slovan Bratislava",
+      "uefaTeamId": "52797",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Sporting CP",
+      "uefaTeamId": "50149",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Galatasaray",
+      "uefaTeamId": "50067",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Napoli",
+      "uefaTeamId": "50136",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Arsenal",
+      "uefaTeamId": "52280",
+      "rankDt": "2026-09-08"
+    },
+    {
+      "team": "Fenerbahçe",
+      "uefaTeamId": "52692",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "Roma",
+      "uefaTeamId": "50137",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "PSV Eindhoven",
+      "uefaTeamId": "50062",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "Shakhtar Donetsk",
+      "uefaTeamId": "52707",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "Como",
+      "uefaTeamId": "79946",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "Leipzig",
+      "uefaTeamId": "2603790",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "Bayern München",
+      "uefaTeamId": "50037",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "Bodø/Glimt",
+      "uefaTeamId": "59333",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "Manchester United",
+      "uefaTeamId": "52682",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "Sabah",
+      "uefaTeamId": "2609356",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "Slavia Praha",
+      "uefaTeamId": "52498",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "Lens",
+      "uefaTeamId": "52277",
+      "rankDt": "2026-09-09"
+    },
+    {
+      "team": "Lens",
+      "uefaTeamId": "52277",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Sporting CP",
+      "uefaTeamId": "50149",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Sabah",
+      "uefaTeamId": "2609356",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Slavia Praha",
+      "uefaTeamId": "52498",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Arsenal",
+      "uefaTeamId": "52280",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Lille",
+      "uefaTeamId": "75797",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Atlético de Madrid",
+      "uefaTeamId": "50124",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Manchester United",
+      "uefaTeamId": "52682",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Inter",
+      "uefaTeamId": "50138",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Club Brugge",
+      "uefaTeamId": "50043",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Galatasaray",
+      "uefaTeamId": "50067",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Barcelona",
+      "uefaTeamId": "50080",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Leipzig",
+      "uefaTeamId": "2603790",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "PSV Eindhoven",
+      "uefaTeamId": "50062",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Viking",
+      "uefaTeamId": "52319",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Bayern München",
+      "uefaTeamId": "50037",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Villarreal",
+      "uefaTeamId": "70691",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Napoli",
+      "uefaTeamId": "50136",
+      "rankDt": "2026-10-12"
+    },
+    {
+      "team": "Feyenoord",
+      "uefaTeamId": "52749",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Como",
+      "uefaTeamId": "79946",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "LASK",
+      "uefaTeamId": "63405",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Liverpool",
+      "uefaTeamId": "7889",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Roma",
+      "uefaTeamId": "50137",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Real Madrid",
+      "uefaTeamId": "50051",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Aston Villa",
+      "uefaTeamId": "52683",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Fenerbahçe",
+      "uefaTeamId": "52692",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Shakhtar Donetsk",
+      "uefaTeamId": "52707",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "AEK Athens",
+      "uefaTeamId": "50129",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Bodø/Glimt",
+      "uefaTeamId": "59333",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Borussia Dortmund",
+      "uefaTeamId": "52758",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Manchester City",
+      "uefaTeamId": "52919",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Paris Saint-Germain",
+      "uefaTeamId": "52747",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Real Betis",
+      "uefaTeamId": "52265",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Porto",
+      "uefaTeamId": "50064",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Slovan Bratislava",
+      "uefaTeamId": "52797",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Stuttgart",
+      "uefaTeamId": "50107",
+      "rankDt": "2026-10-13"
+    },
+    {
+      "team": "Fenerbahçe",
+      "uefaTeamId": "52692",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Slavia Praha",
+      "uefaTeamId": "52498",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Sabah",
+      "uefaTeamId": "2609356",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Borussia Dortmund",
+      "uefaTeamId": "52758",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Roma",
+      "uefaTeamId": "50137",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Slovan Bratislava",
+      "uefaTeamId": "52797",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Porto",
+      "uefaTeamId": "50064",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "PSV Eindhoven",
+      "uefaTeamId": "50062",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Liverpool",
+      "uefaTeamId": "7889",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Villarreal",
+      "uefaTeamId": "70691",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Manchester City",
+      "uefaTeamId": "52919",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "AEK Athens",
+      "uefaTeamId": "50129",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Paris Saint-Germain",
+      "uefaTeamId": "52747",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Barcelona",
+      "uefaTeamId": "50080",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Napoli",
+      "uefaTeamId": "50136",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Bodø/Glimt",
+      "uefaTeamId": "59333",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Stuttgart",
+      "uefaTeamId": "50107",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Atlético de Madrid",
+      "uefaTeamId": "50124",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Como",
+      "uefaTeamId": "79946",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Manchester United",
+      "uefaTeamId": "52682",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Lille",
+      "uefaTeamId": "75797",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Galatasaray",
+      "uefaTeamId": "50067",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Aston Villa",
+      "uefaTeamId": "52683",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Viking",
+      "uefaTeamId": "52319",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Club Brugge",
+      "uefaTeamId": "50043",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Lens",
+      "uefaTeamId": "52277",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Bayern München",
+      "uefaTeamId": "50037",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Arsenal",
+      "uefaTeamId": "52280",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Inter",
+      "uefaTeamId": "50138",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Shakhtar Donetsk",
+      "uefaTeamId": "52707",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Real Madrid",
+      "uefaTeamId": "50051",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Leipzig",
+      "uefaTeamId": "2603790",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Real Betis",
+      "uefaTeamId": "52265",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Feyenoord",
+      "uefaTeamId": "52749",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Sporting CP",
+      "uefaTeamId": "50149",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "LASK",
+      "uefaTeamId": "63405",
+      "rankDt": "2026-10-19"
+    },
+    {
+      "team": "Shakhtar Donetsk",
+      "uefaTeamId": "52707",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Sporting CP",
+      "uefaTeamId": "50149",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Galatasaray",
+      "uefaTeamId": "50067",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Stuttgart",
+      "uefaTeamId": "50107",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Atlético de Madrid",
+      "uefaTeamId": "50124",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Bayern München",
+      "uefaTeamId": "50037",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Barcelona",
+      "uefaTeamId": "50080",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Aston Villa",
+      "uefaTeamId": "52683",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Feyenoord",
+      "uefaTeamId": "52749",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Inter",
+      "uefaTeamId": "50138",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Bodø/Glimt",
+      "uefaTeamId": "59333",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Lille",
+      "uefaTeamId": "75797",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "LASK",
+      "uefaTeamId": "63405",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Slovan Bratislava",
+      "uefaTeamId": "52797",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Manchester United",
+      "uefaTeamId": "52682",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Roma",
+      "uefaTeamId": "50137",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Villarreal",
+      "uefaTeamId": "70691",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "Paris Saint-Germain",
+      "uefaTeamId": "52747",
+      "rankDt": "2026-11-02"
+    },
+    {
+      "team": "AEK Athens",
+      "uefaTeamId": "50129",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Real Madrid",
+      "uefaTeamId": "50051",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Fenerbahçe",
+      "uefaTeamId": "52692",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Liverpool",
+      "uefaTeamId": "7889",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Borussia Dortmund",
+      "uefaTeamId": "52758",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Real Betis",
+      "uefaTeamId": "52265",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Porto",
+      "uefaTeamId": "50064",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Napoli",
+      "uefaTeamId": "50136",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "PSV Eindhoven",
+      "uefaTeamId": "50062",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Club Brugge",
+      "uefaTeamId": "50043",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Leipzig",
+      "uefaTeamId": "2603790",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Manchester City",
+      "uefaTeamId": "52919",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Lens",
+      "uefaTeamId": "52277",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Como",
+      "uefaTeamId": "79946",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Slavia Praha",
+      "uefaTeamId": "52498",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Arsenal",
+      "uefaTeamId": "52280",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Viking",
+      "uefaTeamId": "52319",
+      "rankDt": "2026-11-03"
+    },
+    {
+      "team": "Sabah",
+      "uefaTeamId": "2609356",
+      "rankDt": "2026-11-03"
+    }
+  ]
+}

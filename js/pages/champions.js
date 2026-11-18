@@ -343,6 +343,15 @@ export function createPage(deps){
       return values.every(value=>value==null)?null:values.reduce((sum,value)=>sum+(value??0),0);
     };
     const historicalView=team.statisticsSeason==="2025-26";
+    const verifiedRows=historicalView?[]:team.players.flatMap(player=>(player.historicalContext?.verifiedCurrentStats||[]).map(entry=>`
+      <tr><th scope="row">${esc(player.name)}</th><td>${esc(entry.competition)}<small>${esc(entry.scope)}</small></td>
+      <td>${stat(entry.appearances)}</td><td>${stat(entry.minutes)}</td><td>${stat(entry.shots)}</td><td>${stat(entry.shotsOnTarget)}</td></tr>`));
+    const verifiedStats=verifiedRows.length?`<section class="champions-team-players" aria-labelledby="champions-verified-player-stats">
+      <header><h2 id="champions-verified-player-stats">Presenze e tiri per competizione</h2></header>
+      <div class="champions-strength-table-wrap champions-player-table-wrap" role="region" aria-label="Presenze e tiri per competizione" tabindex="0">
+        <table class="champions-player-stats-table champions-verified-stats-table"><thead><tr><th>Calciatore</th><th>Competizione e gare</th><th>PG</th><th>Min</th><th>Tiri</th><th>SOT</th></tr></thead>
+        <tbody>${verifiedRows.join("")}</tbody></table>
+      </div></section>`:"";
     const historyScope=historicalView?(team.historyScope||"club"):"club";
     const nationalView=historicalView&&historyScope!=="club";
     const playerData=team.players.map((player,index)=>{
@@ -402,12 +411,12 @@ export function createPage(deps){
     ].filter(item=>item.content).map(item=>`<section id="${item.id}" class="champions-team-insight"><h2>${esc(item.title)}</h2>${item.content}</section>`).join("");
     const heroStyle=`--club-accent:${brand.colors?.[0]||"#176bcb"};--club-accent-secondary:${brand.colors?.[1]||"#7fdcff"}`;
     const hero=`<section class="champions-team-hero" style="${esc(heroStyle)}"><div class="champions-team-identity"><span class="champions-team-hero-logo">${teamBadge(team.team,branding,{showName:false})}</span><div><p class="eyebrow">UEFA Champions League 2026/27</p><h1>${esc(team.team)}</h1><p>Allenatore: ${esc(coachDisplayName(team.coach))}</p></div></div><div class="champions-team-hero-facts"><article><small>${team.squadAsOf?"Rosa aggiornata":"Rosa registrata UEFA"}</small><strong>${team.counts.total}</strong><span>${team.counts.listB} giocatori in Lista B</span></article><article><small>Posizione fase campionato</small><strong>${standingPosition}ª</strong><span>Classifica provvisoria su 36 · ${standing?.points||0} punti</span></article></div></section>`;
-    return `<nav class="champions-reading-back"><a href="champions-league.html">← Champions League</a><span>Scheda squadra</span></nav>${hero}${summary}${calendarPanel}${volumePanel}${attackPanel}${lineupFixture?`<section class="champions-team-lineup">${probableFormationCard(lineupFixture,squads,team.team)}</section>`:""}${futureInsights}${playersOverview}${playersTable}`;
+    return `<nav class="champions-reading-back"><a href="champions-league.html">← Champions League</a><span>Scheda squadra</span></nav>${hero}${summary}${calendarPanel}${volumePanel}${attackPanel}${lineupFixture?`<section class="champions-team-lineup">${probableFormationCard(lineupFixture,squads,team.team)}</section>`:""}${futureInsights}${playersOverview}${verifiedStats}${playersTable}`;
   }
 
   function mountChampionsTeamControls(){
     if(typeof document.querySelectorAll!=="function")return;
-    const table=document.querySelector(".champions-player-stats-table");
+    const table=document.querySelector("#champions-team-players-title")?.closest("section")?.querySelector(".champions-player-stats-table");
     if(!table)return;
     document.querySelector("#champions-player-season")?.addEventListener("change",event=>{const url=new URL(location.href);url.searchParams.set("playerSeason",event.target.value);location.href=url.href});
     document.querySelector("#champions-player-history-scope")?.addEventListener("change",event=>{const url=new URL(location.href);url.searchParams.set("historyScope",event.target.value);location.href=url.href});

@@ -21,8 +21,7 @@ write('output/md12-reading-refresh/before.json',{predictions:before.predictions.
 const output='output/md12-reading-refresh/predictions-candidate.json';
 execFileSync(process.execPath,['--experimental-require-module','scripts/build-predictions.js'],{cwd:root,stdio:'inherit',env:{...process.env,SERIE_A_PREDICTION_PREVIEW_MATCHDAY:'12',SERIE_A_PREDICTION_OUTPUT:output}});
 const candidate=read(output),latest=new Map(candidate.predictions.map(p=>[p.matchId,p]));assert.equal(latest.size,10);
-// This first integration deliberately has no betting catalog: MD12 prices are absent.
-assert(candidate.predictions.every(p=>p.market.status==='unavailable'),'Quote disponibili: usare la pipeline del catalogo verificato prima di aggiornare');
+// Refresh forecasts with the archived verified prices; catalog admission remains separate.
 const merged={...before,generatedAt:candidate.generatedAt,predictions:[...before.predictions.filter(p=>!ids.has(p.matchId)),...candidate.predictions]};
 assert.deepEqual(merged.predictions.filter(p=>!ids.has(p.matchId)),before.predictions.filter(p=>!ids.has(p.matchId)));
 write('data/normalized/predictions.json',merged);
@@ -33,14 +32,14 @@ for(const fixture of round){
  const availability=sides.flatMap(t=>['unavailable','suspended','doubtful','ballots'].map(key=>`${t.team} · ${{unavailable:'Indisponibili',suspended:'Squalificati',doubtful:'In dubbio',ballots:'Ballottaggi'}[key]}: ${(t[key]||[]).flat().map(q=>`${q.currentName||q.sourceName}${q.description?` (${q.description})`:''}`).join('; ')||'nessuna segnalazione disponibile'}`));
  write(`data/sources/readings/${fixture.id}.json`,{
   id:`lettura-${fixture.id}`,matchId:fixture.id,status:'published',prototype:true,updatedAt:String(candidate.generatedAt).slice(0,10),title:`${names.get(fixture.homeTeam)} - ${names.get(fixture.awayTeam)}`,
-  summary:`${p.verdict.label}. Previsione preliminare con formazioni probabili, da riconfermare. Quote ed EV N/D.`,
+  summary:`${p.verdict.label}. Previsione preliminare con formazioni probabili, da riconfermare. ${p.market.status==='unavailable'?'Quote ed EV N/D.':'Quote disponibili per i mercati verificati; contratti DUO con probabilità ed EV N/D se non validati.'}`,
   sections:{
    context:section(`Serie A 2026/27, 12ª giornata. ${fixture.date} alle ${fixture.kickoff}. Analisi prepartita; meteo attendibile N/D.`),
    form:section('Statistiche 2025/26 e gare concluse 2026/27 fino alla 11ª giornata; nessun risultato MD12 utilizzato.',[p.futureDataDiagnostics.home,p.futureDataDiagnostics.away].map(t=>`${names.get(t.teamId)}: ${t.currentMatchesUsed} gare correnti disponibili.`)),
    availability:section('Formazioni probabili: gli undici non sono ufficiali. I dubbi restano distinti dalle assenze.',availability),
    tactics:section(p.scenarios[0].description,sides.map(t=>`${t.team}: ${t.formation}, formazione probabile.`)),
    referee:section(fixture.refereeAssignment?`Arbitro designato: ${fixture.refereeAssignment.referee.name}.`:'Designazione arbitrale N/D; nessuna attribuzione presunta.'),
-   market:section('Quote verificate N/D. EV N/D; nessuna selezione operativa approvata. Le proiezioni individuali non certificano probabilità dei contratti DUO.'),
+   market:section(p.market.status==='unavailable'?'Quote verificate N/D. EV N/D; nessuna selezione operativa approvata. Le proiezioni individuali non certificano probabilità dei contratti DUO.':'Quote disponibili nei mercati verificati. Le proiezioni individuali non certificano probabilità o EV dei contratti DUO; nuove selezioni richiedono i criteri di approvazione esistenti.'),
    synthesis:section(`${p.verdict.label}. Previsione preliminare: componenti del modello in validazione prospettica.`,p.scenarios.slice(1).map(s=>s.description))
   },internalSources:[{label:lineups.provider,url:lineups.sourceUrl,rawSnapshot:lineups.rawSnapshot,retrievedAt:lineups.importedAt}]
  });
