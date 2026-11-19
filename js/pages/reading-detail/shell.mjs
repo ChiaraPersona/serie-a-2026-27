@@ -7,7 +7,7 @@ import {installPeople} from './people.mjs?v=20261113-lineup-reference';
 import {installTacticsHistory} from './tactics-history.mjs?v=20261115-tactical-no-possession';
 import {loadHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
 import {mountRefereeHistory} from './referee-history.mjs?v=20261104-tactical-profiles-v3';
-import {teamMatchHistoryMarkup} from '../../components/team-match-history.mjs?v=20261118-history-split-v5';
+import {teamMatchHistoryMarkup} from '../../components/team-match-history.mjs?v=20261119-history-results-v6';
 import {bookingsMarkup} from './bookings.mjs?v=20261113-reading-parity';
 import {projectedArtifact} from './projected-artifacts.mjs?v=20261022-assets-v1';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
