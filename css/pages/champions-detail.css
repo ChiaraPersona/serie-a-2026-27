@@ -82,7 +82,7 @@ body[data-page="champions"],body[data-reading-detail-theme="champions"],body[dat
 .team-match-history h3{margin:0 0 8px;font-size:20px}
 .team-match-history p{font-size:13px;line-height:1.5;color:#526174}
 .team-history-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
-.team-history-scroll table{border-collapse:collapse;width:100%;min-width:980px;font-size:13px}
+.team-history-scroll table{border-collapse:collapse;width:100%;min-width:680px;font-size:13px}
 .team-history-scroll th,.team-history-scroll td{padding:10px;text-align:left;border-bottom:1px solid #e1e7ed;white-space:nowrap}
 .team-history-scroll thead th{background:#eff3f7;font-weight:700}
 .team-history-scroll:focus-visible{outline:2px solid #174fa5;outline-offset:3px}
@@ -97,6 +97,7 @@ body[data-page="champions"],body[data-reading-detail-theme="champions"],body[dat
 
 @media(max-width:600px){.team-match-history{padding:12px;margin:16px 0}
 .team-match-history h3{font-size:18px}}
+.team-history-scroll .team-history-champions{color:#174fa5}
 /* base.css: original cascade position */
 :root{--bg:#07110f;--surface:#101b18;--surface2:#162521;--line:#284039;--text:#f4f7f5;--muted:#9db0a9;--accent:#27d17f;--gold:#f2c14e;--danger:#ff6b6b;--max:var(--ds-content-max);--page-gutter:24px;--container-width:min(var(--max),calc(100% - 2 * var(--page-gutter)));color-scheme:dark;font-family:Inter,Segoe UI,Arial,sans-serif}
 *{box-sizing:border-box}
@@ -6854,3 +6855,31 @@ body .rd-shell :is(.rd-team-name,.rd-section-heading h2){
 .rd-shell .rd-tactical-sheet .rd-tactical-metrics>div{gap:6px}
 .rd-shell .rd-tactical-sheet .rd-tactical-metrics dt{font-size:11px}
 .rd-shell .rd-tactical-sheet .rd-tactical-metrics dd{font-size:16px}}
+.rd-shell .team-match-history{padding:0;border:0;border-radius:0;background:transparent;color:#243a3b;box-shadow:none}
+.rd-shell .team-match-history h3{margin-bottom:14px}
+.rd-shell .team-history-scroll{position:relative;border:1px solid #d5dcdf;border-radius:var(--ds-radius-card,16px);background:#eef1f1;clip-path:inset(0 round var(--ds-radius-card,16px));box-shadow:inset 0 3px 10px rgba(36,58,59,.15),inset 0 1px 3px rgba(36,58,59,.10);isolation:isolate}
+.rd-shell .team-history-scroll table{width:100%;min-width:880px;border-collapse:separate;border-spacing:0;color:#243a3b;font-size:12px;line-height:1.45;font-variant-numeric:tabular-nums}
+.rd-shell .team-history-scroll :is(th,td){box-sizing:border-box;padding:10px 14px;border:0;border-bottom:1px solid #dce2e3;text-align:center;white-space:nowrap;box-shadow:none}
+.rd-shell .team-history-scroll thead th{background:#c5bdb6;color:#43595b;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;height:48px}
+.rd-shell .team-history-scroll tbody :is(th,td){height:52px;font-weight:400}
+.rd-shell .team-history-scroll tbody tr:nth-child(odd)>*{background:#fff}
+.rd-shell .team-history-scroll tbody tr:nth-child(even)>*{background:#f3f4f4}
+.rd-shell .team-history-scroll tr>:first-child{position:sticky;left:0;z-index:2;min-width:175px;text-align:left;box-shadow:1px 0 #dce2e3}
+.rd-shell .team-history-scroll thead tr>:first-child{z-index:3}
+.rd-shell .team-history-scroll tr>:nth-child(2){width:54px;padding-inline:8px}
+.rd-shell .team-history-scroll tbody tr:is(:hover,:focus-within)>*{background:#eaecea}
+.rd-shell .team-history-scroll tbody tr:is(:hover,:focus-within)>:first-child{background:#d5f1f2}
+.rd-shell .team-history-scroll .team-history-champions{color:#174fa5}
+@media(max-width:700px){.rd-shell .team-history-scroll table{min-width:760px}
+.rd-shell .team-history-scroll :is(th,td){padding:10px 8px}
+.rd-shell .team-history-scroll tr>:first-child{min-width:136px;max-width:175px;white-space:normal;overflow-wrap:anywhere}
+.rd-shell .team-history-scroll thead th{font-size:10px;letter-spacing:.03em}}
+.rd-shell .team-history-scroll thead tr:first-child>th[colspan]{height:28px;padding-block:3px;border-bottom:2px solid #b69857}
+.rd-shell .team-history-scroll thead tr:nth-child(2)>th{height:28px;padding-block:3px;font-size:10px;letter-spacing:.03em;position:static;min-width:62px;text-align:center;box-shadow:none}
+.rd-shell .team-history-scroll thead tr:first-child>th[rowspan]{height:56px}
+.rd-shell .team-history-scroll thead tr:first-child>:nth-child(2){width:54px}
+.rd-shell .team-history-scroll tbody tr>:nth-child(n+4){min-width:62px}
+.rd-shell .team-history-scroll tbody tr>:nth-child(2n+5),.rd-shell .team-history-scroll thead tr:nth-child(2)>:nth-child(even){border-right:1px solid #d5dcdf}
+.rd-shell .team-history-scroll table{min-width:1080px}
+@media(max-width:700px){.rd-shell .team-history-scroll table{min-width:960px}
+.rd-shell .team-history-scroll tbody tr>:nth-child(n+4),.rd-shell .team-history-scroll thead tr:nth-child(2)>th{min-width:54px}}

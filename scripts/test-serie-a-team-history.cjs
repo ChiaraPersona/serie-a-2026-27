@@ -33,6 +33,15 @@ const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
   }
  }
  assert.equal(european,16);
+ for(const teamId of ['como','cagliari'])for(const row of recentTeamMatches(data,teamId,{before:'2026-11-20'})){
+  for(const side of ['stats','statsAgainst'])for(const key of ['shots','shotsOnTarget','corners','fouls','yellowCards','redCards','expectedGoals'])assert(Number.isFinite(row[side][key]),`${row.id} ${side}.${key}`);
+  if(row.competition==='serie-a'){
+   const original=league.find(m=>m.id===row.id),other=original.homeTeam===teamId?'away':'home';
+   assert.equal(row.statsAgainst.shots,original.teamStats[other].shots);
+   assert.equal(row.statsAgainst.redCards,original.teamStats[other].straightRedCards+original.teamStats[other].secondYellowCards);
+  }
+ }
+ const compact=teamMatchHistoryMarkup(data,'como');assert.equal((compact.match(/scope="colgroup" colspan="2"/g)||[]).length,6);assert.equal((compact.match(/>Fatti<\/th>/g)||[]).length,6);assert.equal((compact.match(/>Subiti<\/th>/g)||[]).length,6);assert(!compact.includes('Possesso %'));assert(!compact.includes('Risultato e statistiche dalla prospettiva'));
  const old=recentTeamMatches(data,'inter',{before:'2026-10-01'});assert(old.every(r=>r.date<'2026-10-01'));
  assert(!old.some(r=>r.id.includes('md04')));
  const html=teamMatchHistoryMarkup(data,'inter');assert(html.includes('Champions League'));assert(!/https?:|sourceUrl|provider/.test(html));

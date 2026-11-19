@@ -3,6 +3,15 @@ const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const metrics=['shots','shotsOnTarget','corners','fouls','yellowCards','redCards','possessionPct','expectedGoals'];
 const numeric=value=>typeof value==='number'&&Number.isFinite(value)?value:null;
+function historyStats(source,xg){
+ const stats=Object.fromEntries(metrics.map(key=>[key,numeric(source?.[key])]));
+ if(stats.redCards===null){
+  if(numeric(source?.straightRedCards)!==null&&numeric(source?.secondYellowCards)!==null)stats.redCards=source.straightRedCards+source.secondYellowCards;
+  else if(numeric(source?.providerDiscipline?.dismissals)!==null)stats.redCards=source.providerDiscipline.dismissals;
+ }
+ if(stats.expectedGoals===null)stats.expectedGoals=numeric(xg);
+ return stats;
+}
 const competitionLabels={'serie-a':'Serie A','champions-league':'Champions League','europa-league':'Europa League','conference-league':'Conference League'};
 function loadEuropeanResults(){
  const file=path.join(root,'data/normalized/european-recent-results-2026-27.json');
@@ -41,10 +50,11 @@ function projectHistory(teams,league,champions,secondary=[],xg=[]){
     const team=match[side+'Team'],id=team;
     if(!canonical.has(id))continue;
     const opposite=side==='home'?'away':'home',opponent=match[opposite+'Team'];
-    const stats=Object.fromEntries(metrics.map(key=>[key,numeric(match.teamStats?.[side]?.[key])]));
-    if(stats.expectedGoals===null)stats.expectedGoals=numeric(xg.find(e=>e.fixtureId===match.id)?.expectedGoals?.[side]);
+    const extraXg=xg.find(e=>e.fixtureId===match.id)?.expectedGoals;
+    const stats=historyStats(match.teamStats?.[side],extraXg?.[side]);
+    const statsAgainst=historyStats(match.teamStats?.[opposite],extraXg?.[opposite]);
     const forGoals=match.score[side],againstGoals=match.score[opposite];
-    result[id].push({id:match.id,date:match.date,kickoff:match.kickoff||null,competition,competitionLabel:competitionLabels[competition],season:match.season||'2026-27',venue:side==='home'?'Casa':'Trasferta',opponent:match.teamNames?.[opponent]||names.get(opponent)||opponent,goalsFor:forGoals,goalsAgainst:againstGoals,result:forGoals>againstGoals?'V':forGoals<againstGoals?'S':'P',stats});
+    result[id].push({id:match.id,date:match.date,kickoff:match.kickoff||null,competition,competitionLabel:competitionLabels[competition],season:match.season||'2026-27',venue:side==='home'?'Casa':'Trasferta',opponent:match.teamNames?.[opponent]||names.get(opponent)||opponent,goalsFor:forGoals,goalsAgainst:againstGoals,result:forGoals>againstGoals?'V':forGoals<againstGoals?'S':'P',stats,statsAgainst});
    }
   }
  }

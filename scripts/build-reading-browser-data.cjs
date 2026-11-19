@@ -32,7 +32,11 @@ function build({matchday=null,refreshArchived=false}={}){
   const previousFile=`data/generated/readings/matches/${id}.json`;
   if(!refreshArchived&&matchday===null&&match.status==='finished'&&fs.existsSync(path.join(root,previousFile))&&fs.existsSync(path.join(root,`data/generated/readings/catalogs/${id}.json`))){
    const officialFixtures=artifact('data/sources/official-lineups-2026-27.json')?.fixtures.filter(f=>f.matchId===id);
-   if(canReuse({previous:read(previousFile),match,readings:readings.filter(r=>r.matchId===id),predictions:predictions.predictions.filter(p=>p.matchId===id),forecastDataset,officialFixtures})){reused++;continue;}
+   if(canReuse({previous:read(previousFile),match,readings:readings.filter(r=>r.matchId===id),predictions:predictions.predictions.filter(p=>p.matchId===id),forecastDataset,officialFixtures})){
+    const previous=read(previousFile);
+    previous.artifacts['data/generated/serie-a-team-history.json']={...teamHistory,teams:Object.fromEntries(ids.map(teamId=>[teamId,(teamHistory.teams[teamId]||[]).filter(row=>!match.date||row.date.slice(0,10)<match.date.slice(0,10)).slice(0,10)]))};
+    write(`matches/${id}.json`,previous);reused++;continue;
+   }
   }
   write(`catalogs/${id}.json`,{forecastDataset,finishedIds});
   const artifacts={};
