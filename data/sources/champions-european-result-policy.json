@@ -26,7 +26,11 @@
     "drawScale": 600,
     "seasonRetention": 1,
     "competitionWeightProfile": "flat",
-    "competitionUpdateWeights": {"ucl": 1, "uel": 1, "uecl": 1},
+    "competitionUpdateWeights": {
+      "ucl": 1,
+      "uel": 1,
+      "uecl": 1
+    },
     "countryWeight": 0,
     "shrinkMatches": 0,
     "halfLifeDays": null
@@ -41,5 +45,15 @@
     "discipline": "Observed team outcome-conditional rates, shrunk by minimumEuropeanAppearances prior matches; neutral if unsupported.",
     "statisticallyValidated": false
   },
-  "scope": "Future fixtures only. European outcome distribution conditions scores, expected goals, offensive volumes, xGOT and downstream individual allocation when canonical fixture-specific lineups exist. Discipline uses observed outcome associations when covered. Missing evidence remains N/D or explicitly neutral. No DUO probability conversion or statistical approval."
+  "scope": "Future fixtures only. European outcome distribution conditions scores, expected goals, offensive volumes, xGOT and downstream individual allocation when canonical fixture-specific lineups exist. Discipline uses observed outcome associations when covered. Missing evidence remains N/D or explicitly neutral. No DUO probability conversion or statistical approval.",
+  "opta": {
+    "enabled": true,
+    "activatedAt": "2026-11-19T18:33:05.321Z",
+    "authorization": "Utilizza Opta e ricalcola le Letture; rating individuale del club senza bonus aggiuntivo di campionato.",
+    "ratingsPath": "data/sources/champions-opta-club-ratings-2026-27.json",
+    "modelPath": "data/normalized/champions-opta-result-model.json",
+    "method": "Frozen symmetric multinomial-logit calibration; existing xGOT correction and shared Reading conditioning retained.",
+    "fallback": "No Elo or domestic prior after activation. Unavailable or unverified ratings remain N/D.",
+    "statisticallyValidated": false
+  }
 }

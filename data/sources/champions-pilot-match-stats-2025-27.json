@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "scope": "Champions League 2026/27: profili quantitativi delle 36 partecipanti, con baseline domestica quando disponibile e fallback UEFA esplicito",
-  "retrievedAt": "2026-11-14T16:29:46.379Z",
-  "asOf": "2026-11-02",
-  "cutoffDate": "2026-11-02",
+  "retrievedAt": "2026-11-19T14:15:40.389Z",
+  "asOf": "2026-11-19",
+  "cutoffDate": "2026-11-19",
   "dateIntervals": [
     {
       "season": "2026-27",
@@ -434,11 +434,12 @@
       "id": "sabah",
       "name": "Sabah",
       "espnTeamId": "21922",
-      "league": "uefa.champions_qual",
-      "leagueName": "Qualificazioni UEFA Champions League",
-      "baselineKind": "uefa-fallback",
+      "league": "aze.1",
+      "leagueName": "Premyer Liqa",
+      "baselineKind": "domestic",
       "statisticsProviderIds": {
-        "FotMob": "951893"
+        "FotMob": "951893",
+        "VARStats": "327"
       }
     },
     {
@@ -539,8 +540,8 @@
     "yellowCards"
   ],
   "summary": {
-    "matches": 5077,
-    "completeMatches": 4468,
+    "matches": 5134,
+    "completeMatches": 4525,
     "teams": 36
   },
   "teamCoverage": [
@@ -771,9 +772,10 @@
     {
       "teamId": "sabah",
       "team": "Sabah",
-      "matches": 13,
-      "completeMatches": 5,
-      "baselineKind": "uefa-fallback"
+      "matches": 8,
+      "completeMatches": 8,
+      "baselineKind": "domestic",
+      "volumeMatches": 8
     },
     {
       "teamId": "shakhtar-donetsk",
@@ -193619,6 +193621,62 @@
       }
     },
     {
+      "eventId": "varstats:238175",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-08-29",
+      "startsAt": "2026-08-29T14:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19716",
+        "canonicalTeamId": null,
+        "name": "Qabala",
+        "score": 0,
+        "statistics": {
+          "totalShots": 9,
+          "shotsOnTarget": 4,
+          "wonCorners": 0,
+          "yellowCards": 1,
+          "foulsCommitted": 16
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19708",
+        "canonicalTeamId": null,
+        "name": "Shamakhi",
+        "score": 0,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 3,
+          "wonCorners": 3,
+          "yellowCards": 2,
+          "foulsCommitted": 28
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/fk-qabala-vs-shamakhi-fk-238175",
+        "retrievedAt": "2026-11-19T14:15:40.389Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238175.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987504",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "9d84a2467af55fcbb4c5c9217cfcde600ed151b99a397fcf49bd87e33f3bb049"
+      }
+    },
+    {
       "eventId": "401843420",
       "season": "2026-27",
       "league": "nor.1",
@@ -195722,6 +195780,62 @@
       }
     },
     {
+      "eventId": "varstats:238270",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-08-31",
+      "startsAt": "2026-08-31T14:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "3118",
+        "canonicalTeamId": null,
+        "name": "Araz",
+        "score": 0,
+        "statistics": {
+          "totalShots": 6,
+          "shotsOnTarget": 1,
+          "wonCorners": 5,
+          "yellowCards": 0,
+          "foulsCommitted": 6
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "327",
+        "canonicalTeamId": "sabah",
+        "name": "Sabah",
+        "score": 1,
+        "statistics": {
+          "totalShots": 20,
+          "shotsOnTarget": 8,
+          "wonCorners": 10,
+          "yellowCards": 0,
+          "foulsCommitted": 14
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/araz-fk-vs-sabah-fk-238270",
+        "retrievedAt": "2026-11-19T14:13:10.216Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238270.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987503",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "81ce3ef31daee7a4fc3a9016c14de5578a9e440169110dbd632ce1b986e7d2c2"
+      }
+    },
+    {
       "eventId": "401881800",
       "season": "2026-27",
       "league": "aut.1",
@@ -196622,6 +196736,62 @@
         "url": "https://www.espn.com/soccer/match/_/gameId/401888304",
         "summaryUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/summary?event=401888304",
         "retrievedAt": "2026-09-06T21:35:19.435Z"
+      }
+    },
+    {
+      "eventId": "varstats:238302",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-09-04",
+      "startsAt": "2026-09-04T14:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19716",
+        "canonicalTeamId": null,
+        "name": "Qabala",
+        "score": 2,
+        "statistics": {
+          "totalShots": 12,
+          "shotsOnTarget": 6,
+          "wonCorners": 5,
+          "yellowCards": 3,
+          "foulsCommitted": 8
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19725",
+        "canonicalTeamId": null,
+        "name": "Mil Mugan",
+        "score": 1,
+        "statistics": {
+          "totalShots": 13,
+          "shotsOnTarget": 6,
+          "wonCorners": 11,
+          "yellowCards": 3,
+          "foulsCommitted": 15
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/fk-qabala-vs-mil-mugan-fk-238302",
+        "retrievedAt": "2026-11-19T14:15:37.839Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238302.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987509",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "41ea64991c65b862906578bff08790ab360a34a66718c516ceb9d4c44dc8d801"
       }
     },
     {
@@ -200514,6 +200684,62 @@
       }
     },
     {
+      "eventId": "varstats:238335",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-09-12",
+      "startsAt": "2026-09-12T13:30:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19706",
+        "canonicalTeamId": null,
+        "name": "Kapaz",
+        "score": 1,
+        "statistics": {
+          "totalShots": 6,
+          "shotsOnTarget": 1,
+          "wonCorners": 2,
+          "yellowCards": 1,
+          "foulsCommitted": 15
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19716",
+        "canonicalTeamId": null,
+        "name": "Qabala",
+        "score": 0,
+        "statistics": {
+          "totalShots": 10,
+          "shotsOnTarget": 1,
+          "wonCorners": 3,
+          "yellowCards": 2,
+          "foulsCommitted": 9
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/fk-kapaz-vs-fk-qabala-238335",
+        "retrievedAt": "2026-11-19T14:15:34.187Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238335.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987517",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "886632a7607d07e6913293b98d78eca5f8e3fa33df173e4af21ca962ae20a754"
+      }
+    },
+    {
       "eventId": "401843437",
       "season": "2026-27",
       "league": "nor.1",
@@ -201604,6 +201830,62 @@
       }
     },
     {
+      "eventId": "varstats:238233",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-09-14",
+      "startsAt": "2026-09-14T15:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19738",
+        "canonicalTeamId": null,
+        "name": "Safa",
+        "score": 0,
+        "statistics": {
+          "totalShots": 5,
+          "shotsOnTarget": 4,
+          "wonCorners": 5,
+          "yellowCards": 0,
+          "foulsCommitted": 7
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "327",
+        "canonicalTeamId": "sabah",
+        "name": "Sabah",
+        "score": 3,
+        "statistics": {
+          "totalShots": 18,
+          "shotsOnTarget": 7,
+          "wonCorners": 6,
+          "yellowCards": 0,
+          "foulsCommitted": 15
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/fk-safa-vs-sabah-fk-238233",
+        "retrievedAt": "2026-11-19T14:14:52.774Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238233.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987518",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "efff5ea97f3e8daacb1f6c958a63f37601fb5a45bcda8ded610ef26eeae34b71"
+      }
+    },
+    {
       "eventId": "401882872",
       "season": "2026-27",
       "league": "esp.1",
@@ -201881,6 +202163,62 @@
         "url": "https://www.espn.com/soccer/match/_/gameId/401884790",
         "summaryUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/summary?event=401884790",
         "retrievedAt": "2026-11-02T17:37:29.253Z"
+      }
+    },
+    {
+      "eventId": "varstats:238325",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-09-18",
+      "startsAt": "2026-09-18T13:30:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19716",
+        "canonicalTeamId": null,
+        "name": "Qabala",
+        "score": 0,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 2,
+          "wonCorners": 4,
+          "yellowCards": 0,
+          "foulsCommitted": 15
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "3335",
+        "canonicalTeamId": null,
+        "name": "Neftchi Baku",
+        "score": 3,
+        "statistics": {
+          "totalShots": 17,
+          "shotsOnTarget": 9,
+          "wonCorners": 4,
+          "yellowCards": 3,
+          "foulsCommitted": 18
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/fk-qabala-vs-neftci-pfc-bak-238325",
+        "retrievedAt": "2026-11-19T14:15:31.690Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238325.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987521",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "dd7dae86b8e86c961b0a255878a55a455e9588bd5428a62020eb95639a60d096"
       }
     },
     {
@@ -202213,6 +202551,62 @@
         "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=5772190",
         "retrievedAt": "2026-11-02T17:39:48.688Z",
         "rawFile": "data/raw/champions-team-coverage/2026-11-02/matches/5772190.json.gz"
+      }
+    },
+    {
+      "eventId": "varstats:238184",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-09-19",
+      "startsAt": "2026-09-19T15:45:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "327",
+        "canonicalTeamId": "sabah",
+        "name": "Sabah",
+        "score": 3,
+        "statistics": {
+          "totalShots": 13,
+          "shotsOnTarget": 7,
+          "wonCorners": 3,
+          "yellowCards": 1,
+          "foulsCommitted": 17
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19725",
+        "canonicalTeamId": null,
+        "name": "Mil Mugan",
+        "score": 1,
+        "statistics": {
+          "totalShots": 12,
+          "shotsOnTarget": 6,
+          "wonCorners": 4,
+          "yellowCards": 4,
+          "foulsCommitted": 7
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/sabah-fk-vs-mil-mugan-fk-238184",
+        "retrievedAt": "2026-11-19T14:14:50.144Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238184.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987524",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "cd4b4ff9c37c5b8137de1d823fb4f730c5f6817ed99eb0b577007491bdf3c9e2"
       }
     },
     {
@@ -203431,6 +203825,62 @@
       }
     },
     {
+      "eventId": "varstats:238327",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-10-09",
+      "startsAt": "2026-10-09T15:30:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "3335",
+        "canonicalTeamId": null,
+        "name": "Neftchi Baku",
+        "score": 0,
+        "statistics": {
+          "totalShots": 13,
+          "shotsOnTarget": 5,
+          "wonCorners": 4,
+          "yellowCards": 2,
+          "foulsCommitted": 17
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "327",
+        "canonicalTeamId": "sabah",
+        "name": "Sabah",
+        "score": 0,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 4,
+          "wonCorners": 3,
+          "yellowCards": 3,
+          "foulsCommitted": 21
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/neftci-pfc-bak-vs-sabah-fk-238327",
+        "retrievedAt": "2026-11-19T14:14:47.773Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238327.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987529",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "27e2337ed9c26b1da346f8d7355eff5680f48e5635aaa3a077b7c0dd818c7195"
+      }
+    },
+    {
       "eventId": "401843456",
       "season": "2026-27",
       "league": "nor.1",
@@ -204240,6 +204690,118 @@
         "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=5772261",
         "retrievedAt": "2026-11-02T17:39:48.745Z",
         "rawFile": "data/raw/champions-team-coverage/2026-11-02/matches/5772261.json.gz"
+      }
+    },
+    {
+      "eventId": "varstats:238180",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-10-10",
+      "startsAt": "2026-10-10T15:30:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "2920",
+        "canonicalTeamId": null,
+        "name": "Sumqayit",
+        "score": 4,
+        "statistics": {
+          "totalShots": 8,
+          "shotsOnTarget": 5,
+          "wonCorners": 2,
+          "yellowCards": 3,
+          "foulsCommitted": 20
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19716",
+        "canonicalTeamId": null,
+        "name": "Qabala",
+        "score": 1,
+        "statistics": {
+          "totalShots": 12,
+          "shotsOnTarget": 3,
+          "wonCorners": 5,
+          "yellowCards": 2,
+          "foulsCommitted": 12
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/fk-sumqay-t-vs-fk-qabala-238180",
+        "retrievedAt": "2026-11-19T14:13:04.885Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238180.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987531",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "e6f4a10f828ad1dc5554a4cbc8eeeea2c66d8ac04435d1e8912a614e7d5f1e7f"
+      }
+    },
+    {
+      "eventId": "varstats:238336",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-10-10",
+      "startsAt": "2026-10-10T13:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "2325",
+        "canonicalTeamId": null,
+        "name": "Zira",
+        "score": 1,
+        "statistics": {
+          "totalShots": 9,
+          "shotsOnTarget": 3,
+          "wonCorners": 10,
+          "yellowCards": 1,
+          "foulsCommitted": 18
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19708",
+        "canonicalTeamId": null,
+        "name": "Shamakhi",
+        "score": 1,
+        "statistics": {
+          "totalShots": 5,
+          "shotsOnTarget": 2,
+          "wonCorners": 1,
+          "yellowCards": 2,
+          "foulsCommitted": 17
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/zira-ik-vs-shamakhi-fk-238336",
+        "retrievedAt": "2026-11-19T14:13:07.174Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238336.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987532",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "b3a9d6535ac05ed07c0ec8b9360a2e8867e76befb225fcade08188af95151f6f"
       }
     },
     {
@@ -205181,6 +205743,62 @@
         "url": "https://www.espn.com/soccer/match/_/gameId/401915416",
         "summaryUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915416",
         "retrievedAt": "2026-10-20T17:09:20.573Z"
+      }
+    },
+    {
+      "eventId": "varstats:238249",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-10-16",
+      "startsAt": "2026-10-16T11:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19708",
+        "canonicalTeamId": null,
+        "name": "Shamakhi",
+        "score": 3,
+        "statistics": {
+          "totalShots": 10,
+          "shotsOnTarget": 8,
+          "wonCorners": 6,
+          "yellowCards": 1,
+          "foulsCommitted": 16
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19738",
+        "canonicalTeamId": null,
+        "name": "Safa",
+        "score": 2,
+        "statistics": {
+          "totalShots": 9,
+          "shotsOnTarget": 5,
+          "wonCorners": 0,
+          "yellowCards": 4,
+          "foulsCommitted": 11
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/shamakhi-fk-vs-fk-safa-238249",
+        "retrievedAt": "2026-11-19T14:13:06.689Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238249.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987536",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "cb0b315b7c34dcb3e26159ccb833eec4ea7dc6774baff2246e6b7ca544423f48"
       }
     },
     {
@@ -206234,6 +206852,62 @@
       }
     },
     {
+      "eventId": "varstats:238195",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-10-17",
+      "startsAt": "2026-10-17T12:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19716",
+        "canonicalTeamId": null,
+        "name": "Qabala",
+        "score": 0,
+        "statistics": {
+          "totalShots": 10,
+          "shotsOnTarget": 2,
+          "wonCorners": 3,
+          "yellowCards": 0,
+          "foulsCommitted": 8
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "327",
+        "canonicalTeamId": "sabah",
+        "name": "Sabah",
+        "score": 4,
+        "statistics": {
+          "totalShots": 17,
+          "shotsOnTarget": 7,
+          "wonCorners": 6,
+          "yellowCards": 0,
+          "foulsCommitted": 12
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/fk-qabala-vs-sabah-fk-238195",
+        "retrievedAt": "2026-11-19T14:14:44.987Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238195.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987533",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "dddf9a5934269177f2254b0df9441f11a47fbf5ca2d46e16f850d4f361bca690"
+      }
+    },
+    {
       "eventId": "401874774",
       "season": "2026-27",
       "league": "ita.1",
@@ -206394,6 +207068,372 @@
       }
     },
     {
+      "eventId": "fotmob:6106234",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-20",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "9847",
+        "canonicalTeamId": "paris-saint-germain",
+        "name": "Paris Saint-Germain",
+        "score": 4,
+        "statistics": {
+          "totalShots": 22,
+          "shotsOnTarget": 14,
+          "wonCorners": 2,
+          "foulsCommitted": 11,
+          "yellowCards": 0
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8634",
+        "canonicalTeamId": "barcelona",
+        "name": "Barcelona",
+        "score": 2,
+        "statistics": {
+          "totalShots": 18,
+          "shotsOnTarget": 5,
+          "wonCorners": 3,
+          "foulsCommitted": 10,
+          "yellowCards": 1
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106234",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106234",
+        "retrievedAt": "2026-11-19T11:48:15.243Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106234.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-07",
+      "expectedGoals": {
+        "home": 3.7,
+        "away": 2.23
+      },
+      "expectedGoalsOnTarget": {
+        "home": 4.69,
+        "away": 1.21
+      }
+    },
+    {
+      "eventId": "fotmob:6106248",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-20",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8650",
+        "canonicalTeamId": "liverpool",
+        "name": "Liverpool",
+        "score": 4,
+        "statistics": {
+          "totalShots": 22,
+          "shotsOnTarget": 7,
+          "wonCorners": 7,
+          "foulsCommitted": 12,
+          "yellowCards": 0
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "10205",
+        "canonicalTeamId": "villarreal",
+        "name": "Villarreal",
+        "score": 3,
+        "statistics": {
+          "totalShots": 14,
+          "shotsOnTarget": 5,
+          "wonCorners": 2,
+          "foulsCommitted": 10,
+          "yellowCards": 2
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106248",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106248",
+        "retrievedAt": "2026-11-19T11:48:16.544Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106248.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-05",
+      "expectedGoals": {
+        "home": 2.37,
+        "away": 1.61
+      },
+      "expectedGoalsOnTarget": {
+        "home": 3.86,
+        "away": 2.14
+      }
+    },
+    {
+      "eventId": "fotmob:6106257",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-20",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8456",
+        "canonicalTeamId": "manchester-city",
+        "name": "Manchester City",
+        "score": 5,
+        "statistics": {
+          "totalShots": 17,
+          "shotsOnTarget": 7,
+          "wonCorners": 8,
+          "foulsCommitted": 6,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8563",
+        "canonicalTeamId": "aek-athens",
+        "name": "AEK Athens",
+        "score": 1,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 3,
+          "wonCorners": 3,
+          "foulsCommitted": 10,
+          "yellowCards": 0
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106257",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106257",
+        "retrievedAt": "2026-11-19T11:48:14.585Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106257.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-06",
+      "expectedGoals": {
+        "home": 2.74,
+        "away": 1.17
+      },
+      "expectedGoalsOnTarget": {
+        "home": 4.58,
+        "away": 1.32
+      }
+    },
+    {
+      "eventId": "fotmob:6106277",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-20",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8686",
+        "canonicalTeamId": "roma",
+        "name": "Roma",
+        "score": 4,
+        "statistics": {
+          "totalShots": 26,
+          "shotsOnTarget": 10,
+          "wonCorners": 8,
+          "foulsCommitted": 10,
+          "yellowCards": 0
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "6019",
+        "canonicalTeamId": "slovan-bratislava",
+        "name": "Slovan Bratislava",
+        "score": 0,
+        "statistics": {
+          "totalShots": 1,
+          "shotsOnTarget": 0,
+          "wonCorners": 1,
+          "foulsCommitted": 10,
+          "yellowCards": 3
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106277",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106277",
+        "retrievedAt": "2026-11-19T11:48:17.129Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106277.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-03",
+      "expectedGoals": {
+        "home": 3.14,
+        "away": 0.02
+      },
+      "expectedGoalsOnTarget": {
+        "home": 5.46,
+        "away": 0
+      }
+    },
+    {
+      "eventId": "fotmob:6106287",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-20",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "9773",
+        "canonicalTeamId": "porto",
+        "name": "FC Porto",
+        "score": 0,
+        "statistics": {
+          "totalShots": 14,
+          "shotsOnTarget": 4,
+          "wonCorners": 2,
+          "foulsCommitted": 7,
+          "yellowCards": 0
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8640",
+        "canonicalTeamId": "psv-eindhoven",
+        "name": "PSV Eindhoven",
+        "score": 1,
+        "statistics": {
+          "totalShots": 18,
+          "shotsOnTarget": 3,
+          "wonCorners": 3,
+          "foulsCommitted": 9,
+          "yellowCards": 2
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106287",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106287",
+        "retrievedAt": "2026-11-19T11:48:16.379Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106287.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-04",
+      "expectedGoals": {
+        "home": 1.58,
+        "away": 1.91
+      },
+      "expectedGoalsOnTarget": {
+        "home": 0.54,
+        "away": 1.11
+      }
+    },
+    {
+      "eventId": "fotmob:6106320",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-20",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "9875",
+        "canonicalTeamId": "napoli",
+        "name": "Napoli",
+        "score": 4,
+        "statistics": {
+          "totalShots": 17,
+          "shotsOnTarget": 8,
+          "wonCorners": 2,
+          "foulsCommitted": 7,
+          "yellowCards": 3
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8402",
+        "canonicalTeamId": "bodo-glimt",
+        "name": "Bodø/Glimt",
+        "score": 3,
+        "statistics": {
+          "totalShots": 15,
+          "shotsOnTarget": 6,
+          "wonCorners": 5,
+          "foulsCommitted": 5,
+          "yellowCards": 0
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106320",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106320",
+        "retrievedAt": "2026-11-19T11:48:14.827Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106320.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-08",
+      "expectedGoals": {
+        "home": 1.53,
+        "away": 2.67
+      },
+      "expectedGoalsOnTarget": {
+        "home": 1.62,
+        "away": 2.87
+      }
+    },
+    {
       "eventId": "fotmob:6106333",
       "season": "2026-27",
       "league": "uefa.champions",
@@ -206443,6 +207483,677 @@
         "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106333",
         "retrievedAt": "2026-11-19T11:48:15.607Z",
         "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106333.json.gz"
+      }
+    },
+    {
+      "eventId": "fotmob:6106397",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-20",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "10269",
+        "canonicalTeamId": "stuttgart",
+        "name": "VfB Stuttgart",
+        "score": 1,
+        "statistics": {
+          "totalShots": 18,
+          "shotsOnTarget": 5,
+          "wonCorners": 9,
+          "foulsCommitted": 15,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "9906",
+        "canonicalTeamId": "atletico-de-madrid",
+        "name": "Atlético Madrid",
+        "score": 1,
+        "statistics": {
+          "totalShots": 10,
+          "shotsOnTarget": 3,
+          "wonCorners": 4,
+          "foulsCommitted": 7,
+          "yellowCards": 0
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106397",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106397",
+        "retrievedAt": "2026-11-19T11:48:14.833Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106397.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-09",
+      "expectedGoals": {
+        "home": 1.59,
+        "away": 0.9
+      },
+      "expectedGoalsOnTarget": {
+        "home": 1.56,
+        "away": 0.96
+      }
+    },
+    {
+      "eventId": "fotmob:6106422",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-20",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "951893",
+        "canonicalTeamId": "sabah",
+        "name": "Sabah FK",
+        "score": 1,
+        "statistics": {
+          "totalShots": 13,
+          "shotsOnTarget": 4,
+          "wonCorners": 4,
+          "foulsCommitted": 8,
+          "yellowCards": 4
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "9789",
+        "canonicalTeamId": "borussia-dortmund",
+        "name": "Borussia Dortmund",
+        "score": 2,
+        "statistics": {
+          "totalShots": 22,
+          "shotsOnTarget": 9,
+          "wonCorners": 9,
+          "foulsCommitted": 12,
+          "yellowCards": 0
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106422",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106422",
+        "retrievedAt": "2026-11-19T11:48:15.202Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106422.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-02",
+      "expectedGoals": {
+        "home": 1.49,
+        "away": 3.73
+      },
+      "expectedGoalsOnTarget": {
+        "home": 1.36,
+        "away": 3.04
+      }
+    },
+    {
+      "eventId": "fotmob:6106238",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-21",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "9823",
+        "canonicalTeamId": "bayern-munchen",
+        "name": "Bayern München",
+        "score": 2,
+        "statistics": {
+          "totalShots": 13,
+          "shotsOnTarget": 5,
+          "wonCorners": 3,
+          "foulsCommitted": 15,
+          "yellowCards": 0
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "9825",
+        "canonicalTeamId": "arsenal",
+        "name": "Arsenal",
+        "score": 2,
+        "statistics": {
+          "totalShots": 14,
+          "shotsOnTarget": 5,
+          "wonCorners": 5,
+          "foulsCommitted": 6,
+          "yellowCards": 2
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106238",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106238",
+        "retrievedAt": "2026-11-19T11:48:14.597Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106238.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-14",
+      "expectedGoals": {
+        "home": 2.33,
+        "away": 1.69
+      },
+      "expectedGoalsOnTarget": {
+        "home": 2.1,
+        "away": 1.68
+      }
+    },
+    {
+      "eventId": "fotmob:6106244",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-21",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8633",
+        "canonicalTeamId": "real-madrid",
+        "name": "Real Madrid",
+        "score": 4,
+        "statistics": {
+          "totalShots": 18,
+          "shotsOnTarget": 11,
+          "wonCorners": 7,
+          "foulsCommitted": 13,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "178475",
+        "canonicalTeamId": "leipzig",
+        "name": "RB Leipzig",
+        "score": 1,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 6,
+          "wonCorners": 1,
+          "foulsCommitted": 12,
+          "yellowCards": 1
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106244",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106244",
+        "retrievedAt": "2026-11-19T11:48:16.085Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106244.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-16",
+      "expectedGoals": {
+        "home": 3.09,
+        "away": 1.49
+      },
+      "expectedGoalsOnTarget": {
+        "home": 5.02,
+        "away": 1.32
+      }
+    },
+    {
+      "eventId": "fotmob:6106252",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-21",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8636",
+        "canonicalTeamId": "inter",
+        "name": "Inter",
+        "score": 1,
+        "statistics": {
+          "totalShots": 13,
+          "shotsOnTarget": 5,
+          "wonCorners": 5,
+          "foulsCommitted": 9,
+          "yellowCards": 2
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "9728",
+        "canonicalTeamId": "shakhtar-donetsk",
+        "name": "Shakhtar Donetsk",
+        "score": 0,
+        "statistics": {
+          "totalShots": 12,
+          "shotsOnTarget": 4,
+          "wonCorners": 4,
+          "foulsCommitted": 10,
+          "yellowCards": 2
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106252",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106252",
+        "retrievedAt": "2026-11-19T11:48:15.718Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106252.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-15",
+      "expectedGoals": {
+        "home": 1.05,
+        "away": 0.6
+      },
+      "expectedGoalsOnTarget": {
+        "home": 1.56,
+        "away": 0.89
+      }
+    },
+    {
+      "eventId": "fotmob:6106281",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-21",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "9768",
+        "canonicalTeamId": "sporting-cp",
+        "name": "Sporting CP",
+        "score": 2,
+        "statistics": {
+          "totalShots": 16,
+          "shotsOnTarget": 4,
+          "wonCorners": 7,
+          "foulsCommitted": 10,
+          "yellowCards": 2
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "9977",
+        "canonicalTeamId": "lask",
+        "name": "LASK",
+        "score": 3,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 7,
+          "wonCorners": 4,
+          "foulsCommitted": 22,
+          "yellowCards": 5
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106281",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106281",
+        "retrievedAt": "2026-11-19T11:48:15.896Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106281.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-18",
+      "expectedGoals": {
+        "home": 3.24,
+        "away": 1.12
+      },
+      "expectedGoalsOnTarget": {
+        "home": 2.69,
+        "away": 2.7
+      }
+    },
+    {
+      "eventId": "fotmob:6106285",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-21",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "10252",
+        "canonicalTeamId": "aston-villa",
+        "name": "Aston Villa",
+        "score": 3,
+        "statistics": {
+          "totalShots": 21,
+          "shotsOnTarget": 10,
+          "wonCorners": 8,
+          "foulsCommitted": 7,
+          "yellowCards": 0
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8478",
+        "canonicalTeamId": "viking",
+        "name": "Viking",
+        "score": 1,
+        "statistics": {
+          "totalShots": 10,
+          "shotsOnTarget": 3,
+          "wonCorners": 6,
+          "foulsCommitted": 14,
+          "yellowCards": 0
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106285",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106285",
+        "retrievedAt": "2026-11-19T11:48:14.867Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106285.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-12",
+      "expectedGoals": {
+        "home": 2.7,
+        "away": 0.74
+      },
+      "expectedGoalsOnTarget": {
+        "home": 1.7,
+        "away": 0.31
+      }
+    },
+    {
+      "eventId": "fotmob:6106297",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-21",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8342",
+        "canonicalTeamId": "club-brugge",
+        "name": "Club Brugge",
+        "score": 3,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 5,
+          "wonCorners": 1,
+          "foulsCommitted": 6,
+          "yellowCards": 2
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8588",
+        "canonicalTeamId": "lens",
+        "name": "Lens",
+        "score": 0,
+        "statistics": {
+          "totalShots": 19,
+          "shotsOnTarget": 7,
+          "wonCorners": 5,
+          "foulsCommitted": 10,
+          "yellowCards": 2
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106297",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106297",
+        "retrievedAt": "2026-11-19T11:48:15.262Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106297.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-13",
+      "expectedGoals": {
+        "home": 2.6,
+        "away": 2.03
+      },
+      "expectedGoalsOnTarget": {
+        "home": 2.91,
+        "away": 1.26
+      }
+    },
+    {
+      "eventId": "fotmob:6106300",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-21",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8603",
+        "canonicalTeamId": "real-betis",
+        "name": "Real Betis",
+        "score": 1,
+        "statistics": {
+          "totalShots": 23,
+          "shotsOnTarget": 10,
+          "wonCorners": 4,
+          "foulsCommitted": 8,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "10235",
+        "canonicalTeamId": "feyenoord",
+        "name": "Feyenoord",
+        "score": 0,
+        "statistics": {
+          "totalShots": 12,
+          "shotsOnTarget": 2,
+          "wonCorners": 4,
+          "foulsCommitted": 10,
+          "yellowCards": 2
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106300",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106300",
+        "retrievedAt": "2026-11-19T11:48:15.757Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106300.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-17",
+      "expectedGoals": {
+        "home": 2.14,
+        "away": 0.78
+      },
+      "expectedGoalsOnTarget": {
+        "home": 2.05,
+        "away": 0.39
+      }
+    },
+    {
+      "eventId": "fotmob:6106312",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-21",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8639",
+        "canonicalTeamId": "lille",
+        "name": "Lille",
+        "score": 2,
+        "statistics": {
+          "totalShots": 15,
+          "shotsOnTarget": 5,
+          "wonCorners": 3,
+          "foulsCommitted": 9,
+          "yellowCards": 3
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8637",
+        "canonicalTeamId": "galatasaray",
+        "name": "Galatasaray",
+        "score": 4,
+        "statistics": {
+          "totalShots": 10,
+          "shotsOnTarget": 4,
+          "wonCorners": 3,
+          "foulsCommitted": 10,
+          "yellowCards": 1
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106312",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106312",
+        "retrievedAt": "2026-11-19T11:48:15.754Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106312.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-11",
+      "expectedGoals": {
+        "home": 2.07,
+        "away": 1.39
+      },
+      "expectedGoalsOnTarget": {
+        "home": 2.18,
+        "away": 1.49
+      }
+    },
+    {
+      "eventId": "fotmob:6106410",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-10-21",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "10171",
+        "canonicalTeamId": "como",
+        "name": "Como",
+        "score": 4,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 8,
+          "wonCorners": 1,
+          "foulsCommitted": 10,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "10260",
+        "canonicalTeamId": "manchester-united",
+        "name": "Manchester United",
+        "score": 1,
+        "statistics": {
+          "totalShots": 13,
+          "shotsOnTarget": 4,
+          "wonCorners": 4,
+          "foulsCommitted": 11,
+          "yellowCards": 3
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106410",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106410",
+        "retrievedAt": "2026-11-19T11:48:15.435Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106410.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md03-10",
+      "expectedGoals": {
+        "home": 2.11,
+        "away": 0.99
+      },
+      "expectedGoalsOnTarget": {
+        "home": 4.03,
+        "away": 0.59
       }
     },
     {
@@ -207748,6 +209459,62 @@
       }
     },
     {
+      "eventId": "varstats:238262",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-10-25",
+      "startsAt": "2026-10-25T14:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "327",
+        "canonicalTeamId": "sabah",
+        "name": "Sabah",
+        "score": 0,
+        "statistics": {
+          "totalShots": 8,
+          "shotsOnTarget": 2,
+          "wonCorners": 8,
+          "yellowCards": 2,
+          "foulsCommitted": 17
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "178",
+        "canonicalTeamId": null,
+        "name": "Qarabag",
+        "score": 0,
+        "statistics": {
+          "totalShots": 5,
+          "shotsOnTarget": 2,
+          "wonCorners": 5,
+          "yellowCards": 2,
+          "foulsCommitted": 11
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/sabah-fk-vs-qarabag-agdam-fk-238262",
+        "retrievedAt": "2026-11-19T14:14:42.902Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238262.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987542",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "69ae9b495d35f4f46e54599f4487a59d636df09a9d7358bca548c4c7c0364951"
+      }
+    },
+    {
       "eventId": "401876422",
       "season": "2026-27",
       "league": "fra.1",
@@ -208410,6 +210177,62 @@
         "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=5909320",
         "retrievedAt": "2026-11-02T17:39:46.225Z",
         "rawFile": "data/raw/champions-team-coverage/2026-11-02/matches/5909320.json.gz"
+      }
+    },
+    {
+      "eventId": "varstats:238282",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-10-30",
+      "startsAt": "2026-10-30T14:30:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19714",
+        "canonicalTeamId": null,
+        "name": "Turan-T",
+        "score": 3,
+        "statistics": {
+          "totalShots": 4,
+          "shotsOnTarget": 3,
+          "wonCorners": 1,
+          "yellowCards": 3,
+          "foulsCommitted": 11
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "327",
+        "canonicalTeamId": "sabah",
+        "name": "Sabah",
+        "score": 2,
+        "statistics": {
+          "totalShots": 4,
+          "shotsOnTarget": 4,
+          "wonCorners": 9,
+          "yellowCards": 3,
+          "foulsCommitted": 16
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/turan-t-ik-vs-sabah-fk-238282",
+        "retrievedAt": "2026-11-19T14:14:40.134Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238282.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987550",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "f1277f528ea3b2c89823352522007f2837c80547c7bf79945fc8163e67785385"
       }
     },
     {
@@ -209238,6 +211061,62 @@
       }
     },
     {
+      "eventId": "varstats:238186",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-10-31",
+      "startsAt": "2026-10-31T13:30:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19716",
+        "canonicalTeamId": null,
+        "name": "Qabala",
+        "score": 0,
+        "statistics": {
+          "totalShots": 7,
+          "shotsOnTarget": 3,
+          "wonCorners": 4,
+          "yellowCards": 2,
+          "foulsCommitted": 8
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "178",
+        "canonicalTeamId": null,
+        "name": "Qarabag",
+        "score": 0,
+        "statistics": {
+          "totalShots": 10,
+          "shotsOnTarget": 1,
+          "wonCorners": 6,
+          "yellowCards": 1,
+          "foulsCommitted": 12
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/fk-qabala-vs-qarabag-agdam-fk-238186",
+        "retrievedAt": "2026-11-19T14:15:29.052Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238186.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987546",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "7d3d0ae85a01a619ad3b30a6914eea038b6fb6327e2e4bca0c34a061c9fa86ad"
+      }
+    },
+    {
       "eventId": "fotmob:5749733",
       "season": "2026-27",
       "league": "ita.1",
@@ -209498,6 +211377,1028 @@
       }
     },
     {
+      "eventId": "varstats:238207",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-11-01",
+      "startsAt": "2026-11-01T11:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19708",
+        "canonicalTeamId": null,
+        "name": "Shamakhi",
+        "score": 2,
+        "statistics": {
+          "totalShots": 10,
+          "shotsOnTarget": 7,
+          "wonCorners": 2,
+          "yellowCards": 1,
+          "foulsCommitted": 14
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "3335",
+        "canonicalTeamId": null,
+        "name": "Neftchi Baku",
+        "score": 3,
+        "statistics": {
+          "totalShots": 18,
+          "shotsOnTarget": 8,
+          "wonCorners": 8,
+          "yellowCards": 2,
+          "foulsCommitted": 15
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/shamakhi-fk-vs-neftci-pfc-bak-238207",
+        "retrievedAt": "2026-11-19T14:15:25.780Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238207.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987548",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "060b29140f38c544e76f54e1143c2c5be1630b18795d1a3bd61ad8e81931ecf6"
+      }
+    },
+    {
+      "eventId": "varstats:238253",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-11-01",
+      "startsAt": "2026-11-01T13:30:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19706",
+        "canonicalTeamId": null,
+        "name": "Kapaz",
+        "score": 1,
+        "statistics": {
+          "totalShots": 15,
+          "shotsOnTarget": 3,
+          "wonCorners": 8,
+          "yellowCards": 2,
+          "foulsCommitted": 10
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19725",
+        "canonicalTeamId": null,
+        "name": "Mil Mugan",
+        "score": 0,
+        "statistics": {
+          "totalShots": 7,
+          "shotsOnTarget": 2,
+          "wonCorners": 5,
+          "yellowCards": 3,
+          "foulsCommitted": 13
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/fk-kapaz-vs-mil-mugan-fk-238253",
+        "retrievedAt": "2026-11-19T14:15:22.732Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238253.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987547",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "514c4390a70ff742b5676b751cfa275a19f06b1c987cfc4656ef37e6282c04a9"
+      }
+    },
+    {
+      "eventId": "varstats:238297",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-11-02",
+      "startsAt": "2026-11-02T15:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "2920",
+        "canonicalTeamId": null,
+        "name": "Sumqayit",
+        "score": 1,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 6,
+          "wonCorners": 3,
+          "yellowCards": 3,
+          "foulsCommitted": 13
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19738",
+        "canonicalTeamId": null,
+        "name": "Safa",
+        "score": 1,
+        "statistics": {
+          "totalShots": 10,
+          "shotsOnTarget": 3,
+          "wonCorners": 6,
+          "yellowCards": 2,
+          "foulsCommitted": 13
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/fk-sumqay-t-vs-fk-safa-238297",
+        "retrievedAt": "2026-11-19T14:15:20.390Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238297.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987549",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "df259e3da134e5c2258456fe4c49b3cc569c940575854de7ff92b102588665b1"
+      }
+    },
+    {
+      "eventId": "fotmob:6106263",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-03",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8634",
+        "canonicalTeamId": "barcelona",
+        "name": "Barcelona",
+        "score": 3,
+        "statistics": {
+          "totalShots": 16,
+          "shotsOnTarget": 8,
+          "wonCorners": 4,
+          "foulsCommitted": 14,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "10252",
+        "canonicalTeamId": "aston-villa",
+        "name": "Aston Villa",
+        "score": 0,
+        "statistics": {
+          "totalShots": 9,
+          "shotsOnTarget": 1,
+          "wonCorners": 8,
+          "foulsCommitted": 9,
+          "yellowCards": 3
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106263",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106263",
+        "retrievedAt": "2026-11-19T11:48:14.928Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106263.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-04",
+      "expectedGoals": {
+        "home": 1.86,
+        "away": 0.71
+      },
+      "expectedGoalsOnTarget": {
+        "home": 3.48,
+        "away": 0.09
+      }
+    },
+    {
+      "eventId": "fotmob:6106266",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-03",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "9906",
+        "canonicalTeamId": "atletico-de-madrid",
+        "name": "Atlético Madrid",
+        "score": 0,
+        "statistics": {
+          "totalShots": 9,
+          "shotsOnTarget": 3,
+          "wonCorners": 4,
+          "foulsCommitted": 13,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "9823",
+        "canonicalTeamId": "bayern-munchen",
+        "name": "Bayern München",
+        "score": 2,
+        "statistics": {
+          "totalShots": 19,
+          "shotsOnTarget": 5,
+          "wonCorners": 4,
+          "foulsCommitted": 3,
+          "yellowCards": 2
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106266",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106266",
+        "retrievedAt": "2026-11-19T11:48:14.998Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106266.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-03",
+      "expectedGoals": {
+        "home": 1.02,
+        "away": 1.91
+      },
+      "expectedGoalsOnTarget": {
+        "home": 1.28,
+        "away": 0.91
+      }
+    },
+    {
+      "eventId": "fotmob:6106291",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-03",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "10260",
+        "canonicalTeamId": "manchester-united",
+        "name": "Manchester United",
+        "score": 3,
+        "statistics": {
+          "totalShots": 15,
+          "shotsOnTarget": 6,
+          "wonCorners": 3,
+          "foulsCommitted": 11,
+          "yellowCards": 3
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8686",
+        "canonicalTeamId": "roma",
+        "name": "Roma",
+        "score": 2,
+        "statistics": {
+          "totalShots": 7,
+          "shotsOnTarget": 4,
+          "wonCorners": 1,
+          "foulsCommitted": 14,
+          "yellowCards": 3
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106291",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106291",
+        "retrievedAt": "2026-11-19T11:48:16.507Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106291.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-08",
+      "expectedGoals": {
+        "home": 2.7,
+        "away": 1.6
+      },
+      "expectedGoalsOnTarget": {
+        "home": 2.5,
+        "away": 1.51
+      }
+    },
+    {
+      "eventId": "fotmob:6106306",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-03",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "10235",
+        "canonicalTeamId": "feyenoord",
+        "name": "Feyenoord",
+        "score": 0,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 2,
+          "wonCorners": 5,
+          "foulsCommitted": 7,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8636",
+        "canonicalTeamId": "inter",
+        "name": "Inter",
+        "score": 3,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 6,
+          "wonCorners": 4,
+          "foulsCommitted": 13,
+          "yellowCards": 2
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106306",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106306",
+        "retrievedAt": "2026-11-19T11:48:15.734Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106306.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-05",
+      "expectedGoals": {
+        "home": 0.73,
+        "away": 1.19
+      },
+      "expectedGoalsOnTarget": {
+        "home": 0.26,
+        "away": 2.09
+      }
+    },
+    {
+      "eventId": "fotmob:6106316",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-03",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8402",
+        "canonicalTeamId": "bodo-glimt",
+        "name": "Bodø/Glimt",
+        "score": 0,
+        "statistics": {
+          "totalShots": 4,
+          "shotsOnTarget": 4,
+          "wonCorners": 3,
+          "foulsCommitted": 12,
+          "yellowCards": 0
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8639",
+        "canonicalTeamId": "lille",
+        "name": "Lille",
+        "score": 0,
+        "statistics": {
+          "totalShots": 9,
+          "shotsOnTarget": 2,
+          "wonCorners": 4,
+          "foulsCommitted": 8,
+          "yellowCards": 1
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106316",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106316",
+        "retrievedAt": "2026-11-19T11:48:14.778Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106316.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-06",
+      "expectedGoals": {
+        "home": 0.65,
+        "away": 0.59
+      },
+      "expectedGoalsOnTarget": {
+        "home": 0.7,
+        "away": 0.32
+      }
+    },
+    {
+      "eventId": "fotmob:6106326",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-03",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "10205",
+        "canonicalTeamId": "villarreal",
+        "name": "Villarreal",
+        "score": 0,
+        "statistics": {
+          "totalShots": 14,
+          "shotsOnTarget": 2,
+          "wonCorners": 4,
+          "foulsCommitted": 19,
+          "yellowCards": 4
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "9847",
+        "canonicalTeamId": "paris-saint-germain",
+        "name": "Paris Saint-Germain",
+        "score": 6,
+        "statistics": {
+          "totalShots": 22,
+          "shotsOnTarget": 12,
+          "wonCorners": 8,
+          "foulsCommitted": 4,
+          "yellowCards": 0
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106326",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106326",
+        "retrievedAt": "2026-11-19T11:48:16.470Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106326.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-09",
+      "expectedGoals": {
+        "home": 0.7,
+        "away": 2.37
+      },
+      "expectedGoalsOnTarget": {
+        "home": 0.16,
+        "away": 4.53
+      }
+    },
+    {
+      "eventId": "fotmob:6106335",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-03",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "9728",
+        "canonicalTeamId": "shakhtar-donetsk",
+        "name": "Shakhtar Donetsk",
+        "score": 0,
+        "statistics": {
+          "totalShots": 14,
+          "shotsOnTarget": 4,
+          "wonCorners": 7,
+          "foulsCommitted": 10,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "9768",
+        "canonicalTeamId": "sporting-cp",
+        "name": "Sporting CP",
+        "score": 1,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 3,
+          "wonCorners": 2,
+          "foulsCommitted": 18,
+          "yellowCards": 1
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106335",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106335",
+        "retrievedAt": "2026-11-19T11:48:16.951Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106335.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-01",
+      "expectedGoals": {
+        "home": 1.6,
+        "away": 1.52
+      },
+      "expectedGoalsOnTarget": {
+        "home": 0.39,
+        "away": 0.87
+      }
+    },
+    {
+      "eventId": "fotmob:6106341",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-03",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8637",
+        "canonicalTeamId": "galatasaray",
+        "name": "Galatasaray",
+        "score": 2,
+        "statistics": {
+          "totalShots": 13,
+          "shotsOnTarget": 4,
+          "wonCorners": 6,
+          "foulsCommitted": 13,
+          "yellowCards": 3
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "10269",
+        "canonicalTeamId": "stuttgart",
+        "name": "VfB Stuttgart",
+        "score": 0,
+        "statistics": {
+          "totalShots": 13,
+          "shotsOnTarget": 5,
+          "wonCorners": 4,
+          "foulsCommitted": 16,
+          "yellowCards": 5
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106341",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106341",
+        "retrievedAt": "2026-11-19T11:48:15.808Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106341.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-02",
+      "expectedGoals": {
+        "home": 0.98,
+        "away": 2.2
+      },
+      "expectedGoalsOnTarget": {
+        "home": 0.87,
+        "away": 1.41
+      }
+    },
+    {
+      "eventId": "fotmob:6106408",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-03",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "9977",
+        "canonicalTeamId": "lask",
+        "name": "LASK",
+        "score": 4,
+        "statistics": {
+          "totalShots": 29,
+          "shotsOnTarget": 10,
+          "wonCorners": 8,
+          "foulsCommitted": 5,
+          "yellowCards": 0
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "6019",
+        "canonicalTeamId": "slovan-bratislava",
+        "name": "Slovan Bratislava",
+        "score": 0,
+        "statistics": {
+          "totalShots": 7,
+          "shotsOnTarget": 5,
+          "wonCorners": 2,
+          "foulsCommitted": 9,
+          "yellowCards": 2
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106408",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106408",
+        "retrievedAt": "2026-11-19T11:48:16.017Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106408.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-07",
+      "expectedGoals": {
+        "home": 4.45,
+        "away": 0.47
+      },
+      "expectedGoalsOnTarget": {
+        "home": 3.02,
+        "away": 1.13
+      }
+    },
+    {
+      "eventId": "fotmob:6106271",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-04",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "9789",
+        "canonicalTeamId": "borussia-dortmund",
+        "name": "Borussia Dortmund",
+        "score": 2,
+        "statistics": {
+          "totalShots": 15,
+          "shotsOnTarget": 6,
+          "wonCorners": 2,
+          "foulsCommitted": 15,
+          "yellowCards": 4
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8603",
+        "canonicalTeamId": "real-betis",
+        "name": "Real Betis",
+        "score": 1,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 4,
+          "wonCorners": 5,
+          "foulsCommitted": 13,
+          "yellowCards": 4
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106271",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106271",
+        "retrievedAt": "2026-11-19T11:48:15.222Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106271.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-12",
+      "expectedGoals": {
+        "home": 2.5,
+        "away": 0.75
+      },
+      "expectedGoalsOnTarget": {
+        "home": 2.8,
+        "away": 1.05
+      }
+    },
+    {
+      "eventId": "fotmob:6106288",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-04",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "9773",
+        "canonicalTeamId": "porto",
+        "name": "FC Porto",
+        "score": 4,
+        "statistics": {
+          "totalShots": 19,
+          "shotsOnTarget": 8,
+          "wonCorners": 5,
+          "foulsCommitted": 8,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "9875",
+        "canonicalTeamId": "napoli",
+        "name": "Napoli",
+        "score": 1,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 6,
+          "wonCorners": 5,
+          "foulsCommitted": 11,
+          "yellowCards": 4
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106288",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106288",
+        "retrievedAt": "2026-11-19T11:48:16.618Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106288.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-13",
+      "expectedGoals": {
+        "home": 3.13,
+        "away": 1.42
+      },
+      "expectedGoalsOnTarget": {
+        "home": 3.37,
+        "away": 1.85
+      }
+    },
+    {
+      "eventId": "fotmob:6106303",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-04",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8640",
+        "canonicalTeamId": "psv-eindhoven",
+        "name": "PSV Eindhoven",
+        "score": 1,
+        "statistics": {
+          "totalShots": 27,
+          "shotsOnTarget": 9,
+          "wonCorners": 8,
+          "foulsCommitted": 8,
+          "yellowCards": 0
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8342",
+        "canonicalTeamId": "club-brugge",
+        "name": "Club Brugge",
+        "score": 2,
+        "statistics": {
+          "totalShots": 10,
+          "shotsOnTarget": 3,
+          "wonCorners": 5,
+          "foulsCommitted": 10,
+          "yellowCards": 3
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106303",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106303",
+        "retrievedAt": "2026-11-19T11:48:15.641Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106303.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-14",
+      "expectedGoals": {
+        "home": 2.66,
+        "away": 1.69
+      },
+      "expectedGoalsOnTarget": {
+        "home": 2.44,
+        "away": 1.56
+      }
+    },
+    {
+      "eventId": "fotmob:6106322",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-04",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "178475",
+        "canonicalTeamId": "leipzig",
+        "name": "RB Leipzig",
+        "score": 2,
+        "statistics": {
+          "totalShots": 14,
+          "shotsOnTarget": 6,
+          "wonCorners": 5,
+          "foulsCommitted": 20,
+          "yellowCards": 4
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8456",
+        "canonicalTeamId": "manchester-city",
+        "name": "Manchester City",
+        "score": 3,
+        "statistics": {
+          "totalShots": 12,
+          "shotsOnTarget": 5,
+          "wonCorners": 3,
+          "foulsCommitted": 7,
+          "yellowCards": 2
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106322",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106322",
+        "retrievedAt": "2026-11-19T11:48:16.229Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106322.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-15",
+      "expectedGoals": {
+        "home": 0.87,
+        "away": 2.2
+      },
+      "expectedGoalsOnTarget": {
+        "home": 1.01,
+        "away": 2.64
+      }
+    },
+    {
+      "eventId": "fotmob:6106330",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-04",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8695",
+        "canonicalTeamId": "fenerbahce",
+        "name": "Fenerbahçe",
+        "score": 3,
+        "statistics": {
+          "totalShots": 17,
+          "shotsOnTarget": 6,
+          "wonCorners": 4,
+          "foulsCommitted": 13,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8650",
+        "canonicalTeamId": "liverpool",
+        "name": "Liverpool",
+        "score": 2,
+        "statistics": {
+          "totalShots": 22,
+          "shotsOnTarget": 6,
+          "wonCorners": 12,
+          "foulsCommitted": 12,
+          "yellowCards": 1
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106330",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106330",
+        "retrievedAt": "2026-11-19T11:48:15.657Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106330.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-11",
+      "expectedGoals": {
+        "home": 1.78,
+        "away": 1.82
+      },
+      "expectedGoalsOnTarget": {
+        "home": 2.84,
+        "away": 1.19
+      }
+    },
+    {
       "eventId": "fotmob:6106389",
       "season": "2026-27",
       "league": "uefa.champions",
@@ -209547,6 +212448,301 @@
         "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106389",
         "retrievedAt": "2026-11-19T11:48:14.704Z",
         "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106389.json.gz"
+      }
+    },
+    {
+      "eventId": "fotmob:6106401",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-04",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8563",
+        "canonicalTeamId": "aek-athens",
+        "name": "AEK Athens",
+        "score": 2,
+        "statistics": {
+          "totalShots": 9,
+          "shotsOnTarget": 5,
+          "wonCorners": 0,
+          "foulsCommitted": 9,
+          "yellowCards": 1
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "8633",
+        "canonicalTeamId": "real-madrid",
+        "name": "Real Madrid",
+        "score": 3,
+        "statistics": {
+          "totalShots": 24,
+          "shotsOnTarget": 8,
+          "wonCorners": 7,
+          "foulsCommitted": 16,
+          "yellowCards": 1
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106401",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106401",
+        "retrievedAt": "2026-11-19T11:48:14.386Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106401.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-10",
+      "expectedGoals": {
+        "home": 0.78,
+        "away": 3.39
+      },
+      "expectedGoalsOnTarget": {
+        "home": 0.71,
+        "away": 3.52
+      }
+    },
+    {
+      "eventId": "fotmob:6106416",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-04",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8588",
+        "canonicalTeamId": "lens",
+        "name": "Lens",
+        "score": 1,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 3,
+          "wonCorners": 5,
+          "foulsCommitted": 12,
+          "yellowCards": 2
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "10171",
+        "canonicalTeamId": "como",
+        "name": "Como",
+        "score": 9,
+        "statistics": {
+          "totalShots": 18,
+          "shotsOnTarget": 12,
+          "wonCorners": 5,
+          "foulsCommitted": 11,
+          "yellowCards": 0
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106416",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106416",
+        "retrievedAt": "2026-11-19T11:48:15.555Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106416.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-16",
+      "expectedGoals": {
+        "home": 0.98,
+        "away": 4.18
+      },
+      "expectedGoalsOnTarget": {
+        "home": 0.8,
+        "away": 4.89
+      }
+    },
+    {
+      "eventId": "fotmob:6106420",
+      "season": "2026-27",
+      "league": "uefa.champions",
+      "date": "2026-11-04",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8478",
+        "canonicalTeamId": "viking",
+        "name": "Viking",
+        "score": 4,
+        "statistics": {
+          "totalShots": 21,
+          "shotsOnTarget": 8,
+          "wonCorners": 10,
+          "foulsCommitted": 5,
+          "yellowCards": 2
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "951893",
+        "canonicalTeamId": "sabah",
+        "name": "Sabah FK",
+        "score": 1,
+        "statistics": {
+          "totalShots": 16,
+          "shotsOnTarget": 4,
+          "wonCorners": 6,
+          "foulsCommitted": 9,
+          "yellowCards": 2
+        }
+      },
+      "coverage": "complete",
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true,
+        "foulsCommitted": true,
+        "yellowCards": true
+      },
+      "missing": [],
+      "periodScope": "regulation",
+      "source": {
+        "provider": "FotMob",
+        "url": "https://www.fotmob.com/match/6106420",
+        "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=6106420",
+        "retrievedAt": "2026-11-19T11:48:17.075Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/6106420.json.gz"
+      },
+      "canonicalFixtureId": "ucl-2026-27-md04-18",
+      "expectedGoals": {
+        "home": 2.59,
+        "away": 1.59
+      },
+      "expectedGoalsOnTarget": {
+        "home": 4.74,
+        "away": 0.89
+      }
+    },
+    {
+      "eventId": "varstats:238258",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-11-06",
+      "startsAt": "2026-11-06T14:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "178",
+        "canonicalTeamId": null,
+        "name": "Qarabag",
+        "score": 0,
+        "statistics": {
+          "totalShots": 14,
+          "shotsOnTarget": 5,
+          "wonCorners": 6,
+          "yellowCards": 0,
+          "foulsCommitted": 9
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19714",
+        "canonicalTeamId": null,
+        "name": "Turan-T",
+        "score": 1,
+        "statistics": {
+          "totalShots": 6,
+          "shotsOnTarget": 1,
+          "wonCorners": 0,
+          "yellowCards": 1,
+          "foulsCommitted": 18
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/qarabag-agdam-fk-vs-turan-t-ik-238258",
+        "retrievedAt": "2026-11-19T14:15:17.623Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238258.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987553",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "590c53cbe48df460e64b4778926ba631fbbab55b814f223a0afa5dd90486f5bc"
+      }
+    },
+    {
+      "eventId": "varstats:238285",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-11-06",
+      "startsAt": "2026-11-06T16:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "3335",
+        "canonicalTeamId": null,
+        "name": "Neftchi Baku",
+        "score": 1,
+        "statistics": {
+          "totalShots": 15,
+          "shotsOnTarget": 4,
+          "wonCorners": 10,
+          "yellowCards": 1,
+          "foulsCommitted": 12
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19706",
+        "canonicalTeamId": null,
+        "name": "Kapaz",
+        "score": 0,
+        "statistics": {
+          "totalShots": 7,
+          "shotsOnTarget": 3,
+          "wonCorners": 0,
+          "yellowCards": 3,
+          "foulsCommitted": 17
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/neftci-pfc-bak-vs-fk-kapaz-238285",
+        "retrievedAt": "2026-11-19T14:15:14.806Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238285.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987552",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "f4bcbba8e26b4d87a1bd9991195d29c8bcc8e944880ddb17c7b9df4a8b255439"
       }
     },
     {
@@ -210223,6 +213419,62 @@
         "summaryUrl": "https://www.fotmob.com/api/data/matchDetails?matchId=5904800",
         "retrievedAt": "2026-11-19T11:48:15.701Z",
         "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/5904800.json.gz"
+      }
+    },
+    {
+      "eventId": "varstats:238204",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-11-07",
+      "startsAt": "2026-11-07T14:30:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "2325",
+        "canonicalTeamId": null,
+        "name": "Zira",
+        "score": 2,
+        "statistics": {
+          "totalShots": 10,
+          "shotsOnTarget": 3,
+          "wonCorners": 1,
+          "yellowCards": 1,
+          "foulsCommitted": 18
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19716",
+        "canonicalTeamId": null,
+        "name": "Qabala",
+        "score": 1,
+        "statistics": {
+          "totalShots": 8,
+          "shotsOnTarget": 2,
+          "wonCorners": 6,
+          "yellowCards": 1,
+          "foulsCommitted": 15
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/zira-ik-vs-fk-qabala-238204",
+        "retrievedAt": "2026-11-19T14:15:09.143Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238204.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987556",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "dd81323d95fe28ff2a4a649062ad14a2f5337314568abb7796ced48260395f02"
       }
     },
     {
@@ -211165,6 +214417,118 @@
         "retrievedAt": "2026-11-19T11:48:14.534Z",
         "rawFile": "data/raw/champions-team-coverage/2026-11-19/matches/5943288.json.gz"
       }
+    },
+    {
+      "eventId": "varstats:238194",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-11-08",
+      "startsAt": "2026-11-08T13:30:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "327",
+        "canonicalTeamId": "sabah",
+        "name": "Sabah",
+        "score": 2,
+        "statistics": {
+          "totalShots": 12,
+          "shotsOnTarget": 4,
+          "wonCorners": 3,
+          "yellowCards": 0,
+          "foulsCommitted": 14
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "19708",
+        "canonicalTeamId": null,
+        "name": "Shamakhi",
+        "score": 2,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 5,
+          "wonCorners": 9,
+          "yellowCards": 0,
+          "foulsCommitted": 11
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/sabah-fk-vs-shamakhi-fk-238194",
+        "retrievedAt": "2026-11-19T14:13:04.118Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238194.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987554",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "350260b69bd1380cc9a32cf277eb91dc8270c757250efbdad71eaeb347e85dd3"
+      }
+    },
+    {
+      "eventId": "varstats:238296",
+      "season": "2026-27",
+      "league": "aze.1",
+      "date": "2026-11-08",
+      "startsAt": "2026-11-08T11:00:00.000Z",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "19725",
+        "canonicalTeamId": null,
+        "name": "Mil Mugan",
+        "score": 0,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 3,
+          "wonCorners": 7,
+          "yellowCards": 1,
+          "foulsCommitted": 10
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "2920",
+        "canonicalTeamId": null,
+        "name": "Sumqayit",
+        "score": 0,
+        "statistics": {
+          "totalShots": 14,
+          "shotsOnTarget": 8,
+          "wonCorners": 2,
+          "yellowCards": 0,
+          "foulsCommitted": 7
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "coverageByMetric": {
+        "goals": true,
+        "totalShots": true,
+        "shotsOnTarget": true,
+        "wonCorners": true
+      },
+      "periodScope": "regulation",
+      "source": {
+        "provider": "VARStats",
+        "url": "https://varstats.com/en/match/mil-mugan-fk-vs-fk-sumqay-t-238296",
+        "retrievedAt": "2026-11-19T14:15:05.595Z",
+        "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-varstats/238296.json.gz",
+        "reconciliation": {
+          "provider": "FotMob",
+          "eventId": "5987551",
+          "rawFile": "data/raw/champions-team-coverage/2026-11-19/sabah-aze-league.json.gz"
+        },
+        "sha256": "f3ca62a5ff3aa9f797c8e313c63af75330c1f4b749468cf130c8052c6d1004c8"
+      }
     }
   ],
   "coverageRefresh": {
@@ -211177,6 +214541,13 @@
   "md05CoverageRefresh": {
     "asOf": "2026-11-19",
     "source": "data/sources/champions-team-coverage-refresh-2026-11-19.json",
-    "addedMatches": 58
+    "addedMatches": 92
+  },
+  "sabahDomesticCoverage": {
+    "source": "data/sources/champions-sabah-domestic-volumes-2026-27.json",
+    "matches": 8,
+    "home": 3,
+    "away": 5,
+    "leagueSample": 23
   }
 }

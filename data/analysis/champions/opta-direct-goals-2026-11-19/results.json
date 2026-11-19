@@ -1,0 +1,1887 @@
+{
+  "status": "EXPERIMENTAL_NOT_PROMOTED",
+  "protocolSha256": "bbcf0c9d9abf748a9715e8e1e9298fda4b1e3b6eb1633f57e0fa5b4868b21304",
+  "inputs": {
+    "data\\generated\\champions-shared-scenarios.json": "35c8d1315b4cb6bcc89528b6f783ef736bd77d7744b5b0ca1bfece8dc3b8778e",
+    "data\\normalized\\official-starter-registry.json": "7b1012cb98d5bf2c674f0b1b9947f29b56afef08a0f247990449d72e6239b214",
+    "data\\analysis\\champions\\opta-historical-feasibility-2026-11-18\\historical-match-pairs.jsonl.gz": "00e6a902c6c44cb1891199a3e132601f43e37a8ddba8a3351239eb03217c2f04",
+    "scripts\\research\\calibrate-opta-goals.py": "74909ff0ee7c58160e1f67f2341c61f1369731bc1e4c3b6d22cada568198255a",
+    "data\\normalized\\odds\\sisal\\champions-league.json": "cda4b724aa89a6fa5a498ba552cb4cc433db94d3a4dda9c99d24d25995c2d4a9",
+    "data\\generated\\champions-booking-hypotheses.json": "96876329fa277b1b1cfc39547de6db548910da6813baae8eb79d394e4ce25e82",
+    "data\\normalized\\champions-opta-result-model.json": "02b9e7f53de7f71996819beceee8be061f1fe69a06528a65a7718ece94af2843",
+    "data\\normalized\\schedina-champions-md04.json": "fd394f5d3c67c6ae06b3db82a3e68f957efa54101746bc141a59e1a369ba53f5",
+    "data\\normalized\\predictions.json": "fead6b3a664b804ca46a39628758738856513e98c9f3923fa1c902173fea9ce2",
+    "data\\sources\\champions-european-result-policy.json": "e28ff65d0700f67b7f84fc10020a469de097d0c5d47d0a76e2c6275808156a0d",
+    "data\\sources\\champions-pilot-match-stats-2025-27.json": "97c042722a6ff780a4b78db808aedc1dbd4c2f07b001b857d63a4ca254596fb2",
+    "data\\analysis\\champions\\opta-direct-goals-2026-11-19\\protocol.json": "bbcf0c9d9abf748a9715e8e1e9298fda4b1e3b6eb1633f57e0fa5b4868b21304",
+    "data\\sources\\champions-opta-club-ratings-2026-27.json": "4e0589b5f7d8ccf3955637b990ccefc5e546e54951668d7380c9e3bcab989a70",
+    "data\\analysis\\champions\\opta-calibration-2026-11-18\\results.json": "76f19df2d4346bf78ee3eecaea4c3059b6f1c670edcfe374ff3e7a5bf9bea25f",
+    "data\\normalized\\schedina-champions-md03.json": "894c8ed874d65eafa3f280ecd628c16476c40171a1aa02d367b506998ae75fba"
+  },
+  "split": {
+    "train": 57,
+    "validation": 42,
+    "test": 37,
+    "testFrom": "2025-09-17",
+    "testThrough": "2026-01-21",
+    "testAlreadyInspectedForPrevious1x2": true
+  },
+  "selection": [
+    {
+      "regularization": 0.1,
+      "parameters": [
+        0.43504572847038503,
+        0.1700129027475333,
+        0.30927454412242966
+      ],
+      "validation": {
+        "n": 42,
+        "jointScoreNll": 3.2417524759122434,
+        "goalMae": 1.0009995607886228,
+        "goalRmse": 1.3294138258520924,
+        "totalGoalMae": 1.2866176373368312,
+        "meanPredicted": [
+          1.722083831438604,
+          1.4250168530655503
+        ],
+        "meanObserved": [
+          2.0714285714285716,
+          1.5714285714285714
+        ],
+        "outcomes": {
+          "n": 42,
+          "logLoss": 0.9721237143615651,
+          "brier": 0.5789813939964458,
+          "correct": 20,
+          "accuracy": 0.47619047619047616
+        }
+      }
+    },
+    {
+      "regularization": 1.0,
+      "parameters": [
+        0.4333941566873811,
+        0.1671015720644156,
+        0.30585955492494654
+      ],
+      "validation": {
+        "n": 42,
+        "jointScoreNll": 3.2433139601831145,
+        "goalMae": 1.001836206618661,
+        "goalRmse": 1.3305100595636368,
+        "totalGoalMae": 1.287322709225089,
+        "meanPredicted": [
+          1.7160311156373087,
+          1.4244630551419948
+        ],
+        "meanObserved": [
+          2.0714285714285716,
+          1.5714285714285714
+        ],
+        "outcomes": {
+          "n": 42,
+          "logLoss": 0.9726868619408064,
+          "brier": 0.5793497169552273,
+          "correct": 20,
+          "accuracy": 0.47619047619047616
+        }
+      }
+    },
+    {
+      "regularization": 10.0,
+      "parameters": [
+        0.41667714068157585,
+        0.14264698045127924,
+        0.27516504377947465
+      ],
+      "validation": {
+        "n": 42,
+        "jointScoreNll": 3.2596063421289925,
+        "goalMae": 1.0091876548925405,
+        "goalRmse": 1.3416664963610558,
+        "totalGoalMae": 1.293614414775926,
+        "meanPredicted": [
+          1.6611457030383259,
+          1.415832812758681
+        ],
+        "meanObserved": [
+          2.0714285714285716,
+          1.5714285714285714
+        ],
+        "outcomes": {
+          "n": 42,
+          "logLoss": 0.9782829307807381,
+          "brier": 0.5831173543407671,
+          "correct": 20,
+          "accuracy": 0.47619047619047616
+        }
+      }
+    }
+  ],
+  "frozenModel": {
+    "type": "independent-poisson-opta-gap",
+    "mu": 0.4947060186874824,
+    "homeAdvantage": 0.20914894980766086,
+    "ratingGapSlope": 0.3358608131460828,
+    "gapScale": 10,
+    "regularization": 0.1,
+    "trainingMatches": 99,
+    "trainedThrough": "2025-05-31",
+    "extraLeagueBonus": false
+  },
+  "test": {
+    "directGoals": {
+      "n": 37,
+      "jointScoreNll": 3.0979261947662726,
+      "goalMae": 0.9745037363886958,
+      "goalRmse": 1.2095002973057931,
+      "totalGoalMae": 1.190331223690578,
+      "meanPredicted": [
+        1.8100175252829456,
+        1.5635194348206611
+      ],
+      "meanObserved": [
+        1.972972972972973,
+        1.4054054054054055
+      ],
+      "outcomes": {
+        "n": 37,
+        "logLoss": 0.9147351972584077,
+        "brier": 0.5370309599693596,
+        "correct": 22,
+        "accuracy": 0.5945945945945946
+      }
+    },
+    "constantGoals": {
+      "n": 37,
+      "jointScoreNll": 3.2248813459205126,
+      "goalMae": 1.0728910728910728,
+      "goalRmse": 1.2975598726284514,
+      "totalGoalMae": 1.2186732186732185,
+      "meanPredicted": [
+        1.8686868686868698,
+        1.494949494949495
+      ],
+      "meanObserved": [
+        1.972972972972973,
+        1.4054054054054055
+      ],
+      "outcomes": {
+        "n": 37,
+        "logLoss": 0.9859072395855717,
+        "brier": 0.5933583456323581,
+        "correct": 20,
+        "accuracy": 0.5405405405405406
+      }
+    },
+    "frozenOpta1x2": {
+      "n": 37,
+      "logLoss": 0.9030406885997732,
+      "brier": 0.5323262808809506,
+      "correct": 22,
+      "accuracy": 0.5945945945945946
+    }
+  },
+  "paired": {
+    "scoreNllVsConstant": {
+      "meanDelta": -0.12695515115424016,
+      "dateClusters": 17,
+      "matches": 37,
+      "descriptive95PercentileInterval": [
+        -0.24695430273376603,
+        -0.00993459154388272
+      ],
+      "seed": 20261119
+    },
+    "outcomeLogLossVsFrozenOpta": {
+      "meanDelta": 0.011694508658634717,
+      "dateClusters": 17,
+      "matches": 37,
+      "descriptive95PercentileInterval": [
+        -0.046294139425534286,
+        0.06932490158332656
+      ],
+      "seed": 20261119
+    }
+  },
+  "fitSupport": {
+    "minGap": -19.599999999999994,
+    "maxGap": 15.600000000000009,
+    "matchesWithAbsGapAtLeastTen": 7,
+    "matches": 99
+  },
+  "predictions": [
+    {
+      "fixtureId": "2045911",
+      "date": "2025-09-17",
+      "home": "Liverpool FC",
+      "away": "Atlético de Madrid",
+      "actual": [
+        3,
+        2
+      ],
+      "directGoalMeans": [
+        2.4800344263808136,
+        1.0845222806355113
+      ],
+      "candidate1x2": [
+        0.6785907317579657,
+        0.17382345344019845,
+        0.14758581480183577
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.7013841622532484,
+        0.16238103504897364,
+        0.13623480269777802
+      ]
+    },
+    {
+      "fixtureId": "2045914",
+      "date": "2025-09-17",
+      "home": "SK Slavia Praha",
+      "away": "FK Bodø/Glimt",
+      "actual": [
+        2,
+        2
+      ],
+      "directGoalMeans": [
+        1.883000612409895,
+        1.4283864670181072
+      ],
+      "candidate1x2": [
+        0.4829540370925628,
+        0.2239022955926369,
+        0.29314366731480035
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.5538988662612384,
+        0.19565329833411685,
+        0.2504478354046448
+      ]
+    },
+    {
+      "fixtureId": "2045915",
+      "date": "2025-09-18",
+      "home": "Manchester City",
+      "away": "SSC Napoli",
+      "actual": [
+        2,
+        0
+      ],
+      "directGoalMeans": [
+        2.1465293715126164,
+        1.2530238942212832
+      ],
+      "candidate1x2": [
+        0.5779863145609718,
+        0.20500689034340666,
+        0.21700679509562149
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.6283561626850126,
+        0.18155113151448501,
+        0.19009270580050242
+      ]
+    },
+    {
+      "fixtureId": "2045921",
+      "date": "2025-09-30",
+      "home": "FC Internazionale Milano",
+      "away": "SK Slavia Praha",
+      "actual": [
+        3,
+        0
+      ],
+      "directGoalMeans": [
+        2.4224082373960836,
+        1.1103217660142566
+      ],
+      "candidate1x2": [
+        0.6627672816780703,
+        0.17944465870265344,
+        0.15778805961927633
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.6902349977888651,
+        0.1656681516169759,
+        0.14409685059415897
+      ]
+    },
+    {
+      "fixtureId": "2045927",
+      "date": "2025-09-30",
+      "home": "Galatasaray A.Ş.",
+      "away": "Liverpool FC",
+      "actual": [
+        1,
+        0
+      ],
+      "directGoalMeans": [
+        1.153164367743592,
+        2.3324104242103587
+      ],
+      "candidate1x2": [
+        0.17512330986023866,
+        0.18810909061822284,
+        0.6367675995215384
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.2642135879520611,
+        0.19801177874478493,
+        0.5377746333031539
+      ]
+    },
+    {
+      "fixtureId": "2045933",
+      "date": "2025-10-01",
+      "home": "SSC Napoli",
+      "away": "Sporting Clube de Portugal",
+      "actual": [
+        2,
+        1
+      ],
+      "directGoalMeans": [
+        1.8641230919026275,
+        1.4428513888575316
+      ],
+      "candidate1x2": [
+        0.47564481031679623,
+        0.22489246957745782,
+        0.2994627201057459
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.5479207947720917,
+        0.1965563444117366,
+        0.25552286081617176
+      ]
+    },
+    {
+      "fixtureId": "2045938",
+      "date": "2025-10-01",
+      "home": "FC Barcelona",
+      "away": "Paris Saint-Germain",
+      "actual": [
+        1,
+        2
+      ],
+      "directGoalMeans": [
+        1.7965103002515581,
+        1.4971540056166004
+      ],
+      "candidate1x2": [
+        0.44896021787324897,
+        0.22790583741850814,
+        0.32313394470824286
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.5257706473999342,
+        0.1996082260016619,
+        0.2746211265984039
+      ]
+    },
+    {
+      "fixtureId": "2046173",
+      "date": "2025-10-02",
+      "home": "AS Roma",
+      "away": "LOSC Lille",
+      "actual": [
+        0,
+        1
+      ],
+      "directGoalMeans": [
+        1.9736548718031566,
+        1.3627775709822054
+      ],
+      "candidate1x2": [
+        0.5171498762725979,
+        0.21836422225846883,
+        0.2644859014689334
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.581374421590591,
+        0.19106767421717671,
+        0.22755790419223232
+      ]
+    },
+    {
+      "fixtureId": "2046175",
+      "date": "2025-10-02",
+      "home": "Feyenoord",
+      "away": "Aston Villa",
+      "actual": [
+        0,
+        2
+      ],
+      "directGoalMeans": [
+        1.4637051061828477,
+        1.8375645345443699
+      ],
+      "candidate1x2": [
+        0.3085651539815429,
+        0.22617911169524185,
+        0.4652557343232153
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.40013720648756773,
+        0.20800811576589104,
+        0.3918546777465413
+      ]
+    },
+    {
+      "fixtureId": "2045940",
+      "date": "2025-10-21",
+      "home": "Arsenal FC",
+      "away": "Atlético de Madrid",
+      "actual": [
+        4,
+        0
+      ],
+      "directGoalMeans": [
+        2.3581875099526117,
+        1.1405592561242728
+      ],
+      "candidate1x2": [
+        0.6443765263754123,
+        0.18564756967894133,
+        0.16997590394564627
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.6771306689162838,
+        0.16936152836683438,
+        0.15350780271688186
+      ]
+    },
+    {
+      "fixtureId": "2045942",
+      "date": "2025-10-21",
+      "home": "Villarreal CF",
+      "away": "Manchester City",
+      "actual": [
+        0,
+        2
+      ],
+      "directGoalMeans": [
+        1.373218714024616,
+        1.9586483672876076
+      ],
+      "candidate1x2": [
+        0.26904155237780186,
+        0.21936341296378273,
+        0.5115950346584154
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.36174389436215837,
+        0.20738894277102424,
+        0.43086716286681737
+      ]
+    },
+    {
+      "fixtureId": "2045943",
+      "date": "2025-10-21",
+      "home": "PSV Eindhoven",
+      "away": "SSC Napoli",
+      "actual": [
+        6,
+        2
+      ],
+      "directGoalMeans": [
+        1.5865749292456957,
+        1.6952572126119765
+      ],
+      "candidate1x2": [
+        0.3617473523253043,
+        0.23061847319411954,
+        0.4076341744805762
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.4496160057216518,
+        0.20654392241936184,
+        0.3438400718589863
+      ]
+    },
+    {
+      "fixtureId": "2045953",
+      "date": "2025-10-22",
+      "home": "Galatasaray A.Ş.",
+      "away": "FK Bodø/Glimt",
+      "actual": [
+        3,
+        1
+      ],
+      "directGoalMeans": [
+        2.0206057560007,
+        1.3311120114181094
+      ],
+      "candidate1x2": [
+        0.5342510986486225,
+        0.21505183418866408,
+        0.25069706716271345
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.5948195222525002,
+        0.1885618412064294,
+        0.21661863654107022
+      ]
+    },
+    {
+      "fixtureId": "2045956",
+      "date": "2025-10-22",
+      "home": "FC Bayern München",
+      "away": "Club Brugge KV",
+      "actual": [
+        4,
+        0
+      ],
+      "directGoalMeans": [
+        2.350280567798969,
+        1.1443963878201802
+      ],
+      "candidate1x2": [
+        0.6420564549977137,
+        0.186404659660841,
+        0.17153888534144532
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.6754657998435556,
+        0.16981778545567588,
+        0.15471641470076866
+      ]
+    },
+    {
+      "fixtureId": "2046195",
+      "date": "2025-10-23",
+      "home": "Fenerbahçe SK",
+      "away": "VfB Stuttgart",
+      "actual": [
+        1,
+        0
+      ],
+      "directGoalMeans": [
+        1.7082457027569977,
+        1.574511551711898
+      ],
+      "candidate1x2": [
+        0.41301948021834683,
+        0.23040522379125225,
+        0.356575295990401
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.49510387750691437,
+        0.20306793622288716,
+        0.3018281862701986
+      ]
+    },
+    {
+      "fixtureId": "2045957",
+      "date": "2025-11-04",
+      "home": "Paris Saint-Germain",
+      "away": "FC Bayern München",
+      "actual": [
+        1,
+        2
+      ],
+      "directGoalMeans": [
+        1.8766869597191052,
+        1.4331919227251826
+      ],
+      "candidate1x2": [
+        0.48051648321740803,
+        0.22424023913815558,
+        0.2952432776444364
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.551909435409425,
+        0.195957569808723,
+        0.25213299478185197
+      ]
+    },
+    {
+      "fixtureId": "2045958",
+      "date": "2025-11-04",
+      "home": "Liverpool FC",
+      "away": "Real Madrid C.F.",
+      "actual": [
+        1,
+        0
+      ],
+      "directGoalMeans": [
+        1.8956917114555702,
+        1.4188238392876151
+      ],
+      "candidate1x2": [
+        0.48783216040856486,
+        0.22320291824487695,
+        0.28896492134655827
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.557867653199411,
+        0.19503511946061652,
+        0.24709722733997241
+      ]
+    },
+    {
+      "fixtureId": "2045964",
+      "date": "2025-11-04",
+      "home": "SK Slavia Praha",
+      "away": "Arsenal FC",
+      "actual": [
+        0,
+        3
+      ],
+      "directGoalMeans": [
+        1.085515339319882,
+        2.47776562405675
+      ],
+      "candidate1x2": [
+        0.1479749059377808,
+        0.17404534911625796,
+        0.6779797449459612
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.23405861392052305,
+        0.19245802307116938,
+        0.5734833630083076
+      ]
+    },
+    {
+      "fixtureId": "2045966",
+      "date": "2025-11-05",
+      "home": "Manchester City",
+      "away": "Borussia Dortmund",
+      "actual": [
+        4,
+        1
+      ],
+      "directGoalMeans": [
+        2.2049859942941055,
+        1.2198048418961298
+      ],
+      "candidate1x2": [
+        0.5972164767046203,
+        0.19989775674320673,
+        0.20288576655217302
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.6427356945216193,
+        0.178207210188228,
+        0.1790570952901528
+      ]
+    },
+    {
+      "fixtureId": "2045969",
+      "date": "2025-11-05",
+      "home": "Club Brugge KV",
+      "away": "FC Barcelona",
+      "actual": [
+        3,
+        3
+      ],
+      "directGoalMeans": [
+        1.4884927126641476,
+        1.8069638966112798
+      ],
+      "candidate1x2": [
+        0.31936614128183294,
+        0.22749772684779845,
+        0.45313613187036866
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.4103834365060465,
+        0.20790911267775364,
+        0.3817074508161998
+      ]
+    },
+    {
+      "fixtureId": "2046224",
+      "date": "2025-11-06",
+      "home": "VfB Stuttgart",
+      "away": "Feyenoord",
+      "actual": [
+        2,
+        0
+      ],
+      "directGoalMeans": [
+        1.790486647356036,
+        1.5021908128300427
+      ],
+      "candidate1x2": [
+        0.44654585080564435,
+        0.22813085632131083,
+        0.3253232928730447
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.5237409231146113,
+        0.19986471845204706,
+        0.27639435843334154
+      ]
+    },
+    {
+      "fixtureId": "2045977",
+      "date": "2025-11-25",
+      "home": "Borussia Dortmund",
+      "away": "Villarreal CF",
+      "actual": [
+        4,
+        0
+      ],
+      "directGoalMeans": [
+        2.0138307167976754,
+        1.3355902110928646
+      ],
+      "candidate1x2": [
+        0.5318096372143687,
+        0.21554634142654355,
+        0.25264402135908764
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.5929117589017298,
+        0.18892793971048244,
+        0.21816030138778786
+      ]
+    },
+    {
+      "fixtureId": "2045985",
+      "date": "2025-11-26",
+      "home": "Liverpool FC",
+      "away": "PSV Eindhoven",
+      "actual": [
+        1,
+        4
+      ],
+      "directGoalMeans": [
+        2.2726547243349824,
+        1.1834849189157584
+      ],
+      "candidate1x2": [
+        0.6186230709973831,
+        0.19372840665268937,
+        0.18764852234992752
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.6584956480492526,
+        0.17430426090150344,
+        0.167200091049244
+      ]
+    },
+    {
+      "fixtureId": "2045986",
+      "date": "2025-11-26",
+      "home": "Arsenal FC",
+      "away": "FC Bayern München",
+      "actual": [
+        3,
+        1
+      ],
+      "directGoalMeans": [
+        1.9342805333640587,
+        1.3905183585109635
+      ],
+      "candidate1x2": [
+        0.5024845887566891,
+        0.22091940767686935,
+        0.2765960035664416
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.5696892645576205,
+        0.19310543798079113,
+        0.23720529746158836
+      ]
+    },
+    {
+      "fixtureId": "2045987",
+      "date": "2025-11-26",
+      "home": "Atlético de Madrid",
+      "away": "FC Internazionale Milano",
+      "actual": [
+        2,
+        1
+      ],
+      "directGoalMeans": [
+        1.790486647356036,
+        1.5021908128300427
+      ],
+      "candidate1x2": [
+        0.44654585080564435,
+        0.22813085632131083,
+        0.3253232928730447
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.5237409231146113,
+        0.19986471845204706,
+        0.27639435843334154
+      ]
+    },
+    {
+      "fixtureId": "2045989",
+      "date": "2025-11-26",
+      "home": "Sporting Clube de Portugal",
+      "away": "Club Brugge KV",
+      "actual": [
+        3,
+        0
+      ],
+      "directGoalMeans": [
+        1.87039447654363,
+        1.438013545208607
+      ],
+      "candidate1x2": [
+        0.4780800463927903,
+        0.22457030797461194,
+        0.29734964563259775
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.5499167250116112,
+        0.19625859393259348,
+        0.25382468105579525
+      ]
+    },
+    {
+      "fixtureId": "2045993",
+      "date": "2025-12-09",
+      "home": "FC Bayern München",
+      "away": "Sporting Clube de Portugal",
+      "actual": [
+        3,
+        1
+      ],
+      "directGoalMeans": [
+        2.350280567798969,
+        1.1443963878201802
+      ],
+      "candidate1x2": [
+        0.6420564549977137,
+        0.186404659660841,
+        0.17153888534144532
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.6754657998435556,
+        0.16981778545567588,
+        0.15471641470076866
+      ]
+    },
+    {
+      "fixtureId": "2045994",
+      "date": "2025-12-09",
+      "home": "FC Internazionale Milano",
+      "away": "Liverpool FC",
+      "actual": [
+        0,
+        1
+      ],
+      "directGoalMeans": [
+        1.7965103002515581,
+        1.4971540056166004
+      ],
+      "candidate1x2": [
+        0.44896021787324897,
+        0.22790583741850814,
+        0.32313394470824286
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.5257706473999342,
+        0.1996082260016619,
+        0.2746211265984039
+      ]
+    },
+    {
+      "fixtureId": "2045998",
+      "date": "2025-12-09",
+      "home": "PSV Eindhoven",
+      "away": "Atlético de Madrid",
+      "actual": [
+        2,
+        3
+      ],
+      "directGoalMeans": [
+        1.6911201409952434,
+        1.590456246692332
+      ],
+      "candidate1x2": [
+        0.4059140163959267,
+        0.23067746237338282,
+        0.3634085212306905
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.48892433155762327,
+        0.20365696342600495,
+        0.30741870501637186
+      ]
+    },
+    {
+      "fixtureId": "2046002",
+      "date": "2025-12-10",
+      "home": "Borussia Dortmund",
+      "away": "FK Bodø/Glimt",
+      "actual": [
+        2,
+        2
+      ],
+      "directGoalMeans": [
+        2.505149130954828,
+        1.0736496917163374
+      ],
+      "candidate1x2": [
+        0.6852890008921965,
+        0.17136538530706494,
+        0.14334561380073865
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.70607067722763,
+        0.16095887959313157,
+        0.13297044317923845
+      ]
+    },
+    {
+      "fixtureId": "2046007",
+      "date": "2025-12-10",
+      "home": "Club Brugge KV",
+      "away": "Arsenal FC",
+      "actual": [
+        0,
+        3
+      ],
+      "directGoalMeans": [
+        1.2168280546854235,
+        2.2103801615984566
+      ],
+      "candidate1x2": [
+        0.2016284001864538,
+        0.19941511148884392,
+        0.5989564883247023
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.2927271150991897,
+        0.20202186268245198,
+        0.5052510222183584
+      ]
+    },
+    {
+      "fixtureId": "2046010",
+      "date": "2025-12-10",
+      "home": "Real Madrid C.F.",
+      "away": "Manchester City",
+      "actual": [
+        1,
+        2
+      ],
+      "directGoalMeans": [
+        1.668552830491881,
+        1.6119672946526997
+      ],
+      "candidate1x2": [
+        0.39649083164535376,
+        0.23092124706405287,
+        0.37258792129059337
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.4806682981193111,
+        0.20438697103944614,
+        0.3149447308412428
+      ]
+    },
+    {
+      "fixtureId": "2046012",
+      "date": "2026-01-20",
+      "home": "FC Internazionale Milano",
+      "away": "Arsenal FC",
+      "actual": [
+        1,
+        3
+      ],
+      "directGoalMeans": [
+        1.473570225903894,
+        1.825262579870096
+      ],
+      "candidate1x2": [
+        0.3128666553731965,
+        0.2267309449505208,
+        0.46040239967628277
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.4042301203129516,
+        0.20798162053079194,
+        0.3877882591562565
+      ]
+    },
+    {
+      "fixtureId": "2046015",
+      "date": "2026-01-20",
+      "home": "Sporting Clube de Portugal",
+      "away": "Paris Saint-Germain",
+      "actual": [
+        2,
+        1
+      ],
+      "directGoalMeans": [
+        1.5137000932054518,
+        1.7768728457018337
+      ],
+      "candidate1x2": [
+        0.33032077687051936,
+        0.2286114681142738,
+        0.4410677550152069
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.4206711088028969,
+        0.20770107490534537,
+        0.37162781629175773
+      ]
+    },
+    {
+      "fixtureId": "2046017",
+      "date": "2026-01-20",
+      "home": "FK Bodø/Glimt",
+      "away": "Manchester City",
+      "actual": [
+        3,
+        1
+      ],
+      "directGoalMeans": [
+        1.141603625884634,
+        2.35603017647117
+      ],
+      "candidate1x2": [
+        0.17040095975503494,
+        0.1858543037112998,
+        0.6437447365336653
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.25904107385030084,
+        0.19715922121079607,
+        0.5437997049389031
+      ]
+    },
+    {
+      "fixtureId": "2046023",
+      "date": "2026-01-21",
+      "home": "SK Slavia Praha",
+      "away": "FC Barcelona",
+      "actual": [
+        2,
+        4
+      ],
+      "directGoalMeans": [
+        1.2754104286790637,
+        2.108852594955462
+      ],
+      "candidate1x2": [
+        0.22660441206858264,
+        0.20816558237234487,
+        0.5652300055590725
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.3188512910290808,
+        0.20473787786851838,
+        0.4764108311024008
+      ]
+    },
+    {
+      "fixtureId": "2046025",
+      "date": "2026-01-21",
+      "home": "Galatasaray A.Ş.",
+      "away": "Atlético de Madrid",
+      "actual": [
+        1,
+        1
+      ],
+      "directGoalMeans": [
+        1.5341730080500275,
+        1.7531612002297694
+      ],
+      "candidate1x2": [
+        0.33919018711653554,
+        0.22935307936913957,
+        0.4314567335143248
+      ],
+      "constantGoalMeans": [
+        1.8686868686868687,
+        1.494949494949495
+      ],
+      "frozenOpta1x2": [
+        0.4289247005942439,
+        0.20745647782322232,
+        0.3636188215825336
+      ]
+    }
+  ],
+  "preview": [
+    {
+      "fixtureId": "ucl-2026-27-md05-01",
+      "date": "2026-11-24",
+      "home": "Bodø/Glimt",
+      "away": "LASK",
+      "ratingGap": 5.386587673699992,
+      "ratings": [
+        90.2918519605,
+        84.9052642868
+      ],
+      "candidateGoals": [
+        2.1818973999665965,
+        1.2327126803461423
+      ],
+      "candidate1x2": [
+        0.5897028788258525,
+        0.20194326173088878,
+        0.20835385944325865
+      ],
+      "currentGoals": [
+        2.39,
+        1.23
+      ],
+      "current1x2": [
+        0.637487513595535,
+        0.1799308466028147,
+        0.18258163980165037
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        true
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-02",
+      "date": "2026-11-24",
+      "home": "Galatasaray",
+      "away": "Aston Villa",
+      "ratingGap": -4.684323607400003,
+      "ratings": [
+        88.9023662995,
+        93.5866899069
+      ],
+      "candidateGoals": [
+        1.555741716496592,
+        1.728855480079295
+      ],
+      "candidate1x2": [
+        0.34850220882418764,
+        0.22998168128466367,
+        0.4215161098911487
+      ],
+      "currentGoals": [
+        1.98,
+        1.61
+      ],
+      "current1x2": [
+        0.4418683411217551,
+        0.20685681759393548,
+        0.3512748412843092
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        true,
+        false
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-03",
+      "date": "2026-11-24",
+      "home": "Arsenal",
+      "away": "Borussia Dortmund",
+      "ratingGap": 7.052054116099995,
+      "ratings": [
+        100,
+        92.9479458839
+      ],
+      "candidateGoals": [
+        2.307423090402577,
+        1.165652109203708
+      ],
+      "candidate1x2": [
+        0.6292665317424206,
+        0.19047513405128386,
+        0.18025833420629558
+      ],
+      "currentGoals": [
+        1.72,
+        0.77
+      ],
+      "current1x2": [
+        0.6660999847690201,
+        0.17312665035016495,
+        0.16077336488081492
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        false
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-04",
+      "date": "2026-11-24",
+      "home": "Como",
+      "away": "AEK Athens",
+      "ratingGap": 5.6380583308999945,
+      "ratings": [
+        92.4627589328,
+        86.8247006019
+      ],
+      "candidateGoals": [
+        2.200403558336298,
+        1.2223451384466582
+      ],
+      "candidate1x2": [
+        0.5957337302277184,
+        0.20030639293370006,
+        0.20395987683858155
+      ],
+      "currentGoals": [
+        1.58,
+        0.74
+      ],
+      "current1x2": [
+        0.6465938407334997,
+        0.17731359256461576,
+        0.17609256670188447
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        true,
+        true
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-05",
+      "date": "2026-11-24",
+      "home": "Feyenoord",
+      "away": "Porto",
+      "ratingGap": -4.514432081600006,
+      "ratings": [
+        86.812206941,
+        91.3266390226
+      ],
+      "candidateGoals": [
+        1.5646441385214427,
+        1.7190187378292738
+      ],
+      "candidate1x2": [
+        0.35233498162946886,
+        0.23019665823392277,
+        0.4174683601366084
+      ],
+      "currentGoals": [
+        1.55,
+        1.54
+      ],
+      "current1x2": [
+        0.4363978557067021,
+        0.20714052238651492,
+        0.356461621906783
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        false
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-06",
+      "date": "2026-11-24",
+      "home": "Manchester City",
+      "away": "Napoli",
+      "ratingGap": 8.369233119600011,
+      "ratings": [
+        97.1431088922,
+        88.7738757726
+      ],
+      "candidateGoals": [
+        2.4117924776069435,
+        1.115208964753825
+      ],
+      "candidate1x2": [
+        0.6597826386854266,
+        0.18047556838033627,
+        0.1597417929342371
+      ],
+      "currentGoals": [
+        1.99,
+        0.94
+      ],
+      "current1x2": [
+        0.6881192478760844,
+        0.16627681729843202,
+        0.14560393482548364
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        false
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-07",
+      "date": "2026-11-24",
+      "home": "Leipzig",
+      "away": "Lens",
+      "ratingGap": 2.432955513500005,
+      "ratings": [
+        90.0124978674,
+        87.5795423539
+      ],
+      "candidateGoals": [
+        1.9758406143187315,
+        1.3612700197887635
+      ],
+      "candidate1x2": [
+        0.5179553878113595,
+        0.2182161797441175,
+        0.26382843244452286
+      ],
+      "currentGoals": [
+        2.19,
+        1.33
+      ],
+      "current1x2": [
+        0.5841292782497987,
+        0.19081424900068583,
+        0.22505647274951537
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        true
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-08",
+      "date": "2026-11-24",
+      "home": "Real Madrid",
+      "away": "PSV Eindhoven",
+      "ratingGap": 6.8196987776999975,
+      "ratings": [
+        96.5180777882,
+        89.6983790105
+      ],
+      "candidateGoals": [
+        2.2894862588406135,
+        1.1747843350303098
+      ],
+      "candidate1x2": [
+        0.6238056473749791,
+        0.19215959714392725,
+        0.18403475548109355
+      ],
+      "currentGoals": [
+        2.38,
+        1.34
+      ],
+      "current1x2": [
+        0.6622735412636862,
+        0.17333117307832283,
+        0.16439528565799094
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        false
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-09",
+      "date": "2026-11-24",
+      "home": "Slovan Bratislava",
+      "away": "Real Betis",
+      "ratingGap": -9.05335411450001,
+      "ratings": [
+        80.7640061003,
+        89.8173602148
+      ],
+      "candidateGoals": [
+        1.3434135580389057,
+        2.00210320646117
+      ],
+      "candidate1x2": [
+        0.2560480030313624,
+        0.21638951443327603,
+        0.5275624825353616
+      ],
+      "currentGoals": [
+        1.71,
+        1.72
+      ],
+      "current1x2": [
+        0.35059962422541674,
+        0.20582887933288713,
+        0.443571496441696
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        true
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-10",
+      "date": "2026-11-25",
+      "home": "Sabah",
+      "away": "Barcelona",
+      "ratingGap": -14.31043502770001,
+      "ratings": [
+        83.2843602567,
+        97.5947952844
+      ],
+      "candidateGoals": [
+        1.1259746983729795,
+        2.3887327095711997
+      ],
+      "candidate1x2": [
+        0.1640679860686011,
+        0.18270803612853484,
+        0.653223977802864
+      ],
+      "currentGoals": [
+        1.42,
+        2.04
+      ],
+      "current1x2": [
+        0.2504962498878538,
+        0.19530261667002377,
+        0.5542011334421224
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        true,
+        false
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-11",
+      "date": "2026-11-25",
+      "home": "Slavia Praha",
+      "away": "Villarreal",
+      "ratingGap": 0.23610544139999945,
+      "ratings": [
+        88.723286185,
+        88.4871807436
+      ],
+      "candidateGoals": [
+        1.8353043941956033,
+        1.4655076295024898
+      ],
+      "candidate1x2": [
+        0.46436600074470596,
+        0.22628263879446106,
+        0.30935136046083295
+      ],
+      "currentGoals": [
+        1.64,
+        1.34
+      ],
+      "current1x2": [
+        0.5369223836444172,
+        0.1977455386223429,
+        0.26533207773323986
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        true
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-12",
+      "date": "2026-11-25",
+      "home": "Atlético de Madrid",
+      "away": "Viking",
+      "ratingGap": 4.162284056600001,
+      "ratings": [
+        92.1299123973,
+        87.9676283407
+      ],
+      "candidateGoals": [
+        2.093998307886258,
+        1.28445786322918
+      ],
+      "candidate1x2": [
+        0.560123070045878,
+        0.20937788563533682,
+        0.2304990443187851
+      ],
+      "currentGoals": [
+        1.87,
+        1.12
+      ],
+      "current1x2": [
+        0.6101363128630701,
+        0.18615851628650135,
+        0.2037051708504285
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        true
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-13",
+      "date": "2026-11-25",
+      "home": "Club Brugge",
+      "away": "Liverpool",
+      "ratingGap": -2.7261351773999962,
+      "ratings": [
+        92.5778434461,
+        95.3039786235
+      ],
+      "candidateGoals": [
+        1.6614991477105832,
+        1.6188106962674247
+      ],
+      "candidate1x2": [
+        0.39353206003759283,
+        0.23096981055908702,
+        0.3754981294033201
+      ],
+      "currentGoals": [
+        2.01,
+        1.46
+      ],
+      "current1x2": [
+        0.4822236122402387,
+        0.20353210022668874,
+        0.31424428753307254
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        false
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-14",
+      "date": "2026-11-25",
+      "home": "Inter",
+      "away": "Stuttgart",
+      "ratingGap": 4.438083614700005,
+      "ratings": [
+        94.2591513218,
+        89.8210677071
+      ],
+      "candidateGoals": [
+        2.113485183848296,
+        1.2726148319884143
+      ],
+      "candidate1x2": [
+        0.5668137264976544,
+        0.20778353483737105,
+        0.22540273866497457
+      ],
+      "currentGoals": [
+        2.65,
+        1.5
+      ],
+      "current1x2": [
+        0.6205166696608714,
+        0.1840749182227027,
+        0.19540841211642604
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        false
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-15",
+      "date": "2026-11-25",
+      "home": "Shakhtar Donetsk",
+      "away": "Fenerbahçe",
+      "ratingGap": -3.839873156900012,
+      "ratings": [
+        84.3740572071,
+        88.213930364
+      ],
+      "candidateGoals": [
+        1.6004969927883348,
+        1.6805108689815622
+      ],
+      "candidate1x2": [
+        0.36769903853335834,
+        0.2308086457764146,
+        0.40149231569022714
+      ],
+      "currentGoals": [
+        1.28,
+        1.06
+      ],
+      "current1x2": [
+        0.45237523407039276,
+        0.20579683074183905,
+        0.34182793518776833
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        false
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-16",
+      "date": "2026-11-25",
+      "home": "Lille",
+      "away": "Bayern München",
+      "ratingGap": -11.479489463999997,
+      "ratings": [
+        88.30704305,
+        99.786532514
+      ],
+      "candidateGoals": [
+        1.2382875622854015,
+        2.1720743016985815
+      ],
+      "candidate1x2": [
+        0.210723182048409,
+        0.20280298524561624,
+        0.5864738327059748
+      ],
+      "currentGoals": [
+        1.29,
+        1.74
+      ],
+      "current1x2": [
+        0.31006216863062425,
+        0.20484606979431333,
+        0.4850917615750625
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        false
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-17",
+      "date": "2026-11-25",
+      "home": "Paris Saint-Germain",
+      "away": "Roma",
+      "ratingGap": 5.997638331299996,
+      "ratings": [
+        97.7326948476,
+        91.7350565163
+      ],
+      "candidateGoals": [
+        2.2271386885313,
+        1.2076718014928876
+      ],
+      "candidate1x2": [
+        0.6043251711095304,
+        0.1979048512031375,
+        0.1977699776873321
+      ],
+      "currentGoals": [
+        2.02,
+        1.04
+      ],
+      "current1x2": [
+        0.6500918686649324,
+        0.17610582451697254,
+        0.17380230681809505
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        false
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-18",
+      "date": "2026-11-25",
+      "home": "Sporting CP",
+      "away": "Manchester United",
+      "ratingGap": 0.09562101209999696,
+      "ratings": [
+        91.6118345876,
+        91.5162135755
+      ],
+      "candidateGoals": [
+        1.826665235267981,
+        1.4724387042700333
+      ],
+      "candidate1x2": [
+        0.4609570680491177,
+        0.22666947886913702,
+        0.31237345308174536
+      ],
+      "currentGoals": [
+        2.07,
+        1.22
+      ],
+      "current1x2": [
+        0.5386185974707997,
+        0.19817940155122687,
+        0.2632020009779734
+      ],
+      "numericGapWithinFitRange": true,
+      "teamUnseenInFit": [
+        false,
+        false
+      ]
+    }
+  ],
+  "protectedUnchanged": {
+    "data\\generated\\champions-shared-scenarios.json": true,
+    "data\\sources\\champions-european-result-policy.json": true,
+    "data\\normalized\\champions-opta-result-model.json": true,
+    "data\\sources\\champions-opta-club-ratings-2026-27.json": true,
+    "data\\generated\\champions-booking-hypotheses.json": true,
+    "data\\normalized\\official-starter-registry.json": true,
+    "data\\normalized\\schedina-champions-md03.json": true,
+    "data\\normalized\\schedina-champions-md04.json": true,
+    "data\\normalized\\predictions.json": true,
+    "data\\sources\\champions-pilot-match-stats-2025-27.json": true,
+    "data\\normalized\\odds\\sisal\\champions-league.json": true
+  },
+  "limitations": [
+    "136 matches, 35 currently selected Champions clubs, selection bias and small test",
+    "Sabah not in historical fit; its current gap is in numerical range but sparsely represented",
+    "Historical test ends 2026-01-21; applying the model to the November 2026 snapshot introduces temporal distribution shift",
+    "Independent collector timestamps do not certify Opta publication time",
+    "Poisson independence/equidispersion and symmetric goal response may be misspecified",
+    "Current full Reading cannot be fairly backtested without the historical prematch technical inputs",
+    "No claim about shots, SOT, corner, bookings, DUO probabilities, odds, EV or settlement"
+  ]
+}

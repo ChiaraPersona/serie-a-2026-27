@@ -39,6 +39,7 @@ export async function installRefereeHistory(model,container,read=readArtifact){
 }
 export function mountRefereeHistory(model,container,data,teams=[]){
  const panel=container.querySelector('.reading-referee-assignment');if(!panel)return ()=>{};
+ if(panel.dataset.refereePending==='true')return ()=>{};
  const entry=data?.fixtures?.find(f=>f.fixtureId===model.fixture.id&&f.competition===model.competition&&f.cutoffDate===model.fixture.date);
  return mountRefereeDashboard(model,panel,entry,teams);
 }

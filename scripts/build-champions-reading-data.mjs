@@ -34,7 +34,7 @@ const calendar=read('data/normalized/champions-league-2026-27.json');
 const renderer=fs.readFileSync(path.join(root,'js/pages/champions.js'),'utf8');
 const paths=new Set([...renderer.matchAll(/\bload\(['"]([^'"]+\.json)['"]\)/g)].map(m=>path.posix.normalize('data/normalized/'+m[1])));
 for(const m of renderer.matchAll(/\bloadDerived\(['"]([^'"]+\.json)['"]\)/g))paths.add('data/derived/'+m[1]);
-for(const file of ['champions-player-match-history.json','champions-shared-scenarios.json','reading-referee-history.json'])paths.add('data/generated/'+file);
+for(const file of ['champions-player-match-history.json','champions-shared-scenarios.json','reading-referee-history.json','champions-team-history.json'])paths.add('data/generated/'+file);
 paths.delete('data/normalized/champions-md03-player-database-2026-27.json');
 paths.delete('data/normalized/champions-player-history-context-2025-26.json');
 const workspaces=new Map();
@@ -47,6 +47,7 @@ for(const fixture of calendar.fixtures.filter(f=>f.status==='finished'&&[2,3,4].
  const clubs=new Set(squads.map(t=>String(t.uefaClubId)));
  const project=(file,data)=>{
   const result={...data};
+  if(file.endsWith('/champions-team-history.json'))result.teams=Object.fromEntries(Object.entries(data.teams).filter(([id])=>ids.has(id)).map(([id,rows])=>[id,rows.filter(r=>r.date.slice(0,10)<fixture.date.slice(0,10)).slice(0,10)]));
   for(const key of ['fixtures','matches'])if(Array.isArray(data[key]))result[key]=data[key].filter(row=>{
    const id=row.fixtureId||row.matchId||row.id;
    if(id===fixture.id)return true;

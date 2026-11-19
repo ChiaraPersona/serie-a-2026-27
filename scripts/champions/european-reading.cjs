@@ -16,7 +16,7 @@ function conditionScores({expected,matrix},result){
  const ranked=[...conditioned].sort((a,b)=>b.probability-a.probability),leader=target.indexOf(Math.max(...target));
  const primary=ranked.find(s=>outcome(s)===leader),selected=[primary,...ranked.filter(s=>s!==primary)].slice(0,3);
  const display=selected.map((s,i)=>({score:`${s.home}-${s.away}`,outcome:['1','X','2'][outcome(s)],label:i?'Alternativa':'Risultato centrale · esito prevalente',probabilityPct:Math.round(s.probability*1000)/10,conditionalProbabilityPct:Math.round(s.probability/target[outcome(s)]*1000)/10}));
- const forecast={primary:display[0],alternatives:display.slice(1),display,coherentWithVerdict:true,method:'Punteggio più probabile entro l’esito Elo prevalente; probabilità assolute dalla distribuzione condivisa. Stima non validata.'};
+ const forecast={primary:display[0],alternatives:display.slice(1),display,coherentWithVerdict:true,method:'Punteggio più probabile entro l’esito prevalente del rating dei club; probabilità assolute dalla distribuzione condivisa. Stima non validata.'};
  return {applied:true,matrix:conditioned,forecast,expected:{...expected,home:round(home),away:round(away),total:round(home+away),
   method:'Distribuzione dei punteggi condizionata al rating europeo; forma dei punteggi da attacco/difesa, matchup e xGOT. Stima sperimentale non validata.',
   components:{...expected.components,europeanReading:{applied:true,modelId:result.readingModelId||result.modelId,method:'minimum-relative-entropy-outcome-conditioning-v1',statisticallyValidated:false,baseline:{home:expected.home,away:expected.away,total:expected.total},baselineProbabilities:base,targetProbabilities:target}}}};

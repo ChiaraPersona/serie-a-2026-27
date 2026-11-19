@@ -116,7 +116,7 @@ function buildSharedScenarios({calendar,source,styles,odds,asOf,matchday=null,ca
    const output=require('./european-reading.cjs').conditionScores(base,europeanResult);conditioned=output.applied;return output;
   }:null):null;
   let projections=result?result.teamProjections.map((p,i)=>{
-   const copy={...p};
+   const copy={...p,basis:'Volumi prodotti e concessi per sede, normalizzati per campionato, e ultime otto gare. Intervallo p20–p80.'};
    for(const [key,metric] of [['shotsTotal','totalShots'],['shotsOnTarget','shotsOnTarget'],['corners','wonCorners']]){
     const opponent=i?0:1,venue=i?'away':'home',opposite=i?'home':'away';
     if(volumes[i].venues[venue][metric].for.matches<2||volumes[opponent].venues[opposite][metric].against.matches<2)copy[key]=null;

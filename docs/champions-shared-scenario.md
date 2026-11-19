@@ -1,5 +1,9 @@
 # Scenario Champions: motore condiviso
 
+Dal 19 novembre 2026 le gare future usano il [rating individuale Opta](champions-opta-reading.md)
+come metodo principale, con calibrazione congelata e senza bonus campionato.
+Per ricalcolare tutte le giornate future: `node scripts/build-champions-shared-scenarios.cjs --all-future`.
+
 Aggiornamento 14 novembre 2026: per le gare future coperte dal rating europeo,
 la [Lettura collegata a Elo](champions-european-reading.md) sostituisce la
 separazione fra 1X2 e scenario descritta nella policy precedente qui sotto.

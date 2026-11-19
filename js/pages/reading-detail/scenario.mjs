@@ -30,24 +30,24 @@ export function scenarioMarkup(model){
   return comparisonRow(key,label,values,sides);
  }).join('');
  const forecast=model.prediction?.xgotForecast;
- const forecastRow=forecast?comparisonRow('xgot-forecast','xGOT previsto · sperimentale',[forecast.home,forecast.away],sides,{coverage:'Stima di squadra non validata; distinta dall’xGOT osservato.'}):'';
+ const forecastRow=forecast?comparisonRow('xgot-forecast','xGOT previsto · sperimentale',[forecast.home,forecast.away],sides):'';
  const chart=`<div class="rd-diverging" role="group" aria-label="Confronto delle previsioni, scala condivisa per ciascun indicatore"><div class="rd-diverging-teams">${sides.map((side,i)=>`<span class="is-${i?'away':'home'}">${esc(side.name)}</span>`).join('')}</div><div class="rd-diverging-rows">${comparisons}${forecastRow}</div></div>`;
  const scores=model.prediction?.scoreForecast?.display||model.prediction?.exactScores||[];
  const scoreBlock=scores.length?`<div class="rd-score-grid">${scores.slice(0,3).map((s,i)=>`<article><small>${i?'Alternativa':'Risultato previsto'}</small><strong>${esc(s.score)}</strong><span>${pct(s.probabilityPct)} · ${esc(s.label||'')}</span></article>`).join('')}</div>`:missing('Risultati esatti non disponibili.');
- const european=model.prediction?.resultModel?.type==='EUROPEAN_RATING_RESULT';
+ const european=['EUROPEAN_RATING_RESULT','OPTA_CLUB_RATING_RESULT'].includes(model.prediction?.resultModel?.type);
  const linked=model.prediction?.europeanReading?.applied;
  const resultModel=model.prediction?.resultModel;
  const ratingDetails=linked?`<div class="rd-context-strip" data-european-ratings>${sides.map((side,i)=>`<span>Elo ${esc(side.name)} <b>${number(resultModel?.features?.[i?'away':'home']?.rating,0)}</b></span>`).join('')}</div>${resultModel?.estimatedInitialRating?'<p data-estimated-elo>Elo iniziale stimato · incertezza alta. Il rendimento domestico e la forza relativa del campionato integrano lo storico europeo ridotto; il loro peso diminuisce con le nuove gare europee.</p>':''}`:'';
- const modelNote=linked?'Gol attesi, risultati esatti, tiri, SOT, corner e xGOT condividono lo scenario Elo europeo. Falli e cartellini usano il contesto degli esiti quando il campione lo consente. Stima sperimentale non validata.':model.prediction?.europeanReading?'Storico Elo insufficiente: 1X2 N/D; le altre stime usano il modello statistico di base.':'Gol attesi e volumi sono stime separate. '+(model.prediction?.resultModel?.status==='INSUFFICIENT_DATA'?'Storico europeo insufficiente: esito N/D.':'Validazione del modello da completare.');
- const resultBlock=european?`<div data-european-result${linked?' data-european-reading="linked"':''}><p><strong>${linked?'Lettura collegata · Elo europeo':'Probabilità 1X2 · rating europeo'}${model.prediction.resultModel.xgot?.applied?' + xGOT sperimentale':''}</strong> · Stima preliminare</p><div class="rd-score-grid">${[['1','home'],['X','draw'],['2','away']].map(([label,key])=>`<article><small>${label}</small><strong data-result-outcome="${label}">${pct(model.prediction.probabilities?.[key])}</strong></article>`).join('')}</div>${ratingDetails}<p>${modelNote}</p></div>`:'';
+ const modelNote=linked?'Gol attesi, risultati esatti, tiri, SOT, corner e xGOT condividono lo scenario del rating dei club. Falli e cartellini usano il contesto degli esiti quando il campione lo consente. Stima sperimentale non validata.':model.prediction?.europeanReading?'Rating non disponibile: 1X2 N/D; le altre stime usano il modello statistico di base.':'Gol attesi e volumi sono stime separate. '+(model.prediction?.resultModel?.status==='INSUFFICIENT_DATA'?'Storico europeo insufficiente: esito N/D.':'Validazione del modello da completare.');
+ const resultBlock=european?`<div data-european-result${linked?' data-european-reading="linked"':''}><p><strong>${linked?'Lettura collegata · rating dei club':'Probabilità 1X2 · rating europeo'}${model.prediction.resultModel.xgot?.applied?' + xGOT sperimentale':''}</strong> · Stima preliminare</p><div class="rd-score-grid">${[['1','home'],['X','draw'],['2','away']].map(([label,key])=>`<article><small>${label}</small><strong data-result-outcome="${label}">${pct(model.prediction.probabilities?.[key])}</strong></article>`).join('')}</div>${ratingDetails}<p>${modelNote}</p></div>`:'';
  const confidence=model.prediction?.confidence?.value??model.prediction?.confidenceScore,surprise=model.prediction?.surprise?.value;
- return `${resultBlock}<div class="rd-context-strip"><span>Confidenza <b>${number(confidence)}${finite(confidence)?'/100':''}</b></span><span>Fattore sorpresa <b>${number(surprise)}${finite(surprise)?'/100':''}</b></span>${model.competition!=='champions'&&(model.quality?.label||model.quality?.status)?`<span>${esc(model.quality.label||model.quality.status)}</span>`:''}</div>${chart}${scoreBlock}`;
+ return `${model.competition==='champions'?'':resultBlock}<div class="rd-context-strip"><span>Confidenza <b>${number(confidence)}${finite(confidence)?'/100':''}</b></span><span>Fattore sorpresa <b>${number(surprise)}${finite(surprise)?'/100':''}</b></span>${model.competition!=='champions'&&(model.quality?.label||model.quality?.status)?`<span>${esc(model.quality.label||model.quality.status)}</span>`:''}</div>${chart}${scoreBlock}`;
 }
 export function installScenario(model,group){
  const original=[...group.children];const content=document.createElement('div');content.className='rd-scenario';content.innerHTML=scenarioMarkup(model);
  group.replaceChildren(content);
  import('../../components/xgot-statistics.mjs?v=20261106-xgot').then(async({loadXgotStatistics})=>{
-  const data=await loadXgotStatistics();if(!content.isConnected)return;
+  const data=await loadXgotStatistics();if(!group.contains(content))return;
   const row=content.querySelector('[data-statistic="xgot"]');if(row)row.outerHTML=xgotComparisonMarkup(model,data);
  });
  return ()=>group.replaceChildren(...original);

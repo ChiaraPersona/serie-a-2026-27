@@ -2236,4 +2236,4 @@ function predictMatch(input, inspectCardCandidates) {
   };
 }
 
-module.exports = { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, OUTCOMES, WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, volumeMetric, applyOwnOffensiveVolumeProfile, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedMinutes, poissonAtLeast, expectedDefensiveExposureFactor, scoreMatrix, sensitivityMatrices, matrixProbability, configuredScorePredicate, conditionForOutcome, predictScenario, predictMatch, teamFoulProjection };
+module.exports = { bookingCandidates, ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, OUTCOMES, WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, volumeMetric, applyOwnOffensiveVolumeProfile, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedMinutes, poissonAtLeast, expectedDefensiveExposureFactor, scoreMatrix, sensitivityMatrices, matrixProbability, configuredScorePredicate, conditionForOutcome, predictScenario, predictMatch, teamFoulProjection };

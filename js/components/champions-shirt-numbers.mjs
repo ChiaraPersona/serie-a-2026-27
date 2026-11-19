@@ -9,3 +9,12 @@ export function championsShirtNumber(registry,team,player,current=null){
  const hits=rows.filter(r=>playerId?(r.playerId===playerId||r.playerIdAliases?.includes(playerId)):r.aliases.includes(name));
  return hits.length===1?hits[0].shirtNumber:null;
 }
+
+// Apply after lineup adapters, which can replace the initially enriched evidence.
+export function numberChampionsLineups(lineups,registry,squads=[]){
+ return lineups.map(lineup=>{
+  const team=squads.find(t=>t.id===(lineup.side.id||lineup.side.slug)||t.team===lineup.side.name)||lineup.side;
+  const numbered=player=>({...player,shirtNumber:championsShirtNumber(registry,team,player,player.shirtNumber??null)});
+  return {...lineup,players:lineup.players.map(numbered),benchPlayers:(lineup.benchPlayers||[]).map(numbered)};
+ });
+}

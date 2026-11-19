@@ -17,17 +17,17 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
    await page.locator('[data-reading-ready="true"]').waitFor();
    const scenario=page.locator('.rd-scenario');await scenario.waitFor();
    const text=await scenario.innerText();assert(!/NaN|undefined|Infinity/.test(text));
+   assert.equal(await page.locator('[data-european-result]').count(),0);
+   assert(!text.includes('Lettura collegata'));
+   assert.equal(await page.locator('[data-european-ratings], [data-estimated-elo]').count(),0);
    if(f.europeanReading?.applied){
-    assert.equal(await page.locator('[data-european-reading="linked"]').count(),1);
-    assert(text.includes('Lettura collegata'));assert(text.includes(f.scoreForecast.primary.score));
+    assert(text.includes(f.scoreForecast.primary.score));
     assert.equal(await page.locator('[data-statistic="xgot-forecast"] [data-available="true"]').count(),2);
-    assert.equal(await page.locator('[data-estimated-elo]').count(),f.resultModel.estimatedInitialRating?1:0);
-   }else if(f.europeanReading)assert(text.includes('Storico Elo insufficiente'));
-   else assert.equal(await page.locator('[data-european-reading="linked"]').count(),0);
+   }
    await scenario.scrollIntoViewIfNeeded();await page.screenshot({path:`${out}/${f.fixtureId}-${width}.png`});
    assert(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2));assert.deepEqual(errors,[]);
    report.push({fixtureId:f.fixtureId,width,linked:!!f.europeanReading?.applied,errors});await page.close();
   }
-  fs.writeFileSync(`${out}/browser-audit.json`,JSON.stringify(report,null,2)+'\n');console.log('OK European reading desktop/mobile: linked scenario/exact scores/xGOT, estimated-Elo uncertainty or explicit fallback, historical reading, no errors or overflow');
+  fs.writeFileSync(`${out}/browser-audit.json`,JSON.stringify(report,null,2)+'\n');console.log('OK European reading desktop/mobile: removed European result panel, preserved exact scores/xGOT, historical reading, no errors or overflow');
  }finally{if(browser)await browser.close();await new Promise(r=>server.close(r))}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1});

@@ -1,0 +1,28 @@
+{
+  "experiment": "opta-direct-goals-poisson-v1",
+  "status": "research_only",
+  "writtenBeforeFit": true,
+  "authorization": "User: facciamo una prova; isolated experiment, not operational activation",
+  "training": "match date < 2025-01-01 (57 matches)",
+  "validation": "2025-01-01 <= match date < 2025-07-01 (42 matches)",
+  "test": "match date >= 2025-07-01 (37 matches)",
+  "candidate": {
+    "distribution": "Independent Poisson home and away regulation goals",
+    "parameters": ["mu", "homeAdvantage", "ratingGapSlope"],
+    "homeLogRate": "mu + homeAdvantage/2 + ratingGapSlope*(homeRating-awayRating)/10",
+    "awayLogRate": "mu - homeAdvantage/2 - ratingGapSlope*(homeRating-awayRating)/10",
+    "constraints": "ratingGapSlope >= 0; other parameters unrestricted",
+    "features": "Individual pre-match Opta rating gap only; no country/league bonus, no xGOT, no Elo, no domestic priors, no current odds",
+    "structuralLimit": "lambdaHome*lambdaAway = exp(2*mu); goal rates respond symmetrically in log space; no explicit attack/defence or total-environment features"
+  },
+  "selection": "Minimize training Poisson negative log likelihood + lambda/2*(mu^2+homeAdvantage^2+ratingGapSlope^2), same parameter scaling as the formulas above. Choose lambda from [0.1,1,10] by unpenalized validation joint score NLL only. One refit on train+validation, with chosen lambda; test never used for fitting or selection.",
+  "primaryMetric": "Mean joint regulation-score Poisson negative log likelihood including factorial constants; lower is better",
+  "secondaryMetrics": ["Per-team goal MAE and RMSE", "Total-goal MAE", "Predicted vs observed mean goals home/away", "1X2 log loss", "1X2 Brier (sum of 3 errors)", "Top-outcome accuracy"],
+  "references": ["Two constant home/away Poisson means fitted on train+validation only", "Previously frozen Opta 1X2 calibration on identical 37 test matches, outcome metrics only; no xGOT correction; not a joint score model", "Current operational goal values for future MD5 fixtures as descriptive preview only; no retrospective accuracy claim for the full Reading"],
+  "uncertainty": "2000 paired match-date-cluster bootstrap replicates, seed 20261119, score-NLL delta vs constant-goals baseline and 1X2-log-loss delta vs frozen Opta calibration. Descriptive 95% percentile intervals; no automatic promotion rule.",
+  "chronology": "Reuse audited exact-ID historical pairs with independent-collector ratings 2-7 calendar days before kickoff date. No current ratings joined to past outcomes. The 37-match test was already inspected for the earlier 1X2 calibration: this is exploratory, not a fresh untouched confirmatory holdout.",
+  "futurePreview": "Freeze current official Opta snapshot and operational forecasts as experiment inputs. Apply the trained goal model to all 18 MD5 fixtures, highlighting Sabah-Barcelona; no tuning to Sabah or to a desired goal number. All candidate outcome probabilities come from its own independent Poisson distribution, not a blend with the current 1X2. Adaptive Poisson support with omitted mass <= 1e-13 per team; goal means are analytical rates, never truncated-grid averages.",
+  "limitations": ["136 matches, 35 currently selected Champions clubs, selection bias and small test", "Sabah not in historical fit; its current gap is in numerical range but sparsely represented", "Historical test ends 2026-01-21; applying the model to the November 2026 snapshot introduces temporal distribution shift", "Independent collector timestamps do not certify Opta publication time", "Poisson independence/equidispersion and symmetric goal response may be misspecified", "Current full Reading cannot be fairly backtested without the historical prematch technical inputs", "No claim about shots, SOT, corner, bookings, DUO probabilities, odds, EV or settlement"],
+  "productionPromotion": false,
+  "protected": "Operational forecasts, policy, frozen calibration, player hypotheses, canonical statistics, official starter registry, odds and catalogs must have unchanged hashes after the experiment"
+}

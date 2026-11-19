@@ -16,4 +16,11 @@ assert(html.includes(candidate.name));assert.match(html,/Indice comparativo, non
 assert(!html.includes('Quota'));assert(!html.includes('data-rd-pick'));
 assert(!bookingsMarkup({prediction:source},{lineups:[{status:'official',players:[]}]}).includes(candidate.name));
 assert.equal(JSON.stringify(source),before);
+const hypothesis=read('data/generated/champions-booking-hypotheses.json').fixtures.find(f=>f.likelyBooked.length);
+const preliminary={prediction:{likelyBooked:hypothesis.likelyBooked,bookingHypothesis:hypothesis}};
+assert.match(bookingsMarkup(preliminary,{lineups:[]}),/Ipotesi preliminari sugli ultimi undici di riferimento/);
+const confirmed=hypothesis.likelyBooked[0];
+const filtered=bookingsMarkup(preliminary,{lineups:[{status:'official',players:[{id:confirmed.playerId}]}]});
+assert(filtered.includes(confirmed.name));
+for(const excluded of hypothesis.likelyBooked.slice(1))assert(!filtered.includes(excluded.name),'Official lineup excludes reference-only candidates');
 console.log('PASS fixture-scoped Champions bookings, missing ranking and official starter exclusions');

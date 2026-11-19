@@ -1,13 +1,17 @@
 import {esc,number} from './format.mjs?v=20261022-assets-v1';
 import {createReadingView} from './view-model.mjs?v=20261022-assets-v1';
-import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261119-history-results-v6';
+import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261119-champions-history-v7';
 import {recentPlayerMatches,playerHistoryMarkup} from './champions-player-history.mjs';
 import {readArtifact} from './evidence.mjs?v=20261115-archive-v1';
 import {latestReferenceLineups} from './champions-lineup-reference.mjs?v=20261113-lineup-reference';
+import {numberChampionsLineups} from '../../components/champions-shirt-numbers.mjs?v=20261119-lineup-numbers';
 
 // Adapt existing MD3 artifacts for the shared presentation; never recalculate them.
 export async function mountChampionsReading({fixture,prediction,probableFixture,branding,analysis,refereeMarkup,probableMarkup,playerMatchHistory,extend}){
- const side=name=>({name,...branding.get(name)});
+ const hypotheses=fixture.status==='scheduled'&&!probableFixture?await readArtifact('data/generated/champions-booking-hypotheses.json').catch(()=>null):null;
+ const bookingHypothesis=hypotheses?.fixtures?.find(f=>f.fixtureId===fixture.id&&f.date===fixture.date);
+ if(!prediction.likelyBooked?.length&&bookingHypothesis?.likelyBooked?.length)prediction={...prediction,likelyBooked:bookingHypothesis.likelyBooked,bookingHypothesis};
+ const side=name=>{const team=branding.get(name);return {name,...team,id:team?.id??team?.slug??null};};
  const model=createReadingView({competition:'champions',fixture,home:side(fixture.homeTeam),away:side(fixture.awayTeam),prediction:{...prediction,scoreForecast:{...prediction.scoreForecast,display:prediction.scoreForecast?.display||[prediction.scoreForecast?.primary,...(prediction.scoreForecast?.alternatives||[])].filter(Boolean)}},quality:prediction.dataQuality,analysis});
  const prepared=await prepareReadingShell(model);
  if(probableFixture)prepared.evidence.lineups=probableFixture.teams.map((t,i)=>({side:[model.home,model.away][i],formation:t.formation,status:t.status,coach:t.coach||prepared.evidence.lineups[i]?.coach?.replace(/-+$/,'').trim()||null,players:t.players.filter(p=>p.projectedRole==='starter').map(p=>({id:p.playerId,name:p.canonicalName||p.sourceName,shirtNumber:p.shirtNumber,source:p})),bench:t.players.filter(p=>p.projectedRole==='bench').map(p=>p.canonicalName||p.sourceName),benchPlayers:t.players.filter(p=>p.projectedRole==='bench').map(p=>({id:p.playerId,name:p.canonicalName||p.sourceName,shirtNumber:p.shirtNumber,source:p})),benchPlayerIds:t.players.filter(p=>p.projectedRole==='bench').map(p=>p.playerId)}));
@@ -15,6 +19,8 @@ export async function mountChampionsReading({fixture,prediction,probableFixture,
   const history=await readArtifact('data/generated/champions-lineup-references.json').catch(()=>null);
   prepared.evidence.lineups=latestReferenceLineups(model,history,prepared.evidence.lineups);
  }
+ const numbering=analysis.squads?.shirtNumbers||await readArtifact('data/sources/champions-shirt-numbers-2026-27.json');
+ prepared.evidence.lineups=numberChampionsLineups(prepared.evidence.lineups,numbering,analysis.squads?.teams);
  const root=document.querySelector('#app');
  const draft=document.createElement('div');draft.innerHTML=refereeMarkup;
  root.innerHTML='<div class="reading-back"><a href="champions-league.html">← Letture Champions League</a></div><div class="reading-match-hero"></div>';

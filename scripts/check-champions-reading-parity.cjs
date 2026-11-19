@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'..'),out=path.join(root,'output/champions-rea
 const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp'};
 const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));if(!file.startsWith(root+path.sep))return res.writeHead(403).end();fs.readFile(file,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':types[path.extname(file)]||'application/octet-stream'});res.end(e?'Missing':b)});});
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));let browser;try{
- fs.mkdirSync(out,{recursive:true});browser=await chromium.launch({headless:true,channel:'msedge'});
+ fs.mkdirSync(out,{recursive:true});browser=await chromium.launch({headless:true,channel:process.env.BROWSER_CHANNEL||'msedge'});
  for(const width of [1440,390]){const page=await browser.newPage({viewport:{width,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:'+server.address().port+'/champions-league.html?match=ucl-2026-27-md04-01');await page.waitForSelector('.rd-shell');await page.waitForSelector('.rd-forecasts',{state:'attached'});
  await page.screenshot({path:path.join(out,'reading-'+width+'.png'),fullPage:true});
@@ -12,8 +12,15 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
  assert.match(await page.locator('#lettura-disciplina .prediction-booked-panel').innerText(),/Probabili ammoniti/);
  assert.match(await page.locator('#lettura-disciplina .prediction-booked-panel').innerText(),/Candidati ammonizione N\/D/);
  assert.equal(await page.locator('.rd-tactical-sheet').count(),2);
+ assert.equal(await page.locator('#lettura-storico [data-team-history]').count(),2,'Recent history for both Champions teams');
+ for(const table of await page.locator('#lettura-storico [data-team-history]').all()){
+  const rows=table.locator('tbody tr');assert(await rows.count()>0&&await rows.count()<=10,'Recent history limit');
+  assert.equal(await table.locator('thead tr').count(),2,'Shared Fatti/Subiti header');
+ }
  assert.equal(await page.locator('#app :is([data-source-panel],.source-panel,.sources-panel):visible').count(),0);
  assert.equal(await page.locator('[data-md3-probable-player][data-projected-role="starter"]').count(),22);
+ assert.equal(await page.locator('.rd-field-player .rd-kit[aria-label="Numero non disponibile"]').count(),0,'MD4 shirt numbers missing');
+ assert.equal(await page.locator('.rd-field-player svg text').count(),22,'MD4 numbered shirts');
  assert.equal(await page.locator('.rd-player-team-name').count(),2);
  const catalog=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/schedina-champions-md04.json')));
  assert.equal(await page.locator('#lettura-pronostici [data-shared-forecast-id]').count(),catalog.marketCatalog.matches.find(m=>m.matchId==='ucl-2026-27-md04-01').suggestions.length,'Published forecast catalog unchanged');
@@ -32,8 +39,12 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,id+' overflow');}
  assert.deepEqual(errors,[]);
  await page.goto('http://127.0.0.1:'+server.address().port+'/champions-league.html?match=ucl-2026-27-md05-01');await page.waitForSelector('[data-lineup-reference]');
+ assert.equal(await page.locator('#lettura-storico [data-team-history]').count(),2,'Future reading recent history');
  assert.equal(await page.locator('[data-lineup-reference]').count(),2);
+ assert.equal(await page.locator('#lettura-disciplina #lettura-referee').count(),1,'Pending referee assignment remains visible');
+ assert.match(await page.locator('#lettura-referee').innerText(),/Designazione arbitrale[\s\S]*Da designare[\s\S]*N\/D/i);
  assert.equal(await page.locator('.rd-field-player').count(),22);
+ assert.equal(await page.locator('.rd-field-player svg text').count(),22,'Reference XI numbered shirts');
  assert.equal(await page.locator('[data-player-card][data-player-lineup="starter"]:visible').count(),22);
  for(const team of ['home','away'])assert.equal(await page.locator(`[data-player-team="${team}"] [data-player-card]:visible`).count(),11,'Reference XI grouped by team');
  assert.match(await page.locator('.rd-lineup-head').innerText(),/Riferimento provvisorio/);

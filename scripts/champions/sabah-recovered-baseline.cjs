@@ -4,6 +4,31 @@ const root=path.resolve(__dirname,'../..');
 const base='data/raw/xgot/sabah-recovery-2026-11-14';
 const ids=[5785662,5785676,5787762,5787774,5954865,5954875,5987802,5987809];
 const league='uefa.champions_qual';
+const domesticSource='data/sources/champions-sabah-domestic-volumes-2026-27.json';
+
+function applyDomestic(source){
+ const file=path.join(root,domesticSource);
+ if(!fs.existsSync(file))return source;
+ const data=JSON.parse(fs.readFileSync(file,'utf8'));
+ const team=source.teams.find(t=>t.id==='sabah');
+ assert(team&&data.teamId===team.id&&data.league==='aze.1');
+ const matches=data.matches;
+ assert.equal(new Set(matches.map(m=>m.eventId)).size,matches.length);
+ assert(matches.every(m=>m.league===data.league&&m.season==='2026-27'&&m.periodScope==='regulation'));
+ const side=(m,key)=>m[key].canonicalTeamId===team.id&&m[key].providerTeamId===data.providerTeamId;
+ const home=matches.filter(m=>side(m,'home')).length;
+ const away=matches.filter(m=>side(m,'away')).length;
+ assert(home+away>=6&&home>=2&&away>=2);
+ Object.assign(team,{league:data.league,leagueName:'Premyer Liqa',baselineKind:'domestic',statisticsProviderIds:{...team.statisticsProviderIds,VARStats:data.providerTeamId}});
+ const keys=new Set(matches.map(m=>m.eventId));
+ source.matches=source.matches.filter(m=>!keys.has(m.eventId)).concat(matches).sort((a,b)=>a.date.localeCompare(b.date)||a.eventId.localeCompare(b.eventId));
+ source.summary={...source.summary,matches:source.matches.length,completeMatches:source.matches.filter(m=>m.coverage==='complete').length};
+ source.retrievedAt=source.matches.map(m=>m.source?.retrievedAt).filter(Boolean).sort().at(-1);
+ const coverage=source.teamCoverage?.find(t=>t.teamId===team.id);
+ if(coverage)Object.assign(coverage,{matches:home+away,completeMatches:matches.filter(m=>(side(m,'home')||side(m,'away'))&&m.coverage==='complete').length,volumeMatches:home+away,baselineKind:team.baselineKind});
+ source.sabahDomesticCoverage={source:domesticSource,matches:home+away,home,away,leagueSample:matches.length};
+ return source;
+}
 function apply(source){
  const team=source.teams.find(t=>t.id==='sabah');assert(team);
  // Exact provider crosswalk, observed in the archived team fixture calendar.
@@ -40,4 +65,4 @@ function apply(source){
  if(coverage){const own=source.matches.filter(m=>[m.home,m.away].some(s=>s.providerTeamId===(m.source.provider==='FotMob'?'951893':team.espnTeamId)));coverage.matches=own.length;coverage.completeMatches=own.filter(m=>m.coverage==='complete').length;}
  return source;
 }
-module.exports={apply,ids};
+module.exports={apply,applyDomestic,ids};

@@ -48,7 +48,7 @@ source.matches.push({...late,eventId:'late-acquisition',date:'2026-10-22'});
 assert.deepEqual(values(buildSharedScenarios({...inputs,source})),values(generated),'Unavailable observations changed linked reading');
 (async()=>{
  const {applyEuropeanResults}=require('./champions/european-result-policy.cjs');
- const scenarios=structuredClone(data),options={scenarios,calendar:inputs.calendar,asOf:inputs.asOf};
+ const scenarios=structuredClone(data),options={scenarios,calendar:inputs.calendar,asOf:data.generatedAt};
  await applyEuropeanResults(options);const once=JSON.stringify(scenarios);
  await applyEuropeanResults(options);assert.equal(JSON.stringify(scenarios),once,'Repeated application double-counted xGOT or disconnected the score distribution');
  console.log('OK European reading: shared outcome masses, conditional score shapes, rating response, discipline shrinkage/missingness, temporal/odds isolation, goal/SOT/xGOT identities and idempotence; not statistical validation');

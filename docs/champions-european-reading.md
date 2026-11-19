@@ -1,5 +1,9 @@
 # Lettura Champions collegata al rating europeo
 
+Aggiornamento 19 novembre 2026: il [rating individuale Opta](champions-opta-reading.md)
+sostituisce Elo per le gare future, mantenendo il collegamento congiunto descritto
+qui sotto. Il prior domestico Elo non viene più usato dopo questa attivazione.
+
 Aggiornamento successivo del 14 novembre: il [rating iniziale stimato](champions-elo-initial-prior.md)
 consente il collegamento anche per club con poco storico e dati domestici sufficienti.
 La precedente esclusione di Como, Viking e Sabah descritta sotto è superata da

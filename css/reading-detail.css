@@ -369,6 +369,12 @@ body[data-reading-detail-theme] #app:has(.rd-slip-trigger){padding-bottom:110px!
 /* The remaining booking panel sits directly in the discipline section. */
 .rd-shell #lettura-disciplina .prediction-booked-panel{margin-top:0}
 .prediction-booked-panel>header{flex-wrap:wrap;align-items:center}
+.rd-shell .prediction-booked-panel li,
+.rd-shell .prediction-booked-panel li.possible-first-booked{background:var(--rd-surface);border-color:var(--rd-line);color:var(--rd-ink)}
+.rd-shell .prediction-booked-panel li>span{background:var(--rd-soft);color:var(--rd-accent)}
+.rd-shell .prediction-booked-panel li>b{color:var(--rd-accent)}
+.rd-shell .prediction-booked-panel li small,
+.rd-shell .prediction-booked-panel li em{color:var(--rd-muted)}
 .reading-duels-link{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 12px;border:1px solid currentColor;border-radius:7px;font:500 12px/1.4 var(--ds-font-body,system-ui);color:var(--ds-color-accent,#1557b0);text-decoration:none;white-space:nowrap}
 .reading-duels-link:focus-visible{outline:3px solid currentColor;outline-offset:3px}
 
@@ -636,3 +642,20 @@ body .rd-shell :is(.rd-team-name,.rd-section-heading h2){
 .rd-shell .team-history-scroll tbody tr>:nth-child(2n+5),.rd-shell .team-history-scroll thead tr:nth-child(2)>:nth-child(even){border-right:1px solid #d5dcdf}
 .rd-shell .team-history-scroll table{min-width:1080px}
 @media(max-width:700px){.rd-shell .team-history-scroll table{min-width:960px}.rd-shell .team-history-scroll tbody tr>:nth-child(n+4),.rd-shell .team-history-scroll thead tr:nth-child(2)>th{min-width:54px}}
+
+/* Recent history shares the Champions reading palette. */
+body[data-reading-detail-theme="champions"] .rd-shell .team-match-history{color:var(--rd-ink)}
+body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll{background:var(--rd-surface);border-color:var(--rd-line)}
+body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll table{color:var(--rd-ink)}
+body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll :is(th,td){color:var(--rd-ink);border:0;border-bottom:1px solid rgba(175,195,220,.09);box-shadow:none}
+body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll tr>:first-child{box-shadow:none}
+body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll thead th{background:var(--rd-soft);color:var(--rd-muted)}
+body[data-reading-detail-theme="champions"] #lettura-storico .team-history-scroll :is(th,td){border:0;box-shadow:none}
+body[data-reading-detail-theme="champions"] #lettura-storico .team-history-scroll tbody tr:nth-child(odd)>*{background:#0c1c32!important}
+body[data-reading-detail-theme="champions"] #lettura-storico .team-history-scroll tbody tr:nth-child(even)>*{background:#11243c!important}
+body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll tbody tr:is(:hover,:focus-within)>*{background:#203e60!important}
+body[data-reading-detail-theme="champions"] #lettura-storico .team-history-scroll tbody tr:is(:hover,:focus-within)>*{background:#203e60!important}
+body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll .team-history-champions{color:#80caff}
+body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll .team-history-win{color:#72e4a1}
+body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll .team-history-draw{color:#f4d77c}
+body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll .team-history-loss{color:#ff9090}

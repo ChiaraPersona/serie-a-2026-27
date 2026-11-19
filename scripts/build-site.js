@@ -45,7 +45,7 @@ const leaderboardVersion = "20261013-md06-results-v1";
 const bettingVersion = "20261109-md11-results";
 const readingVersion = "20261115-shared-readings-v1";
 const cupVersion = "20261025-coppa-round16-disclosure-v1";
-const championsVersion = "20261115-club-projections-v1";
+const championsVersion = "20261119-opta-reading";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (!teamPagesOnly && !presentationOnly && fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));
@@ -77,6 +77,8 @@ if (renderedPages.some(([,id]) => id === 'readings')) {
   require('./build-reading-browser-data.cjs').build({matchday});
 }
 if (renderedPages.some(([,id]) => id === 'champions')) {
+  require('./build-champions-booking-hypotheses.cjs').build();
+  require('./build-champions-team-history.cjs').build();
   require('./build-champions-md02-browser-data.cjs').build();
   require('./build-champions-player-match-history.cjs').build();
   require('node:child_process').execFileSync(process.execPath,[path.join(root,'scripts/build-champions-reading-data.mjs')],{cwd:root,stdio:'inherit'});

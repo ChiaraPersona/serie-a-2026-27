@@ -10,6 +10,8 @@ const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,
 const digest=v=>crypto.createHash('sha256').update(JSON.stringify(v)).digest('hex');
 const isFuture=(f,asOf)=>f.status==='scheduled'&&Date.parse(zonedLocalToUtc(f.date,f.kickoff,'Europe/Rome'))>Date.parse(asOf);
 function loadContext(calendar,asOf){
+ const activePolicy=read(policyPath);
+ if(activePolicy.opta?.enabled&&Date.parse(asOf)>=Date.parse(activePolicy.opta.activatedAt))return require('./opta-result-policy.cjs').loadContext({calendar,policy:activePolicy,policyPath,asOf});
  const policy=read(policyPath),history=read('data/normalized/uefa-europe-history-2023-26.json');
  assert(Date.parse(history.generatedAt)<Date.parse(asOf),'Historical input unavailable at cutoff');
  const map=new Map(read('data/sources/champions-team-history-map-2026-27.json').teams.map(t=>[t.team,String(t.uefaTeamId)]));
@@ -30,6 +32,7 @@ function loadContext(calendar,asOf){
  return {policy,history:history.matches,current,map,directory,modelId,readingModelId,initialPrior,skipped,states:new Map(),asOf,inputHashes:Object.fromEntries([policyPath,'data/normalized/uefa-europe-history-2023-26.json','data/normalized/champions-team-strength-2026-27.json','data/sources/champions-team-history-map-2026-27.json','data/normalized/champions-league-2026-27.json',...(initialPrior?[policy.initialPrior.modelPath,policy.initialPrior.domesticPath,'scripts/champions/elo-initial-prior.cjs']:[])].map(p=>[p,hash(p)]))};
 }
 function resultForFixture(f,context){
+ if(context.opta)return require('./opta-result-policy.cjs').resultForFixture(f,context);
  const {policy,modelId}=context,cutoff=[f.date,context.asOf.slice(0,10)].sort()[0];
  if(!context.states.has(cutoff))context.states.set(cutoff,sequence([...context.history,...context.current].filter(m=>m.date<cutoff),policy.parameters).state);
  const h=context.directory.get(context.map.get(f.homeTeam)),a=context.directory.get(context.map.get(f.awayTeam));
