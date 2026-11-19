@@ -19,7 +19,7 @@ export async function mountChampionsReading({fixture,prediction,probableFixture,
   const history=await readArtifact('data/generated/champions-lineup-references.json').catch(()=>null);
   prepared.evidence.lineups=latestReferenceLineups(model,history,prepared.evidence.lineups);
  }
- const numbering=analysis.squads?.shirtNumbers||await readArtifact('data/sources/champions-shirt-numbers-2026-27.json');
+ const numbering=analysis.squads?.shirtNumbers;
  prepared.evidence.lineups=numberChampionsLineups(prepared.evidence.lineups,numbering,analysis.squads?.teams);
  const root=document.querySelector('#app');
  const draft=document.createElement('div');draft.innerHTML=refereeMarkup;
