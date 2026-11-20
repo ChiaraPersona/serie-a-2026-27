@@ -1,5 +1,5 @@
 // Fixture-scoped editorial interpretation. Does not change forecasts or markets.
-import {expectationComparisons} from './champions-expectation-comparisons.mjs?v=20261120-expectation-section-v6';
+import {expectationComparisons} from './champions-expectation-comparisons.mjs?v=20261120-expectation-section-v7';
 const expectations={
  '01':[
   'Il Bodø/Glimt può costruire il proprio vantaggio soprattutto in casa. Nelle prime due gare europee interne ha battuto il Dortmund 1–0 e pareggiato 0–0 con il Lille, mentre nelle ultime cinque partite di campionato disponibili ha raccolto quattro vittorie.',
@@ -107,13 +107,15 @@ const interpretations={
  '17':'Il PSG resta favorito in tutti i confronti e la sua produzione europea sostiene un potenziale offensivo elevato. La Roma conserva capacità di segnare: ci aspettiamo pressione francese e una concreta possibilità di più gol interni, senza trattare la media di cinque reti europee come un rendimento garantito.',
  '18':'Qui le stime sono relativamente vicine e mantengono un vantaggio dello Sporting, più o meno ampio. Le difficoltà esterne e la forma recente dello United sostengono questa lettura, mentre il suo potenziale offensivo conserva incertezza sul punteggio. Ci aspettiamo iniziativa portoghese e occasioni per mettere sotto pressione la difesa inglese.'
 };
+const emphasizeSentence=value=>escape(value).replace(/^(.+?\.)(?= |$)/,'<strong>$1</strong>');
+const emphasizeRates=value=>escape(value).replace(/\d+,\d+–\d+,\d+(?= gol| nel confronto)/g,'<strong>$&</strong>');
 export function matchExpectationMarkup(fixture){
  const key=/^ucl-2026-27-md05-(\d{2})$/.exec(fixture.id)?.[1];
  const paragraphs=expectations[key];
  const date=Number(key)<=9?'2026-11-24':'2026-11-25';
  if(paragraphs&&fixture.date===date&&fixture.status==='scheduled'){
   const evidence=expectationComparisons[fixture.id];
-  return `<section class="rd-section rd-match-expectation" aria-labelledby="aspettativa-gara-title" data-match-expectation><header class="rd-section-heading"><h2 id="aspettativa-gara-title">Aspettativa Gara</h2></header><div class="rd-section-content"><p>${escape(paragraphs[0])}</p><p>${escape(paragraphs[1])}</p><p>${escape(evidence)}</p><p>${escape(interpretations[key])}</p><p class="rd-footnote">Dati disponibili fino all’8 novembre. Campioni limitati; lettura da aggiornare con le formazioni.</p></div></section>`;
+  return `<section class="rd-section rd-match-expectation" aria-labelledby="aspettativa-gara-title" data-match-expectation><header class="rd-section-heading"><h2 id="aspettativa-gara-title">Aspettativa Gara</h2></header><div class="rd-section-content"><p>${emphasizeSentence(paragraphs[0])}</p><p>${escape(paragraphs[1])}</p><p>${emphasizeRates(evidence)}</p><p>${emphasizeSentence(interpretations[key])}</p><p class="rd-footnote">Dati disponibili fino all’8 novembre. Campioni limitati; lettura da aggiornare con le formazioni.</p></div></section>`;
  }
  if(fixture.id!=='ucl-2026-27-md05-10'||fixture.date!=='2026-11-25'||fixture.status!=='scheduled')return '';
  return `<section class="rd-section rd-match-expectation" aria-labelledby="aspettativa-gara-title" data-match-expectation>

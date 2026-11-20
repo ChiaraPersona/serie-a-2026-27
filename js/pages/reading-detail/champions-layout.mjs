@@ -1,11 +1,11 @@
 import {esc,number} from './format.mjs?v=20261022-assets-v1';
 import {createReadingView} from './view-model.mjs?v=20261022-assets-v1';
-import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261120-expectation-section-v6';
+import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261120-expectation-section-v7';
 import {recentPlayerMatches,playerHistoryMarkup} from './champions-player-history.mjs';
 import {readArtifact} from './evidence.mjs?v=20261115-archive-v1';
 import {latestReferenceLineups} from './champions-lineup-reference.mjs?v=20261113-lineup-reference';
 import {numberChampionsLineups} from '../../components/champions-shirt-numbers.mjs?v=20261119-lineup-numbers';
-import {matchExpectationMarkup} from './champions-expectation.mjs?v=20261120-expectation-section-v6';
+import {matchExpectationMarkup} from './champions-expectation.mjs?v=20261120-expectation-section-v7';
 
 // Adapt existing MD3 artifacts for the shared presentation; never recalculate them.
 export async function mountChampionsReading({fixture,prediction,probableFixture,branding,analysis,refereeMarkup,probableMarkup,playerMatchHistory,extend}){
