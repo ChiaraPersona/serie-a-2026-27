@@ -1,10 +1,11 @@
 import {esc,number} from './format.mjs?v=20261022-assets-v1';
 import {createReadingView} from './view-model.mjs?v=20261022-assets-v1';
-import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261119-champions-history-v7';
+import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261120-expectation-section-v6';
 import {recentPlayerMatches,playerHistoryMarkup} from './champions-player-history.mjs';
 import {readArtifact} from './evidence.mjs?v=20261115-archive-v1';
 import {latestReferenceLineups} from './champions-lineup-reference.mjs?v=20261113-lineup-reference';
 import {numberChampionsLineups} from '../../components/champions-shirt-numbers.mjs?v=20261119-lineup-numbers';
+import {matchExpectationMarkup} from './champions-expectation.mjs?v=20261120-expectation-section-v6';
 
 // Adapt existing MD3 artifacts for the shared presentation; never recalculate them.
 export async function mountChampionsReading({fixture,prediction,probableFixture,branding,analysis,refereeMarkup,probableMarkup,playerMatchHistory,extend}){
@@ -30,8 +31,13 @@ export async function mountChampionsReading({fixture,prediction,probableFixture,
    for(const node of [...referee.querySelectorAll('.rf-season,.rf-indicators,.rf-note')])sample.append(node);
    referee.append(sample);root.append(referee);
  }
- await mountReadingShell(model,root,{prepared,extend:async context=>{
+ const expectation=matchExpectationMarkup(fixture);
+ await mountReadingShell(model,root,{prepared,matchExpectation:!!expectation,extend:async context=>{
    const scenario=context.groups.get('scenario').lastElementChild;
+   if(expectation){
+     const draft=document.createElement('div');draft.innerHTML=expectation;
+     context.groups.get('aspettativa').lastElementChild.replaceChildren(...draft.querySelector('.rd-section-content').childNodes);
+   }
    if(probableMarkup){
      const draft=document.createElement('div');draft.innerHTML=probableMarkup;
      const content=context.groups.get('giocatori').lastElementChild;

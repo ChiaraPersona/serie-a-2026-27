@@ -13,6 +13,7 @@ import {projectedArtifact} from './projected-artifacts.mjs?v=20261022-assets-v1'
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
   ['scenario','Scenario','01','TrendingUp'],
+  ['aspettativa','Aspettativa Gara','','FileText'],
   ['pronostici','Pronostici','02','List'],
   ['formazioni','Formazioni','03','Users'],
   ['giocatori','Giocatori','04','UserRound'],
@@ -23,8 +24,8 @@ const definitions=[
   ['fonti','Fonti e metodo','09','FileText']
 ];
 
-export function readingSections(model){
-  return definitions.filter(([key])=>!['verifica','fonti'].includes(key)&&(key!=='pronostici'||model.competition==='champions'||model.forecasts?.length>0))
+export function readingSections(model,{matchExpectation=false}={}){
+  return definitions.filter(([key])=>!['verifica','fonti'].includes(key)&&(key!=='aspettativa'||matchExpectation)&&(key!=='pronostici'||model.competition==='champions'||model.forecasts?.length>0))
     .map(([key,title,,path],i)=>[key,title,String(i+1).padStart(2,'0'),path]);
 }
 
@@ -77,7 +78,7 @@ export async function prepareReadingShell(model){
 export async function mountReadingShell(model,root=document.querySelector('#app'),options={}){
   if(!root||root.querySelector('.rd-shell'))return;
   const {evidence,resultsHref,refereeHistory,refereeTeams=[]}=options.prepared||await prepareReadingShell(model);
-  const visibleDefinitions=readingSections(model);
+  const visibleDefinitions=readingSections(model,options);
   const original=[...root.childNodes];
   const oldHero=root.querySelector('.reading-match-hero');
   if(!oldHero)return;
