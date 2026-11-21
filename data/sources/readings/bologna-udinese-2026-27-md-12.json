@@ -3,9 +3,9 @@
   "matchId": "bologna-udinese-2026-27-md-12",
   "status": "published",
   "prototype": true,
-  "updatedAt": "2026-11-18",
+  "updatedAt": "2026-11-21",
   "title": "Bologna - Udinese",
-  "summary": "Prevalenza 1. Previsione preliminare con formazioni probabili, da riconfermare. Quote disponibili per i mercati verificati; contratti DUO con probabilità ed EV N/D se non validati.",
+  "summary": "Prevalenza 1. Formazioni probabili, da riconfermare; dati statistici limitati alle gare concluse prima della MD12.",
   "sections": {
     "context": {
       "content": "Serie A 2026/27, 12ª giornata. 2026-11-22 alle 15:00. Analisi prepartita; meteo attendibile N/D.",
@@ -13,7 +13,7 @@
       "sources": []
     },
     "form": {
-      "content": "Statistiche 2025/26 e gare concluse 2026/27 fino alla 11ª giornata; nessun risultato MD12 utilizzato.",
+      "content": "Statistiche 2025/26 e gare concluse 2026/27 fino alla undicesima giornata; nessun risultato MD12 utilizzato.",
       "signals": [
         "Bologna: 11 gare correnti disponibili.",
         "Udinese: 11 gare correnti disponibili.",
@@ -23,39 +23,43 @@
       "sources": []
     },
     "availability": {
-      "content": "Formazioni probabili: gli undici non sono ufficiali. I dubbi restano distinti dalle assenze.",
+      "content": "Probabili formazioni e disponibilità editoriali: gli undici non sono ufficiali. I dubbi restano distinti dalle assenze.",
       "signals": [
-        "Bologna · Indisponibili: Lorenzo De Silvestri (risentimento muscolare ai flessori della coscia destra, out contro Udinese); Emil Holm (problema al tendine della coscia destra, ipotesi rientro da fine febbraio); Juan Miranda (lesione di primo grado al bicipite femorale della coscia sinistra, tentativo rientro da fine novembre); Enem (lieve affaticamento muscolare, da valutare convocazione contro Udinese)",
-        "Bologna · Squalificati: nessuna segnalazione disponibile",
-        "Bologna · In dubbio: nessuna segnalazione disponibile",
-        "Bologna · Ballottaggi: nessuna segnalazione disponibile",
-        "Udinese · Indisponibili: Alessandro Zanoli (problema muscolare, da valutare per Bologna); Idrissa Gueye (problema alla caviglia, rientro da fine gennaio)",
-        "Udinese · Squalificati: nessuna segnalazione disponibile",
-        "Udinese · In dubbio: David Alaba (risentimento muscolare al polpaccio destro, da valutare per Bologna)",
-        "Udinese · Ballottaggi: nessuna segnalazione disponibile"
+        "Bologna · Indisponibili: Enem; Emil Holm; Juan Miranda; Oussama El Azzouzi; Torbjørn Heggem",
+        "Bologna · Squalificati: nessuna segnalazione nello snapshot",
+        "Bologna · In dubbio: nessuna segnalazione nello snapshot",
+        "Bologna · Ballottaggi: Federico Bernardeschi; Mbangula; Jens Odgaard; Roberto Piccoli; Rahim Alhassane; Nicolò Cambiaghi",
+        "Udinese · Indisponibili: Idrissa Gueye; David Alaba; Nicolò Bertola",
+        "Udinese · Squalificati: nessuna segnalazione nello snapshot",
+        "Udinese · In dubbio: Enzo Ebosse",
+        "Udinese · Ballottaggi: Keinan Davis; Bayo Youssouf; James Abankwah; Christian Kabasele; Maduka Okoye; Bartosz Mrozek"
       ],
       "sources": []
     },
     "tactics": {
       "content": "Bologna prova a imporre il proprio matchup; il modello vede ritmo e volume offensivo sopra la media.",
       "signals": [
-        "Bologna: 3-4-2-1, formazione probabile.",
+        "Bologna: 3-4-3, formazione probabile.",
         "Udinese: 3-4-2-1, formazione probabile."
       ],
       "sources": []
     },
     "referee": {
       "content": "Arbitro designato: Livio Marinelli.",
-      "signals": [],
+      "signals": [
+        "Assistenti: BERTI - LAURI.",
+        "IV ufficiale: AYROLDI.",
+        "VAR: SANTORO; AVAR: PATERNA."
+      ],
       "sources": []
     },
     "market": {
-      "content": "Quote disponibili nei mercati verificati. Le proiezioni individuali non certificano probabilità o EV dei contratti DUO; nuove selezioni richiedono i criteri di approvazione esistenti.",
+      "content": "Confronto quote prepartita aggiornato al 2026-11-21. Quote esterne al modello; i contratti non compatibili restano senza probabilità certificata.",
       "signals": [],
       "sources": []
     },
     "synthesis": {
-      "content": "Prevalenza 1. Previsione preliminare: componenti del modello in validazione prospettica.",
+      "content": "Prevalenza 1; confidenza 83/100 (alta).",
       "signals": [
         "Udinese segna per primo oppure lo 0-0 resiste oltre l'intervallo, costringendo la favorita a cambiare altezza e volume.",
         "Espulsione, infortunio nel riscaldamento, XI inatteso o condizioni ambientali anomale invalidano parte delle ipotesi prepartita."
@@ -65,10 +69,17 @@
   },
   "internalSources": [
     {
-      "label": "Fantacalcio.it",
-      "url": "https://www.fantacalcio.it/probabili-formazioni-serie-a",
-      "rawSnapshot": "data/raw/fantacalcio/probable-lineups-md12-2026-27.html",
-      "retrievedAt": "2026-11-13T14:12:53.675Z"
+      "label": "SOS Fanta",
+      "url": "https://www.sosfanta.com/lista-formazioni/probabili-formazioni-serie-a/",
+      "rawSnapshot": "data/raw/lineups/sosfanta/2026-11-21-md12.html",
+      "retrievedAt": "2026-11-21T11:42:14.321Z"
+    },
+    {
+      "sourceUrl": "https://www.aia-figc.it/news/serie-a-enilive-designazioni-12a-giornata-28854/",
+      "sourceType": "aia-figc-designations",
+      "publishedAt": "2026-11-18",
+      "retrievedAt": "2026-11-18",
+      "note": "Designazione ufficiale: arbitro, assistenti, IV ufficiale, VAR e AVAR."
     }
   ]
 }

@@ -3,9 +3,9 @@
   "matchId": "napoli-torino-2026-27-md-12",
   "status": "published",
   "prototype": true,
-  "updatedAt": "2026-11-18",
+  "updatedAt": "2026-11-21",
   "title": "Napoli - Torino",
-  "summary": "Prevalenza 1. Previsione preliminare con formazioni probabili, da riconfermare. Quote disponibili per i mercati verificati; contratti DUO con probabilità ed EV N/D se non validati.",
+  "summary": "Prevalenza 1. Formazioni probabili, da riconfermare; dati statistici limitati alle gare concluse prima della MD12.",
   "sections": {
     "context": {
       "content": "Serie A 2026/27, 12ª giornata. 2026-11-21 alle 20:45. Analisi prepartita; meteo attendibile N/D.",
@@ -13,7 +13,7 @@
       "sources": []
     },
     "form": {
-      "content": "Statistiche 2025/26 e gare concluse 2026/27 fino alla 11ª giornata; nessun risultato MD12 utilizzato.",
+      "content": "Statistiche 2025/26 e gare concluse 2026/27 fino alla undicesima giornata; nessun risultato MD12 utilizzato.",
       "signals": [
         "Napoli: 11 gare correnti disponibili.",
         "Torino: 11 gare correnti disponibili.",
@@ -23,39 +23,43 @@
       "sources": []
     },
     "availability": {
-      "content": "Formazioni probabili: gli undici non sono ufficiali. I dubbi restano distinti dalle assenze.",
+      "content": "Probabili formazioni e disponibilità editoriali: gli undici non sono ufficiali. I dubbi restano distinti dalle assenze.",
       "signals": [
-        "Napoli · Indisponibili: Alessandro Buongiorno (problema al menisco del ginocchio destro, rientro da fine dicembre); Giovanni Di Lorenzo (lesione distrattiva del muscolo adduttore lungo della coscia sinistra, tentativo rientro dalla fine di novembre); Stanislav Lobotka (problema alla caviglia sinistra, recuperabile da metà dicembre); Alisson Santos (lesione distrattiva di medio grado del bicipite femorale sinistro, rientro da inizio dicembre); Benoît Badiashile (lesione distrattiva di medio grado del retto femorale destro, rientro dalla fine di novembre)",
-        "Napoli · Squalificati: nessuna segnalazione disponibile",
-        "Napoli · In dubbio: nessuna segnalazione disponibile",
-        "Napoli · Ballottaggi: nessuna segnalazione disponibile",
-        "Torino · Indisponibili: Nicolò Fortini (affaticamento muscolare all'adduttore, da valutare per Napoli)",
-        "Torino · Squalificati: nessuna segnalazione disponibile",
-        "Torino · In dubbio: Rodriguez R. (lesione tendinea di basso grado ai muscoli flessori della coscia sinistra, da valutare convocazione per Napoli)",
-        "Torino · Ballottaggi: nessuna segnalazione disponibile"
+        "Napoli · Indisponibili: Alex Meret; Alisson Santos; Benoît Badiashile; Giovanni Di Lorenzo; Stanislav Lobotka; Alessandro Buongiorno",
+        "Napoli · Squalificati: nessuna segnalazione nello snapshot",
+        "Napoli · In dubbio: David Neres",
+        "Napoli · Ballottaggi: Antonio Vergara; Noa Lang; Leonardo Spinazzola; Mathías Olivera; Billy Gilmour; Kevin De Bruyne; Sam Beukema; Luca Marianucci",
+        "Torino · Indisponibili: nessuna segnalazione nello snapshot",
+        "Torino · Squalificati: nessuna segnalazione nello snapshot",
+        "Torino · In dubbio: nessuna segnalazione nello snapshot",
+        "Torino · Ballottaggi: Braganca; Kian Fitz-Jim; Nikola Vlasic; Cesare Casadei; Rafik Belghali; Nicolò Fortini"
       ],
       "sources": []
     },
     "tactics": {
       "content": "Napoli prova a imporre il proprio matchup; il modello vede ritmo e volume offensivo sopra la media.",
       "signals": [
-        "Napoli: 4-3-3, formazione probabile.",
+        "Napoli: 3-5-2, formazione probabile.",
         "Torino: 3-5-2, formazione probabile."
       ],
       "sources": []
     },
     "referee": {
       "content": "Arbitro designato: Antonio Rapuano.",
-      "signals": [],
+      "signals": [
+        "Assistenti: PERETTI - MONDIN.",
+        "IV ufficiale: DI BELLO.",
+        "VAR: CAMPLONE; AVAR: VOLPI."
+      ],
       "sources": []
     },
     "market": {
-      "content": "Quote disponibili nei mercati verificati. Le proiezioni individuali non certificano probabilità o EV dei contratti DUO; nuove selezioni richiedono i criteri di approvazione esistenti.",
+      "content": "Confronto quote prepartita aggiornato al 2026-11-21. Quote esterne al modello; i contratti non compatibili restano senza probabilità certificata.",
       "signals": [],
       "sources": []
     },
     "synthesis": {
-      "content": "Prevalenza 1. Previsione preliminare: componenti del modello in validazione prospettica.",
+      "content": "Prevalenza 1; confidenza 83/100 (alta).",
       "signals": [
         "Torino segna per primo oppure lo 0-0 resiste oltre l'intervallo, costringendo la favorita a cambiare altezza e volume.",
         "Espulsione, infortunio nel riscaldamento, XI inatteso o condizioni ambientali anomale invalidano parte delle ipotesi prepartita."
@@ -65,10 +69,17 @@
   },
   "internalSources": [
     {
-      "label": "Fantacalcio.it",
-      "url": "https://www.fantacalcio.it/probabili-formazioni-serie-a",
-      "rawSnapshot": "data/raw/fantacalcio/probable-lineups-md12-2026-27.html",
-      "retrievedAt": "2026-11-13T14:12:53.675Z"
+      "label": "SOS Fanta",
+      "url": "https://www.sosfanta.com/lista-formazioni/probabili-formazioni-serie-a/",
+      "rawSnapshot": "data/raw/lineups/sosfanta/2026-11-21-md12.html",
+      "retrievedAt": "2026-11-21T11:42:14.321Z"
+    },
+    {
+      "sourceUrl": "https://www.aia-figc.it/news/serie-a-enilive-designazioni-12a-giornata-28854/",
+      "sourceType": "aia-figc-designations",
+      "publishedAt": "2026-11-18",
+      "retrievedAt": "2026-11-18",
+      "note": "Designazione ufficiale: arbitro, assistenti, IV ufficiale, VAR e AVAR."
     }
   ]
 }

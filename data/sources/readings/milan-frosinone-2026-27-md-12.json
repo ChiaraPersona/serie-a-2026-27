@@ -3,9 +3,9 @@
   "matchId": "milan-frosinone-2026-27-md-12",
   "status": "published",
   "prototype": true,
-  "updatedAt": "2026-11-18",
+  "updatedAt": "2026-11-21",
   "title": "Milan - Frosinone",
-  "summary": "Equilibrio con lieve prevalenza 1. Previsione preliminare con formazioni probabili, da riconfermare. Quote disponibili per i mercati verificati; contratti DUO con probabilità ed EV N/D se non validati.",
+  "summary": "Equilibrio con lieve prevalenza 1. Formazioni probabili, da riconfermare; dati statistici limitati alle gare concluse prima della MD12.",
   "sections": {
     "context": {
       "content": "Serie A 2026/27, 12ª giornata. 2026-11-22 alle 18:00. Analisi prepartita; meteo attendibile N/D.",
@@ -13,7 +13,7 @@
       "sources": []
     },
     "form": {
-      "content": "Statistiche 2025/26 e gare concluse 2026/27 fino alla 11ª giornata; nessun risultato MD12 utilizzato.",
+      "content": "Statistiche 2025/26 e gare concluse 2026/27 fino alla undicesima giornata; nessun risultato MD12 utilizzato.",
       "signals": [
         "Milan: 11 gare correnti disponibili.",
         "Frosinone: 11 gare correnti disponibili.",
@@ -23,39 +23,43 @@
       "sources": []
     },
     "availability": {
-      "content": "Formazioni probabili: gli undici non sono ufficiali. I dubbi restano distinti dalle assenze.",
+      "content": "Probabili formazioni e disponibilità editoriali: gli undici non sono ufficiali. I dubbi restano distinti dalle assenze.",
       "signals": [
-        "Milan · Indisponibili: Pietro Terracciano (noie fisiche, da valutare contro Frosinone); Matteo Gabbia (lesione del flessore della coscia sinistra con parziale interessamento tendineo, ipotesi rientro da fine febbraio); Fikayo Tomori (lesione a carico del muscolo flessore mediale della coscia destra, rientro dalla seconda metà di novembre); Alexis Saelemaekers (problema alla caviglia destra, ipotesi rientro da febbraio); Ruben Loftus-Cheek (lesione muscolare al flessore, rientro dalla seconda metà di novembre); Samuel Chukwueze (rottura del tendine del muscolo tensore della fascia lata dell'anca sinistra, ipotesi rientro da aprile)",
-        "Milan · Squalificati: nessuna segnalazione disponibile",
-        "Milan · In dubbio: Strahinja Pavlović (problema alla spalla, in dubbio dal 1' contro il Frosinone)",
-        "Milan · Ballottaggi: nessuna segnalazione disponibile",
-        "Frosinone · Indisponibili: Antonio Raimondo (lesione multilegamentosa contusivo-distorsiva della caviglia sinistra, tentativo rientro da metà dicembre); Florian Grillitsch (sindrome retto-adduttoria, rientro dalla seconda metà di novembre); Aleksa Terzić (noie fisiche, da valutare per Milano)",
+        "Milan · Indisponibili: Ruben Loftus-Cheek; Alexis Saelemaekers; Fikayo Tomori; Pietro Terracciano; Matteo Gabbia; Samuel Chukwueze",
+        "Milan · Squalificati: nessuna segnalazione nello snapshot",
+        "Milan · In dubbio: nessuna segnalazione nello snapshot",
+        "Milan · Ballottaggi: Alphadjo Cissè; Davide Bartesaghi; Yunus Musah; Davide Bartesaghi; Sankhoun Diawara; Strahinja Pavlović",
+        "Frosinone · Indisponibili: Ben Lhassine Kone; Florian Grillitsch; Antonio Raimondo; Francesco Gelli; Eldin Lolic",
         "Frosinone · Squalificati: Gabriele Bracaglia",
-        "Frosinone · In dubbio: nessuna segnalazione disponibile",
-        "Frosinone · Ballottaggi: nessuna segnalazione disponibile"
+        "Frosinone · In dubbio: nessuna segnalazione nello snapshot",
+        "Frosinone · Ballottaggi: Daniel Birligea; Tomáš Bobček; Patrizio Masini; Matteo Cichella; Ilario Monterisi; Giorgio Cittadini; Enzo Tchato; Aleksa Terzić"
       ],
       "sources": []
     },
     "tactics": {
       "content": "Milan prova a imporre il proprio matchup; il modello vede ritmo e volume offensivo sopra la media.",
       "signals": [
-        "Milan: 4-4-1-1, formazione probabile.",
+        "Milan: 4-2-3-1, formazione probabile.",
         "Frosinone: 4-2-3-1, formazione probabile."
       ],
       "sources": []
     },
     "referee": {
       "content": "Arbitro designato: Luca Pairetto.",
-      "signals": [],
+      "signals": [
+        "Assistenti: PALERMO - LAUDATO.",
+        "IV ufficiale: CHIFFI.",
+        "VAR: PEZZUTO; AVAR: PRONTERA."
+      ],
       "sources": []
     },
     "market": {
-      "content": "Quote disponibili nei mercati verificati. Le proiezioni individuali non certificano probabilità o EV dei contratti DUO; nuove selezioni richiedono i criteri di approvazione esistenti.",
+      "content": "Confronto quote prepartita aggiornato al 2026-11-21. Quote esterne al modello; i contratti non compatibili restano senza probabilità certificata.",
       "signals": [],
       "sources": []
     },
     "synthesis": {
-      "content": "Equilibrio con lieve prevalenza 1. Previsione preliminare: componenti del modello in validazione prospettica.",
+      "content": "Equilibrio con lieve prevalenza 1; confidenza 56/100 (moderata).",
       "signals": [
         "Frosinone segna per primo oppure lo 0-0 resiste oltre l'intervallo, costringendo la favorita a cambiare altezza e volume.",
         "Espulsione, infortunio nel riscaldamento, XI inatteso o condizioni ambientali anomale invalidano parte delle ipotesi prepartita."
@@ -65,10 +69,17 @@
   },
   "internalSources": [
     {
-      "label": "Fantacalcio.it",
-      "url": "https://www.fantacalcio.it/probabili-formazioni-serie-a",
-      "rawSnapshot": "data/raw/fantacalcio/probable-lineups-md12-2026-27.html",
-      "retrievedAt": "2026-11-13T14:12:53.675Z"
+      "label": "SOS Fanta",
+      "url": "https://www.sosfanta.com/lista-formazioni/probabili-formazioni-serie-a/",
+      "rawSnapshot": "data/raw/lineups/sosfanta/2026-11-21-md12.html",
+      "retrievedAt": "2026-11-21T11:42:14.321Z"
+    },
+    {
+      "sourceUrl": "https://www.aia-figc.it/news/serie-a-enilive-designazioni-12a-giornata-28854/",
+      "sourceType": "aia-figc-designations",
+      "publishedAt": "2026-11-18",
+      "retrievedAt": "2026-11-18",
+      "note": "Designazione ufficiale: arbitro, assistenti, IV ufficiale, VAR e AVAR."
     }
   ]
 }
