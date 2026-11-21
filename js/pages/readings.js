@@ -1,3 +1,4 @@
+import {bookingTacticalCopy,bookingAverageCopy} from './reading-detail/booking-tactical-copy.mjs';
 import {renderLineupField} from "../components/lineup-field.mjs?v=20261022-assets-v1";
 import {setReadingArtifacts} from './reading-detail/projected-artifacts.mjs?v=20261022-assets-v1';
 import {isReadingPilot} from './reading-detail/view-model.mjs?v=20261022-assets-v1';
@@ -69,17 +70,9 @@ export function renderPredictionV2Sections({prediction,teams=[],esc=value=>Strin
 
   const booked=Array.isArray(prediction?.likelyBooked)?prediction.likelyBooked:[];
   const bookingRows=booked.map(candidate=>{
-    const evidence=Array.isArray(candidate.evidence)?candidate.evidence:[];
-    const foulEvidence=evidence.find(item=>typeof item==='string'&&/^\d+(?:[.,]\d+)? falli\/90(?: stimati)?$/.test(item));
-    const fouls=foulEvidence?Number(foulEvidence.match(/^[\d.,]+/)[0].replace(',','.')):null;
-    const own=isFiniteNumber(fouls)?'Commette '+metric(fouls)+' falli/90'+(foulEvidence.endsWith('stimati')?' stimati':'')+'.':'Falli commessi/90 N/D.';
-    const duels=Array.isArray(candidate.readingDuels)&&candidate.readingDuels.length?candidate.readingDuels:candidate.role!=='Difensore'&&candidate.directOpponent?[{name:candidate.directOpponent,foulsWonPer90:candidate.opponentFoulsWonPer90}]:[];
-    const duel=duels.length?(duels.length>1?'Possibili duelli con ':'Possibile duello con ')+duels.map(d=>d.name).join(', '):'Duello diretto N/D';
-    const refereeMissing=candidate.refereeFactorSource==='INSUFFICIENT_REFEREE_EVIDENCE'||candidate.refereeEvidence?.some(item=>/N\/D|non disponibile/i.test(item));
-    const referee=candidate.refereeFactorSource==='NO_DESIGNATION_AVAILABLE'?'arbitro non designato':refereeMissing?'influenza arbitrale N/D':isFiniteNumber(candidate.refereeFactor)?candidate.refereeFactor>1?'arbitro severo':candidate.refereeFactor<1?'arbitro permissivo':'arbitro nella media':'influenza arbitrale N/D';
-    return `<li class="${candidate.possibleFirstBooked?"possible-first-booked":""}"><span>${candidate.rank??"—"}</span><div><strong>${esc(candidate.name||"N/D")}</strong><small>${esc(teamFor(candidate.teamId).name)} · ${esc(candidate.role||"Ruolo N/D")}${candidate.possibleFirstBooked?" · possibile primo ammonito (euristica)":""}</small><em>${esc(own+" "+duel+"; "+referee+".")}</em></div><b>${isFiniteNumber(candidate.riskScore)?`${metric(candidate.riskScore,0)}/100`:"N/D"}</b></li>`;
+    return `<li class="${candidate.possibleFirstBooked?"possible-first-booked":""}"><span>${candidate.rank??"—"}</span><div><strong>${esc(candidate.name||"N/D")}</strong><small>${esc(teamFor(candidate.teamId).name)} · ${esc(candidate.role||"Ruolo N/D")}${candidate.possibleFirstBooked?" · possibile primo ammonito (euristica)":""}</small><small class="booking-averages">${esc(bookingAverageCopy(candidate))}</small><em>${esc(bookingTacticalCopy(candidate))}</em></div><b>${isFiniteNumber(candidate.riskScore)?`${metric(candidate.riskScore,0)}/100`:"N/D"}</b></li>`;
   }).join('');
-  const discipline=`<section class="prediction-booked-panel"><header><div><h3>Probabili ammoniti</h3></div></header>${booked.length?`<ol>${bookingRows}</ol>`:'<p class="prediction-v2-empty">Candidati ammonizione N/D</p>'}</section>`;
+  const discipline=`<section class="prediction-booked-panel" data-booking-tactical-copy>${booked.length?`<ol>${bookingRows}</ol>`:'<p class="prediction-v2-empty">Candidati ammonizione N/D</p>'}</section>`;
   return {numbers,why,shooters:shooterPanel,outsiders:outsiderPanel,discipline};
 }
 
@@ -133,7 +126,7 @@ function readingIndex(readings,matches,teams,predictions=[]){
 function readingDetail(match,reading,teams){
   const home=teams.find(team=>team.id===match.homeTeam),away=teams.find(team=>team.id===match.awayTeam),sections=reading?.sections||{},completed=readingModules.filter(([key])=>sections[key]?.content).length;
   const title=reading?.title||`${home.name} - ${away.name}`;
-  const isCup=match.competition==="coppa-italia",competition=isCup?"Coppa Italia · Sedicesimi":`Serie A · Giornata ${match.matchday}`,fixtureLabel=isCup?"Sedicesimi":`Giornata ${match.matchday}`,fixtureNav=isCup?`<a href="coppa-italia.html#coppa-round-16">${fixtureLabel}</a>`:`<span>${fixtureLabel}</span>`;
+  const isCup=match.competition==="coppa-italia",competition=isCup?"Coppa Italia · Sedicesimi":`Serie A · Giornata ${match.matchday}`,fixtureLabel=isCup?"Sedicesimi":`Giornata ${match.matchday}`,fixtureNav=isCup?`<a href="coppa-italia.html#coppa-round-16">${fixtureLabel}</a>`:"";
   return `<nav class="reading-back"><a href="lettura.html">← Tutte le letture</a>${fixtureNav}</nav><section class="reading-match-hero"><div><p class="eyebrow">${competition}</p><h1>${esc(title)}</h1><p>${scheduleLabel(match)}</p><span class="reading-progress">${completed}/7 sezioni compilate</span></div><div class="reading-matchup">${teamLogo(home)}<b>VS</b>${teamLogo(away)}</div></section>${reading?.summary?`<aside class="reading-summary"><span>Sintesi editoriale</span><p>${esc(reading.summary)}</p></aside>`:""}<section class="section reading-detail"><header class="section-heading"><div><p class="eyebrow">Scheda di lavoro</p><h2>Struttura della lettura</h2></div><p>I campi non ancora verificati restano N/D.</p></header><div class="reading-module-grid">${readingModules.map(([key,number,moduleTitle,description])=>`<article class="reading-module" id="lettura-${key}"><header><span>${number}</span><div><h3>${moduleTitle}</h3><p>${description}</p></div></header>${readingField(sections[key])}${sections[key]?.sources?.length?`<footer>${sections[key].sources.map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noreferrer">${esc(source.label||"Fonte")}</a>`).join(" · ")}</footer>`:""}</article>`).join("")}</div></section>`;
 }
 function headToHeadPanel(history,prediction){
@@ -167,7 +160,7 @@ function readingPostMatchReport(match,home,away){
 function readingPrototypeDetail(match,reading,teams,teamDirectory,objectiveProfiles,prediction,history,refereeProfiles,forecastCatalog){
   const home=teams.find(team=>team.id===match.homeTeam),away=teams.find(team=>team.id===match.awayTeam);
   const directoryTeams=teamDirectory?.teams||[],homeMeta=directoryTeams.find(team=>team.id===home.id)||{},awayMeta=directoryTeams.find(team=>team.id===away.id)||{};
-  const isCup=match.competition==="coppa-italia",competition=isCup?"Coppa Italia · Sedicesimi":`Serie A · Giornata ${match.matchday}`,fixtureLabel=isCup?"Sedicesimi":`Giornata ${match.matchday}`,fixtureNav=isCup?`<a href="coppa-italia.html#coppa-round-16">${fixtureLabel}</a>`:`<span>${fixtureLabel}</span>`;
+  const isCup=match.competition==="coppa-italia",competition=isCup?"Coppa Italia · Sedicesimi":`Serie A · Giornata ${match.matchday}`,fixtureLabel=isCup?"Sedicesimi":`Giornata ${match.matchday}`,fixtureNav=isCup?`<a href="coppa-italia.html#coppa-round-16">${fixtureLabel}</a>`:"";
   const unavailable=(label,note)=>`<div class="reading-unavailable"><span>${label}</span><strong>N/D</strong><small>${note}</small></div>`;
   const duplicatePanels=new Set(["Campo","Dati disponibili"]);
   const dataPanel=(label,body,className="")=>duplicatePanels.has(label)?"":`<section class="reading-data-panel ${className}"><span>${label}</span>${body}</section>`;

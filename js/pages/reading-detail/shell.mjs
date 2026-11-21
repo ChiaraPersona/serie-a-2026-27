@@ -9,6 +9,7 @@ import {loadHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
 import {mountRefereeHistory} from './referee-history.mjs?v=20261104-tactical-profiles-v3';
 import {teamMatchHistoryMarkup} from '../../components/team-match-history.mjs?v=20261119-history-results-v6';
 import {bookingsMarkup} from './bookings.mjs?v=20261119-booking-hypotheses';
+import {bookingTacticalCopy} from './booking-tactical-copy.mjs';
 import {projectedArtifact} from './projected-artifacts.mjs?v=20261022-assets-v1';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
@@ -99,8 +100,6 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
   try{
     const back=root.querySelector('.reading-back');
     if(back){back.classList.add('rd-back');move(back,shell);}
-    const fallback=document.createElement('a');const previous=new URL(location.href);previous.searchParams.set('layout','legacy');fallback.href=previous.href;fallback.className='rd-fallback';fallback.textContent='Vista precedente';
-    if(back)back.append(fallback);else shell.append(fallback);
     shell.append(hero.firstElementChild);
     if(resultsHref){
       const results=document.createElement('p');results.className='rd-footnote';
@@ -135,6 +134,13 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
       const bookings=document.createElement('div');bookings.innerHTML=bookingsMarkup(model,evidence);
       groups.get('disciplina').lastElementChild.prepend(bookings.firstElementChild);
     }
+    const bookingCandidates=model.prediction?.likelyBooked||[];
+    groups.get('disciplina')?.querySelectorAll('.prediction-booked-panel li').forEach(row=>{
+      const rank=row.querySelector(':scope > span')?.textContent?.trim();
+      const candidate=bookingCandidates.find(p=>String(p.rank??'—')===rank);
+      const copy=row.querySelector('em');
+      if(candidate&&copy){const previous=copy.textContent;copy.textContent=bookingTacticalCopy(candidate,evidence.lineups);undo.push(()=>{copy.textContent=previous});}
+    });
     undo.push(installTacticsHistory(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild]))));
     if(['serie-a','champions'].includes(model.competition)){
       const history=await readArtifact(`data/generated/${model.competition==='champions'?'champions':'serie-a'}-team-history.json`);
