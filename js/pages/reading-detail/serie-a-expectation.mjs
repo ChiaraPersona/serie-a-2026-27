@@ -100,5 +100,5 @@ export function serieAMatchExpectationMarkup(fixture){
   if(index===0||index===3)html=html.replace(/^(.+?\.)(?= |$)/,'<strong>$1</strong>');
   if(index===2)html=html.replace(/\d+,\d+–\d+,\d+(?= gol| separando)/g,'<strong>$&</strong>');
   return `<p>${html}</p>`;
- }).join('')+'<p class="rd-footnote">Analisi sulle prime undici giornate. Lettura da aggiornare con le formazioni; simulazioni separate dai pronostici.</p>';
+ }).join('');
 }

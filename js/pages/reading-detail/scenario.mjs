@@ -33,7 +33,7 @@ export function scenarioMarkup(model){
  const forecastRow=forecast?comparisonRow('xgot-forecast','xGOT previsto · sperimentale',[forecast.home,forecast.away],sides):'';
  const chart=`<div class="rd-diverging" role="group" aria-label="Confronto delle previsioni, scala condivisa per ciascun indicatore"><div class="rd-diverging-teams">${sides.map((side,i)=>`<span class="is-${i?'away':'home'}">${esc(side.name)}</span>`).join('')}</div><div class="rd-diverging-rows">${comparisons}${forecastRow}</div></div>`;
  const scores=model.prediction?.scoreForecast?.display||model.prediction?.exactScores||[];
- const scoreBlock=scores.length?`<div class="rd-score-grid">${scores.slice(0,3).map((s,i)=>`<article><small>${i?'Alternativa':'Risultato previsto'}</small><strong>${esc(s.score)}</strong><span>${pct(s.probabilityPct)} · ${esc(s.label||'')}</span></article>`).join('')}</div>`:missing('Risultati esatti non disponibili.');
+ const scoreBlock=scores.length?`<div class="rd-score-grid">${scores.slice(0,3).map((s,i)=>`<article><small>${i?'Alternativa':'Risultato previsto'}</small><strong>${esc(s.score)}</strong></article>`).join('')}</div>`:missing('Risultati esatti non disponibili.');
  const european=['EUROPEAN_RATING_RESULT','OPTA_CLUB_RATING_RESULT'].includes(model.prediction?.resultModel?.type);
  const linked=model.prediction?.europeanReading?.applied;
  const resultModel=model.prediction?.resultModel;

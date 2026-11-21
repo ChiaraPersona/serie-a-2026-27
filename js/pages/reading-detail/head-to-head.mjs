@@ -63,7 +63,7 @@ function eventsMarkup(events,emptyText){
 }
 export function historyMarkup(rows){
  if(!rows.length)return missing('Precedenti verificati non disponibili per questa coppia.');
- return `<p class="rd-h2h-count">${rows.length} scontri diretti disponibili${rows.length<5?' · campione storico limitato':''}</p><ol class="rd-h2h-timeline">${rows.map((row,index)=>{
+ return `${rows.length<5?'<p class="rd-h2h-count">Campione storico limitato</p>':''}<ol class="rd-h2h-timeline">${rows.map((row,index)=>{
   const m=row.raw,cards=disciplineEvents(m),gaps=m.coverage?.missingFields||[];
   const goalsKnown=Array.isArray(m.goals)&&!gaps.includes('goalEvents');
   const noGoals=goalsKnown&&row.score?.home===0&&row.score?.away===0;

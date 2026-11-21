@@ -1,6 +1,6 @@
 import {esc,number,finite,missing} from './format.mjs?v=20261022-assets-v1';
-import {historyMarkup,selectHistoryRows} from './head-to-head.mjs?v=20261022-assets-v1';
-import {installSpatialMatchup} from './spatial-matchup.mjs?v=20261106-zone-disclosure-v1';
+import {historyMarkup,selectHistoryRows} from './head-to-head.mjs?v=20261121-clean-reading-copy';
+import {installSpatialMatchup} from './spatial-matchup.mjs?v=20261121-clean-reading-copy';
 export function attackMarkup(channels){
  if(!channels)return missing('Ripartizione delle direzioni d’attacco non disponibile.');
  return `<div class="rd-channels">${[['left','Sinistra'],['central','Centro'],['right','Destra']].map(([key,label])=>`<div><span>${label}</span><i aria-hidden="true"><b style="width:${finite(channels[key])?Math.max(0,Math.min(100,channels[key])):0}%"></b></i><strong>${number(channels[key])}${finite(channels[key])?'%':''}</strong></div>`).join('')}</div>`;
@@ -33,7 +33,7 @@ export function tacticsMarkup(model,evidence){
  const sides=[model.home,model.away],profiles=sides.map((_,i)=>profileFor(model,evidence,i));
  const panels=sides.map((side,i)=>{
   const p=profiles[i],channels=evidence.analysis.attackChannels?.profiles?.find(p=>p.team===side.name)?.attackChannels||model.prediction?.teamProjections?.[i]?.attackChannels||p?.attackChannels;
-  if(model.competition==='serie-a')return `<article class="rd-tactical-column rd-tactical-sheet" data-tactical-side="${i?'away':'home'}"><header class="rd-tactical-team"><span>${i?'Ospite':'Casa'}</span><h3>${esc(side.name)}</h3></header><div class="rd-tactical-directions"><h4>Direzioni d’attacco</h4>${attackMarkup(channels)}</div>${['champions-league','europa-league','conference-league'].map(c=>currentTacticsMarkup(model,evidence,side,c)).join('')}</article>`;
+  if(model.competition==='serie-a')return `<article class="rd-tactical-column rd-tactical-sheet" data-tactical-side="${i?'away':'home'}"><header class="rd-tactical-team"><span>${i?'Ospite':'Casa'}</span><h3>${esc(side.name)}</h3></header><div class="rd-tactical-directions"><h4>Direzioni d’attacco</h4>${attackMarkup(channels)}</div>${['europa-league','conference-league'].map(c=>currentTacticsMarkup(model,evidence,side,c)).join('')}</article>`;
   return `<article class="rd-tactical-column" data-tactical-side="${i?'away':'home'}"><header class="rd-tactical-team"><span>${i?'Ospite':'Casa'}</span><h3>${esc(side.name)}</h3></header><div class="rd-tactical-directions">${attackMarkup(channels)}</div><p class="rd-footnote rd-tactical-baseline">Baseline ${esc(p?.season||'storica')} · ${esc(p?.competition||'Campione N/D')} · ${number(p?.summary?.appearances,0)} gare</p><dl class="rd-player-kpis rd-tactical-metrics"><div><dt>Tiri / gara</dt><dd>${number(p?.summary?.shotsPerGame)}</dd></div><div><dt>Gol / gara</dt><dd>${number(p?.derived?.goalsPerGame)}</dd></div></dl></article>`;
  });
  return `<div class="rd-tactical-comparison" aria-label="Confronto tattico Casa e Ospite">${panels.join('')}</div>`;

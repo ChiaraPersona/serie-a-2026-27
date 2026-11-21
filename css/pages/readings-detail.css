@@ -5937,6 +5937,16 @@ body :is(#app,#team-squad-app) .comparator-editorial .team-comparator-options{fl
 .rd-spatial-samples b{color:var(--rd-ink)}
 .rd-spatial-map-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:12px 0;font-size:12px;color:var(--rd-muted)}
 .rd-spatial-map-controls select{margin-left:6px;padding:8px;border:1px solid var(--rd-line);border-radius:4px;background:var(--rd-bg);color:var(--rd-ink);font:inherit;min-height:44px}
+.rd-spatial-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:18px 0}
+@media(min-width:701px){.rd-spatial-toolbar{max-width:760px;margin-inline:auto}}
+.rd-spatial-toolbar>.rd-spatial-directions{margin:0}
+.rd-spatial-toolbar>.rd-spatial-map-controls{justify-content:flex-end;gap:6px;margin-left:auto}
+.rd-shell .rd-spatial-toolbar button{flex:0 0 auto;min-height:36px;padding:8px 16px;border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-control);background:#e6ebed;box-shadow:inset 0 2px 5px rgba(20,43,59,.14);color:#283e4b;font-family:var(--ds-font-body);font-size:.86rem;line-height:1.2;font-weight:700;transform:none;transition:background-color .2s ease,box-shadow .2s ease,color .2s ease}
+.rd-shell .rd-spatial-toolbar button:not([aria-pressed="true"]):hover{border-color:var(--ds-color-border);background:#d8e2e7;color:#152e42;box-shadow:inset 0 2px 9px rgba(20,43,59,.12)}
+.rd-shell .rd-spatial-toolbar button[aria-pressed="true"]{border-color:var(--ds-color-accent-strong);background:var(--ds-color-accent-strong);color:var(--ds-color-on-accent);box-shadow:inset 0 2px 5px rgba(0,0,0,.25)}
+.rd-shell .rd-spatial-toolbar button[aria-pressed="true"]:hover{border-color:transparent;background:color-mix(in srgb,var(--ds-color-accent-strong) 92%,var(--ds-color-on-accent));box-shadow:inset 0 2px 9px rgba(0,0,0,.18)}
+.rd-shell .rd-spatial-toolbar button:focus-visible{outline:2px solid #9a6912;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.rd-shell .rd-spatial-toolbar button{transition:none}}
 .rd-spatial-pitch{display:block;width:100%;max-width:760px;height:auto;margin:0 auto}
 .rd-spatial-grass{fill:#143f36;stroke:#b4d4c5;stroke-width:.22}
 .rd-spatial-lines{stroke:#9bbcaf;stroke-width:.22;opacity:.7}

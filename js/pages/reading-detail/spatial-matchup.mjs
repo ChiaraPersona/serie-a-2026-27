@@ -25,18 +25,21 @@ function pitch(model,data,direction,goalsOnly){
 export function spatialMarkup(model,data,index=0,goalsOnly=false){
  const direction=data.directions[index],attack=data.teams.find(t=>t.teamId===direction.attackingTeamId),defence=data.teams.find(t=>t.teamId===direction.defendingTeamId);
  const a=nameFor(model,attack.teamId),d=nameFor(model,defence.teamId);
- const coverage=team=>(team.competitionSamples||[]).map(s=>`${({'serie-a':'Serie A','champions-league':'Champions League','europa-league':'Europa League','conference-league':'Conference League'})[s.competition]||s.competition}: ${s.matches}/${s.expectedMatches} gare con coordinate`).join(' · ');
  const cell=(r,side)=>`<strong>${r[side==='for'?'shotsFor':'shotsAgainst']} tiri</strong><span>${percent(r[side==='for'?'shareFor':'shareAgainst'])} · ${r[side==='for'?'goalsFor':'goalsAgainst']} gol</span>`;
- return `<header class="rd-spatial-heading"><h3>Dove si incontrano attacco e difesa</h3><p>Gare di Serie A e coppe europee precedenti al ${esc(data.cutoffExclusive.split('-').reverse().join('/'))}. Rigori e autogol esclusi dal confronto.</p></header><div class="rd-spatial-directions" role="group" aria-label="Direzione del confronto">${data.directions.map((v,i)=>`<button type="button" data-spatial-direction="${i}" aria-pressed="${i===index}">${esc(nameFor(model,v.attackingTeamId))} attacca</button>`).join('')}</div><div class="rd-spatial-samples"><p><b>${esc(a)}</b> · ${esc(coverage(attack))} · ${attack.for.mappedShots}/${attack.for.totalShots} tiri localizzati</p><p><b>${esc(d)}</b> · ${esc(coverage(defence))} · ${defence.against.mappedShots}/${defence.against.totalShots} tiri concessi localizzati</p></div><div class="rd-spatial-map-controls"><label>Mostra <select data-spatial-mode><option value="shots"${goalsOnly?'':' selected'}>Tiri e gol</option><option value="goals"${goalsOnly?' selected':''}>Solo gol</option></select></label><span>Attacco verso destra →</span></div>${pitch(model,data,direction,goalsOnly)}<div class="rd-spatial-legend"><span class="rd-spatial-legend-for">${esc(a)} · ${goalsOnly?'gol segnati':'tiri effettuati'}</span><span class="rd-spatial-legend-against">${esc(d)} · ${goalsOnly?'gol subiti':'tiri concessi'}</span><span>Punti grandi: gol</span></div><details class="rd-disclosure rd-spatial-zones"><summary>Confronto per zona · tiri localizzati senza rigori e autogol</summary><div class="rd-spatial-table-wrap"><table class="rd-spatial-table" aria-label="Confronto per zona · tiri localizzati senza rigori e autogol"><thead><tr><th scope="col">Zona</th><th scope="col">${esc(a)}<small>Attacco</small></th><th scope="col">${esc(d)}<small>Difesa</small></th></tr></thead><tbody>${direction.rows.map(r=>`<tr${direction.focusKey===r.key?' class="rd-spatial-focus"':''}><th scope="row">${esc(r.label)}</th><td>${cell(r,'for')}</td><td>${cell(r,'against')}</td></tr>`).join('')}</tbody></table></div></details>`;
+ return `<div class="rd-spatial-toolbar"><div class="rd-spatial-directions" role="group" aria-label="Direzione del confronto">${data.directions.map((v,i)=>`<button type="button" data-spatial-direction="${i}" aria-pressed="${i===index}">${esc(nameFor(model,v.attackingTeamId))} attacca</button>`).join('')}</div><div class="rd-spatial-map-controls rd-spatial-directions" role="group" aria-label="Mostra sulla mappa"><button type="button" data-spatial-mode="shots" aria-pressed="${!goalsOnly}">Tiri e gol</button><button type="button" data-spatial-mode="goals" aria-pressed="${goalsOnly}">Solo gol</button></div></div>${pitch(model,data,direction,goalsOnly)}<div class="rd-spatial-legend"><span class="rd-spatial-legend-for">${esc(a)} · ${goalsOnly?'gol segnati':'tiri effettuati'}</span><span class="rd-spatial-legend-against">${esc(d)} · ${goalsOnly?'gol subiti':'tiri concessi'}</span><span>Punti grandi: gol</span></div>`;
 }
 export function installSpatialMatchup(model,data,containers){
  if(model.competition!=='serie-a'||!data||data.fixtureId!==model.fixture.id)return ()=>{};
  const section=document.createElement('section');section.className='rd-spatial';section.dataset.spatialFixture=model.fixture.id;
  let index=0,goalsOnly=false;
  const draw=()=>{section.innerHTML=spatialMarkup(model,data,index,goalsOnly)};
- const click=e=>{const button=e.target.closest('[data-spatial-direction]');if(!button)return;index=Number(button.dataset.spatialDirection);draw();section.querySelector(`[data-spatial-direction="${index}"]`).focus({preventScroll:true})};
- const change=e=>{if(!e.target.matches('[data-spatial-mode]'))return;goalsOnly=e.target.value==='goals';draw();section.querySelector('[data-spatial-mode]').focus({preventScroll:true})};
- draw();section.addEventListener('click',click);section.addEventListener('change',change);
+ const click=e=>{
+  const button=e.target.closest('[data-spatial-direction],[data-spatial-mode]');if(!button)return;
+  const mode=button.dataset.spatialMode;
+  if(mode)goalsOnly=mode==='goals';else index=Number(button.dataset.spatialDirection);
+  draw();section.querySelector(mode?`[data-spatial-mode="${mode}"]`:`[data-spatial-direction="${index}"]`).focus({preventScroll:true});
+ };
+ draw();section.addEventListener('click',click);
  containers.tattica.append(section);
- return ()=>{section.removeEventListener('click',click);section.removeEventListener('change',change);section.remove()};
+ return ()=>{section.removeEventListener('click',click);section.remove()};
 }
