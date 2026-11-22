@@ -11,7 +11,7 @@ export function createDataService(release,{deduplicate=false}={}){
   const fetchJson=(url,label=url)=>{
     if(deduplicate&&requests.has(url))return requests.get(url);
     const immutable=/\/readings\/shared\/[a-f0-9]{64}\.json$/.test(url);
-    const live=label==='official starters'||/\/readings\/(?:matches\/|index\.json)/.test(url);
+    const live=label==='official starters'||/\/readings\/(?:matches\/|index\.json)/.test(url)||/\/generated\/(?:home-ui\.json|matches\/md\d{2}\.json)$/.test(url);
     const versioned=immutable?url:`${url}${url.includes("?")?"&":"?"}v=${release}`,options={cache:immutable?'force-cache':live?'no-store':'default',label};
     const request=deduplicate?requestJson(versioned,options):(async()=>{const response=await fetch(versioned,{cache:options.cache});if(!response.ok)throw new Error(`${label}: ${response.status}`);return unpackArchive(await response.json())})();
     if(deduplicate){requests.set(url,request);request.catch(()=>{if(requests.get(url)===request)requests.delete(url)});}
@@ -36,6 +36,8 @@ export function createDataService(release,{deduplicate=false}={}){
       return globalThis.officialStarterPolicy.filter(data);
     },
     loadGenerated:path=>fetchJson(`data/generated/${path}`,path),
+    loadHomeData:()=>fetchJson('data/generated/home-ui.json'),
+    loadMatchdayMatches:day=>{if(!Number.isInteger(day)||day<1||day>38)throw Error('Giornata non valida');return fetchJson(`data/generated/matches/md${String(day).padStart(2,'0')}.json`)},
     loadChampionsReading:async id=>{
       if(!/^ucl-2026-27-md0[234]-(?:0[1-9]|1[0-8])$/.test(id))throw Error('Fixture Champions non valida');
       const [registry,data]=await Promise.all([

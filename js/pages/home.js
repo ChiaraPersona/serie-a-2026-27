@@ -83,7 +83,7 @@ function homeStandings(standings,currentHomeRows,currentAwayRows,previousStandin
     return `<section class="home-next-panel" data-home-matchday-panel="${side}"><h3><strong>Giornata <span data-home-matchday-label aria-live="polite" aria-atomic="true"></span></strong></h3><ul class="home-match-list" data-home-match-list></ul></section>`;
   }
   async function render(){
-    const page="home",[teams,matches,previousStandings]=await Promise.all([load("teams.json"),load("matches.json"),load("standings-2025-26.json")]);
+    const page="home",[teams,matches,previousStandings]=deps.loadHomeData?await deps.loadHomeData().then(data=>[data.teams,data.matches,data.previousStandings]):await Promise.all([load("teams.json"),load("matches.json"),load("standings-2025-26.json")]);
     const league=matches.filter(m=>m.competition==="serie-a"),calculateStandings=globalThis.calculateStandings;
     let html="",homeMatchdays=[],activeHomeMatchday=null;
   if(page==="home"){

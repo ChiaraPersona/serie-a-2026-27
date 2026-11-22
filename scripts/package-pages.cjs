@@ -13,7 +13,7 @@ const directories = ['assets/', 'css/', 'js/', 'statistiche-squadra/',
   'data/generated/', 'data/normalized/', 'data/sources/', 'data/teams/', 'data/derived/',
   'data/predictions/', 'data/players/', 'data/champions-2026-27/'];
 const rootFiles = new Set(['.nojekyll', 'sw.js', 'manifest.webmanifest', 'CNAME', 'robots.txt', 'sitemap.xml', 'data/team-objectives.json']);
-const requiredRuntimeProjections = ['js/services/archive-json.js','js/services/reading-shared.js','js/pages/champions-team-data.mjs'];
+const requiredRuntimeProjections = ['js/services/archive-json.js','js/services/reading-shared.js','js/pages/champions-team-data.mjs','data/generated/home-ui.json',...Array.from({length:38},(_,i)=>`data/generated/matches/md${String(i+1).padStart(2,'0')}.json`)];
 // Browser MD3 uses the compiled Schedina UI or fixture projections. These
 // originals remain compiler inputs; literal names also address embedded datasets.
 const projectionInternalFiles=new Set([

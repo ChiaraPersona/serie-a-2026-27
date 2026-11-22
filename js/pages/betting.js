@@ -1,14 +1,14 @@
 import {icon} from '../components/icon.mjs';
 const release=new URL(import.meta.url).searchParams.get("v")||"development";
-const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=20261109-md11-results`);
-const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=20261102-champions-no-draw`);
-const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts,publicForecastLabel,meetsMinimumPublicOdds,isExcludedStraightDraw}=await import(`./shared-forecast-contract.mjs?v=20261102-champions-no-draw`);
-
-const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=20261115-fixture-data`);
-const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=20261022-assets-v1`);
-const {settleMd3Leg}=await import(`./champions-md3-results.mjs?v=20261022-assets-v1`);
-
-const {archiveContractStats}=await import('./archive-contract-stats.mjs?v=20261102-champions-no-draw');
+const [{settleLeg:settleStrictLeg,settleArchivedLeg},{createPersonalBetslipStore},{hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast,uniqueForecastContracts,publicForecastLabel,meetsMinimumPublicOdds,isExcludedStraightDraw},{loadChampionsWorkspaceMd3Derived},{championsAuditDisplay},{settleMd3Leg},{archiveContractStats}]=await Promise.all([
+ import('./betting-settlement.mjs?v=20261109-md11-results'),
+ import('./personal-betslip-store.mjs?v=20261102-champions-no-draw'),
+ import('./shared-forecast-contract.mjs?v=20261102-champions-no-draw'),
+ import('./champions-workspace-catalog.mjs?v=20261115-fixture-data'),
+ import('./champions-audit-display.mjs?v=20261022-assets-v1'),
+ import('./champions-md3-results.mjs?v=20261022-assets-v1'),
+ import('./archive-contract-stats.mjs?v=20261102-champions-no-draw')
+]);
 
 export function createPage(deps){
   const {esc,dateOnly,hero,load,loadGenerated}=deps;
@@ -461,11 +461,11 @@ export function createPage(deps){
     }
     if(["1","2","3","4","5","6","7","8","9","10","11","12"].includes(matchday)){
       const number=Number(matchday),file=number===1?"schedina.json":`schedina-md${String(number).padStart(2,"0")}.json`;
-      const [data,matches,outcomes]=await Promise.all([load(file),load("matches.json"),load("card-settlement-records.json")]);
+      const [data,matches,outcomes,teams]=await Promise.all([load(file),deps.loadMatchdayMatches?deps.loadMatchdayMatches(number):load("matches.json"),load("card-settlement-records.json"),number>=5?load("teams.json"):Promise.resolve([])]);
       recordedOutcomes=outcomes.records;
       const matchById=new Map((Array.isArray(matches)?matches:matches.matches||[]).map(match=>[match.id,match]));
       const needsPredictions=number===5||(number>=6&&[...matchById.values()].filter(m=>m.id.endsWith(`-md-${String(number).padStart(2,"0")}`)).some(m=>!data.marketCatalog?.matches?.find(c=>c.matchId===m.id)?.selections?.length));
-      const [teams,predictionData]=await Promise.all([number>=5?load("teams.json"):Promise.resolve([]),needsPredictions?load(`predictions-md${String(number).padStart(2,"0")}.json`):Promise.resolve({predictions:[]})]);
+      const predictionData=needsPredictions?await load(`predictions-md${String(number).padStart(2,"0")}.json`):{predictions:[]};
       const teamById=new Map((Array.isArray(teams)?teams:teams.teams||[]).map(team=>[team.id,team]));
       const ordinal=`${number}ª`;
       if(number>=6)currentContext={competition:"serie-a",season:"2026-27",matchday:number,label:`Serie A · ${ordinal} giornata`};

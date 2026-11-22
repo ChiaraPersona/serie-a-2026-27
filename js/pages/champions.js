@@ -507,7 +507,7 @@ export function createPage(deps){
         setReadingArtifacts(datasets);
       }catch(error){readingProjection=null;throw error;}
     }
-    const [data,strength,history,model,h2h,pilot,backtest,squads,motivation,styleProfiles,attackChannels,surpriseFactors,playerMarkets]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json"),load("champions-pilot-volume-backtest.json"),load("champions-registered-squads-2026-27.json"),load("champions-motivation-md01-2026-27.json"),load("team-style-profiles.json"),load("champions-attack-channels-2025-26.json"),load("champions-surprise-factor-md01-2026-27.json"),load("champions-player-markets-md01-2026-27.json")]);
+    const [[data,strength,history,model,h2h,pilot,backtest,squads,motivation,styleProfiles,attackChannels,surpriseFactors,playerMarkets],overviewData]=await Promise.all([Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json"),load("champions-pilot-volume-backtest.json"),load("champions-registered-squads-2026-27.json"),load("champions-motivation-md01-2026-27.json"),load("team-style-profiles.json"),load("champions-attack-channels-2025-26.json"),load("champions-surprise-factor-md01-2026-27.json"),load("champions-player-markets-md01-2026-27.json")]),!requestedMatchId&&!requestedTeamId?Promise.all([load("champions-pilot-predictions-md02-2026-27.json"),load("../generated/champions-shared-scenarios.json")]):Promise.resolve(null)]);
     const profiles=new Map(strength.teams.map(profile=>[profile.team,profile]));
     const histories=new Map(history.teams.map(profile=>[profile.team,profile]));
     const attackByTeam=new Map(attackChannels.profiles.map(profile=>[profile.team,profile]));
@@ -609,10 +609,10 @@ export function createPage(deps){
       }
       return;
     }
-    const md2Summary=await load("champions-pilot-predictions-md02-2026-27.json");
+    const md2Summary=overviewData?overviewData[0]:await load("champions-pilot-predictions-md02-2026-27.json");
     // Le Letture MD3 esistono nel calendario e vengono gestite da render()
     // anche se non sono presenti negli archivi pilot MD1/MD2.
-    const sharedScenarios=await load('../generated/champions-shared-scenarios.json');
+    const sharedScenarios=overviewData?overviewData[1]:await load('../generated/champions-shared-scenarios.json');
     const pilotByFixture=new Map([...pilot.fixtures,...md2Summary.fixtures,...sharedScenarios.fixtures.filter(p=>data.fixtures.some(f=>f.id===p.fixtureId&&(f.status==='scheduled'||f.matchday===4&&f.status==='finished')))].map(fixture=>[fixture.fixtureId,fixture]));
     for(const fixture of data.fixtures){
       if(fixture.matchday===3)pilotByFixture.set(fixture.id,{fixtureId:fixture.id});

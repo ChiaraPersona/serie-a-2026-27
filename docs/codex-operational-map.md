@@ -19,6 +19,16 @@ Consultazione interna, verificata il 23 ottobre 2026. Percorsi relativi alla rad
 
 ## Consultazione economica
 
+Per Home, elenco Squadre e calendario della giornata in Schedina usare le
+proiezioni descrittive di `scripts/build-home-browser-data.cjs`: `home-ui.json`
+e `matches/mdNN.json` in `data/generated/`. Il build del sito le aggiorna dai
+file canonici senza ricalcolare pronostici. Le partite per giornata conservano
+tutti i campi originali necessari alle liquidazioni; la Home conserva i dati
+delle classifiche Generale/Home/Away e delle schede squadra. Verificare con
+`npm run test:browser:pages`. Il confronto di caricamento desktop/mobile è in
+`scripts/check-page-performance.cjs` (`--before`, poi `--after`, a dati stabili).
+I risultati sono locali in `output/page-performance/`; non misurano la rete reale.
+
 ### Archivi delle verifiche e staging
 
 Gli snapshot voluminosi `before` / `baseline` in `output/` usano piccoli manifest
