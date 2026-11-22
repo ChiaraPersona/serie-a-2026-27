@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-11-22T19:27:04.759Z",
+  "deletedFiles": 0,
+  "candidates": [
+    {
+      "path": "output/pages-site",
+      "bytes": 169095969,
+      "status": "obsolete regenerable package",
+      "evidence": "Missing index.html and current home projection; deployment packages afresh."
+    },
+    {
+      "path": "reports/**/*.png",
+      "files": 1388,
+      "bytes": 894341408,
+      "olderThanCutoffFiles": 1386,
+      "olderThanCutoffBytes": 893945994,
+      "exactRedundantFilesOver100KB": 720,
+      "exactRedundantBytesOver100KB": 437363029,
+      "status": "Review old UI outputs and retain image inputs / recent evidence before deletion."
+    },
+    {
+      "path": "reports/**/*.json",
+      "bytes": 225891669,
+      "status": "Lossless compression candidate; baseline consumers must keep working."
+    },
+    {
+      "path": "output/**/*.before",
+      "files": 7,
+      "bytes": 58444113,
+      "jsonBytes": 58270658,
+      "status": "Backup suffix not covered by current snapshot migration; verify readers and deduplicate/compress."
+    }
+  ],
+  "preserve": [
+    {
+      "path": "tmp/**/*.html",
+      "bytes": 118985239,
+      "reason": "Provider acquisition pages including StatMuse and Lega Serie A; archive losslessly rather than discard."
+    },
+    {
+      "path": "tmp/card-foundation-baseline.json",
+      "bytes": 12414702,
+      "reason": "Read by scripts/report-card-foundation.mjs for original prediction / settlement comparison."
+    }
+  ],
+  "notes": [
+    "Do not sum duplicate savings with total PNG size.",
+    "Raw/provider data, prospective freezes and canonical datasets were not selected for deletion.",
+    "No files deleted."
+  ]
+}

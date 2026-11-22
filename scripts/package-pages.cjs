@@ -138,7 +138,9 @@ function plan() {
       if (target.startsWith('scripts/')) browserScripts.add(target);
     }
   }
-  const files = tracked.filter(file => (!file.startsWith('data/generated/champions-teams/')||clubFiles.has(file)) && (!file.startsWith('data/generated/readings/shared/')||sharedFiles.has(file)) && !internalFiles.has(file) && !projectionInternalFiles.has(file) && !internalDirectories.some(dir => file.startsWith(dir)) &&
+  const retiredReadings=require('./retire-finished-readings.cjs').finishedReadingFiles();
+  for(const file of retiredReadings)retiredFiles.add(file);
+  const files = tracked.filter(file => !retiredReadings.has(file) && (!file.startsWith('data/generated/champions-teams/')||clubFiles.has(file)) && (!file.startsWith('data/generated/readings/shared/')||sharedFiles.has(file)) && !internalFiles.has(file) && !projectionInternalFiles.has(file) && !internalDirectories.some(dir => file.startsWith(dir)) &&
     (rootFiles.has(file) || (!file.includes('/') && file.endsWith('.html')) ||
       browserScripts.has(file) || directories.some(dir => file.startsWith(dir))));
   for (const file of files) {

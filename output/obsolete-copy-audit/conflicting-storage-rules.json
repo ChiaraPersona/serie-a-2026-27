@@ -1,0 +1,82 @@
+{
+  "checkedAt": "2026-11-22T15:06:38.521Z",
+  "sourceChanges": false,
+  "output": {
+    "totalBytes": 4206889659,
+    "snapshotBytes": 2897817835,
+    "snapshotFiles": 218,
+    "screenshotBytes": 588180209,
+    "screenshotFiles": 1118
+  },
+  "findings": [
+    {
+      "id": "staging-copies-bulk-data-and-historical-reports",
+      "source": "scripts/update-matchday.cjs",
+      "lines": [
+        24,
+        28
+      ],
+      "dataBytes": 3753640561,
+      "excludedRawBytes": 1067052305,
+      "reportBytes": 865312690,
+      "estimatedDataAndReportBytesPerStage": 3551900946,
+      "probe": "Executed actual staging control flow with fs writes/copies and subprocesses stubbed; observed recursive data and output/reports copies; no staging created."
+    },
+    {
+      "id": "official-updates-store-complete-datasets-twice",
+      "source": "scripts/update-official-bologna-sassuolo-2026-11-22.cjs",
+      "line": 16,
+      "sample": "output/official-bologna-sassuolo-2026-11-22/before.json",
+      "originalBytes": 83407783,
+      "minifiedFieldBytes": {
+        "predictions": 30091996,
+        "reading": 8544411,
+        "schedina": 8545058
+      },
+      "readingAndSchedinaMarketCatalogIdentical": true
+    },
+    {
+      "id": "cleanup-excludes-json-and-preserves-baselines",
+      "source": "scripts/audit-report-cleanup.cjs",
+      "lines": [
+        13,
+        16,
+        23
+      ],
+      "cutoff": "2026-10-22",
+      "meaning": "Existing cleanup targets png/log/pyc/tmp/temp only; JSON snapshots remain outside its removal plan."
+    },
+    {
+      "id": "package-test-conflicts-with-retirement",
+      "sources": [
+        "scripts/test-package-pages.cjs:11",
+        "scripts/package-pages.cjs:140",
+        "scripts/retire-finished-readings.cjs"
+      ],
+      "meaning": "Package excludes retired readings while legacy test requires MD2-MD4 registries/projections unconditionally; observed failure earlier in current chat."
+    },
+    {
+      "id": "remaining-css-overrides-small",
+      "source": "scripts/clean-css-overrides.cjs",
+      "dryRun": [
+        {
+          "file": "player-statistics.css",
+          "declarations": 5,
+          "savedBytes": 168
+        },
+        {
+          "file": "reading-detail.css",
+          "declarations": 1,
+          "savedBytes": 16
+        }
+      ],
+      "totalSavedBytes": 184
+    }
+  ],
+  "recommendation": [
+    "Avoid copying historical output/reports into each staging; limit staged inputs without changing canonical forecasting rules.",
+    "Introduce shared compressed snapshot storage with audit readers that transparently decode it, preserving exact original data.",
+    "Make cleanup and package tests obey the same retirement/retention policy.",
+    "Measure current audit evidence before setting an output budget; 200-500 MB was not a validated estimate."
+  ]
+}

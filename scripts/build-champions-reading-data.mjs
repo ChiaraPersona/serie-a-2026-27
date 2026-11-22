@@ -40,7 +40,7 @@ paths.delete('data/normalized/champions-player-history-context-2025-26.json');
 const workspaces=new Map();
 const output=path.join(root,'data/generated/champions-readings');fs.mkdirSync(output,{recursive:true});
 let bytes=0,count=0;
-for(const fixture of calendar.fixtures.filter(f=>f.status==='finished'&&[2,3,4].includes(f.matchday))){
+for(const fixture of calendar.fixtures.filter(f=>f.status==='finished'&&f.matchday===require('./retire-finished-readings.cjs').currentMatchday(calendar.fixtures)&&[2,3,4].includes(f.matchday))){
  const names=new Set([fixture.homeTeam,fixture.awayTeam]);
  const squads=read('data/normalized/champions-registered-squads-2026-27.json').teams.filter(t=>names.has(t.team));
  const ids=new Set([...squads.flatMap(t=>[t.id,t.teamId].filter(Boolean)),...calendar.teamBranding.filter(t=>names.has(t.team)).flatMap(t=>[t.id,t.slug].filter(Boolean))]);

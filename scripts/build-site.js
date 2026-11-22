@@ -44,9 +44,9 @@ const homeVersion = "20261112-home-upcoming-kickoffs-v1";
 const teamVersion = "20261018-no-player-media-v1";
 const leaderboardVersion = "20261013-md06-results-v1";
 const bettingVersion = "20261120-md12-forecasts";
-const readingVersion = "20261120-md12-readings";
+const readingVersion = "20261122-current-readings";
 const cupVersion = "20261025-coppa-round16-disclosure-v1";
-const championsVersion = "20261119-opta-reading";
+const championsVersion = "20261122-current-readings";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (!teamPagesOnly && !presentationOnly && fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));

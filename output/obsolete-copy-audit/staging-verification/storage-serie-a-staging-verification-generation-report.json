@@ -1,0 +1,52 @@
+{
+  "competition": "serie-a",
+  "matchday": 12,
+  "plan": [
+    [
+      "scripts/build-readings.js",
+      "--matchday",
+      "12"
+    ],
+    [
+      "scripts/team-pages/build.js"
+    ],
+    [
+      "scripts/build-team-matchup-profiles.js"
+    ],
+    [
+      "scripts/build-betting-matchday.js",
+      "--matchday",
+      "12",
+      "--validate-only"
+    ]
+  ],
+  "changed": [
+    "data\\normalized\\team-matchup-profiles-2026-27.json",
+    "data\\schemas\\player.schema.json",
+    "data\\schemas\\team.schema.json",
+    "data\\teams\\atalanta.json",
+    "data\\teams\\bologna.json",
+    "data\\teams\\cagliari.json",
+    "data\\teams\\como.json",
+    "data\\teams\\fiorentina.json",
+    "data\\teams\\frosinone.json",
+    "data\\teams\\genoa.json",
+    "data\\teams\\index.json",
+    "data\\teams\\inter.json",
+    "data\\teams\\juventus.json",
+    "data\\teams\\lazio.json",
+    "data\\teams\\lecce.json",
+    "data\\teams\\milan.json",
+    "data\\teams\\monza.json",
+    "data\\teams\\napoli.json",
+    "data\\teams\\parma.json",
+    "data\\teams\\roma.json",
+    "data\\teams\\sassuolo.json",
+    "data\\teams\\torino.json",
+    "data\\teams\\udinese.json",
+    "data\\teams\\venezia.json"
+  ],
+  "failure": null,
+  "promoted": false,
+  "inputBytes": 781563933
+}

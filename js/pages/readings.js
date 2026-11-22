@@ -118,6 +118,7 @@ function readingIndex(readings,matches,teams,predictions=[]){
     const finished=match.status==="finished";
     const score=finished&&Number.isFinite(match.score?.home)&&Number.isFinite(match.score?.away)?`${match.score.home} - ${match.score.away}`:finished?"N/D":"VS";
     const style=[['home',home],['away',away]].flatMap(([side,team])=>(team.colors||[]).slice(0,2).map((color,i)=>`--${side}-color-${i+1}:${color}`)).join(';');
+    if(finished&&match.matchday!==current)return `<article class="ri-match ${compact?"ri-compact":"ri-glass"} ri-finished" style="${esc(style)}" data-fixture-id="${esc(match.id)}"><span class="ri-teams">${teamLogo(home)}<b aria-label="Risultato finale">${score}</b>${teamLogo(away)}</span></article>`;
     return `<a class="ri-match ${compact?"ri-compact":"ri-glass"}${finished?" ri-finished":""}" style="${esc(style)}" data-fixture-id="${esc(match.id)}" href="lettura.html?match=${esc(match.id)}" aria-label="Apri analisi: ${esc(home.name)} - ${esc(away.name)}">${compact?"":`<span class="ri-date">${scheduleLabel(match)}</span>`}<span class="ri-teams">${teamLogo(home)}<b aria-label="${finished?"Risultato finale":"Contro"}">${score}</b>${teamLogo(away)}</span></a>`;
   };
   const grid=(day,compact=false)=>`<div class="ri-matches${compact?" ri-results":""}">${rows(day).map(m=>card(m,compact)).join("")}</div>`;
@@ -208,6 +209,9 @@ function renderTacticalBaselines(match,dataset,teams){
     const requestedMatchday=Number(requestedMatchId?.match(/-md-(\d{2})$/)?.[1]);
     // The directory never needs forecasts, rosters, events or historical archives.
     const index=await loadGenerated('readings/index.json');
+    const archivedMatch=index.matches.find(m=>m.id===requestedMatchId&&m.status==="finished"&&m.matchday!==[...new Set(index.matches.map(f=>f.matchday))].sort((a,b)=>a-b).find(day=>index.matches.some(f=>f.matchday===day&&f.status!=="finished")));
+    if(archivedMatch){document.querySelector("#app").innerHTML=`<nav class="reading-back"><a href="lettura.html">← Archivio risultati</a></nav><section class="section"><h1>${esc(teamsName(archivedMatch.homeTeam))} - ${esc(teamsName(archivedMatch.awayTeam))}</h1><p class="reading-final-score">${Number.isFinite(archivedMatch.score?.home)&&Number.isFinite(archivedMatch.score?.away)?`${archivedMatch.score.home} - ${archivedMatch.score.away}`:"N/D"}</p></section>`;return;}
+    function teamsName(id){return index.teams.find(t=>t.id===id)?.name||id;}
     const payload=requestedMatchId&&index.fixtureIds.includes(requestedMatchId)?await loadReading(requestedMatchId,index.sharedReadings):index;
     const {teams,matches,readings=[],objectiveProfiles=null,teamDirectory=null,teamStyleProfiles=null,predictionDataset=null,headToHeadData=null,refereeProfiles=null,forecastDataset=null}=payload;
     setReadingArtifacts(payload.artifacts||null);

@@ -490,6 +490,12 @@ export function createPage(deps){
     const requestedMatchId=new URLSearchParams(location.search).get("match");
     const requestedTeamId=new URLSearchParams(location.search).get("team");
     if(requestedTeamId&&!requestedMatchId)load=teamDataLoader(load,loadGenerated,requestedTeamId);
+    const loadPageDatasets=()=>Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json"),load("champions-pilot-volume-backtest.json"),load("champions-registered-squads-2026-27.json"),load("champions-motivation-md01-2026-27.json"),load("team-style-profiles.json"),load("champions-attack-channels-2025-26.json"),load("champions-surprise-factor-md01-2026-27.json"),load("champions-player-markets-md01-2026-27.json")]);
+    const overviewData=!requestedMatchId&&!requestedTeamId?await Promise.all([loadPageDatasets(),load("champions-pilot-predictions-md02-2026-27.json"),load("../generated/champions-shared-scenarios.json")]):null;
+    const calendar=overviewData?overviewData[0][0]:await load("champions-league-2026-27.json");
+    const currentMatchday=[...new Set(calendar.fixtures.map(f=>f.matchday))].sort((a,b)=>a-b).find(day=>calendar.fixtures.some(f=>f.matchday===day&&f.status!=="finished"));
+    const archived=calendar.fixtures.find(f=>f.id===requestedMatchId&&f.status==="finished"&&f.matchday!==currentMatchday);
+    if(archived){document.querySelector("#app").innerHTML=`<nav class="reading-back"><a href="champions-league.html">← Calendario Champions</a></nav><section class="section"><h1>${esc(archived.homeTeam)} - ${esc(archived.awayTeam)}</h1><p class="reading-final-score">${Number.isFinite(archived.score?.home)&&Number.isFinite(archived.score?.away)?`${archived.score.home} - ${archived.score.away}`:"N/D"}</p></section>`;return;}
     if(/^ucl-2026-27-md0[234]-(?:0[1-9]|1[0-8])$/.test(requestedMatchId||'')&&deps.loadChampionsReading){
       try{
         readingProjection=await deps.loadChampionsReading(requestedMatchId);
@@ -507,7 +513,7 @@ export function createPage(deps){
         setReadingArtifacts(datasets);
       }catch(error){readingProjection=null;throw error;}
     }
-    const [[data,strength,history,model,h2h,pilot,backtest,squads,motivation,styleProfiles,attackChannels,surpriseFactors,playerMarkets],overviewData]=await Promise.all([Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json"),load("champions-pilot-volume-backtest.json"),load("champions-registered-squads-2026-27.json"),load("champions-motivation-md01-2026-27.json"),load("team-style-profiles.json"),load("champions-attack-channels-2025-26.json"),load("champions-surprise-factor-md01-2026-27.json"),load("champions-player-markets-md01-2026-27.json")]),!requestedMatchId&&!requestedTeamId?Promise.all([load("champions-pilot-predictions-md02-2026-27.json"),load("../generated/champions-shared-scenarios.json")]):Promise.resolve(null)]);
+    const [data,strength,history,model,h2h,pilot,backtest,squads,motivation,styleProfiles,attackChannels,surpriseFactors,playerMarkets]=overviewData?overviewData[0]:await loadPageDatasets();
     const profiles=new Map(strength.teams.map(profile=>[profile.team,profile]));
     const histories=new Map(history.teams.map(profile=>[profile.team,profile]));
     const attackByTeam=new Map(attackChannels.profiles.map(profile=>[profile.team,profile]));
@@ -519,7 +525,7 @@ export function createPage(deps){
       const profile=profiles.fixtures.find(p=>p.fixtureId===requestedMatchId);
       requestedCalendarFixture.refereeAssignment=descriptiveRefereeAssignment(requestedCalendarFixture.refereeAssignment,profile);
     }
-    if(requestedCalendarFixture&&requestedCalendarFixture.matchday>=4&&(requestedCalendarFixture.status==='scheduled'||requestedCalendarFixture.matchday===4&&requestedCalendarFixture.status==='finished')){
+    if(requestedCalendarFixture&&requestedCalendarFixture.matchday>=4&&(requestedCalendarFixture.status==='scheduled'||requestedCalendarFixture.matchday===currentMatchday&&requestedCalendarFixture.status==='finished')){
       const shared=await load('../generated/champions-shared-scenarios.json');
       const prediction=shared.fixtures.find(f=>f.fixtureId===requestedMatchId);
       if(prediction){
@@ -609,13 +615,15 @@ export function createPage(deps){
       }
       return;
     }
-    const md2Summary=overviewData?overviewData[0]:await load("champions-pilot-predictions-md02-2026-27.json");
+    const md2Summary=overviewData?overviewData[1]:await load("champions-pilot-predictions-md02-2026-27.json");
     // Le Letture MD3 esistono nel calendario e vengono gestite da render()
     // anche se non sono presenti negli archivi pilot MD1/MD2.
-    const sharedScenarios=overviewData?overviewData[1]:await load('../generated/champions-shared-scenarios.json');
-    const pilotByFixture=new Map([...pilot.fixtures,...md2Summary.fixtures,...sharedScenarios.fixtures.filter(p=>data.fixtures.some(f=>f.id===p.fixtureId&&(f.status==='scheduled'||f.matchday===4&&f.status==='finished')))].map(fixture=>[fixture.fixtureId,fixture]));
+    const sharedScenarios=overviewData?overviewData[2]:await load('../generated/champions-shared-scenarios.json');
+
+    const pilotByFixture=new Map([...pilot.fixtures,...md2Summary.fixtures,...sharedScenarios.fixtures.filter(p=>data.fixtures.some(f=>f.id===p.fixtureId&&(f.status==='scheduled'||f.matchday===currentMatchday&&f.status==='finished')))].map(fixture=>[fixture.fixtureId,fixture]));
+    for(const [id] of pilotByFixture)if(data.fixtures.some(f=>f.id===id&&f.status==='finished'&&f.matchday!==currentMatchday))pilotByFixture.delete(id);
     for(const fixture of data.fixtures){
-      if(fixture.matchday===3)pilotByFixture.set(fixture.id,{fixtureId:fixture.id});
+      if(fixture.matchday===3&&(fixture.status!=='finished'||fixture.matchday===currentMatchday))pilotByFixture.set(fixture.id,{fixtureId:fixture.id});
     }
     const matchdays=Array.from({length:data.summary.matchdays},(_,index)=>index+1);
     const roundRows=number=>data.fixtures.filter(fixture=>fixture.matchday===number);
