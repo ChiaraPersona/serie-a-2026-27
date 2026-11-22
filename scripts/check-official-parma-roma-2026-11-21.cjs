@@ -1,6 +1,6 @@
 const { chromium } = require("C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
 const http = require("node:http");
-const fs = require("node:fs");
+const fs = require("./output-snapshot-fs.cjs");
 const path = require("node:path");
 const assert = require("node:assert/strict");
 

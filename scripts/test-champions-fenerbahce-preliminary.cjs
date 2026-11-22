@@ -1,5 +1,5 @@
 'use strict';
-const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto'),Module=require('module'),path=require('path'),{execFileSync}=require('child_process');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('assert/strict'),crypto=require('crypto'),Module=require('module'),path=require('path'),{execFileSync}=require('child_process');
 const dir='output/champions-fenerbahce-preliminary-md7/',file='data/normalized/schedina-champions-md03.json';
 const before=JSON.parse(fs.readFileSync(dir+'before.json')),after=JSON.parse(fs.readFileSync(file));
 const {TARGET,selectPreliminaryMatch,selectorView,assessPreliminary}=require('./champions/md3-preliminary-pilot.cjs');

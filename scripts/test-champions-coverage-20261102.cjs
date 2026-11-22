@@ -1,5 +1,5 @@
 'use strict';
-const fs=require('node:fs'),crypto=require('node:crypto'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const {readJsonFile:read}=require('./sisal/dataset-store.cjs');
 const {profileRows,buildSharedScenarios}=require('./champions/shared-scenario.cjs');
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');

@@ -1,5 +1,5 @@
 import { readJsonFile as storageReadJson } from './sisal/dataset-store.cjs';
-import fs from 'node:fs';
+import fs from './output-snapshot-fs.cjs';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import {loadChampionsWorkspace} from '../js/pages/champions-workspace-catalog.mjs';

@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import fs from './output-snapshot-fs.cjs';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import {loadChampionsWorkspaceMd3Derived} from '../js/pages/champions-workspace-catalog.mjs';

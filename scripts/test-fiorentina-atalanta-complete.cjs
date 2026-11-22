@@ -1,5 +1,5 @@
 'use strict';
-const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('assert/strict'),crypto=require('crypto');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),dir='output/fiorentina-atalanta-complete-2026-10-31',id='fiorentina-atalanta-2026-27-md-09';
 const matches=read('data/normalized/matches.json'),m=matches.find(m=>m.id===id),before=read(dir+'/matches-before.json');
 assert.deepEqual(matches.filter(m=>m.id!==id),before.filter(m=>m.id!==id));

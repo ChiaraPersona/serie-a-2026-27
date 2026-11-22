@@ -1,6 +1,6 @@
 'use strict';
 // Fixture-scoped acquisition and orchestration; forecasting gates remain in existing builders.
-const fs=require('node:fs'),cp=require('node:child_process'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),cp=require('node:child_process'),assert=require('node:assert/strict');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),write=(p,d)=>fs.writeFileSync(p,JSON.stringify(d,null,2)+'\n');
 const targets=['como-cagliari-2026-27-md-12','lazio-lecce-2026-27-md-12'],now=new Date().toISOString();
 const out='output/official-md12-2026-11-21';fs.mkdirSync(out,{recursive:true});

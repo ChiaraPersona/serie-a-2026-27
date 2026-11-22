@@ -1,7 +1,7 @@
 'use strict';
 
 // Disk layout only: callers receive the original provider dataset unchanged.
-const fs = require('node:fs');
+const fs = require('../output-snapshot-fs.cjs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const FORMAT = 'sisal-event-shards-v1';

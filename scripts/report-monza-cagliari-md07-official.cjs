@@ -1,4 +1,4 @@
-const fs=require('node:fs'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('node:assert/strict');
 const dir='output/reports/monza-cagliari-md07-official',id='monza-cagliari-2026-27-md-07';
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const before=read(dir+'/before.json'),report=read(dir+'/report.json');

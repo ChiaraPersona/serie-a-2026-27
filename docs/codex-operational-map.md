@@ -19,6 +19,36 @@ Consultazione interna, verificata il 23 ottobre 2026. Percorsi relativi alla rad
 
 ## Consultazione economica
 
+### Archivi delle verifiche e staging
+
+Gli snapshot voluminosi `before` / `baseline` in `output/` usano piccoli manifest
+con blocchi GZIP condivisi in `data/technical-archive/output-snapshots/`.
+I lettori interni che li consumano importano `scripts/output-snapshot-fs.cjs`
+al posto di `node:fs`: il modulo restituisce gli esatti byte originali e verifica
+gli hash. I dati canonici, i contratti e il formato pubblico rimangono invariati.
+I nuovi writer di baseline devono usare lo stesso adattatore, anche per la
+rinomina atomica dei file temporanei. Non cancellare blocchi soltanto perché
+non sono referenziati da una singola baseline: possono essere condivisi.
+
+`npm run storage:output:plan` elenca i candidati senza modificarli;
+`storage:output:migrate` applica la migrazione e verifica ogni ricostruzione;
+`storage:output:verify` verifica tutti gli hash registrati;
+`storage:output:report` misura separatamente `output/`, archivio condiviso e
+peso combinato. Gli snapshot con consumer Python non aggiornati sono conservati.
+`storage:output:prune` elenca i blocchi non più referenziati dopo aver verificato
+gli snapshot; `npm run storage:output:prune -- --write` rimuove esclusivamente
+quei blocchi, controllando anche i manifest negli archivi tecnici e nei report.
+I report delle verifiche di questa pulizia restano JSON leggibili e sono esclusi
+dalla migrazione. Per gli audit, `statSync().size` indica i byte ricostruiti;
+il comando `storage:output:report` usa invece le dimensioni effettive dei file.
+
+Lo staging di `update-matchday.cjs` copia il codice e materializza solo gli
+input effettivamente letti, tramite `scripts/staging-inputs.cjs`. Non ricopia
+preventivamente tutti i dati o i vecchi report e non condivide directory dati
+scrivibili con il checkout. `staging-inputs.json` registra gli input letti;
+`generation-report.json` separa gli input dai file modificati. I builder e
+i criteri di previsione restano gli stessi. La promozione rimane manuale.
+
 Per la ricerca sulle coordinate nei calcoli individuali consultare [pipeline e limiti v2](player-spatial-validation.md): `scripts/research/player-spatial-v2/`, risultati `data/analysis/player-spatial-v2-2026-10-29/`, congelamenti `data/predictions/player-spatial-v2-prospective/`. Il builder Lettura acquisisce anche il confronto v2 soltanto con protocollo già attivo; non modifica previsioni operative o contratti DUO.
 
 Prima localizzare con `rg --files scripts js docs`, poi usare `rg -n -m 8 --max-columns 240 'simbolo' percorso`. Per trovare solo file usare `rg -l`. Un risultato troncato richiede una ricerca più precisa o un'estrazione con parser, non ripetere lo stesso dump.
@@ -35,7 +65,7 @@ Classificazione verificata sul codice, senza eseguire generatori. Vale per le in
 | `rg --files`, `rg -l`, `rg -n`, `Get-Item`, `Get-ChildItem`, `Get-Content` | Sola lettura; restringere percorsi e contenuto restituito. |
 | `node --check <script.js>` | Controllo sintattico senza eseguire lo script; non valida comportamento o dati. |
 | `node scripts/update-matchday.cjs --competition serie-a --matchday 7` (oppure Champions con giornata supportata), senza `--stage` | Legge gli input necessari e stampa il piano; non lancia i builder. `--matchday` è obbligatorio anche passando dagli alias npm. |
-| Stesso orchestratore con `--stage --output output/<cartella-nuova>` | Crea staging, copie e junction, esegue builder e scrive `generation-report.json`; nessuna promozione automatica. |
+| Stesso orchestratore con `--stage --output output/<cartella-nuova>` | Crea staging isolato e materializza gli input letti; esegue builder e scrive `staging-inputs.json` e `generation-report.json`; nessuna promozione automatica. |
 | `npm test` | Esegue `scripts/run-test-suite.cjs`; scrive `output/test-suite/latest.json` con output completi e stampa un riepilogo. Ispezionare i test figli per ulteriori effetti. |
 | `npm run test:champions-branding`, `test:champions-squads`, `test:champions-markets`, `test:champions-motivation` | Gli alias includono builder: possono rigenerare dataset prima dei controlli. |
 | Test browser, per esempio `npm run test:schedina:loading:browser` | Eseguono il browser e scrivono evidenze/report; verificare destinazioni e baseline nello script. |

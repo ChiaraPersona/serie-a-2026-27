@@ -1,4 +1,4 @@
-const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');
+const fs=require('../../scripts/output-snapshot-fs.cjs'),assert=require('assert/strict'),crypto=require('crypto');
 const base='output/reports/';
 const before=JSON.parse(fs.readFileSync(base+'champions-md2-gray-recovery-before.json'));
 const after=JSON.parse(fs.readFileSync(base+'champions-post-match-audit-2026-10-15.json'));

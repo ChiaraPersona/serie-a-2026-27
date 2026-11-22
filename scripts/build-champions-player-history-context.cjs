@@ -1,6 +1,6 @@
 'use strict';
 // Descriptive projection only. Existing club histories and every forecast remain untouched.
-const fs=require('node:fs'),path=require('node:path'),zlib=require('node:zlib'),crypto=require('node:crypto'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),path=require('node:path'),zlib=require('node:zlib'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..');
 const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
 const metrics={appearances:'appearances',goals:'totalGoals',assists:'goalAssists',shots:'totalShots',shotsOnTarget:'shotsOnTarget',foulsCommitted:'foulsCommitted',foulsWon:'foulsSuffered',yellowCards:'yellowCards',straightRedCards:'redCards',offsides:'offsides',saves:'saves',goalsConceded:'goalsConceded'};

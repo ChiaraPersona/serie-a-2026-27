@@ -1,5 +1,5 @@
 'use strict';
-const fs = require('node:fs');
+const fs = require('./output-snapshot-fs.cjs');
 const assert = require('node:assert/strict');
 const read = p => JSON.parse(fs.readFileSync(p, 'utf8'));
 const dir = 'output/sot-current-md11-2026-11-06';

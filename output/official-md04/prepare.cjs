@@ -1,4 +1,4 @@
-const fs=require('fs');const read=p=>JSON.parse(fs.readFileSync(p));const write=(p,d)=>fs.writeFileSync(p,JSON.stringify(d,null,2)+'\n');
+const fs=require('../../scripts/output-snapshot-fs.cjs');const read=p=>JSON.parse(fs.readFileSync(p));const write=(p,d)=>fs.writeFileSync(p,JSON.stringify(d,null,2)+'\n');
 const probable=read('data/sources/champions-probable-formations-md04-2026-27.json');
 const specs=[
 ['shakhtar-donetsk','4-1-4-1','dmytro-riznyk,vinicius-tobias,valeriy-bondar,mykola-matviyenko,pedro-henrique,yehor-nazaryna,alisson-santana,oleh-ocheretko,marlon-gomes,gleiker-mendoza,kaua-elias','irakli-azarov,kiril-fesiun,gabriel-carvalho,alaa-ghram,isaque,oleksandr-karavaiev,dmytro-kryskiv,luca-meirelles,lucas-ferreira,newertton,peter-obah,lassina-traore'],

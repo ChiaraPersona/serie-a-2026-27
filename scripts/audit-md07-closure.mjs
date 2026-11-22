@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import fs from './output-snapshot-fs.cjs';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import {settleLeg} from '../js/pages/betting-settlement.mjs';

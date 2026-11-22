@@ -1,5 +1,5 @@
 'use strict';
-const fs=require('node:fs'),assert=require('node:assert/strict');const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
+const fs=require('./output-snapshot-fs.cjs'),assert=require('node:assert/strict');const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
 (async()=>{const ids=['genoa-juventus-2026-27-md-09','monza-napoli-2026-27-md-09'],baseline=read('output/genoa-juventus-md09-official/before.json'),schedina=read('data/normalized/schedina-md09.json'),policy=require('../js/official-starter-policy');policy.configure(read('data/normalized/official-starter-registry.json'));const {createPersonalBetslipStore}=await import('../js/pages/personal-betslip-store.mjs');
 assert.deepEqual(schedina.marketCatalog,read('data/normalized/reading-md09-market-catalog.json').marketCatalog);
 for(const id of ids){const slug=id.replace('-2026-27-md-09',''),dir='output/'+slug+'-md09-official',b=read(dir+'/before.json'),old=b['data/normalized/schedina-md09.json'].marketCatalog.matches.find(m=>m.matchId===id),now=schedina.marketCatalog.matches.find(m=>m.matchId===id),excluded=old.selections.filter(l=>!policy.eligible(l,id));assert(now.selections.every(l=>policy.eligible(l,id)));

@@ -1,4 +1,4 @@
-const fs=require('fs');
+const fs=require('./output-snapshot-fs.cjs');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const out='output/reports/champions-two-official-2026-10-14-before.json';
 if(!fs.existsSync(out))fs.writeFileSync(out,JSON.stringify({calendar:read('data/normalized/champions-league-2026-27.json'),integration:read('data/normalized/champions-md02-integration-2026-27.json'),schedina:read('data/normalized/schedina-champions-md02.json')},null,2)+'\n');

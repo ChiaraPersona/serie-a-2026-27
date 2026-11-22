@@ -1,4 +1,4 @@
-const fs=require('fs'),path=require('path'),http=require('http'),assert=require('assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),path=require('path'),http=require('http'),assert=require('assert/strict');
 const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const root=path.resolve(__dirname,'..'),id='fiorentina-como-2026-27-md-07',out=path.join(root,'output/reports/fiorentina-como-md07-official');
 const read=p=>JSON.parse(fs.readFileSync(path.join(root,p))),data=read('data/normalized/schedina-md07.json');

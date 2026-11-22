@@ -1,4 +1,4 @@
-const fs=require('fs'),cp=require('child_process'),path=require('path'),assert=require('assert/strict');
+const fs=require('../../scripts/output-snapshot-fs.cjs'),cp=require('child_process'),path=require('path'),assert=require('assert/strict');
 const dir='output/md08-postmatch-2026-10-25',out=dir+'/commit-staging';fs.mkdirSync(out,{recursive:true});
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),head=p=>JSON.parse(cp.execFileSync('git',['show','HEAD:'+p],{encoding:'utf8',maxBuffer:90e6})),eq=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 function delta(base,next,target,label=''){

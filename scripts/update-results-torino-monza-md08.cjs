@@ -1,7 +1,7 @@
 'use strict';
 const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Observed results only. Never regenerate historical forecasts or provider quotes.
-const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+const fs=require('./output-snapshot-fs.cjs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 const {parseStatmuseGame}=require('./parse-statmuse-game');
 const {importStatmuseResult}=require('./import-statmuse-result');

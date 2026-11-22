@@ -1,5 +1,5 @@
 // Diagnostic only: reads historical Git objects and writes only this report directory.
-const fs=require('fs'),path=require('path'),cp=require('child_process'),assert=require('assert/strict'),crypto=require('crypto');
+const fs=require('../../scripts/output-snapshot-fs.cjs'),path=require('path'),cp=require('child_process'),assert=require('assert/strict'),crypto=require('crypto');
 const root=path.resolve(__dirname,'../..'),out=__dirname;
 const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
 const git=(...a)=>cp.execFileSync('git',a,{cwd:root,encoding:'utf8',maxBuffer:60e6}).trim();

@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import fs from './output-snapshot-fs.cjs';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import {sharedForecastsForMatch} from '../js/pages/shared-forecast-contract.mjs';

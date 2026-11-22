@@ -1,5 +1,5 @@
 'use strict';
-const fs=require('fs'),assert=require('assert/strict'),crypto=require('crypto');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('assert/strict'),crypto=require('crypto');
 const dir='output/md09-last-two-2026-10-29',read=p=>JSON.parse(fs.readFileSync(p,'utf8')),baseline=read(dir+'/baseline.json'),before=read(dir+'/matches-before.json'),matches=read('data/normalized/matches.json');
 assert.deepEqual(matches.filter(m=>!baseline.matchIds.includes(m.id)),before.filter(m=>!baseline.matchIds.includes(m.id)));
 for(const [p,h]of Object.entries(baseline.protectedHashes))if(!p.includes('official-lineups'))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),h,p);

@@ -1,4 +1,4 @@
-const fs=require('node:fs'),cp=require('node:child_process'),crypto=require('node:crypto'),assert=require('node:assert/strict'),path=require('node:path');
+const fs=require('../../../scripts/output-snapshot-fs.cjs'),cp=require('node:child_process'),crypto=require('node:crypto'),assert=require('node:assert/strict'),path=require('node:path');
 const folder='output/reports/champions-md02-results-2026-10-16/',calendar='data/normalized/champions-league-2026-27.json',source='data/sources/champions-results-md02-2026-27.json',renderer='js/pages/champions.js';
 const sha=v=>crypto.createHash('sha256').update(v).digest('hex'),read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
 const fixturesUrl='https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/';

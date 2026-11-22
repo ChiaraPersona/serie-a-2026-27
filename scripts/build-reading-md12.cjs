@@ -1,7 +1,7 @@
 'use strict';
 const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Fixture-scoped orchestration. All forecasts and admission gates belong to the existing engines.
-const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),path=require('node:path'),assert=require('node:assert/strict');
 const {execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..'),read=f=>storageReadJson(path.join(root,f));
 const write=(f,d)=>{fs.mkdirSync(path.dirname(path.join(root,f)),{recursive:true});fs.writeFileSync(path.join(root,f)+'.md12.tmp',JSON.stringify(d,null,2)+'\n');(()=>{for(let i=0;;i++){try{fs.renameSync(path.join(root,f)+'.md12.tmp',path.join(root,f));return}catch(e){if(i===9)throw e;Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,300)}}})()};

@@ -6,11 +6,13 @@ const {plan, internalFiles,projectionInternalFiles} = require('./package-pages.c
 const {unpack}=require('./reading-archive-codec.cjs');
 const {hydrateSync}=require('../js/services/reading-shared.js');
 const result = plan(), files = new Set(result.files);
+const retired=result.retiredFiles;
 assert(files.has('js/services/archive-json.js'),'Missing archived reading decoder');
 for(const file of projectionInternalFiles)assert(!files.has(file),'Projection compiler input published: '+file);
 for(const day of [2,3,4]){
- assert(files.has(`data/generated/champions-readings/registry-md${day}.json`),'Missing shared contract registry');
- for(let i=1;i<=18;i++)assert(files.has(`data/generated/champions-readings/ucl-2026-27-md0${day}-${String(i).padStart(2,'0')}.json`),'Missing fixture reading projection');
+ const registry=`data/generated/champions-readings/registry-md${day}.json`;
+ assert.equal(files.has(registry),!retired.has(registry),'Registry retirement mismatch: '+registry);
+ for(let i=1;i<=18;i++){const file=`data/generated/champions-readings/ucl-2026-27-md0${day}-${String(i).padStart(2,'0')}.json`;assert.equal(files.has(file),!retired.has(file),'Fixture reading retirement mismatch: '+file);}
 }
 for(const row of result.archiveStats){
   assert(row.afterBytes<row.beforeBytes,'Archive grew: '+row.file);
@@ -21,7 +23,7 @@ assert.equal(result.savedBytes, result.sourceBytes - result.totalBytes);
 assert(result.totalBytes < 1_000_000_000, 'Published site must fit the Pages limit');
 for (const file of result.files) {
   assert(!file.startsWith('fantachampions-2026-27/'), 'Offline fantasy analysis published: ' + file);
-  assert(!/^(output|reports|docs|data\/raw|data\/analysis)\//.test(file), 'Internal artifact published: ' + file);
+  assert(!/^(output|reports|docs|data\/raw|data\/analysis|data\/technical-archive)\//.test(file), 'Internal artifact published: ' + file);
   assert(!/^data\/predictions\/(?:champions-event-snapshots|exact-score-research|player-spatial-prospective|player-spatial-v2-prospective|spatial-prospective)\//.test(file), 'Research snapshot published: ' + file);
   assert(!file.startsWith('data/normalized/referee-history/'), 'Internal referee archive published: ' + file);
 }
@@ -42,7 +44,7 @@ for (const file of tracked.filter(file =>
   /^data\/normalized\/(?:predictions-md\d+|schedina-md\d+)\.json$/.test(file) ||
   /^data\/generated\/readings\/(?:matches|catalogs)\/[^/]+\.json$/.test(file) ||
   /^data\/predictions\/snapshots\/\d{4}-\d{2}\/md-\d{2}\.json$/.test(file))) {
-  assert(files.has(file), 'Missing dynamic runtime dependency: ' + file);
+  assert.equal(files.has(file),!retired.has(file), 'Dynamic runtime dependency / retirement mismatch: ' + file);
 }
 const browserCode = result.files.filter(f => /\.(?:m?js|html)$/.test(f))
   .map(file => ({file, source: fs.readFileSync(file, 'utf8')}));

@@ -1,6 +1,6 @@
 'use strict';
 // Observed post-match data only; never recalculate published forecasts.
-const fs=require('fs'),path=require('path'),assert=require('assert/strict'),crypto=require('crypto');
+const fs=require('./output-snapshot-fs.cjs'),path=require('path'),assert=require('assert/strict'),crypto=require('crypto');
 const {execFileSync}=require('child_process');
 const {importStatmuseResult}=require('./import-statmuse-result');
 const {parseStatmuseGame}=require('./parse-statmuse-game');
@@ -54,7 +54,7 @@ for(const [file,original]of Object.entries(teams)){
 const index=read('data/teams/index.json');index.teams=teams['index.json'].teams.map(t=>['fiorentina','atalanta'].includes(t.id)?{...t,lastUpdated:read('data/teams/'+t.id+'.json').lastUpdated}:t);index.officialLineups=teams['index.json'].officialLineups;write('data/teams/index.json',index);
 run('scripts/apply-official-starter-policy.js');
 process.env.SPATIAL_CAPTURE_DISABLED='1';
-execFileSync(process.execPath,['-e',"const fs=require('fs'),write=fs.writeFileSync;fs.writeFileSync=function(f,d,...r){if(typeof f==='string'&&f.endsWith('.html')){const t=f+'.results-build.tmp';write.call(fs,t,d,...r);fs.renameSync(t,f);return;}return write.call(fs,f,d,...r)};process.argv.push('--presentation-only','--matchday','9');require('./scripts/build-site.js');"],{stdio:'inherit'});
+execFileSync(process.execPath,['-e',"const fs=require('./output-snapshot-fs.cjs'),write=fs.writeFileSync;fs.writeFileSync=function(f,d,...r){if(typeof f==='string'&&f.endsWith('.html')){const t=f+'.results-build.tmp';write.call(fs,t,d,...r);fs.renameSync(t,f);return;}return write.call(fs,f,d,...r)};process.argv.push('--presentation-only','--matchday','9');require('./scripts/build-site.js');"],{stdio:'inherit'});
 for(const [p,h]of Object.entries(baseline.protectedHashes))assert.equal(hash(p),h,p+' changed');
 write(dir+'/report.json',{matchId:id,score:result.score,players:result.playerStats.home.length+result.playerStats.away.length,scorers:result.scorers.length,bookings:result.bookings.length,substitutions:result.substitutions.length,unrelatedFixturesPreserved:true,publishedForecastsAndQuotesPreserved:true,certifiedProviderSettlement:false,remainingUnavailable:['attendance','mvp']});
 console.log('PASS complete Fiorentina–Atalanta, canonical identities, starters and team totals; forecasts and quotes preserved');

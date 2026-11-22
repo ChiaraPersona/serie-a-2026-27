@@ -1,4 +1,4 @@
-const fs=require('fs');
+const fs=require('./output-snapshot-fs.cjs');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const write=(p,d)=>fs.writeFileSync(p,JSON.stringify(d,null,2)+'\n');
 const rows=[

@@ -1,5 +1,5 @@
 'use strict';
-const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const root=path.resolve(__dirname,'..'),dir='output/md08-complete-2026-10-25',ids=JSON.parse(fs.readFileSync('data/normalized/matches.json')).filter(m=>m.matchday===8).map(m=>m.id);
 const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));

@@ -1,7 +1,7 @@
 'use strict';
 const { readJsonFile: storageReadJson, writeJsonFile } = require('./sisal/dataset-store.cjs');
 // Exact existing provider contracts only. No forecasts or admission rules are regenerated.
-const fs=require('node:fs'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('node:assert/strict');
 const read=f=>storageReadJson(f);
 const write=writeJsonFile;
 const sourceFile='data/sources/odds/sisal-md08-dom-2026-10-25.json',source=read(sourceFile);

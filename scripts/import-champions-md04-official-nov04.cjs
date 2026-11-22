@@ -1,6 +1,6 @@
 'use strict';
 // Explicit canonical identities and tactical order reviewed against user screenshots.
-const fs=require('node:fs'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('node:assert/strict');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const write=(p,v)=>fs.writeFileSync(p,JSON.stringify(v,null,2)+'\n');
 const specs=[

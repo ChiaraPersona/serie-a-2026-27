@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import fs from './output-snapshot-fs.cjs';
 import assert from 'node:assert/strict';
 import {createPage} from '../js/pages/champions.js';
 import {createPersonalBetslipStore,PERSONAL_BETSLIP_STORAGE_KEY} from '../js/pages/personal-betslip-store.mjs';

@@ -1,5 +1,5 @@
 'use strict';
-const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const root=path.resolve(__dirname,'..'),dir='output/torino-monza-md08-postmatch',id='torino-monza-2026-27-md-08';
 const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));

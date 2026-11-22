@@ -1,6 +1,6 @@
 'use strict';
 // Use established aggregators; retain unrelated club records and every pre-match contract.
-const fs=require('node:fs'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
 const dir='output/torino-monza-md08-postmatch',read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const write=(p,d)=>{fs.writeFileSync(p+'.tmp',JSON.stringify(d,null,2)+'\n');fs.renameSync(p+'.tmp',p);};
 const run=(p,args=[])=>execFileSync(process.execPath,['--experimental-require-module',p,...args],{stdio:'inherit'});

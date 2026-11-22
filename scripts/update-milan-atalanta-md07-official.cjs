@@ -1,7 +1,7 @@
 "use strict";
 const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Fixture-only orchestration. All model and admission rules belong to existing builders.
-const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+const fs=require('./output-snapshot-fs.cjs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');process.chdir(root);
 const id='milan-atalanta-2026-27-md-07',dir='output/reports/milan-atalanta-md07-official';

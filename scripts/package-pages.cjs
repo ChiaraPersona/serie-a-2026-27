@@ -115,6 +115,7 @@ function publicContent(file,archives=null,stats=null) {
 }
 
 function plan() {
+  const retiredFiles = new Set();
   const tracked = execFileSync('git', ['ls-files', '-z'], {cwd: root, maxBuffer: 32 * 1024 * 1024})
     .toString().split('\0').filter(Boolean);
   // Generated runtime projections must also be testable in a local package before committing.
@@ -149,7 +150,7 @@ function plan() {
     ? publicContent(file,archives,archiveStats).length : fs.statSync(path.join(root, file)).size), 0);
   if (totalBytes > maximumBytes) throw new Error(`Pages package is ${totalBytes} bytes; budget is ${maximumBytes}`);
   for (const file of browserScripts) if (!files.includes(file)) throw new Error('Missing browser script: ' + file);
-  return {files, totalBytes, sourceBytes, savedBytes: sourceBytes - totalBytes, maximumBytes,archiveStats};
+  return {files, totalBytes, sourceBytes, savedBytes: sourceBytes - totalBytes, maximumBytes,archiveStats,retiredFiles};
 }
 
 function build(destination = path.join(root, 'output', 'pages-site')) {

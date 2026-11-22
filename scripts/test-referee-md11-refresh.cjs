@@ -1,4 +1,4 @@
-const fs=require('node:fs'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const archive=read('data/normalized/referee-history/md11-2026-27.json'),current=read('data/generated/reading-referee-history.json');
 const fixtures=read('data/normalized/matches.json').filter(f=>f.competition==='serie-a'&&f.matchday===11),ids=new Set(fixtures.map(f=>f.id));

@@ -1,6 +1,6 @@
 'use strict';
 const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
-const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..'),read=f=>storageReadJson(path.join(root,f));
 const matches=read('data/normalized/matches.json'),round=matches.filter(m=>m.competition==='serie-a'&&m.matchday===8),ids=new Set(round.map(m=>m.id));
 const predictions=read('data/normalized/predictions.json'),lineups=read('data/sources/probable-lineups-md8-2026-27.json'),catalog=read('data/normalized/reading-md08-market-catalog.json').marketCatalog;

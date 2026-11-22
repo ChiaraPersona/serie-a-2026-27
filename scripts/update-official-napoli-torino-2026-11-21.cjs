@@ -1,6 +1,6 @@
 'use strict';
 // Fixture-scoped acquisition and orchestration; forecasting gates remain in existing builders.
-const fs=require('node:fs'),cp=require('node:child_process'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),cp=require('node:child_process'),assert=require('node:assert/strict');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),write=(p,d)=>{const tmp=p+'.official.tmp';fs.writeFileSync(tmp,JSON.stringify(d,null,2)+'\n');for(let n=0;;n++)try{fs.renameSync(tmp,p);break}catch(e){if(n===9)throw e;Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,300)}};
 const targets=['napoli-torino-2026-27-md-12'],now=new Date().toISOString();
 const out='output/official-napoli-torino-2026-11-21';fs.mkdirSync(out,{recursive:true});

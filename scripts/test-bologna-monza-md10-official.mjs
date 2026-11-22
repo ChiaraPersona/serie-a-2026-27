@@ -1,5 +1,5 @@
 import {gunzipSync} from 'node:zlib';
-import fs from 'node:fs';import assert from 'node:assert/strict';import policy from '../js/official-starter-policy.js';import {createPersonalBetslipStore} from '../js/pages/personal-betslip-store.mjs';
+import fs from './output-snapshot-fs.cjs';import assert from 'node:assert/strict';import policy from '../js/official-starter-policy.js';import {createPersonalBetslipStore} from '../js/pages/personal-betslip-store.mjs';
 const r=f=>JSON.parse(fs.existsSync(f)?fs.readFileSync(f):gunzipSync(fs.readFileSync(f+'.gz'))),id='bologna-monza-2026-27-md-10',dir='output/bologna-monza-md10-official/',before=r(dir+'before.json'),data=r('data/normalized/schedina-md10.json'),old=before['data/normalized/schedina-md10.json'].marketCatalog.matches.find(m=>m.matchId===id),now=data.marketCatalog.matches.find(m=>m.matchId===id);
 policy.configure(r('data/normalized/official-starter-registry.json'));globalThis.officialStarterPolicy=policy;
 const fixture=r('data/sources/official-lineups-2026-27.json').fixtures.find(f=>f.matchId===id);assert.equal(new Set(fixture.teams.flatMap(t=>t.players.map(p=>p.playerId))).size,22);

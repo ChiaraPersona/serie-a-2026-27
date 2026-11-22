@@ -1,7 +1,7 @@
 'use strict';
 const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Fixture-only official refresh; existing engines and admission rules remain unchanged.
-const fs=require('node:fs'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
 const config={
   "id": "milan-bologna-2026-27-md-09",
   "label": "Milan - Bologna",

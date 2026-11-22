@@ -1,5 +1,5 @@
 'use strict';
-const fs=require('node:fs'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('node:assert/strict');
 const {TARGET,selectPreliminaryMatch}=require('./champions/md3-preliminary-pilot.cjs');
 const file='data/normalized/schedina-champions-md03.json';
 const before=JSON.parse(fs.readFileSync(file)),out=structuredClone(before);

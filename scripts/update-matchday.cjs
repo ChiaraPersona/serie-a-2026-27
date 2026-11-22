@@ -20,17 +20,19 @@ if(!args.includes('--stage'))return;
 if(!args.includes('--output'))throw Error('--stage richiede --output output/<cartella-nuova>');
 const target=path.resolve(root,get('--output')),outputRoot=path.join(root,'output')+path.sep;
 if(!target.startsWith(outputRoot)||fs.existsSync(target))throw Error('Staging: destinazione nuova richiesta dentro output/');
-// Raw are immutable inputs shared through a junction, never copied or regenerated.
-fs.mkdirSync(target,{recursive:true});for(const dir of ['scripts','js','css','data'])fs.cpSync(path.join(root,dir),path.join(target,dir),{recursive:true,filter:p=>p!==path.join(root,'data','raw')});
-fs.symlinkSync(path.join(root,'data','raw'),path.join(target,'data','raw'),process.platform==='win32'?'junction':'dir');
+// Code is isolated; data and historical reports are materialized on first read.
+fs.mkdirSync(target,{recursive:true});for(const dir of ['scripts','js','css'])fs.cpSync(path.join(root,dir),path.join(target,dir),{recursive:true,filter:p=>!p.endsWith('.pyc')&&!p.includes('__pycache__')});
+fs.mkdirSync(path.join(target,'data'),{recursive:true});
 fs.copyFileSync(path.join(root,'package.json'),path.join(target,'package.json'));
 for(const file of fs.readdirSync(root).filter(f=>f.endsWith('.html')))fs.copyFileSync(path.join(root,file),path.join(target,file));
-const reports=path.join(root,'output/reports');if(fs.existsSync(reports))fs.cpSync(reports,path.join(target,'output/reports'),{recursive:true});
-const archive='seria-a-2026-27-raw-archive-2026-08-24';if(fs.existsSync(path.join(root,archive)))fs.symlinkSync(path.join(root,archive),path.join(target,archive),process.platform==='win32'?'junction':'dir');
 const walk=p=>fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.isSymbolicLink()?[]:e.isDirectory()?walk(path.join(p,e.name)):[path.join(p,e.name)]);
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const before=Object.fromEntries(walk(path.join(target,'data')).map(p=>[path.relative(target,p),hash(p)]));
-let failure=null;try{for(const [file,...options] of plan)execFileSync(process.execPath,[file,...options],{cwd:target,stdio:'inherit',env:{...process.env,SPATIAL_CAPTURE_DISABLED:'1'}});}catch(e){failure=e.message;}
+const preload=path.join(target,'scripts/staging-inputs.cjs').replaceAll('\\','/');
+let failure=null;try{for(const [file,...options] of plan)execFileSync(process.execPath,[file,...options],{cwd:target,stdio:'inherit',env:{...process.env,NODE_OPTIONS:[process.env.NODE_OPTIONS,`--require="${preload}"`].filter(Boolean).join(' '),SPATIAL_CAPTURE_DISABLED:'1',PDF_STAGING_SOURCE:root,PDF_STAGING_ROOT:target}});}catch(e){failure=e.message;}
+const inputFile=path.join(target,'staging-inputs.json');
+if(fs.existsSync(inputFile))for(const [file,record]of Object.entries(JSON.parse(fs.readFileSync(inputFile,'utf8'))))if(record.sha256)before[file.split('/').join(path.sep)]=record.sha256;
 const changed=walk(path.join(target,'data')).filter(p=>before[path.relative(target,p)]!==hash(p)).map(p=>path.relative(target,p));
-fs.writeFileSync(path.join(target,'generation-report.json'),JSON.stringify({competition,matchday:day,plan,changed,failure,promoted:false},null,2)+'\n');
+const deleted=Object.keys(before).filter(file=>!fs.existsSync(path.join(target,file)));
+fs.writeFileSync(path.join(target,'generation-report.json'),JSON.stringify({competition,matchday:day,plan,changed,deleted,failure,promoted:false,inputBytes:fs.existsSync(inputFile)?Object.values(JSON.parse(fs.readFileSync(inputFile,'utf8'))).reduce((n,r)=>n+(r.bytes||0),0):0},null,2)+'\n');
 console.log('Candidati isolati: confrontare generation-report.json; nessuna promozione automatica.');if(failure)process.exitCode=1;

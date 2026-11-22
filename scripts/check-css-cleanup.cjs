@@ -1,5 +1,5 @@
 // Compare the current presentation with the CSS captured before cleanup.
-const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
 const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'output/css-cleanup');
 const routes=['index.html','lettura.html','lettura.html?match=bologna-inter-2026-27-md-07','champions-league.html','champions-league.html?match=ucl-2026-27-md02-05','schedina.html?giornata=7','statistiche-squadre.html','statistiche-giocatori.html','statistiche-squadra/inter.html','coppa-italia.html','download.html','offline.html'];

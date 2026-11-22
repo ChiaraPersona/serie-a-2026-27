@@ -1,5 +1,5 @@
 'use strict';
-const assert=require('node:assert/strict'),fs=require('fs'),path=require('path'),crypto=require('crypto');
+const assert=require('node:assert/strict'),fs=require('./output-snapshot-fs.cjs'),path=require('path'),crypto=require('crypto');
 const {evaluateEvidence,resolveValidation,prudentEvaluation,targetForLeg,eventKey,observationIssue}=require('./champions/event-validation.cjs');
 const {freezeCandidate}=require('./champions/complete-forecast-snapshots');
 const {readFrozen,loadRegistry,currentModels,read,actualFor,digest}=require('./champions/validation-data.cjs');

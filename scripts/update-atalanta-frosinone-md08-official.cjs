@@ -1,7 +1,7 @@
 'use strict';
 const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Fixture orchestration only: retain existing engines, admission gates and provider contracts.
-const fs=require('node:fs'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
 const id='atalanta-frosinone-2026-27-md-08',dir='output/atalanta-frosinone-md08-official';
 const read=f=>storageReadJson(f);
 const write=(f,d)=>{fs.writeFileSync(f+'.tmp',JSON.stringify(d,null,2)+'\n');fs.renameSync(f+'.tmp',f)};

@@ -1,4 +1,4 @@
-const fs=require('fs'),path=require('path'),http=require('http'),assert=require('assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),path=require('path'),http=require('http'),assert=require('assert/strict');
 const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const root=path.resolve(__dirname,'..'),id='lecce-juventus-2026-27-md-08',dir='output/lecce-juventus-md08-official',types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp'};
 const expected=JSON.parse(fs.readFileSync(dir+'/tests.json')).shared;

@@ -1,7 +1,7 @@
 'use strict';
 const { readJsonFile: storageReadJson } = require('./sisal/dataset-store.cjs');
 // Observed reports only: preserve every published forecast and provider quote.
-const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+const fs=require('./output-snapshot-fs.cjs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 const {parseStatmuseGame}=require('./parse-statmuse-game');
 const {importStatmuseResult}=require('./import-statmuse-result');
@@ -81,7 +81,7 @@ const corrected=official.fixtures.find(f=>f.matchId==='frosinone-lecce-2026-27-m
 index.officialLineups['frosinone-lecce-2026-27-md-09:lecce']={...index.officialLineups['frosinone-lecce-2026-27-md-09:lecce'],players:corrected.players.map(p=>p.currentName),substitutes:corrected.substitutes.map(p=>p.currentName)};
 write('data/teams/index.json',index);
 run('scripts/apply-official-starter-policy.js');// Atomic HTML replacement avoids intermittent Windows open-for-write failures.
-execFileSync(process.execPath,['-e',"const fs=require('fs'),write=fs.writeFileSync;fs.writeFileSync=function(f,d,...r){if(typeof f==='string'&&f.endsWith('.html')){const t=f+'.results-build.tmp';write.call(fs,t,d,...r);fs.renameSync(t,f);return;}return write.call(fs,f,d,...r)};process.argv.push('--presentation-only','--matchday','9');require('./scripts/build-site.js');"],{stdio:'inherit'});
+execFileSync(process.execPath,['-e',"const fs=require('./output-snapshot-fs.cjs'),write=fs.writeFileSync;fs.writeFileSync=function(f,d,...r){if(typeof f==='string'&&f.endsWith('.html')){const t=f+'.results-build.tmp';write.call(fs,t,d,...r);fs.renameSync(t,f);return;}return write.call(fs,f,d,...r)};process.argv.push('--presentation-only','--matchday','9');require('./scripts/build-site.js');"],{stdio:'inherit'});
 for(const [p,d]of Object.entries(baseline.protectedHashes))if(!/official-lineups|schedina-md09|reading-md09-market-catalog/.test(p))assert.equal(hash(p),d,p+' changed');
 write(dir+'/import-report.json',staged.map(({config,result,unresolved})=>({matchId:config.matchId,score:result.score,players:result.playerStats.home.length+result.playerStats.away.length,bookings:result.bookings.length,substitutions:result.substitutions.length,unresolved,certifiedProviderSettlement:false})));
 console.log('Final MD9 results integrated: Frosinone complete, Fiorentina result-only; forecasts, odds and unrelated fixtures preserved.');

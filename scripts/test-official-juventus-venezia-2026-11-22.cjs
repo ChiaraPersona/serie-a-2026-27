@@ -1,4 +1,4 @@
-const fs=require('node:fs'),assert=require('node:assert/strict');
+const fs=require('./output-snapshot-fs.cjs'),assert=require('node:assert/strict');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const id='juventus-venezia-2026-27-md-12',out='output/official-juventus-venezia-2026-11-22';
 const before=read(out+'/before.json'),catalog=read('data/normalized/reading-md12-market-catalog.json'),schedina=read('data/normalized/schedina-md12.json'),predictions=read('data/normalized/predictions.json');

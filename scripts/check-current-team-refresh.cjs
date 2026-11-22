@@ -1,5 +1,5 @@
 'use strict';
-const fs = require('node:fs'), assert = require('node:assert/strict');
+const fs = require('./output-snapshot-fs.cjs'), assert = require('node:assert/strict');
 const { scoreMatrix } = require('./predictions/engine');
 const read = p => JSON.parse(fs.readFileSync(p, 'utf8'));
 async function main() {
