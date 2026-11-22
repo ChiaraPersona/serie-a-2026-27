@@ -61,6 +61,7 @@ const internalFiles = new Set([
   'data/normalized/reading-md09-market-catalog.json',
   'data/normalized/reading-md10-market-catalog.json',
   'data/normalized/reading-md11-market-catalog.json',
+  'data/normalized/reading-md12-market-catalog.json',
   'data/normalized/champions-player-stats-2025-26.json',
   'data/normalized/champions-player-stats-2026-27.json',
   'data/normalized/champions-player-shooting-2026-27.json',
