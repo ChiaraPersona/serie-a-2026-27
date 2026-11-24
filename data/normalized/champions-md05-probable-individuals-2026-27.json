@@ -10,7 +10,7 @@
     "evidenceDirectory": "data/sources/official-lineup-evidence/champions-md05-first-two",
     "note": "Two official fixtures declared by user. Other XIs explicitly provisional references to previous matches, not confirmed MD5 probable lineups. No old availability carried forward.",
     "path": "data/sources/champions-official-formations-md05-2026-27.json",
-    "sha256": "e641b52cd25e67dbac2778b213b7c830571baa6d36907c6328a25f662abd543b"
+    "sha256": "41511fa5cf72bf5f782eda268059d58147273792a8b0936d461fc5e9c936c82c"
   },
   "summary": {
     "fixtures": 18,
@@ -5852,7 +5852,7 @@
           "teamId": "galatasaray",
           "team": "Galatasaray",
           "status": "official",
-          "rawLine": "Galatasaray: Uğurcan Çakır; Wilfried Singo, Davinson Sánchez, Abdülkerim Bardakcı, Eren Elmalı; Lucas Torreira, Mario Lemina; Yunus Akgün, Aleksei Batrakov, Barış Alper Yılmaz; Deniz Gül",
+          "rawLine": "Galatasaray: Uğurcan Çakır; Wilfried Singo, Davinson Sánchez, Abdülkerim Bardakcı, Ismail Jakobs; Lucas Torreira, Mario Lemina, Eren Elmalı; Yunus Akgün, Aleksei Batrakov, Barış Alper Yılmaz",
           "sourceOrder": 3,
           "starters": [
             {
@@ -5908,17 +5908,17 @@
               "shirtNumber": 42
             },
             {
-              "sourceName": "Eren Elmalı",
-              "canonicalName": "Eren Elmalı",
-              "playerId": "eren-elmal",
-              "registeredPlayerId": "eren-elmal",
-              "providerPlayerId": "287678",
-              "stablePlayerId": "galatasaray:eren-elmal",
-              "uefaPlayerId": "250163343",
+              "sourceName": "Jakobs",
+              "canonicalName": "Ismail Jakobs",
+              "playerId": "ismail-jakobs",
+              "registeredPlayerId": "ismail-jakobs",
+              "providerPlayerId": "268796",
+              "stablePlayerId": "galatasaray:ismail-jakobs",
+              "uefaPlayerId": "250117015",
               "uefaRole": "defender",
               "reason": null,
-              "identityStatus": "existing-team-roster",
-              "shirtNumber": 17
+              "identityStatus": "reviewed-existing-team-roster",
+              "shirtNumber": 4
             },
             {
               "sourceName": "Torreira",
@@ -5945,6 +5945,19 @@
               "reason": null,
               "identityStatus": "existing-team-roster",
               "shirtNumber": 99
+            },
+            {
+              "sourceName": "Eren Elmalı",
+              "canonicalName": "Eren Elmalı",
+              "playerId": "eren-elmal",
+              "registeredPlayerId": "eren-elmal",
+              "providerPlayerId": "287678",
+              "stablePlayerId": "galatasaray:eren-elmal",
+              "uefaPlayerId": "250163343",
+              "uefaRole": "defender",
+              "reason": null,
+              "identityStatus": "existing-team-roster",
+              "shirtNumber": 17
             },
             {
               "sourceName": "Yunus Akgün",
@@ -5984,7 +5997,13 @@
               "reason": null,
               "identityStatus": "reviewed-existing-team-roster",
               "shirtNumber": 53
-            },
+            }
+          ],
+          "unavailable": [],
+          "suspended": [],
+          "doubtful": [],
+          "caution": [],
+          "bench": [
             {
               "sourceName": "Deniz Gül",
               "canonicalName": "Deniz Gül",
@@ -5997,13 +6016,7 @@
               "reason": null,
               "identityStatus": "existing-team-roster",
               "shirtNumber": 21
-            }
-          ],
-          "unavailable": [],
-          "suspended": [],
-          "doubtful": [],
-          "caution": [],
-          "bench": [
+            },
             {
               "sourceName": "Sallai",
               "canonicalName": "Roland Sallai",
@@ -6012,18 +6025,6 @@
               "providerPlayerId": "219444",
               "stablePlayerId": "galatasaray:roland-sallai",
               "uefaPlayerId": "250065179",
-              "uefaRole": "defender",
-              "reason": null,
-              "identityStatus": "reviewed-existing-team-roster"
-            },
-            {
-              "sourceName": "Jakobs",
-              "canonicalName": "Ismail Jakobs",
-              "playerId": "ismail-jakobs",
-              "registeredPlayerId": "ismail-jakobs",
-              "providerPlayerId": "268796",
-              "stablePlayerId": "galatasaray:ismail-jakobs",
-              "uefaPlayerId": "250117015",
               "uefaRole": "defender",
               "reason": null,
               "identityStatus": "reviewed-existing-team-roster"
@@ -6270,11 +6271,20 @@
             }
           ],
           "benchStatus": "full-squad-pending-callups",
-          "formation": "4-2-3-1",
+          "formation": "4-3-3",
           "referenceFixtureId": "ucl-2026-27-md04-02",
           "referenceDate": "2026-11-03",
           "lineupBasis": "user-declared-official-screenshots",
-          "evidenceNote": "User explicitly identifies these XIs as official; screenshot heading says probable. Bench not supplied.",
+          "evidenceNote": "Replacement starting XIs supplied by user; no confirmed bench supplied.",
+          "lineupEvidence": {
+            "provider": "user-supplied-screenshots",
+            "consultedAt": "2026-11-24T17:19:02.895Z",
+            "evidenceDirectory": "data/sources/official-lineup-evidence/champions-md05-galatasaray-villa-revision",
+            "files": [
+              "pitch.png",
+              "starting-lineups.png"
+            ]
+          },
           "players": [
             {
               "sourceName": "Uğurcan Çakır",
@@ -6517,14 +6527,14 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 1410,
-              "projectedShots": 1.32,
-              "projectedSOT": 0.2721,
+              "projectedShots": 1.4476,
+              "projectedSOT": 0.2836,
               "eventProbabilities": {
-                "shotsOver05": 0.7328646980341497,
-                "shotsOver15": 0.38024609943922716,
-                "shotsOver25": 0.14751782436657834,
-                "sotOver05": 0.2382219205271271,
-                "sotOver15": 0.030942105102558348,
+                "shotsOver05": 0.7648660671115731,
+                "shotsOver15": 0.4244861858622865,
+                "shotsOver25": 0.17811922781405276,
+                "sotOver05": 0.2469321884065594,
+                "sotOver15": 0.033362157038659634,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -6660,14 +6670,14 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 3471,
-              "projectedShots": 1.0381,
-              "projectedSOT": 0.3837,
+              "projectedShots": 1.1385,
+              "projectedSOT": 0.3999,
               "eventProbabilities": {
-                "shotsOver05": 0.6458731157555476,
-                "shotsOver15": 0.27825399722138155,
-                "shotsOver25": 0.08744129374622267,
-                "sotOver05": 0.3186642027383195,
-                "sotOver15": 0.0572356573290127,
+                "shotsOver05": 0.6797008896746064,
+                "shotsOver15": 0.31504035256914587,
+                "shotsOver25": 0.1074573418218624,
+                "sotOver05": 0.3296129186080452,
+                "sotOver15": 0.061525124759402416,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -6791,50 +6801,50 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 3484,
-              "projectedShots": 1.0888,
-              "projectedSOT": 0.2553,
+              "projectedShots": 1.194,
+              "projectedSOT": 0.2661,
               "eventProbabilities": {
-                "shotsOver05": 0.6633798043280836,
-                "shotsOver15": 0.29686773528050114,
-                "shotsOver25": 0.09733856489099724,
-                "sotOver05": 0.22531594212055184,
-                "sotOver15": 0.02753910214392874,
+                "shotsOver05": 0.6969931904612345,
+                "shotsOver15": 0.33520305987194865,
+                "shotsOver25": 0.11921435191014496,
+                "sotOver05": 0.23363751257966303,
+                "sotOver15": 0.029708454677111362,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
             },
             {
-              "sourceName": "Eren Elmalı",
-              "canonicalName": "Eren Elmalı",
-              "playerId": "eren-elmal",
-              "registeredPlayerId": "eren-elmal",
-              "providerPlayerId": "287678",
-              "stablePlayerId": "galatasaray:eren-elmal",
-              "uefaPlayerId": "250163343",
+              "sourceName": "Jakobs",
+              "canonicalName": "Ismail Jakobs",
+              "playerId": "ismail-jakobs",
+              "registeredPlayerId": "ismail-jakobs",
+              "providerPlayerId": "268796",
+              "stablePlayerId": "galatasaray:ismail-jakobs",
+              "uefaPlayerId": "250117015",
               "uefaRole": "defender",
               "reason": null,
-              "identityStatus": "existing-team-roster",
-              "shirtNumber": 17,
+              "identityStatus": "reviewed-existing-team-roster",
+              "shirtNumber": 4,
               "projectedRole": "starter",
               "role": "defender",
               "lineupStatus": "official",
               "availability": "official-starter",
               "startingProbability": null,
-              "expectedMinutes": 84.3,
+              "expectedMinutes": 88.8,
               "minutesEstimate": {
                 "status": "evaluable",
-                "expectedMinutes": 84.3,
-                "confidence": "medium",
+                "expectedMinutes": 88.8,
+                "confidence": "high",
                 "method": "arithmetic-mean-of-exact-starting-minutes",
                 "rotation": {
-                  "namedSquadAppearances": 51,
-                  "starts": 23,
-                  "namedBench": 28,
-                  "enteredFromBench": 25,
-                  "startFrequency": 0.451
+                  "namedSquadAppearances": 54,
+                  "starts": 35,
+                  "namedBench": 19,
+                  "enteredFromBench": 14,
+                  "startFrequency": 0.648
                 },
                 "sample": {
-                  "exactStarterAppearances": 4,
+                  "exactStarterAppearances": 8,
                   "competitionScope": "uefa-only",
                   "seasons": [
                     "2025-26",
@@ -6843,21 +6853,29 @@
                   "competitionCodes": [
                     "uefa.champions"
                   ],
-                  "from": "2025-09-18",
-                  "to": "2026-10-13",
-                  "sourceRetrievedFrom": "2026-09-07T16:29:15.607Z",
-                  "sourceRetrievedTo": "2026-10-20T17:09:20.384Z",
+                  "from": "2026-01-28",
+                  "to": "2026-10-21",
+                  "sourceRetrievedFrom": "2026-09-07T16:29:22.005Z",
+                  "sourceRetrievedTo": "2026-10-22T18:32:50.680Z",
                   "matchIds": [
-                    "757668",
-                    "757771",
-                    "401915447",
-                    "401915435"
+                    "757790",
+                    "401858759",
+                    "401858765",
+                    "401862667",
+                    "401862668",
+                    "fotmob:6106280",
+                    "fotmob:6106338",
+                    "401915396"
                   ],
                   "sourceUrls": [
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=757668",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=757771",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915447",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915435"
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=757790",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401858759",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401858765",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401862667",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401862668",
+                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106280",
+                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106338",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915396"
                   ]
                 },
                 "conditionalOnStarting": true
@@ -6866,32 +6884,44 @@
               "baseline": {
                 "status": "diagnostic-rate-only",
                 "old": {
-                  "shots": 0.796,
-                  "sot": 0.266
+                  "shots": 0.452,
+                  "sot": 0.053
                 },
                 "candidate": {
-                  "shots": 0.796,
-                  "sot": 0.266
+                  "shots": 0.443,
+                  "sot": 0.078
                 },
                 "channels": {
                   "domestic": {
-                    "n": 0,
-                    "minutes": 0,
-                    "shots": null,
-                    "sot": null,
+                    "n": 8,
+                    "minutes": 492,
+                    "shots": 0.7317073170731707,
+                    "sot": 0.18292682926829268,
                     "duplicatesRemoved": 0,
                     "conflictingEventsExcluded": 0,
-                    "matchIds": [],
+                    "matchIds": [
+                      "fotmob:5904710",
+                      "fotmob:5904721",
+                      "fotmob:5904728",
+                      "fotmob:5904733",
+                      "fotmob:5904746",
+                      "fotmob:5904749",
+                      "fotmob:5904764",
+                      "fotmob:5904771"
+                    ],
                     "estimatedMinutes": 0
                   },
                   "champions": {
-                    "n": 0,
-                    "minutes": 0,
-                    "shots": null,
-                    "sot": null,
+                    "n": 2,
+                    "minutes": 180,
+                    "shots": 0,
+                    "sot": 0,
                     "duplicatesRemoved": 0,
                     "conflictingEventsExcluded": 0,
-                    "matchIds": [],
+                    "matchIds": [
+                      "fotmob:6106280",
+                      "fotmob:6106338"
+                    ],
                     "estimatedMinutes": 0
                   },
                   "other-european": {
@@ -6906,22 +6936,22 @@
                   }
                 },
                 "weights": {
-                  "historical": 1,
-                  "domestic": 0,
-                  "champions": 0
+                  "historical": 0.5416666666666666,
+                  "domestic": 0.2916666666666667,
+                  "champions": 0.16666666666666666
                 },
-                "contextFactor": 1,
+                "contextFactor": 0.927572425184562,
                 "estimatedIncluded": false
               },
-              "historicalMinutes": 1764,
-              "projectedShots": 1.1744,
-              "projectedSOT": 0.3809,
+              "historicalMinutes": 2170,
+              "projectedShots": 0.7551,
+              "projectedSOT": 0.1226,
               "eventProbabilities": {
-                "shotsOver05": 0.6909956733256319,
-                "shotsOver15": 0.3281009920792539,
-                "shotsOver25": 0.11500923525138074,
-                "sotOver05": 0.3167537891751351,
-                "sotOver15": 0.056505307471944044,
+                "shotsOver05": 0.5300363839809603,
+                "shotsOver15": 0.1751668575249834,
+                "shotsOver25": 0.04118586781152933,
+                "sotOver05": 0.11538256122362867,
+                "sotOver15": 0.006928463229645576,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -7056,14 +7086,14 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 3204,
-              "projectedShots": 1.0431,
-              "projectedSOT": 0.3508,
+              "projectedShots": 1.144,
+              "projectedSOT": 0.3656,
               "eventProbabilities": {
-                "shotsOver05": 0.6476393309591474,
-                "shotsOver15": 0.28009191708263403,
-                "shotsOver25": 0.08839756337533855,
-                "sotOver05": 0.2958754353129942,
-                "sotOver15": 0.04886853802079261,
+                "shotsOver05": 0.681457699126781,
+                "shotsOver15": 0.3170453069278185,
+                "shotsOver25": 0.10860141859001193,
+                "sotOver05": 0.3062197421821381,
+                "sotOver15": 0.05257367992392781,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -7196,14 +7226,137 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 2413,
-              "projectedShots": 1.351,
-              "projectedSOT": 0.4725,
+              "projectedShots": 1.4815,
+              "projectedSOT": 0.4924,
               "eventProbabilities": {
-                "shotsOver05": 0.74101885003782,
-                "shotsOver15": 0.39113531643891475,
-                "shotsOver25": 0.15478898949285425,
-                "sotOver05": 0.37655828588251083,
-                "sotOver15": 0.08198207596199714,
+                "shotsOver05": 0.7727035121843617,
+                "shotsOver15": 0.43596376548549365,
+                "shotsOver25": 0.1865237981183071,
+                "sotOver05": 0.38884214620825597,
+                "sotOver15": 0.08790801900120115,
+                "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+              },
+              "blockers": []
+            },
+            {
+              "sourceName": "Eren Elmalı",
+              "canonicalName": "Eren Elmalı",
+              "playerId": "eren-elmal",
+              "registeredPlayerId": "eren-elmal",
+              "providerPlayerId": "287678",
+              "stablePlayerId": "galatasaray:eren-elmal",
+              "uefaPlayerId": "250163343",
+              "uefaRole": "defender",
+              "reason": null,
+              "identityStatus": "existing-team-roster",
+              "shirtNumber": 17,
+              "projectedRole": "starter",
+              "role": "defender",
+              "lineupStatus": "official",
+              "availability": "official-starter",
+              "startingProbability": null,
+              "expectedMinutes": 84.3,
+              "minutesEstimate": {
+                "status": "evaluable",
+                "expectedMinutes": 84.3,
+                "confidence": "medium",
+                "method": "arithmetic-mean-of-exact-starting-minutes",
+                "rotation": {
+                  "namedSquadAppearances": 51,
+                  "starts": 23,
+                  "namedBench": 28,
+                  "enteredFromBench": 25,
+                  "startFrequency": 0.451
+                },
+                "sample": {
+                  "exactStarterAppearances": 4,
+                  "competitionScope": "uefa-only",
+                  "seasons": [
+                    "2025-26",
+                    "2026-27"
+                  ],
+                  "competitionCodes": [
+                    "uefa.champions"
+                  ],
+                  "from": "2025-09-18",
+                  "to": "2026-10-13",
+                  "sourceRetrievedFrom": "2026-09-07T16:29:15.607Z",
+                  "sourceRetrievedTo": "2026-10-20T17:09:20.384Z",
+                  "matchIds": [
+                    "757668",
+                    "757771",
+                    "401915447",
+                    "401915435"
+                  ],
+                  "sourceUrls": [
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=757668",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=757771",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915447",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915435"
+                  ]
+                },
+                "conditionalOnStarting": true
+              },
+              "baselineStatus": "diagnostic-rate-only",
+              "baseline": {
+                "status": "diagnostic-rate-only",
+                "old": {
+                  "shots": 0.796,
+                  "sot": 0.266
+                },
+                "candidate": {
+                  "shots": 0.796,
+                  "sot": 0.266
+                },
+                "channels": {
+                  "domestic": {
+                    "n": 0,
+                    "minutes": 0,
+                    "shots": null,
+                    "sot": null,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [],
+                    "estimatedMinutes": 0
+                  },
+                  "champions": {
+                    "n": 0,
+                    "minutes": 0,
+                    "shots": null,
+                    "sot": null,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [],
+                    "estimatedMinutes": 0
+                  },
+                  "other-european": {
+                    "n": 0,
+                    "minutes": 0,
+                    "shots": null,
+                    "sot": null,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [],
+                    "estimatedMinutes": 0
+                  }
+                },
+                "weights": {
+                  "historical": 1,
+                  "domestic": 0,
+                  "champions": 0
+                },
+                "contextFactor": 1,
+                "estimatedIncluded": false
+              },
+              "historicalMinutes": 1764,
+              "projectedShots": 1.2879,
+              "projectedSOT": 0.397,
+              "eventProbabilities": {
+                "shotsOver05": 0.7241505408685789,
+                "shotsOver15": 0.3688840224532216,
+                "shotsOver25": 0.14011014791965226,
+                "sotOver05": 0.3276659743673427,
+                "sotOver15": 0.06074936619117777,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -7339,14 +7492,14 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 2273,
-              "projectedShots": 2.4397,
-              "projectedSOT": 0.7851,
+              "projectedShots": 2.6755,
+              "projectedSOT": 0.8182,
               "eventProbabilities": {
-                "shotsOver05": 0.9128129963599496,
-                "shotsOver15": 0.7001028635793185,
-                "shotsOver25": 0.44062840810686565,
-                "sotOver05": 0.5439259079040168,
-                "sotOver15": 0.1858621381994605,
+                "shotsOver05": 0.9311276164076165,
+                "shotsOver15": 0.7468595541061949,
+                "shotsOver25": 0.5003549537624679,
+                "sotOver05": 0.5587748545883173,
+                "sotOver15": 0.19776444061247866,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -7522,14 +7675,14 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 3278,
-              "projectedShots": 2.8164,
-              "projectedSOT": 1.1171,
+              "projectedShots": 3.0886,
+              "projectedSOT": 1.1642,
               "eventProbabilities": {
-                "shotsOver05": 0.9401790891868864,
-                "shotsOver15": 0.7716994759728334,
-                "shotsOver25": 0.5344464846448039,
-                "sotOver05": 0.6727726206387822,
-                "sotOver15": 0.30722691515436584,
+                "shotsOver05": 0.9544342982464799,
+                "shotsOver15": 0.8137000718105574,
+                "shotsOver25": 0.5963642059255623,
+                "sotOver05": 0.6878276999958526,
+                "sotOver15": 0.3243967083310241,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -7546,17 +7699,17 @@
               "reason": null,
               "identityStatus": "existing-team-roster",
               "shirtNumber": 21,
-              "projectedRole": "starter",
+              "projectedRole": "bench",
               "role": "forward",
               "lineupStatus": "official",
-              "availability": "official-starter",
+              "availability": "predicted-bench",
               "startingProbability": null,
-              "expectedMinutes": 73.3,
+              "expectedMinutes": 17,
               "minutesEstimate": {
                 "status": "evaluable",
-                "expectedMinutes": 73.3,
-                "confidence": "medium",
-                "method": "arithmetic-mean-of-exact-starting-minutes",
+                "expectedMinutes": 17,
+                "confidence": "high",
+                "method": "observed-bench-entry-frequency-times-mean-exact-minutes-conditional-on-entry",
                 "rotation": {
                   "namedSquadAppearances": 59,
                   "starts": 19,
@@ -7564,31 +7717,54 @@
                   "enteredFromBench": 31,
                   "startFrequency": 0.322
                 },
+                "entryProbability": 0.75,
+                "conditionalMinutesIfUsed": 22.7,
                 "sample": {
-                  "exactStarterAppearances": 3,
+                  "namedBenchAppearances": 12,
+                  "exactSubstituteEntries": 9,
                   "competitionScope": "uefa-only",
                   "seasons": [
-                    "2025-26"
+                    "2025-26",
+                    "2026-27"
                   ],
                   "competitionCodes": [
-                    "uefa.europa"
+                    "uefa.europa",
+                    "uefa.champions"
                   ],
-                  "from": "2025-10-02",
-                  "to": "2025-11-27",
-                  "sourceRetrievedFrom": "2026-09-07T16:28:51.648Z",
-                  "sourceRetrievedTo": "2026-09-07T16:28:53.762Z",
+                  "from": "2025-09-25",
+                  "to": "2026-10-21",
+                  "sourceRetrievedFrom": "2026-09-07T16:28:50.991Z",
+                  "sourceRetrievedTo": "2026-10-22T18:32:50.680Z",
                   "matchIds": [
-                    "757828",
-                    "757851",
-                    "757870"
+                    "757811",
+                    "757846",
+                    "757903",
+                    "757909",
+                    "757934",
+                    "401862752",
+                    "401862756",
+                    "401862901",
+                    "401862905",
+                    "fotmob:6106280",
+                    "401915435",
+                    "401915396"
                   ],
                   "sourceUrls": [
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757828",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757851",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757870"
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757811",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757846",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757903",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757909",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757934",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862752",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862756",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862901",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862905",
+                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106280",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915435",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915396"
                   ]
                 },
-                "conditionalOnStarting": true
+                "conditionalOnStarting": false
               },
               "baselineStatus": "diagnostic-rate-only",
               "baseline": {
@@ -7650,16 +7826,9 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 1562,
-              "projectedShots": 3.1522,
-              "projectedSOT": 1.2574,
-              "eventProbabilities": {
-                "shotsOver05": 0.9572420441859267,
-                "shotsOver15": 0.8224604158688049,
-                "shotsOver25": 0.6100310914781893,
-                "sotOver05": 0.7156075134492631,
-                "sotOver15": 0.35801240086036645,
-                "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
-              },
+              "projectedShots": 0.8017,
+              "projectedSOT": 0.304,
+              "eventProbabilities": null,
               "blockers": []
             },
             {
@@ -7784,155 +7953,8 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 3254,
-              "projectedShots": 0.4398,
-              "projectedSOT": 0.1492,
-              "eventProbabilities": null,
-              "blockers": []
-            },
-            {
-              "sourceName": "Jakobs",
-              "canonicalName": "Ismail Jakobs",
-              "playerId": "ismail-jakobs",
-              "registeredPlayerId": "ismail-jakobs",
-              "providerPlayerId": "268796",
-              "stablePlayerId": "galatasaray:ismail-jakobs",
-              "uefaPlayerId": "250117015",
-              "uefaRole": "defender",
-              "reason": null,
-              "identityStatus": "reviewed-existing-team-roster",
-              "projectedRole": "bench",
-              "role": "defender",
-              "lineupStatus": "official",
-              "availability": "predicted-bench",
-              "startingProbability": null,
-              "expectedMinutes": 8.4,
-              "minutesEstimate": {
-                "status": "evaluable",
-                "expectedMinutes": 8.4,
-                "confidence": "medium",
-                "method": "observed-bench-entry-frequency-times-mean-exact-minutes-conditional-on-entry",
-                "rotation": {
-                  "namedSquadAppearances": 54,
-                  "starts": 35,
-                  "namedBench": 19,
-                  "enteredFromBench": 14,
-                  "startFrequency": 0.648
-                },
-                "entryProbability": 0.583,
-                "conditionalMinutesIfUsed": 14.4,
-                "sample": {
-                  "namedBenchAppearances": 12,
-                  "exactSubstituteEntries": 7,
-                  "competitionScope": "cross-competition-fallback",
-                  "seasons": [
-                    "2025-26",
-                    "2026-27"
-                  ],
-                  "competitionCodes": [
-                    "tur.1",
-                    "uefa.champions"
-                  ],
-                  "from": "2025-11-01",
-                  "to": "2026-10-30",
-                  "sourceRetrievedFrom": "2026-09-06T21:34:54.866Z",
-                  "sourceRetrievedTo": "2026-11-02T17:37:31.441Z",
-                  "matchIds": [
-                    "750016",
-                    "757771",
-                    "750097",
-                    "750108",
-                    "750124",
-                    "750126",
-                    "750145",
-                    "750157",
-                    "750220",
-                    "fotmob:5904746",
-                    "fotmob:5904771",
-                    "401888259"
-                  ],
-                  "sourceUrls": [
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/summary?event=750016",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=757771",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/summary?event=750097",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/summary?event=750108",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/summary?event=750124",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/summary?event=750126",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/summary?event=750145",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/summary?event=750157",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/summary?event=750220",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=5904746",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=5904771",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/summary?event=401888259"
-                  ]
-                },
-                "conditionalOnStarting": false
-              },
-              "baselineStatus": "diagnostic-rate-only",
-              "baseline": {
-                "status": "diagnostic-rate-only",
-                "old": {
-                  "shots": 0.452,
-                  "sot": 0.053
-                },
-                "candidate": {
-                  "shots": 0.443,
-                  "sot": 0.078
-                },
-                "channels": {
-                  "domestic": {
-                    "n": 8,
-                    "minutes": 492,
-                    "shots": 0.7317073170731707,
-                    "sot": 0.18292682926829268,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:5904710",
-                      "fotmob:5904721",
-                      "fotmob:5904728",
-                      "fotmob:5904733",
-                      "fotmob:5904746",
-                      "fotmob:5904749",
-                      "fotmob:5904764",
-                      "fotmob:5904771"
-                    ],
-                    "estimatedMinutes": 0
-                  },
-                  "champions": {
-                    "n": 2,
-                    "minutes": 180,
-                    "shots": 0,
-                    "sot": 0,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:6106280",
-                      "fotmob:6106338"
-                    ],
-                    "estimatedMinutes": 0
-                  },
-                  "other-european": {
-                    "n": 0,
-                    "minutes": 0,
-                    "shots": null,
-                    "sot": null,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [],
-                    "estimatedMinutes": 0
-                  }
-                },
-                "weights": {
-                  "historical": 0.5416666666666666,
-                  "domestic": 0.2916666666666667,
-                  "champions": 0.16666666666666666
-                },
-                "contextFactor": 0.927572425184562,
-                "estimatedIncluded": false
-              },
-              "historicalMinutes": 2170,
-              "projectedShots": 0.0651,
-              "projectedSOT": 0.0111,
+              "projectedShots": 0.4823,
+              "projectedSOT": 0.1555,
               "eventProbabilities": null,
               "blockers": []
             },
@@ -8058,8 +8080,8 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 2524,
-              "projectedShots": 1.4834,
-              "projectedSOT": 0.6196,
+              "projectedShots": 1.6268,
+              "projectedSOT": 0.6457,
               "eventProbabilities": null,
               "blockers": []
             },
@@ -8285,8 +8307,8 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 2577,
-              "projectedShots": 0.9338,
-              "projectedSOT": 0.2841,
+              "projectedShots": 1.0241,
+              "projectedSOT": 0.2961,
               "eventProbabilities": null,
               "blockers": []
             },
@@ -8416,8 +8438,8 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 1774,
-              "projectedShots": 0.062,
-              "projectedSOT": 0.0178,
+              "projectedShots": 0.0679,
+              "projectedSOT": 0.0185,
               "eventProbabilities": null,
               "blockers": []
             },
@@ -8655,8 +8677,8 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 1861,
-              "projectedShots": 0.9628,
-              "projectedSOT": 0.3101,
+              "projectedShots": 1.0558,
+              "projectedSOT": 0.3232,
               "eventProbabilities": null,
               "blockers": []
             },
@@ -8776,8 +8798,8 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 1271,
-              "projectedShots": 0.0865,
-              "projectedSOT": 0.0279,
+              "projectedShots": 0.0948,
+              "projectedSOT": 0.029,
               "eventProbabilities": null,
               "blockers": []
             },
@@ -8912,8 +8934,8 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 3009,
-              "projectedShots": 0.7075,
-              "projectedSOT": 0.221,
+              "projectedShots": 0.7758,
+              "projectedSOT": 0.2303,
               "eventProbabilities": null,
               "blockers": []
             },
@@ -9035,8 +9057,8 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 2357,
-              "projectedShots": 0.2355,
-              "projectedSOT": 0.0844,
+              "projectedShots": 0.2582,
+              "projectedSOT": 0.0879,
               "eventProbabilities": null,
               "blockers": []
             },
@@ -9665,10 +9687,10 @@
           },
           "potentialBench": [],
           "minuteBudget": {
-            "rawExpectedMinutes": 956.7,
+            "rawExpectedMinutes": 980.8,
             "budgetFactor": 1,
-            "allocatedExpectedMinutes": 956.7,
-            "unallocatedOrUnknownMinutes": 33.3,
+            "allocatedExpectedMinutes": 980.8,
+            "unallocatedOrUnknownMinutes": 9.2,
             "exceededBudget": false
           },
           "reconciliation": {
@@ -9676,103 +9698,103 @@
             "players": [
               {
                 "playerId": "wilfried-singo",
-                "shots": 1.32,
-                "sot": 0.2721
+                "shots": 1.4476,
+                "sot": 0.2836
               },
               {
                 "playerId": "davinson-sanchez",
-                "shots": 1.0381,
-                "sot": 0.3837
+                "shots": 1.1385,
+                "sot": 0.3999
               },
               {
                 "playerId": "abdulkerim-bardakc",
-                "shots": 1.0888,
-                "sot": 0.2553
-              },
-              {
-                "playerId": "eren-elmal",
-                "shots": 1.1744,
-                "sot": 0.3809
-              },
-              {
-                "playerId": "lucas-torreira",
-                "shots": 1.0431,
-                "sot": 0.3508
-              },
-              {
-                "playerId": "mario-lemina",
-                "shots": 1.351,
-                "sot": 0.4725
-              },
-              {
-                "playerId": "yunus-akgun",
-                "shots": 2.4397,
-                "sot": 0.7851
-              },
-              {
-                "playerId": "bar-s-alper-y-lmaz",
-                "shots": 2.8164,
-                "sot": 1.1171
-              },
-              {
-                "playerId": "deniz-gul",
-                "shots": 3.1522,
-                "sot": 1.2574
-              },
-              {
-                "playerId": "roland-sallai",
-                "shots": 0.4398,
-                "sot": 0.1492
+                "shots": 1.194,
+                "sot": 0.2661
               },
               {
                 "playerId": "ismail-jakobs",
-                "shots": 0.0651,
-                "sot": 0.0111
+                "shots": 0.7551,
+                "sot": 0.1226
+              },
+              {
+                "playerId": "lucas-torreira",
+                "shots": 1.144,
+                "sot": 0.3656
+              },
+              {
+                "playerId": "mario-lemina",
+                "shots": 1.4815,
+                "sot": 0.4924
+              },
+              {
+                "playerId": "eren-elmal",
+                "shots": 1.2879,
+                "sot": 0.397
+              },
+              {
+                "playerId": "yunus-akgun",
+                "shots": 2.6755,
+                "sot": 0.8182
+              },
+              {
+                "playerId": "bar-s-alper-y-lmaz",
+                "shots": 3.0886,
+                "sot": 1.1642
+              },
+              {
+                "playerId": "deniz-gul",
+                "shots": 0.8017,
+                "sot": 0.304
+              },
+              {
+                "playerId": "roland-sallai",
+                "shots": 0.4823,
+                "sot": 0.1555
               },
               {
                 "playerId": "victor-osimhen",
-                "shots": 1.4834,
-                "sot": 0.6196
+                "shots": 1.6268,
+                "sot": 0.6457
               },
               {
                 "playerId": "gabriel-sara",
-                "shots": 0.9338,
-                "sot": 0.2841
+                "shots": 1.0241,
+                "sot": 0.2961
               },
               {
                 "playerId": "ilkay-gundogan",
-                "shots": 0.062,
-                "sot": 0.0178
+                "shots": 0.0679,
+                "sot": 0.0185
               },
               {
                 "playerId": "rafael-leao",
-                "shots": 0.9628,
-                "sot": 0.3101
+                "shots": 1.0558,
+                "sot": 0.3232
               },
               {
                 "playerId": "renato-nhaga",
-                "shots": 0.0865,
-                "sot": 0.0279
+                "shots": 0.0948,
+                "sot": 0.029
               },
               {
                 "playerId": "leroy-sane",
-                "shots": 0.7075,
-                "sot": 0.221
+                "shots": 0.7758,
+                "sot": 0.2303
               },
               {
                 "playerId": "lesley-ugochukwu",
-                "shots": 0.2355,
-                "sot": 0.0844
+                "shots": 0.2582,
+                "sot": 0.0879
               }
             ],
             "shotsDifference": 0.0001,
-            "sotDifference": 0.0001,
+            "sotDifference": -0.0002,
             "conservationApplied": true,
             "conservationMethod": "existing-substitute-minutes.conserveTeamVolume",
             "lineupMode": "official",
             "officialBenchVerified": false,
             "targetShots": 20.4,
-            "targetSOT": 7
+            "targetSOT": 6.4
           }
         },
         {
@@ -9781,7 +9803,7 @@
           "teamId": "aston-villa",
           "team": "Aston Villa",
           "status": "official",
-          "rawLine": "Aston Villa: Zion Suzuki; Aaron Wan-Bissaka, Taylor Harwood-Bellis, Pau Torres, Ian Maatsen; Boubacar Kamara, Leon Goretzka; Alysson, John McGinn, Johan Manzambi; Nicolas Jackson",
+          "rawLine": "Aston Villa: Zion Suzuki; Taylor Harwood-Bellis, Victor Lindelöf, Tyrone Mings, Ian Maatsen; Boubacar Kamara, João Gomes; Alysson, Johan Manzambi, John McGinn; Nicolas Jackson",
           "sourceOrder": 8,
           "starters": [
             {
@@ -9798,19 +9820,6 @@
               "shirtNumber": 1
             },
             {
-              "sourceName": "Wan-Bissaka",
-              "canonicalName": "Aaron Wan-Bissaka",
-              "playerId": "aaron-wan-bissaka",
-              "registeredPlayerId": "aaron-wan-bissaka",
-              "providerPlayerId": "250945",
-              "stablePlayerId": "aston-villa:aaron-wan-bissaka",
-              "uefaPlayerId": "250123067",
-              "uefaRole": "defender",
-              "reason": null,
-              "identityStatus": "reviewed-existing-team-roster",
-              "shirtNumber": 29
-            },
-            {
               "sourceName": "Taylor Harwood-Bellis",
               "canonicalName": "Taylor Harwood-Bellis",
               "playerId": "taylor-harwood-bellis",
@@ -9824,17 +9833,30 @@
               "shirtNumber": 4
             },
             {
-              "sourceName": "Pau Torres",
-              "canonicalName": "Pau Torres",
-              "playerId": "pau-torres",
-              "registeredPlayerId": "pau-torres",
-              "providerPlayerId": "251100",
-              "stablePlayerId": "aston-villa:pau-torres",
-              "uefaPlayerId": "250088461",
+              "sourceName": "Lindelöf",
+              "canonicalName": "Victor Lindelöf",
+              "playerId": "victor-lindelof",
+              "registeredPlayerId": "victor-lindelof",
+              "providerPlayerId": "204679",
+              "stablePlayerId": "aston-villa:victor-lindelof",
+              "uefaPlayerId": "250055905",
               "uefaRole": "defender",
               "reason": null,
               "identityStatus": "reviewed-existing-team-roster",
-              "shirtNumber": 14
+              "shirtNumber": 3
+            },
+            {
+              "sourceName": "Tyrone Mings",
+              "canonicalName": "Tyrone Mings",
+              "playerId": "tyrone-mings",
+              "registeredPlayerId": "tyrone-mings",
+              "providerPlayerId": "181312",
+              "stablePlayerId": "aston-villa:tyrone-mings",
+              "uefaPlayerId": "250133856",
+              "uefaRole": "defender",
+              "reason": null,
+              "identityStatus": "existing-team-roster",
+              "shirtNumber": 5
             },
             {
               "sourceName": "Maatsen",
@@ -9863,17 +9885,17 @@
               "shirtNumber": 8
             },
             {
-              "sourceName": "Leon Goretzka",
-              "canonicalName": "Leon Goretzka",
-              "playerId": "leon-goretzka",
-              "registeredPlayerId": "leon-goretzka",
-              "providerPlayerId": "174550",
-              "stablePlayerId": "aston-villa:leon-goretzka",
-              "uefaPlayerId": "250041771",
+              "sourceName": "João Gomes",
+              "canonicalName": "João Gomes",
+              "playerId": "joao-gomes",
+              "registeredPlayerId": "joao-gomes",
+              "providerPlayerId": "301524",
+              "stablePlayerId": "aston-villa:joao-gomes",
+              "uefaPlayerId": "250194571",
               "uefaRole": "midfielder",
               "reason": null,
-              "identityStatus": "existing-team-roster",
-              "shirtNumber": 27
+              "identityStatus": "reviewed-existing-team-roster",
+              "shirtNumber": 35
             },
             {
               "sourceName": "Alysson",
@@ -9889,19 +9911,6 @@
               "shirtNumber": 47
             },
             {
-              "sourceName": "McGinn",
-              "canonicalName": "John McGinn",
-              "playerId": "john-mcginn",
-              "registeredPlayerId": "john-mcginn",
-              "providerPlayerId": "162843",
-              "stablePlayerId": "aston-villa:john-mcginn",
-              "uefaPlayerId": "250058958",
-              "uefaRole": "midfielder",
-              "reason": null,
-              "identityStatus": "reviewed-existing-team-roster",
-              "shirtNumber": 7
-            },
-            {
               "sourceName": "Manzambi",
               "canonicalName": "Johan Manzambi",
               "playerId": "johan-manzambi",
@@ -9913,6 +9922,19 @@
               "reason": null,
               "identityStatus": "reviewed-existing-team-roster",
               "shirtNumber": 44
+            },
+            {
+              "sourceName": "McGinn",
+              "canonicalName": "John McGinn",
+              "playerId": "john-mcginn",
+              "registeredPlayerId": "john-mcginn",
+              "providerPlayerId": "162843",
+              "stablePlayerId": "aston-villa:john-mcginn",
+              "uefaPlayerId": "250058958",
+              "uefaRole": "midfielder",
+              "reason": null,
+              "identityStatus": "reviewed-existing-team-roster",
+              "shirtNumber": 7
             },
             {
               "sourceName": "Jackson",
@@ -9934,6 +9956,45 @@
           "caution": [],
           "bench": [
             {
+              "sourceName": "Wan-Bissaka",
+              "canonicalName": "Aaron Wan-Bissaka",
+              "playerId": "aaron-wan-bissaka",
+              "registeredPlayerId": "aaron-wan-bissaka",
+              "providerPlayerId": "250945",
+              "stablePlayerId": "aston-villa:aaron-wan-bissaka",
+              "uefaPlayerId": "250123067",
+              "uefaRole": "defender",
+              "reason": null,
+              "identityStatus": "reviewed-existing-team-roster",
+              "shirtNumber": 29
+            },
+            {
+              "sourceName": "Pau Torres",
+              "canonicalName": "Pau Torres",
+              "playerId": "pau-torres",
+              "registeredPlayerId": "pau-torres",
+              "providerPlayerId": "251100",
+              "stablePlayerId": "aston-villa:pau-torres",
+              "uefaPlayerId": "250088461",
+              "uefaRole": "defender",
+              "reason": null,
+              "identityStatus": "reviewed-existing-team-roster",
+              "shirtNumber": 14
+            },
+            {
+              "sourceName": "Leon Goretzka",
+              "canonicalName": "Leon Goretzka",
+              "playerId": "leon-goretzka",
+              "registeredPlayerId": "leon-goretzka",
+              "providerPlayerId": "174550",
+              "stablePlayerId": "aston-villa:leon-goretzka",
+              "uefaPlayerId": "250041771",
+              "uefaRole": "midfielder",
+              "reason": null,
+              "identityStatus": "existing-team-roster",
+              "shirtNumber": 27
+            },
+            {
               "sourceName": "Cash",
               "canonicalName": "Matty Cash",
               "playerId": "matty-cash",
@@ -9942,30 +10003,6 @@
               "stablePlayerId": "aston-villa:matty-cash",
               "uefaPlayerId": "250169376",
               "uefaRole": "defender",
-              "reason": null,
-              "identityStatus": "reviewed-existing-team-roster"
-            },
-            {
-              "sourceName": "Lindelöf",
-              "canonicalName": "Victor Lindelöf",
-              "playerId": "victor-lindelof",
-              "registeredPlayerId": "victor-lindelof",
-              "providerPlayerId": "204679",
-              "stablePlayerId": "aston-villa:victor-lindelof",
-              "uefaPlayerId": "250055905",
-              "uefaRole": "defender",
-              "reason": null,
-              "identityStatus": "reviewed-existing-team-roster"
-            },
-            {
-              "sourceName": "João Gomes",
-              "canonicalName": "João Gomes",
-              "playerId": "joao-gomes",
-              "registeredPlayerId": "joao-gomes",
-              "providerPlayerId": "301524",
-              "stablePlayerId": "aston-villa:joao-gomes",
-              "uefaPlayerId": "250194571",
-              "uefaRole": "midfielder",
               "reason": null,
               "identityStatus": "reviewed-existing-team-roster"
             },
@@ -10052,18 +10089,6 @@
               "uefaRole": "forward",
               "reason": null,
               "identityStatus": "reviewed-existing-team-roster"
-            },
-            {
-              "sourceName": "Tyrone Mings",
-              "canonicalName": "Tyrone Mings",
-              "playerId": "tyrone-mings",
-              "registeredPlayerId": "tyrone-mings",
-              "providerPlayerId": "181312",
-              "stablePlayerId": "aston-villa:tyrone-mings",
-              "uefaPlayerId": "250133856",
-              "uefaRole": "defender",
-              "reason": null,
-              "identityStatus": "existing-team-roster"
             },
             {
               "sourceName": "James Wright",
@@ -10600,7 +10625,16 @@
           "referenceFixtureId": "ucl-2026-27-md04-04",
           "referenceDate": "2026-11-03",
           "lineupBasis": "user-declared-official-screenshots",
-          "evidenceNote": "User explicitly identifies these XIs as official; screenshot heading says probable. Bench not supplied.",
+          "evidenceNote": "Replacement starting XIs supplied by user; no confirmed bench supplied.",
+          "lineupEvidence": {
+            "provider": "user-supplied-screenshots",
+            "consultedAt": "2026-11-24T17:19:02.895Z",
+            "evidenceDirectory": "data/sources/official-lineup-evidence/champions-md05-galatasaray-villa-revision",
+            "files": [
+              "pitch.png",
+              "starting-lineups.png"
+            ]
+          },
           "players": [
             {
               "sourceName": "Suzuki",
@@ -10729,150 +10763,6 @@
               ]
             },
             {
-              "sourceName": "Wan-Bissaka",
-              "canonicalName": "Aaron Wan-Bissaka",
-              "playerId": "aaron-wan-bissaka",
-              "registeredPlayerId": "aaron-wan-bissaka",
-              "providerPlayerId": "250945",
-              "stablePlayerId": "aston-villa:aaron-wan-bissaka",
-              "uefaPlayerId": "250123067",
-              "uefaRole": "defender",
-              "reason": null,
-              "identityStatus": "reviewed-existing-team-roster",
-              "shirtNumber": 29,
-              "projectedRole": "starter",
-              "role": "defender",
-              "lineupStatus": "official",
-              "availability": "official-starter",
-              "startingProbability": null,
-              "expectedMinutes": 76.6,
-              "minutesEstimate": {
-                "status": "evaluable",
-                "expectedMinutes": 76.6,
-                "confidence": "medium",
-                "method": "arithmetic-mean-of-exact-starting-minutes",
-                "rotation": {
-                  "namedSquadAppearances": 39,
-                  "starts": 29,
-                  "namedBench": 10,
-                  "enteredFromBench": 5,
-                  "startFrequency": 0.744
-                },
-                "sample": {
-                  "exactStarterAppearances": 8,
-                  "competitionScope": "cross-competition-fallback",
-                  "seasons": [
-                    "2025-26",
-                    "2026-27"
-                  ],
-                  "competitionCodes": [
-                    "eng.1",
-                    "uefa.champions",
-                    "eng.league_cup"
-                  ],
-                  "from": "2026-05-10",
-                  "to": "2026-10-17",
-                  "sourceRetrievedFrom": "2026-09-06T16:52:21.454Z",
-                  "sourceRetrievedTo": "2026-10-20T17:37:32.961Z",
-                  "matchIds": [
-                    "740955",
-                    "740964",
-                    "fotmob:6106295",
-                    "fotmob:5795446",
-                    "fotmob:6099333",
-                    "fotmob:5795464",
-                    "fotmob:6106284",
-                    "fotmob:5795482"
-                  ],
-                  "sourceUrls": [
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740955",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740964",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106295",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=5795446",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=6099333",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=5795464",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106284",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=5795482"
-                  ]
-                },
-                "conditionalOnStarting": true
-              },
-              "baselineStatus": "diagnostic-rate-only",
-              "baseline": {
-                "status": "diagnostic-rate-only",
-                "old": {
-                  "shots": 0.196,
-                  "sot": 0.054
-                },
-                "candidate": {
-                  "shots": 0.119,
-                  "sot": 0.033
-                },
-                "channels": {
-                  "domestic": {
-                    "n": 7,
-                    "minutes": 364,
-                    "shots": 0,
-                    "sot": 0,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:5795426",
-                      "fotmob:5795440",
-                      "fotmob:5795446",
-                      "fotmob:5795464",
-                      "fotmob:5795466",
-                      "fotmob:5795482",
-                      "fotmob:6099333"
-                    ],
-                    "estimatedMinutes": 0
-                  },
-                  "champions": {
-                    "n": 2,
-                    "minutes": 158,
-                    "shots": 0,
-                    "sot": 0,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:6106284",
-                      "fotmob:6106295"
-                    ],
-                    "estimatedMinutes": 0
-                  },
-                  "other-european": {
-                    "n": 0,
-                    "minutes": 0,
-                    "shots": null,
-                    "sot": null,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [],
-                    "estimatedMinutes": 0
-                  }
-                },
-                "weights": {
-                  "historical": 0.6056926132420857,
-                  "domestic": 0.24496901246679906,
-                  "champions": 0.14933837429111532
-                },
-                "contextFactor": 1.0857435771607842,
-                "estimatedIncluded": false
-              },
-              "historicalMinutes": 2084,
-              "projectedShots": 0.09,
-              "projectedSOT": 0.02,
-              "eventProbabilities": {
-                "shotsOver05": 0.08606881472877181,
-                "shotsOver15": 0.003815008054361302,
-                "shotsOver25": 0.00011358675401285101,
-                "sotOver05": 0.019801326693244747,
-                "sotOver15": 0.00019735322710967562,
-                "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
-              },
-              "blockers": []
-            },
-            {
               "sourceName": "Taylor Harwood-Bellis",
               "canonicalName": "Taylor Harwood-Bellis",
               "playerId": "taylor-harwood-bellis",
@@ -10925,34 +10815,34 @@
               ]
             },
             {
-              "sourceName": "Pau Torres",
-              "canonicalName": "Pau Torres",
-              "playerId": "pau-torres",
-              "registeredPlayerId": "pau-torres",
-              "providerPlayerId": "251100",
-              "stablePlayerId": "aston-villa:pau-torres",
-              "uefaPlayerId": "250088461",
+              "sourceName": "Lindelöf",
+              "canonicalName": "Victor Lindelöf",
+              "playerId": "victor-lindelof",
+              "registeredPlayerId": "victor-lindelof",
+              "providerPlayerId": "204679",
+              "stablePlayerId": "aston-villa:victor-lindelof",
+              "uefaPlayerId": "250055905",
               "uefaRole": "defender",
               "reason": null,
               "identityStatus": "reviewed-existing-team-roster",
-              "shirtNumber": 14,
+              "shirtNumber": 3,
               "projectedRole": "starter",
               "role": "defender",
               "lineupStatus": "official",
               "availability": "official-starter",
               "startingProbability": null,
-              "expectedMinutes": 88.4,
+              "expectedMinutes": 85,
               "minutesEstimate": {
                 "status": "evaluable",
-                "expectedMinutes": 88.4,
+                "expectedMinutes": 85,
                 "confidence": "high",
                 "method": "arithmetic-mean-of-exact-starting-minutes",
                 "rotation": {
-                  "namedSquadAppearances": 57,
-                  "starts": 39,
-                  "namedBench": 18,
-                  "enteredFromBench": 4,
-                  "startFrequency": 0.684
+                  "namedSquadAppearances": 61,
+                  "starts": 32,
+                  "namedBench": 29,
+                  "enteredFromBench": 7,
+                  "startFrequency": 0.525
                 },
                 "sample": {
                   "exactStarterAppearances": 8,
@@ -10963,31 +10853,30 @@
                   ],
                   "competitionCodes": [
                     "uefa.europa",
-                    "uefa.super_cup",
                     "uefa.champions"
                   ],
-                  "from": "2026-04-16",
+                  "from": "2026-01-22",
                   "to": "2026-10-21",
-                  "sourceRetrievedFrom": "2026-09-07T16:28:59.212Z",
+                  "sourceRetrievedFrom": "2026-09-07T16:28:55.414Z",
                   "sourceRetrievedTo": "2026-10-22T18:32:50.689Z",
                   "matchIds": [
-                    "401862906",
-                    "401862908",
+                    "757908",
+                    "757939",
+                    "401862759",
                     "401862910",
                     "401862911",
-                    "fotmob:5729447",
-                    "fotmob:6106295",
-                    "fotmob:6106284",
+                    "401915426",
+                    "401915409",
                     "401915394"
                   ],
                   "sourceUrls": [
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862906",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862908",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757908",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757939",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862759",
                     "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862910",
                     "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862911",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=5729447",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106295",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106284",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915426",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915409",
                     "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915394"
                   ]
                 },
@@ -10997,45 +10886,169 @@
               "baseline": {
                 "status": "diagnostic-rate-only",
                 "old": {
-                  "shots": 0.485,
-                  "sot": 0.098
+                  "shots": 0.33,
+                  "sot": 0.062
                 },
                 "candidate": {
-                  "shots": 0.413,
-                  "sot": 0.066
+                  "shots": 0.33,
+                  "sot": 0.062
                 },
                 "channels": {
                   "domestic": {
-                    "n": 4,
-                    "minutes": 202,
-                    "shots": 0,
+                    "n": 0,
+                    "minutes": 0,
+                    "shots": null,
+                    "sot": null,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [],
+                    "estimatedMinutes": 0
+                  },
+                  "champions": {
+                    "n": 0,
+                    "minutes": 0,
+                    "shots": null,
+                    "sot": null,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [],
+                    "estimatedMinutes": 0
+                  },
+                  "other-european": {
+                    "n": 0,
+                    "minutes": 0,
+                    "shots": null,
+                    "sot": null,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [],
+                    "estimatedMinutes": 0
+                  }
+                },
+                "weights": {
+                  "historical": 1,
+                  "domestic": 0,
+                  "champions": 0
+                },
+                "contextFactor": 1.1058389174092567,
+                "estimatedIncluded": false
+              },
+              "historicalMinutes": 1694,
+              "projectedShots": 0.27,
+              "projectedSOT": 0.05,
+              "eventProbabilities": {
+                "shotsOver05": 0.23662050566314685,
+                "shotsOver15": 0.030508042192196494,
+                "shotsOver25": 0.002682859623618139,
+                "sotOver05": 0.048770575499285984,
+                "sotOver15": 0.00120910427425025,
+                "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+              },
+              "blockers": []
+            },
+            {
+              "sourceName": "Tyrone Mings",
+              "canonicalName": "Tyrone Mings",
+              "playerId": "tyrone-mings",
+              "registeredPlayerId": "tyrone-mings",
+              "providerPlayerId": "181312",
+              "stablePlayerId": "aston-villa:tyrone-mings",
+              "uefaPlayerId": "250133856",
+              "uefaRole": "defender",
+              "reason": null,
+              "identityStatus": "existing-team-roster",
+              "shirtNumber": 5,
+              "projectedRole": "starter",
+              "role": "defender",
+              "lineupStatus": "official",
+              "availability": "official-starter",
+              "startingProbability": null,
+              "expectedMinutes": 90,
+              "minutesEstimate": {
+                "status": "evaluable",
+                "expectedMinutes": 90,
+                "confidence": "medium",
+                "method": "arithmetic-mean-of-exact-starting-minutes",
+                "rotation": {
+                  "namedSquadAppearances": 48,
+                  "starts": 24,
+                  "namedBench": 24,
+                  "enteredFromBench": 7,
+                  "startFrequency": 0.5
+                },
+                "sample": {
+                  "exactStarterAppearances": 4,
+                  "competitionScope": "uefa-only",
+                  "seasons": [
+                    "2025-26",
+                    "2026-27"
+                  ],
+                  "competitionCodes": [
+                    "uefa.europa",
+                    "uefa.champions"
+                  ],
+                  "from": "2025-10-23",
+                  "to": "2026-10-21",
+                  "sourceRetrievedFrom": "2026-09-07T16:28:52.030Z",
+                  "sourceRetrievedTo": "2026-10-22T18:32:50.689Z",
+                  "matchIds": [
+                    "757837",
+                    "757908",
+                    "757939",
+                    "401915394"
+                  ],
+                  "sourceUrls": [
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757837",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757908",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757939",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915394"
+                  ]
+                },
+                "conditionalOnStarting": true
+              },
+              "baselineStatus": "diagnostic-rate-only",
+              "baseline": {
+                "status": "diagnostic-rate-only",
+                "old": {
+                  "shots": 0.778,
+                  "sot": 0.174
+                },
+                "candidate": {
+                  "shots": 0.765,
+                  "sot": 0.113
+                },
+                "channels": {
+                  "domestic": {
+                    "n": 7,
+                    "minutes": 531,
+                    "shots": 0.6779661016949152,
                     "sot": 0,
                     "duplicatesRemoved": 0,
                     "conflictingEventsExcluded": 0,
                     "matchIds": [
                       "fotmob:5795369",
-                      "fotmob:5795426",
+                      "fotmob:5795440",
                       "fotmob:5795446",
-                      "fotmob:5795482"
+                      "fotmob:5795464",
+                      "fotmob:5795466",
+                      "fotmob:5795482",
+                      "fotmob:6099333"
                     ],
                     "estimatedMinutes": 0
                   },
                   "champions": {
-                    "n": 2,
-                    "minutes": 180,
-                    "shots": 0.5,
-                    "sot": 0,
+                    "n": 0,
+                    "minutes": 0,
+                    "shots": null,
+                    "sot": null,
                     "duplicatesRemoved": 0,
                     "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:6106284",
-                      "fotmob:6106295"
-                    ],
+                    "matchIds": [],
                     "estimatedMinutes": 0
                   },
                   "other-european": {
                     "n": 1,
-                    "minutes": 79,
+                    "minutes": 11,
                     "shots": 0,
                     "sot": 0,
                     "duplicatesRemoved": 0,
@@ -11047,22 +11060,22 @@
                   }
                 },
                 "weights": {
-                  "historical": 0.6805807622504537,
-                  "domestic": 0.15275257108287962,
-                  "champions": 0.16666666666666666
+                  "historical": 0.65,
+                  "domestic": 0.35,
+                  "champions": 0
                 },
-                "contextFactor": 1.1335200820336206,
+                "contextFactor": 1.0936206387637486,
                 "estimatedIncluded": false
               },
-              "historicalMinutes": 2698,
-              "projectedShots": 0.34,
-              "projectedSOT": 0.05,
+              "historicalMinutes": 1595,
+              "projectedShots": 0.65,
+              "projectedSOT": 0.1,
               "eventProbabilities": {
-                "shotsOver05": 0.28822967723739024,
-                "shotsOver15": 0.04622776749810287,
-                "shotsOver25": 0.005087442842424017,
-                "sotOver05": 0.048770575499285984,
-                "sotOver15": 0.00120910427425025,
+                "shotsOver05": 0.47795422323898396,
+                "shotsOver15": 0.13862446834432351,
+                "shotsOver25": 0.028342298003558808,
+                "sotOver05": 0.09516258196404048,
+                "sotOver15": 0.0046788401604445085,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -11197,14 +11210,14 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 2154,
-              "projectedShots": 0.92,
-              "projectedSOT": 0.2,
+              "projectedShots": 0.94,
+              "projectedSOT": 0.21,
               "eventProbabilities": {
-                "shotsOver05": 0.6014809589154858,
-                "shotsOver15": 0.2348434411177327,
-                "shotsOver25": 0.06619018293076628,
-                "sotOver05": 0.18126924692201818,
-                "sotOver15": 0.017523096306421793,
+                "shotsOver05": 0.6093721646414789,
+                "shotsOver15": 0.24218199940446894,
+                "shotsOver25": 0.0696026217430743,
+                "sotOver05": 0.18941575402981292,
+                "sotOver15": 0.019193062376073655,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -11337,82 +11350,71 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 1683,
-              "projectedShots": 0.43,
-              "projectedSOT": 0.18,
+              "projectedShots": 0.44,
+              "projectedSOT": 0.19,
               "eventProbabilities": {
-                "shotsOver05": 0.3494909052766835,
-                "shotsOver15": 0.06977199454565741,
-                "shotsOver25": 0.009632428738486798,
-                "sotOver05": 0.164729788588728,
-                "sotOver15": 0.014381150534699016,
+                "shotsOver05": 0.3559635789168587,
+                "shotsOver15": 0.07258755364027647,
+                "shotsOver25": 0.010244828079428392,
+                "sotOver05": 0.1730408660566377,
+                "sotOver15": 0.015918630607398843,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
             },
             {
-              "sourceName": "Leon Goretzka",
-              "canonicalName": "Leon Goretzka",
-              "playerId": "leon-goretzka",
-              "registeredPlayerId": "leon-goretzka",
-              "providerPlayerId": "174550",
-              "stablePlayerId": "aston-villa:leon-goretzka",
-              "uefaPlayerId": "250041771",
+              "sourceName": "João Gomes",
+              "canonicalName": "João Gomes",
+              "playerId": "joao-gomes",
+              "registeredPlayerId": "joao-gomes",
+              "providerPlayerId": "301524",
+              "stablePlayerId": "aston-villa:joao-gomes",
+              "uefaPlayerId": "250194571",
               "uefaRole": "midfielder",
               "reason": null,
-              "identityStatus": "existing-team-roster",
-              "shirtNumber": 27,
+              "identityStatus": "reviewed-existing-team-roster",
+              "shirtNumber": 35,
               "projectedRole": "starter",
               "role": "midfielder",
               "lineupStatus": "official",
               "availability": "official-starter",
               "startingProbability": null,
-              "expectedMinutes": 76.3,
+              "expectedMinutes": 79.7,
               "minutesEstimate": {
                 "status": "evaluable",
-                "expectedMinutes": 76.3,
+                "expectedMinutes": 79.7,
                 "confidence": "medium",
                 "method": "arithmetic-mean-of-exact-starting-minutes",
                 "rotation": {
-                  "namedSquadAppearances": 53,
-                  "starts": 27,
-                  "namedBench": 26,
-                  "enteredFromBench": 19,
-                  "startFrequency": 0.509
+                  "namedSquadAppearances": 46,
+                  "starts": 40,
+                  "namedBench": 6,
+                  "enteredFromBench": 5,
+                  "startFrequency": 0.87
                 },
                 "sample": {
-                  "exactStarterAppearances": 8,
-                  "competitionScope": "cross-competition-fallback",
+                  "exactStarterAppearances": 3,
+                  "competitionScope": "uefa-only",
                   "seasons": [
-                    "2025-26",
                     "2026-27"
                   ],
                   "competitionCodes": [
-                    "ger.1",
-                    "eng.1"
+                    "uefa.super_cup",
+                    "uefa.champions"
                   ],
-                  "from": "2026-04-04",
-                  "to": "2026-10-31",
-                  "sourceRetrievedFrom": "2026-09-06T21:35:13.072Z",
-                  "sourceRetrievedTo": "2026-11-02T17:37:28.144Z",
+                  "from": "2026-08-12",
+                  "to": "2026-10-21",
+                  "sourceRetrievedFrom": "2026-10-20T17:37:32.647Z",
+                  "sourceRetrievedTo": "2026-10-22T18:32:50.689Z",
                   "matchIds": [
-                    "746966",
-                    "746975",
-                    "746983",
-                    "746990",
-                    "747001",
-                    "747014",
-                    "747020",
-                    "401879250"
+                    "fotmob:5729447",
+                    "fotmob:6106295",
+                    "401915394"
                   ],
                   "sourceUrls": [
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/summary?event=746966",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/summary?event=746975",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/summary?event=746983",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/summary?event=746990",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/summary?event=747001",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/summary?event=747014",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/summary?event=747020",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879250"
+                    "https://www.fotmob.com/api/data/matchDetails?matchId=5729447",
+                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106295",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915394"
                   ]
                 },
                 "conditionalOnStarting": true
@@ -11421,66 +11423,72 @@
               "baseline": {
                 "status": "diagnostic-rate-only",
                 "old": {
-                  "shots": 1.526,
-                  "sot": 0.448
+                  "shots": 0.781,
+                  "sot": 0.268
                 },
                 "candidate": {
-                  "shots": 1.594,
-                  "sot": 0.436
+                  "shots": 0.618,
+                  "sot": 0.182
                 },
                 "channels": {
                   "domestic": {
-                    "n": 1,
-                    "minutes": 18,
-                    "shots": 5,
-                    "sot": 0,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:5795482"
-                    ],
-                    "estimatedMinutes": 0
-                  },
-                  "champions": {
-                    "n": 1,
-                    "minutes": 7,
+                    "n": 4,
+                    "minutes": 288,
                     "shots": 0,
                     "sot": 0,
                     "duplicatesRemoved": 0,
                     "conflictingEventsExcluded": 0,
                     "matchIds": [
-                      "fotmob:6106284"
+                      "fotmob:5795369",
+                      "fotmob:5795464",
+                      "fotmob:5795466",
+                      "fotmob:5795482"
+                    ],
+                    "estimatedMinutes": 0
+                  },
+                  "champions": {
+                    "n": 2,
+                    "minutes": 107,
+                    "shots": 0.8411214953271028,
+                    "sot": 0,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [
+                      "fotmob:6106284",
+                      "fotmob:6106295"
                     ],
                     "estimatedMinutes": 0
                   },
                   "other-european": {
-                    "n": 0,
-                    "minutes": 0,
-                    "shots": null,
-                    "sot": null,
+                    "n": 1,
+                    "minutes": 79,
+                    "shots": 1.139240506329114,
+                    "sot": 0,
                     "duplicatesRemoved": 0,
                     "conflictingEventsExcluded": 0,
-                    "matchIds": [],
+                    "matchIds": [
+                      "fotmob:5729447"
+                    ],
                     "estimatedMinutes": 0
                   }
                 },
                 "weights": {
-                  "historical": 0.9728257344834296,
-                  "domestic": 0.01945651468966859,
-                  "champions": 0.007717750826901874
+                  "historical": 0.6770786313983931,
+                  "domestic": 0.2166651620474858,
+                  "champions": 0.10625620655412116
                 },
-                "contextFactor": 1.1214800229055948,
+                "contextFactor": 1.1052326372506247,
                 "estimatedIncluded": false
               },
-              "historicalMinutes": 2135,
-              "projectedShots": 1.14,
-              "projectedSOT": 0.31,
+              "historicalMinutes": 2835,
+              "projectedShots": 0.47,
+              "projectedSOT": 0.14,
               "eventProbabilities": {
-                "shotsOver05": 0.680180978183696,
-                "shotsOver15": 0.31558729331310964,
-                "shotsOver25": 0.10776889293687542,
-                "sotOver05": 0.26655304377571076,
-                "sotOver15": 0.039184487346181074,
+                "shotsOver05": 0.3749977317172992,
+                "shotsOver15": 0.08124666562442995,
+                "shotsOver25": 0.012215165092605673,
+                "sotOver05": 0.13064176460119414,
+                "sotOver15": 0.00893161164536127,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -11596,14 +11604,154 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 47,
-              "projectedShots": 1.33,
-              "projectedSOT": 0.46,
+              "projectedShots": 1.36,
+              "projectedSOT": 0.49,
               "eventProbabilities": {
-                "shotsOver05": 0.735522738700176,
-                "shotsOver15": 0.3837679811714101,
-                "shotsOver25": 0.14985106741478083,
-                "sotOver05": 0.36871635449307405,
-                "sotOver15": 0.07832587755988807,
+                "shotsOver05": 0.7433392230464442,
+                "shotsOver15": 0.39428056638960807,
+                "shotsOver25": 0.15692067986295954,
+                "sotOver05": 0.3873736058155839,
+                "sotOver15": 0.08718667266521996,
+                "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+              },
+              "blockers": []
+            },
+            {
+              "sourceName": "Manzambi",
+              "canonicalName": "Johan Manzambi",
+              "playerId": "johan-manzambi",
+              "registeredPlayerId": "johan-manzambi",
+              "providerPlayerId": "386992",
+              "stablePlayerId": "aston-villa:johan-manzambi",
+              "uefaPlayerId": "250192993",
+              "uefaRole": "midfielder",
+              "reason": null,
+              "identityStatus": "reviewed-existing-team-roster",
+              "shirtNumber": 44,
+              "projectedRole": "starter",
+              "role": "midfielder",
+              "lineupStatus": "official",
+              "availability": "official-starter",
+              "startingProbability": null,
+              "expectedMinutes": 84.4,
+              "minutesEstimate": {
+                "status": "evaluable",
+                "expectedMinutes": 84.4,
+                "confidence": "high",
+                "method": "arithmetic-mean-of-exact-starting-minutes",
+                "rotation": {
+                  "namedSquadAppearances": 51,
+                  "starts": 45,
+                  "namedBench": 6,
+                  "enteredFromBench": 5,
+                  "startFrequency": 0.882
+                },
+                "sample": {
+                  "exactStarterAppearances": 8,
+                  "competitionScope": "uefa-only",
+                  "seasons": [
+                    "2025-26",
+                    "2026-27"
+                  ],
+                  "competitionCodes": [
+                    "uefa.europa",
+                    "uefa.champions"
+                  ],
+                  "from": "2026-03-12",
+                  "to": "2026-10-14",
+                  "sourceRetrievedFrom": "2026-09-07T16:28:58.530Z",
+                  "sourceRetrievedTo": "2026-10-20T17:37:32.882Z",
+                  "matchIds": [
+                    "401862769",
+                    "401862873",
+                    "401862900",
+                    "401862904",
+                    "401862907",
+                    "401862909",
+                    "401862911",
+                    "fotmob:6106284"
+                  ],
+                  "sourceUrls": [
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862769",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862873",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862900",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862904",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862907",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862909",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862911",
+                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106284"
+                  ]
+                },
+                "conditionalOnStarting": true
+              },
+              "baselineStatus": "diagnostic-rate-only",
+              "baseline": {
+                "status": "diagnostic-rate-only",
+                "old": {
+                  "shots": 2.125,
+                  "sot": 0.616
+                },
+                "candidate": {
+                  "shots": 2.829,
+                  "sot": 0.909
+                },
+                "channels": {
+                  "domestic": {
+                    "n": 5,
+                    "minutes": 283,
+                    "shots": 4.770318021201414,
+                    "sot": 1.5901060070671378,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [
+                      "fotmob:5795446",
+                      "fotmob:5795464",
+                      "fotmob:5795466",
+                      "fotmob:5795482",
+                      "fotmob:6099333"
+                    ],
+                    "estimatedMinutes": 0
+                  },
+                  "champions": {
+                    "n": 1,
+                    "minutes": 73,
+                    "shots": 2.4657534246575343,
+                    "sot": 1.2328767123287672,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [
+                      "fotmob:6106284"
+                    ],
+                    "estimatedMinutes": 0
+                  },
+                  "other-european": {
+                    "n": 0,
+                    "minutes": 0,
+                    "shots": null,
+                    "sot": null,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [],
+                    "estimatedMinutes": 0
+                  }
+                },
+                "weights": {
+                  "historical": 0.7036998103485572,
+                  "domestic": 0.22127449592071302,
+                  "champions": 0.0750256937307297
+                },
+                "contextFactor": 1.088180011799923,
+                "estimatedIncluded": false
+              },
+              "historicalMinutes": 3237,
+              "projectedShots": 2.27,
+              "projectedSOT": 0.75,
+              "eventProbabilities": {
+                "shotsOver05": 0.8966878199168998,
+                "shotsOver15": 0.6621691711282623,
+                "shotsOver25": 0.3959905047531589,
+                "sotOver05": 0.5276334472589853,
+                "sotOver15": 0.17335853270322432,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -11743,154 +11891,14 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 2874,
-              "projectedShots": 1.22,
-              "projectedSOT": 0.56,
+              "projectedShots": 1.24,
+              "projectedSOT": 0.59,
               "eventProbabilities": {
-                "shotsOver05": 0.7047698330759857,
-                "shotsOver15": 0.3445890294286884,
-                "shotsOver25": 0.12487873920383707,
-                "sotOver05": 0.42879093615118513,
-                "sotOver15": 0.10891386039584883,
-                "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
-              },
-              "blockers": []
-            },
-            {
-              "sourceName": "Manzambi",
-              "canonicalName": "Johan Manzambi",
-              "playerId": "johan-manzambi",
-              "registeredPlayerId": "johan-manzambi",
-              "providerPlayerId": "386992",
-              "stablePlayerId": "aston-villa:johan-manzambi",
-              "uefaPlayerId": "250192993",
-              "uefaRole": "midfielder",
-              "reason": null,
-              "identityStatus": "reviewed-existing-team-roster",
-              "shirtNumber": 44,
-              "projectedRole": "starter",
-              "role": "midfielder",
-              "lineupStatus": "official",
-              "availability": "official-starter",
-              "startingProbability": null,
-              "expectedMinutes": 84.4,
-              "minutesEstimate": {
-                "status": "evaluable",
-                "expectedMinutes": 84.4,
-                "confidence": "high",
-                "method": "arithmetic-mean-of-exact-starting-minutes",
-                "rotation": {
-                  "namedSquadAppearances": 51,
-                  "starts": 45,
-                  "namedBench": 6,
-                  "enteredFromBench": 5,
-                  "startFrequency": 0.882
-                },
-                "sample": {
-                  "exactStarterAppearances": 8,
-                  "competitionScope": "uefa-only",
-                  "seasons": [
-                    "2025-26",
-                    "2026-27"
-                  ],
-                  "competitionCodes": [
-                    "uefa.europa",
-                    "uefa.champions"
-                  ],
-                  "from": "2026-03-12",
-                  "to": "2026-10-14",
-                  "sourceRetrievedFrom": "2026-09-07T16:28:58.530Z",
-                  "sourceRetrievedTo": "2026-10-20T17:37:32.882Z",
-                  "matchIds": [
-                    "401862769",
-                    "401862873",
-                    "401862900",
-                    "401862904",
-                    "401862907",
-                    "401862909",
-                    "401862911",
-                    "fotmob:6106284"
-                  ],
-                  "sourceUrls": [
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862769",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862873",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862900",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862904",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862907",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862909",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862911",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106284"
-                  ]
-                },
-                "conditionalOnStarting": true
-              },
-              "baselineStatus": "diagnostic-rate-only",
-              "baseline": {
-                "status": "diagnostic-rate-only",
-                "old": {
-                  "shots": 2.125,
-                  "sot": 0.616
-                },
-                "candidate": {
-                  "shots": 2.829,
-                  "sot": 0.909
-                },
-                "channels": {
-                  "domestic": {
-                    "n": 5,
-                    "minutes": 283,
-                    "shots": 4.770318021201414,
-                    "sot": 1.5901060070671378,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:5795446",
-                      "fotmob:5795464",
-                      "fotmob:5795466",
-                      "fotmob:5795482",
-                      "fotmob:6099333"
-                    ],
-                    "estimatedMinutes": 0
-                  },
-                  "champions": {
-                    "n": 1,
-                    "minutes": 73,
-                    "shots": 2.4657534246575343,
-                    "sot": 1.2328767123287672,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:6106284"
-                    ],
-                    "estimatedMinutes": 0
-                  },
-                  "other-european": {
-                    "n": 0,
-                    "minutes": 0,
-                    "shots": null,
-                    "sot": null,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [],
-                    "estimatedMinutes": 0
-                  }
-                },
-                "weights": {
-                  "historical": 0.7036998103485572,
-                  "domestic": 0.22127449592071302,
-                  "champions": 0.0750256937307297
-                },
-                "contextFactor": 1.088180011799923,
-                "estimatedIncluded": false
-              },
-              "historicalMinutes": 3237,
-              "projectedShots": 2.23,
-              "projectedSOT": 0.71,
-              "eventProbabilities": {
-                "shotsOver05": 0.8924715698642051,
-                "shotsOver15": 0.6526831706613823,
-                "shotsOver25": 0.38531910555023496,
-                "sotOver05": 0.5083558025390349,
-                "sotOver15": 0.15928842234174967,
+                "shotsOver05": 0.7106157820609493,
+                "shotsOver15": 0.3517793518165264,
+                "shotsOver25": 0.12930076506498422,
+                "sotOver05": 0.4456727152654929,
+                "sotOver15": 0.11861961727213366,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
               "blockers": []
@@ -12021,16 +12029,443 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 1362,
-              "projectedShots": 2.53,
-              "projectedSOT": 1.22,
+              "projectedShots": 2.57,
+              "projectedSOT": 1.28,
               "eventProbabilities": {
-                "shotsOver05": 0.920340979714102,
-                "shotsOver15": 0.71880365839078,
-                "shotsOver25": 0.46385894691677754,
-                "sotOver05": 0.7047698330759857,
-                "sotOver15": 0.3445890294286884,
+                "shotsOver05": 0.9234644545760885,
+                "shotsOver15": 0.726768102836636,
+                "shotsOver25": 0.4740132908514394,
+                "sotOver05": 0.7219626995468058,
+                "sotOver15": 0.3660749549667174,
                 "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
               },
+              "blockers": []
+            },
+            {
+              "sourceName": "Wan-Bissaka",
+              "canonicalName": "Aaron Wan-Bissaka",
+              "playerId": "aaron-wan-bissaka",
+              "registeredPlayerId": "aaron-wan-bissaka",
+              "providerPlayerId": "250945",
+              "stablePlayerId": "aston-villa:aaron-wan-bissaka",
+              "uefaPlayerId": "250123067",
+              "uefaRole": "defender",
+              "reason": null,
+              "identityStatus": "reviewed-existing-team-roster",
+              "shirtNumber": 29,
+              "projectedRole": "bench",
+              "role": "defender",
+              "lineupStatus": "official",
+              "availability": "predicted-bench",
+              "startingProbability": null,
+              "expectedMinutes": 13.2,
+              "minutesEstimate": {
+                "status": "evaluable",
+                "expectedMinutes": 13.2,
+                "confidence": "medium",
+                "method": "observed-bench-entry-frequency-times-mean-exact-minutes-conditional-on-entry",
+                "rotation": {
+                  "namedSquadAppearances": 39,
+                  "starts": 29,
+                  "namedBench": 10,
+                  "enteredFromBench": 5,
+                  "startFrequency": 0.744
+                },
+                "entryProbability": 0.5,
+                "conditionalMinutesIfUsed": 26.4,
+                "sample": {
+                  "namedBenchAppearances": 10,
+                  "exactSubstituteEntries": 5,
+                  "competitionScope": "cross-competition-fallback",
+                  "seasons": [
+                    "2025-26",
+                    "2026-27"
+                  ],
+                  "competitionCodes": [
+                    "eng.1"
+                  ],
+                  "from": "2025-08-31",
+                  "to": "2026-10-10",
+                  "sourceRetrievedFrom": "2026-09-06T21:34:38.160Z",
+                  "sourceRetrievedTo": "2026-10-20T17:37:33.022Z",
+                  "matchIds": [
+                    "740622",
+                    "740675",
+                    "740913",
+                    "740923",
+                    "740930",
+                    "740939",
+                    "740971",
+                    "fotmob:5795426",
+                    "fotmob:5795440",
+                    "fotmob:5795466"
+                  ],
+                  "sourceUrls": [
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740622",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740675",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740913",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740923",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740930",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740939",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740971",
+                    "https://www.fotmob.com/api/data/matchDetails?matchId=5795426",
+                    "https://www.fotmob.com/api/data/matchDetails?matchId=5795440",
+                    "https://www.fotmob.com/api/data/matchDetails?matchId=5795466"
+                  ]
+                },
+                "conditionalOnStarting": false
+              },
+              "baselineStatus": "diagnostic-rate-only",
+              "baseline": {
+                "status": "diagnostic-rate-only",
+                "old": {
+                  "shots": 0.196,
+                  "sot": 0.054
+                },
+                "candidate": {
+                  "shots": 0.119,
+                  "sot": 0.033
+                },
+                "channels": {
+                  "domestic": {
+                    "n": 7,
+                    "minutes": 364,
+                    "shots": 0,
+                    "sot": 0,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [
+                      "fotmob:5795426",
+                      "fotmob:5795440",
+                      "fotmob:5795446",
+                      "fotmob:5795464",
+                      "fotmob:5795466",
+                      "fotmob:5795482",
+                      "fotmob:6099333"
+                    ],
+                    "estimatedMinutes": 0
+                  },
+                  "champions": {
+                    "n": 2,
+                    "minutes": 158,
+                    "shots": 0,
+                    "sot": 0,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [
+                      "fotmob:6106284",
+                      "fotmob:6106295"
+                    ],
+                    "estimatedMinutes": 0
+                  },
+                  "other-european": {
+                    "n": 0,
+                    "minutes": 0,
+                    "shots": null,
+                    "sot": null,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [],
+                    "estimatedMinutes": 0
+                  }
+                },
+                "weights": {
+                  "historical": 0.6056926132420857,
+                  "domestic": 0.24496901246679906,
+                  "champions": 0.14933837429111532
+                },
+                "contextFactor": 1.0857435771607842,
+                "estimatedIncluded": false
+              },
+              "historicalMinutes": 2084,
+              "projectedShots": 0.01,
+              "projectedSOT": 0,
+              "eventProbabilities": null,
+              "blockers": []
+            },
+            {
+              "sourceName": "Pau Torres",
+              "canonicalName": "Pau Torres",
+              "playerId": "pau-torres",
+              "registeredPlayerId": "pau-torres",
+              "providerPlayerId": "251100",
+              "stablePlayerId": "aston-villa:pau-torres",
+              "uefaPlayerId": "250088461",
+              "uefaRole": "defender",
+              "reason": null,
+              "identityStatus": "reviewed-existing-team-roster",
+              "shirtNumber": 14,
+              "projectedRole": "bench",
+              "role": "defender",
+              "lineupStatus": "official",
+              "availability": "predicted-bench",
+              "startingProbability": null,
+              "expectedMinutes": 2.5,
+              "minutesEstimate": {
+                "status": "evaluable",
+                "expectedMinutes": 2.5,
+                "confidence": "low",
+                "method": "observed-bench-entry-frequency-times-mean-exact-minutes-conditional-on-entry",
+                "rotation": {
+                  "namedSquadAppearances": 57,
+                  "starts": 39,
+                  "namedBench": 18,
+                  "enteredFromBench": 4,
+                  "startFrequency": 0.684
+                },
+                "entryProbability": 0.167,
+                "conditionalMinutesIfUsed": 15,
+                "sample": {
+                  "namedBenchAppearances": 12,
+                  "exactSubstituteEntries": 2,
+                  "competitionScope": "cross-competition-fallback",
+                  "seasons": [
+                    "2025-26",
+                    "2026-27"
+                  ],
+                  "competitionCodes": [
+                    "uefa.europa",
+                    "eng.1"
+                  ],
+                  "from": "2026-01-22",
+                  "to": "2026-10-17",
+                  "sourceRetrievedFrom": "2026-09-06T21:34:46.806Z",
+                  "sourceRetrievedTo": "2026-10-20T17:37:32.899Z",
+                  "matchIds": [
+                    "757908",
+                    "757939",
+                    "740837",
+                    "740846",
+                    "740862",
+                    "740876",
+                    "740892",
+                    "740937",
+                    "740947",
+                    "740970",
+                    "401878781",
+                    "fotmob:5795482"
+                  ],
+                  "sourceUrls": [
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757908",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757939",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740837",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740846",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740862",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740876",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740892",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740937",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740947",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740970",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401878781",
+                    "https://www.fotmob.com/api/data/matchDetails?matchId=5795482"
+                  ]
+                },
+                "conditionalOnStarting": false
+              },
+              "baselineStatus": "diagnostic-rate-only",
+              "baseline": {
+                "status": "diagnostic-rate-only",
+                "old": {
+                  "shots": 0.485,
+                  "sot": 0.098
+                },
+                "candidate": {
+                  "shots": 0.413,
+                  "sot": 0.066
+                },
+                "channels": {
+                  "domestic": {
+                    "n": 4,
+                    "minutes": 202,
+                    "shots": 0,
+                    "sot": 0,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [
+                      "fotmob:5795369",
+                      "fotmob:5795426",
+                      "fotmob:5795446",
+                      "fotmob:5795482"
+                    ],
+                    "estimatedMinutes": 0
+                  },
+                  "champions": {
+                    "n": 2,
+                    "minutes": 180,
+                    "shots": 0.5,
+                    "sot": 0,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [
+                      "fotmob:6106284",
+                      "fotmob:6106295"
+                    ],
+                    "estimatedMinutes": 0
+                  },
+                  "other-european": {
+                    "n": 1,
+                    "minutes": 79,
+                    "shots": 0,
+                    "sot": 0,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [
+                      "fotmob:5729447"
+                    ],
+                    "estimatedMinutes": 0
+                  }
+                },
+                "weights": {
+                  "historical": 0.6805807622504537,
+                  "domestic": 0.15275257108287962,
+                  "champions": 0.16666666666666666
+                },
+                "contextFactor": 1.1335200820336206,
+                "estimatedIncluded": false
+              },
+              "historicalMinutes": 2698,
+              "projectedShots": 0.01,
+              "projectedSOT": 0,
+              "eventProbabilities": null,
+              "blockers": []
+            },
+            {
+              "sourceName": "Leon Goretzka",
+              "canonicalName": "Leon Goretzka",
+              "playerId": "leon-goretzka",
+              "registeredPlayerId": "leon-goretzka",
+              "providerPlayerId": "174550",
+              "stablePlayerId": "aston-villa:leon-goretzka",
+              "uefaPlayerId": "250041771",
+              "uefaRole": "midfielder",
+              "reason": null,
+              "identityStatus": "existing-team-roster",
+              "shirtNumber": 27,
+              "projectedRole": "bench",
+              "role": "midfielder",
+              "lineupStatus": "official",
+              "availability": "predicted-bench",
+              "startingProbability": null,
+              "expectedMinutes": 6.1,
+              "minutesEstimate": {
+                "status": "evaluable",
+                "expectedMinutes": 6.1,
+                "confidence": "high",
+                "method": "observed-bench-entry-frequency-times-mean-exact-minutes-conditional-on-entry",
+                "rotation": {
+                  "namedSquadAppearances": 53,
+                  "starts": 27,
+                  "namedBench": 26,
+                  "enteredFromBench": 19,
+                  "startFrequency": 0.509
+                },
+                "entryProbability": 0.75,
+                "conditionalMinutesIfUsed": 8.1,
+                "sample": {
+                  "namedBenchAppearances": 12,
+                  "exactSubstituteEntries": 9,
+                  "competitionScope": "uefa-only",
+                  "seasons": [
+                    "2025-26",
+                    "2026-27"
+                  ],
+                  "competitionCodes": [
+                    "uefa.champions"
+                  ],
+                  "from": "2025-11-04",
+                  "to": "2026-10-21",
+                  "sourceRetrievedFrom": "2026-09-07T16:29:18.043Z",
+                  "sourceRetrievedTo": "2026-10-22T18:32:50.689Z",
+                  "matchIds": [
+                    "757709",
+                    "757742",
+                    "757744",
+                    "757774",
+                    "757793",
+                    "401862641",
+                    "401862886",
+                    "401862891",
+                    "401862893",
+                    "401862895",
+                    "fotmob:6106284",
+                    "401915394"
+                  ],
+                  "sourceUrls": [
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=757709",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=757742",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=757744",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=757774",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=757793",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401862641",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401862886",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401862891",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401862893",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401862895",
+                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106284",
+                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915394"
+                  ]
+                },
+                "conditionalOnStarting": false
+              },
+              "baselineStatus": "diagnostic-rate-only",
+              "baseline": {
+                "status": "diagnostic-rate-only",
+                "old": {
+                  "shots": 1.526,
+                  "sot": 0.448
+                },
+                "candidate": {
+                  "shots": 1.594,
+                  "sot": 0.436
+                },
+                "channels": {
+                  "domestic": {
+                    "n": 1,
+                    "minutes": 18,
+                    "shots": 5,
+                    "sot": 0,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [
+                      "fotmob:5795482"
+                    ],
+                    "estimatedMinutes": 0
+                  },
+                  "champions": {
+                    "n": 1,
+                    "minutes": 7,
+                    "shots": 0,
+                    "sot": 0,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [
+                      "fotmob:6106284"
+                    ],
+                    "estimatedMinutes": 0
+                  },
+                  "other-european": {
+                    "n": 0,
+                    "minutes": 0,
+                    "shots": null,
+                    "sot": null,
+                    "duplicatesRemoved": 0,
+                    "conflictingEventsExcluded": 0,
+                    "matchIds": [],
+                    "estimatedMinutes": 0
+                  }
+                },
+                "weights": {
+                  "historical": 0.9728257344834296,
+                  "domestic": 0.01945651468966859,
+                  "champions": 0.007717750826901874
+                },
+                "contextFactor": 1.1214800229055948,
+                "estimatedIncluded": false
+              },
+              "historicalMinutes": 2135,
+              "projectedShots": 0.09,
+              "projectedSOT": 0.03,
+              "eventProbabilities": null,
               "blockers": []
             },
             {
@@ -12168,234 +12603,6 @@
               "blockers": []
             },
             {
-              "sourceName": "Lindelöf",
-              "canonicalName": "Victor Lindelöf",
-              "playerId": "victor-lindelof",
-              "registeredPlayerId": "victor-lindelof",
-              "providerPlayerId": "204679",
-              "stablePlayerId": "aston-villa:victor-lindelof",
-              "uefaPlayerId": "250055905",
-              "uefaRole": "defender",
-              "reason": null,
-              "identityStatus": "reviewed-existing-team-roster",
-              "projectedRole": "bench",
-              "role": "defender",
-              "lineupStatus": "official",
-              "availability": "predicted-bench",
-              "startingProbability": null,
-              "expectedMinutes": null,
-              "minutesEstimate": {
-                "status": "not-evaluable",
-                "expectedMinutes": null,
-                "confidence": "none",
-                "reason": "insufficient-named-bench-or-exact-entry-history",
-                "rotation": {
-                  "namedSquadAppearances": 61,
-                  "starts": 32,
-                  "namedBench": 29,
-                  "enteredFromBench": 7,
-                  "startFrequency": 0.525
-                },
-                "sample": {
-                  "namedBenchAppearances": 12,
-                  "exactSubstituteEntries": 1,
-                  "competitionScope": "cross-competition-fallback"
-                },
-                "conditionalOnStarting": false
-              },
-              "baselineStatus": "diagnostic-rate-only",
-              "baseline": {
-                "status": "diagnostic-rate-only",
-                "old": {
-                  "shots": 0.33,
-                  "sot": 0.062
-                },
-                "candidate": {
-                  "shots": 0.33,
-                  "sot": 0.062
-                },
-                "channels": {
-                  "domestic": {
-                    "n": 0,
-                    "minutes": 0,
-                    "shots": null,
-                    "sot": null,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [],
-                    "estimatedMinutes": 0
-                  },
-                  "champions": {
-                    "n": 0,
-                    "minutes": 0,
-                    "shots": null,
-                    "sot": null,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [],
-                    "estimatedMinutes": 0
-                  },
-                  "other-european": {
-                    "n": 0,
-                    "minutes": 0,
-                    "shots": null,
-                    "sot": null,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [],
-                    "estimatedMinutes": 0
-                  }
-                },
-                "weights": {
-                  "historical": 1,
-                  "domestic": 0,
-                  "champions": 0
-                },
-                "contextFactor": 1.1058389174092567,
-                "estimatedIncluded": false
-              },
-              "historicalMinutes": 1694,
-              "projectedShots": null,
-              "projectedSOT": null,
-              "eventProbabilities": null,
-              "blockers": [
-                "EXPECTED_MINUTES_UNAVAILABLE"
-              ]
-            },
-            {
-              "sourceName": "João Gomes",
-              "canonicalName": "João Gomes",
-              "playerId": "joao-gomes",
-              "registeredPlayerId": "joao-gomes",
-              "providerPlayerId": "301524",
-              "stablePlayerId": "aston-villa:joao-gomes",
-              "uefaPlayerId": "250194571",
-              "uefaRole": "midfielder",
-              "reason": null,
-              "identityStatus": "reviewed-existing-team-roster",
-              "projectedRole": "bench",
-              "role": "midfielder",
-              "lineupStatus": "official",
-              "availability": "predicted-bench",
-              "startingProbability": null,
-              "expectedMinutes": 18.5,
-              "minutesEstimate": {
-                "status": "evaluable",
-                "expectedMinutes": 18.5,
-                "confidence": "low",
-                "method": "observed-bench-entry-frequency-times-mean-exact-minutes-conditional-on-entry",
-                "rotation": {
-                  "namedSquadAppearances": 46,
-                  "starts": 40,
-                  "namedBench": 6,
-                  "enteredFromBench": 5,
-                  "startFrequency": 0.87
-                },
-                "entryProbability": 0.833,
-                "conditionalMinutesIfUsed": 22.2,
-                "sample": {
-                  "namedBenchAppearances": 6,
-                  "exactSubstituteEntries": 5,
-                  "competitionScope": "cross-competition-fallback",
-                  "seasons": [
-                    "2025-26",
-                    "2026-27"
-                  ],
-                  "competitionCodes": [
-                    "eng.1",
-                    "uefa.champions"
-                  ],
-                  "from": "2025-10-26",
-                  "to": "2026-10-31",
-                  "sourceRetrievedFrom": "2026-09-06T16:52:20.984Z",
-                  "sourceRetrievedTo": "2026-11-02T17:37:28.144Z",
-                  "matchIds": [
-                    "740684",
-                    "740689",
-                    "740901",
-                    "740860",
-                    "fotmob:6106284",
-                    "401879250"
-                  ],
-                  "sourceUrls": [
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740684",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740689",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740901",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=740860",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=6106284",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879250"
-                  ]
-                },
-                "conditionalOnStarting": false
-              },
-              "baselineStatus": "diagnostic-rate-only",
-              "baseline": {
-                "status": "diagnostic-rate-only",
-                "old": {
-                  "shots": 0.781,
-                  "sot": 0.268
-                },
-                "candidate": {
-                  "shots": 0.618,
-                  "sot": 0.182
-                },
-                "channels": {
-                  "domestic": {
-                    "n": 4,
-                    "minutes": 288,
-                    "shots": 0,
-                    "sot": 0,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:5795369",
-                      "fotmob:5795464",
-                      "fotmob:5795466",
-                      "fotmob:5795482"
-                    ],
-                    "estimatedMinutes": 0
-                  },
-                  "champions": {
-                    "n": 2,
-                    "minutes": 107,
-                    "shots": 0.8411214953271028,
-                    "sot": 0,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:6106284",
-                      "fotmob:6106295"
-                    ],
-                    "estimatedMinutes": 0
-                  },
-                  "other-european": {
-                    "n": 1,
-                    "minutes": 79,
-                    "shots": 1.139240506329114,
-                    "sot": 0,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:5729447"
-                    ],
-                    "estimatedMinutes": 0
-                  }
-                },
-                "weights": {
-                  "historical": 0.6770786313983931,
-                  "domestic": 0.2166651620474858,
-                  "champions": 0.10625620655412116
-                },
-                "contextFactor": 1.1052326372506247,
-                "estimatedIncluded": false
-              },
-              "historicalMinutes": 2835,
-              "projectedShots": 0.11,
-              "projectedSOT": 0.03,
-              "eventProbabilities": null,
-              "blockers": []
-            },
-            {
               "sourceName": "Emiliano Buendía",
               "canonicalName": "Emiliano Buendía",
               "playerId": "emiliano-buendia",
@@ -12522,7 +12729,7 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 2769,
-              "projectedShots": 0.39,
+              "projectedShots": 0.4,
               "projectedSOT": 0.11,
               "eventProbabilities": null,
               "blockers": []
@@ -12665,8 +12872,8 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 1963,
-              "projectedShots": 0.22,
-              "projectedSOT": 0.11,
+              "projectedShots": 0.23,
+              "projectedSOT": 0.12,
               "eventProbabilities": null,
               "blockers": []
             },
@@ -12800,7 +13007,7 @@
               },
               "historicalMinutes": 884,
               "projectedShots": 0.3,
-              "projectedSOT": 0.12,
+              "projectedSOT": 0.13,
               "eventProbabilities": null,
               "blockers": []
             },
@@ -13036,7 +13243,7 @@
                 "estimatedIncluded": false
               },
               "historicalMinutes": 1598,
-              "projectedShots": 0.39,
+              "projectedShots": 0.4,
               "projectedSOT": 0.13,
               "eventProbabilities": null,
               "blockers": []
@@ -13260,150 +13467,6 @@
               "blockers": [
                 "EXPECTED_MINUTES_UNAVAILABLE"
               ]
-            },
-            {
-              "sourceName": "Tyrone Mings",
-              "canonicalName": "Tyrone Mings",
-              "playerId": "tyrone-mings",
-              "registeredPlayerId": "tyrone-mings",
-              "providerPlayerId": "181312",
-              "stablePlayerId": "aston-villa:tyrone-mings",
-              "uefaPlayerId": "250133856",
-              "uefaRole": "defender",
-              "reason": null,
-              "identityStatus": "existing-team-roster",
-              "projectedRole": "bench",
-              "role": "defender",
-              "lineupStatus": "official",
-              "availability": "predicted-bench",
-              "startingProbability": null,
-              "expectedMinutes": 1.2,
-              "minutesEstimate": {
-                "status": "evaluable",
-                "expectedMinutes": 1.2,
-                "confidence": "high",
-                "method": "observed-bench-entry-frequency-times-mean-exact-minutes-conditional-on-entry",
-                "rotation": {
-                  "namedSquadAppearances": 48,
-                  "starts": 24,
-                  "namedBench": 24,
-                  "enteredFromBench": 7,
-                  "startFrequency": 0.5
-                },
-                "entryProbability": 0.273,
-                "conditionalMinutesIfUsed": 4.3,
-                "sample": {
-                  "namedBenchAppearances": 11,
-                  "exactSubstituteEntries": 3,
-                  "competitionScope": "uefa-only",
-                  "seasons": [
-                    "2025-26",
-                    "2026-27"
-                  ],
-                  "competitionCodes": [
-                    "uefa.europa",
-                    "uefa.super_cup",
-                    "uefa.champions"
-                  ],
-                  "from": "2025-09-25",
-                  "to": "2026-10-14",
-                  "sourceRetrievedFrom": "2026-09-07T16:28:50.833Z",
-                  "sourceRetrievedTo": "2026-10-20T17:37:32.647Z",
-                  "matchIds": [
-                    "757808",
-                    "401862754",
-                    "401862759",
-                    "401862902",
-                    "401862906",
-                    "401862908",
-                    "401862910",
-                    "401862911",
-                    "fotmob:5729447",
-                    "401915426",
-                    "401915409"
-                  ],
-                  "sourceUrls": [
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=757808",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862754",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862759",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862902",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862906",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862908",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862910",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/summary?event=401862911",
-                    "https://www.fotmob.com/api/data/matchDetails?matchId=5729447",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915426",
-                    "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event=401915409"
-                  ]
-                },
-                "conditionalOnStarting": false
-              },
-              "baselineStatus": "diagnostic-rate-only",
-              "baseline": {
-                "status": "diagnostic-rate-only",
-                "old": {
-                  "shots": 0.778,
-                  "sot": 0.174
-                },
-                "candidate": {
-                  "shots": 0.765,
-                  "sot": 0.113
-                },
-                "channels": {
-                  "domestic": {
-                    "n": 7,
-                    "minutes": 531,
-                    "shots": 0.6779661016949152,
-                    "sot": 0,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:5795369",
-                      "fotmob:5795440",
-                      "fotmob:5795446",
-                      "fotmob:5795464",
-                      "fotmob:5795466",
-                      "fotmob:5795482",
-                      "fotmob:6099333"
-                    ],
-                    "estimatedMinutes": 0
-                  },
-                  "champions": {
-                    "n": 0,
-                    "minutes": 0,
-                    "shots": null,
-                    "sot": null,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [],
-                    "estimatedMinutes": 0
-                  },
-                  "other-european": {
-                    "n": 1,
-                    "minutes": 11,
-                    "shots": 0,
-                    "sot": 0,
-                    "duplicatesRemoved": 0,
-                    "conflictingEventsExcluded": 0,
-                    "matchIds": [
-                      "fotmob:5729447"
-                    ],
-                    "estimatedMinutes": 0
-                  }
-                },
-                "weights": {
-                  "historical": 0.65,
-                  "domestic": 0.35,
-                  "champions": 0
-                },
-                "contextFactor": 1.0936206387637486,
-                "estimatedIncluded": false
-              },
-              "historicalMinutes": 1595,
-              "projectedShots": 0.01,
-              "projectedSOT": 0,
-              "eventProbabilities": null,
-              "blockers": []
             },
             {
               "sourceName": "James Wright",
@@ -15797,59 +15860,74 @@
           },
           "potentialBench": [],
           "minuteBudget": {
-            "rawExpectedMinutes": 916.1,
+            "rawExpectedMinutes": 931.6,
             "budgetFactor": 1,
-            "allocatedExpectedMinutes": 916.1,
-            "unallocatedOrUnknownMinutes": 73.9,
+            "allocatedExpectedMinutes": 931.6,
+            "unallocatedOrUnknownMinutes": 58.4,
             "exceededBudget": false
           },
           "reconciliation": {
             "status": "offline-conditional-only",
             "players": [
               {
-                "playerId": "aaron-wan-bissaka",
-                "shots": 0.09,
-                "sot": 0.02
-              },
-              {
-                "playerId": "pau-torres",
-                "shots": 0.34,
+                "playerId": "victor-lindelof",
+                "shots": 0.27,
                 "sot": 0.05
               },
               {
+                "playerId": "tyrone-mings",
+                "shots": 0.65,
+                "sot": 0.1
+              },
+              {
                 "playerId": "ian-maatsen",
-                "shots": 0.92,
-                "sot": 0.2
+                "shots": 0.94,
+                "sot": 0.21
               },
               {
                 "playerId": "boubacar-kamara",
-                "shots": 0.43,
-                "sot": 0.18
+                "shots": 0.44,
+                "sot": 0.19
               },
               {
-                "playerId": "leon-goretzka",
-                "shots": 1.14,
-                "sot": 0.31
+                "playerId": "joao-gomes",
+                "shots": 0.47,
+                "sot": 0.14
               },
               {
                 "playerId": "alysson",
-                "shots": 1.33,
-                "sot": 0.46
-              },
-              {
-                "playerId": "john-mcginn",
-                "shots": 1.22,
-                "sot": 0.56
+                "shots": 1.36,
+                "sot": 0.49
               },
               {
                 "playerId": "johan-manzambi",
-                "shots": 2.23,
-                "sot": 0.71
+                "shots": 2.27,
+                "sot": 0.75
+              },
+              {
+                "playerId": "john-mcginn",
+                "shots": 1.24,
+                "sot": 0.59
               },
               {
                 "playerId": "nicolas-jackson",
-                "shots": 2.53,
-                "sot": 1.22
+                "shots": 2.57,
+                "sot": 1.28
+              },
+              {
+                "playerId": "aaron-wan-bissaka",
+                "shots": 0.01,
+                "sot": 0
+              },
+              {
+                "playerId": "pau-torres",
+                "shots": 0.01,
+                "sot": 0
+              },
+              {
+                "playerId": "leon-goretzka",
+                "shots": 0.09,
+                "sot": 0.03
               },
               {
                 "playerId": "matty-cash",
@@ -15857,28 +15935,23 @@
                 "sot": 0.04
               },
               {
-                "playerId": "joao-gomes",
-                "shots": 0.11,
-                "sot": 0.03
-              },
-              {
                 "playerId": "emiliano-buendia",
-                "shots": 0.39,
+                "shots": 0.4,
                 "sot": 0.11
               },
               {
                 "playerId": "tammy-abraham",
-                "shots": 0.22,
-                "sot": 0.11
+                "shots": 0.23,
+                "sot": 0.12
               },
               {
                 "playerId": "ross-barkley",
                 "shots": 0.3,
-                "sot": 0.12
+                "sot": 0.13
               },
               {
                 "playerId": "alejandro-garnacho",
-                "shots": 0.39,
+                "shots": 0.4,
                 "sot": 0.13
               },
               {
@@ -15887,22 +15960,17 @@
                 "sot": 0.02
               },
               {
-                "playerId": "tyrone-mings",
-                "shots": 0.01,
-                "sot": 0
-              },
-              {
                 "playerId": "lamare-bogarde",
                 "shots": 0.04,
                 "sot": 0.02
               }
             ],
             "shotsDifference": -0.01,
-            "sotDifference": -0.01,
+            "sotDifference": 0,
             "lineupMode": "official",
             "officialBenchVerified": false,
             "targetShots": 11.9,
-            "targetSOT": 4.3
+            "targetSOT": 4.4
           }
         }
       ]
@@ -137128,6 +137196,12 @@
       },
       {
         "teamId": "galatasaray",
+        "playerId": "ismail-jakobs",
+        "observedAppearances": 10,
+        "observedMinutes": 672
+      },
+      {
+        "teamId": "galatasaray",
         "playerId": "lucas-torreira",
         "observedAppearances": 9,
         "observedMinutes": 733
@@ -137155,12 +137229,6 @@
         "playerId": "roland-sallai",
         "observedAppearances": 9,
         "observedMinutes": 702
-      },
-      {
-        "teamId": "galatasaray",
-        "playerId": "ismail-jakobs",
-        "observedAppearances": 10,
-        "observedMinutes": 672
       },
       {
         "teamId": "galatasaray",
@@ -137266,15 +137334,15 @@
       },
       {
         "teamId": "aston-villa",
-        "playerId": "aaron-wan-bissaka",
-        "observedAppearances": 9,
-        "observedMinutes": 522
+        "playerId": "victor-lindelof",
+        "observedAppearances": 0,
+        "observedMinutes": 0
       },
       {
         "teamId": "aston-villa",
-        "playerId": "pau-torres",
-        "observedAppearances": 7,
-        "observedMinutes": 461
+        "playerId": "tyrone-mings",
+        "observedAppearances": 8,
+        "observedMinutes": 542
       },
       {
         "teamId": "aston-villa",
@@ -137290,9 +137358,9 @@
       },
       {
         "teamId": "aston-villa",
-        "playerId": "leon-goretzka",
-        "observedAppearances": 2,
-        "observedMinutes": 25
+        "playerId": "joao-gomes",
+        "observedAppearances": 7,
+        "observedMinutes": 474
       },
       {
         "teamId": "aston-villa",
@@ -137302,15 +137370,15 @@
       },
       {
         "teamId": "aston-villa",
-        "playerId": "john-mcginn",
-        "observedAppearances": 11,
-        "observedMinutes": 888
-      },
-      {
-        "teamId": "aston-villa",
         "playerId": "johan-manzambi",
         "observedAppearances": 6,
         "observedMinutes": 356
+      },
+      {
+        "teamId": "aston-villa",
+        "playerId": "john-mcginn",
+        "observedAppearances": 11,
+        "observedMinutes": 888
       },
       {
         "teamId": "aston-villa",
@@ -137320,21 +137388,27 @@
       },
       {
         "teamId": "aston-villa",
+        "playerId": "aaron-wan-bissaka",
+        "observedAppearances": 9,
+        "observedMinutes": 522
+      },
+      {
+        "teamId": "aston-villa",
+        "playerId": "pau-torres",
+        "observedAppearances": 7,
+        "observedMinutes": 461
+      },
+      {
+        "teamId": "aston-villa",
+        "playerId": "leon-goretzka",
+        "observedAppearances": 2,
+        "observedMinutes": 25
+      },
+      {
+        "teamId": "aston-villa",
         "playerId": "matty-cash",
         "observedAppearances": 8,
         "observedMinutes": 658
-      },
-      {
-        "teamId": "aston-villa",
-        "playerId": "victor-lindelof",
-        "observedAppearances": 0,
-        "observedMinutes": 0
-      },
-      {
-        "teamId": "aston-villa",
-        "playerId": "joao-gomes",
-        "observedAppearances": 7,
-        "observedMinutes": 474
       },
       {
         "teamId": "aston-villa",
@@ -137371,12 +137445,6 @@
         "playerId": "ibrahim-mbaye",
         "observedAppearances": 6,
         "observedMinutes": 220
-      },
-      {
-        "teamId": "aston-villa",
-        "playerId": "tyrone-mings",
-        "observedAppearances": 8,
-        "observedMinutes": 542
       },
       {
         "teamId": "aston-villa",
