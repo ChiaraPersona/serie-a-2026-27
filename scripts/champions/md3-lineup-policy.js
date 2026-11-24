@@ -28,11 +28,12 @@ function derivePredictedBench(probable,callups,squad){
 }
 function projectMd3Team({mode,documentation,...args}){
  if(TEAM_ONLY.has(canonicalTeam(args.teamId)))return {status:'blocked-collective-only',players:[]};
- const accepted=mode==='official'?documentation?.officialXI===true&&documentation?.officialBench===true:mode==='probable'?documentation?.probableXI===true:false;
+ const accepted=mode==='official'?documentation?.officialXI===true:mode==='probable'?documentation?.probableXI===true:false;
  if(!accepted)return {status:mode==='probable'?'blocked-match-callups-undocumented':'blocked-official-documentation',players:[]};
  if(!Number.isFinite(args.targetShots)||!Number.isFinite(args.targetSOT))return {status:'blocked-team-volumes',players:[]};
- // The underlying flag means documented coverage here, not an assertion of official bench status.
- return {...projectDocumentedTeam({...args,lineupVerified:true,benchVerified:true}),lineupMode:mode};
+ // Official starters can use the same provisional squad coverage as probable XIs.
+ // The low-level flag permits allocation; it does not certify match call-ups.
+ return {...projectDocumentedTeam({...args,lineupVerified:true,benchVerified:true}),lineupMode:mode,officialBenchVerified:documentation?.officialBench===true};
 }
 function allocateMinuteBudget(players){
  // Existing Champions substitute-minutes.js team budget policy, unchanged constants and rounding.

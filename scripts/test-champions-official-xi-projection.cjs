@@ -1,0 +1,15 @@
+'use strict';
+const assert=require('node:assert/strict');
+const {projectMd3Team}=require('./champions/md3-lineup-policy');
+const input={teamId:'galatasaray',players:[{playerId:'starter',roleKey:'forward',expectedMinutes:80,per90:{shots:3,shotsOnTarget:1}}],targetShots:12,targetSOT:4};
+const run=documentation=>projectMd3Team({...input,mode:'official',documentation});
+const complete=run({officialXI:true,officialBench:true});
+const pending=run({officialXI:true,officialBench:false});
+assert.deepEqual(pending.players,complete.players,'Unconfirmed bench must not suppress projections for documented official starters');
+assert(pending.players.length>0);
+assert.equal(pending.officialBenchVerified,false);
+assert.equal(complete.officialBenchVerified,true);
+assert.equal(run({officialXI:false,officialBench:true}).status,'blocked-official-documentation');
+assert.equal(projectMd3Team({...input,mode:'probable',documentation:{probableXI:false}}).status,'blocked-match-callups-undocumented');
+assert.equal(projectMd3Team({...input,teamId:'sabah',mode:'official',documentation:{officialXI:true}}).status,'blocked-collective-only');
+console.log('PASS official XI projection with unconfirmed bench; missing XI and collective-only gates preserved');
