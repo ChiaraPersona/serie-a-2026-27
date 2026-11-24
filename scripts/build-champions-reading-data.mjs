@@ -37,10 +37,11 @@ for(const m of renderer.matchAll(/\bloadDerived\(['"]([^'"]+\.json)['"]\)/g))pat
 for(const file of ['champions-player-match-history.json','champions-shared-scenarios.json','reading-referee-history.json','champions-team-history.json'])paths.add('data/generated/'+file);
 paths.delete('data/normalized/champions-md03-player-database-2026-27.json');
 paths.delete('data/normalized/champions-player-history-context-2025-26.json');
+for(const md of ['04','05'])paths.add(`data/normalized/champions-md${md}-probable-individuals-2026-27.json`);
 const workspaces=new Map();
 const output=path.join(root,'data/generated/champions-readings');fs.mkdirSync(output,{recursive:true});
 let bytes=0,count=0;
-for(const fixture of calendar.fixtures.filter(f=>f.status==='finished'&&f.matchday===require('./retire-finished-readings.cjs').currentMatchday(calendar.fixtures)&&[2,3,4].includes(f.matchday))){
+for(const fixture of calendar.fixtures.filter(f=>f.status==='finished'&&f.matchday===require('./retire-finished-readings.cjs').currentMatchday(calendar.fixtures)&&[2,3,4,5].includes(f.matchday))){
  const names=new Set([fixture.homeTeam,fixture.awayTeam]);
  const squads=read('data/normalized/champions-registered-squads-2026-27.json').teams.filter(t=>names.has(t.team));
  const ids=new Set([...squads.flatMap(t=>[t.id,t.teamId].filter(Boolean)),...calendar.teamBranding.filter(t=>names.has(t.team)).flatMap(t=>[t.id,t.slug].filter(Boolean))]);
@@ -67,7 +68,7 @@ for(const fixture of calendar.fixtures.filter(f=>f.status==='finished'&&f.matchd
  };
  const datasets={};
  for(const file of paths)if(fs.existsSync(path.join(root,file))){
-  const md=file.match(/md0([234])/);
+  const md=file.match(/md0([2345])/);
   if(md&&Number(md[1])!==fixture.matchday)continue;
   datasets[file]=project(file,read(file));
  }

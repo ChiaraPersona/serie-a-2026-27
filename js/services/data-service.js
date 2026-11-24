@@ -31,7 +31,7 @@ export function createDataService(release,{deduplicate=false}={}){
       if(name==='matches.json'||name==='champions-league-2026-27.json')return data;
       // Descriptive lineup projections include official substitutes. Operational
       // contracts are loaded separately and continue through the starter policy.
-      if(name==='champions-md04-probable-individuals-2026-27.json')return data;
+      if(/^champions-md0[45]-probable-individuals-2026-27\.json$/.test(name))return data;
       if(name==='schedina-champions-md03-ui.json')return {...globalThis.officialStarterPolicy.filter({...data,fixtures:[]}),fixtures:data.fixtures};
       return globalThis.officialStarterPolicy.filter(data);
     },
@@ -39,7 +39,7 @@ export function createDataService(release,{deduplicate=false}={}){
     loadHomeData:()=>fetchJson('data/generated/home-ui.json'),
     loadMatchdayMatches:day=>{if(!Number.isInteger(day)||day<1||day>38)throw Error('Giornata non valida');return fetchJson(`data/generated/matches/md${String(day).padStart(2,'0')}.json`)},
     loadChampionsReading:async id=>{
-      if(!/^ucl-2026-27-md0[234]-(?:0[1-9]|1[0-8])$/.test(id))throw Error('Fixture Champions non valida');
+      if(!/^ucl-2026-27-md0[2345]-(?:0[1-9]|1[0-8])$/.test(id))throw Error('Fixture Champions non valida');
       const [registry,data]=await Promise.all([
         fetchJson(`${DATA}official-starter-registry.json`,'official starters'),
         fetchJson(`data/generated/champions-readings/${id}.json`)

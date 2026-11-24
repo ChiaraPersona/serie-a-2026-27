@@ -27,11 +27,11 @@ export async function loadChampionsWorkspace(load,matchday){
   const calendar=await load('champions-league-2026-27.json');
   const fixtures=calendar.fixtures.filter(f=>f.matchday===matchday).map(f=>({...f,readingUrl:`champions-league.html?match=${f.id}`}));
   let source,all=[],teamForecasts=null;
-  if(matchday===4){
-    source=await load('schedina-champions-md04.json');
+  if([4,5].includes(matchday)){
+    source=await load(`schedina-champions-md${String(matchday).padStart(2,'0')}.json`);
     const ids=new Set(source.scope);
     const covered=fixtures.filter(f=>ids.has(f.id));
-    if(source.matchday!==4||source.status!=='PRELIMINARY_NOT_STATISTICALLY_VALIDATED'||covered.length!==ids.size)throw Error('Catalogo Champions quarta giornata non coerente');
+    if(source.matchday!==matchday||source.status!=='PRELIMINARY_NOT_STATISTICALLY_VALIDATED'||covered.length!==ids.size)throw Error('Catalogo Champions non coerente');
     const byId=new Map(covered.map(f=>[f.id,f]));
     const marketCatalog={...source.marketCatalog,matches:source.marketCatalog.matches.map(m=>({...m,selections:m.selections.map(leg=>({...leg,settlement:settleLeg(leg,byId.get(m.matchId))}))}))};
     all=marketCatalog.matches.flatMap(m=>m.selections);

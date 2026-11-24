@@ -455,7 +455,7 @@ export function createPage(deps){
 
   async function appendSharedSchedina(matchday,fixtureId,host){
     if(!host||typeof host.insertAdjacentHTML!=="function")return;
-    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261115-fixture-data'),import('./betting.js?v=20261104-champions-results')]);
+    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261124-md5'),import('./betting.js?v=20261124-md5')]);
     let workspace;
     if(readingProjection?.fixtureId===fixtureId){
       const registry=await deps.loadGenerated(`champions-readings/registry-md${matchday}.json`);
@@ -505,7 +505,7 @@ export function createPage(deps){
           const path=key('data/normalized/',name);
           if(!Object.hasOwn(datasets,path))return deps.load(name);
           const data=datasets[path];
-          if(name==='champions-league-2026-27.json'||name==='champions-md04-probable-individuals-2026-27.json')return data;
+          if(name==='champions-league-2026-27.json'||/^champions-md0[45]-probable-individuals-2026-27\.json$/.test(name))return data;
           return globalThis.officialStarterPolicy.filter(data);
         };
         loadDerived=async name=>Object.hasOwn(datasets,'data/derived/'+name)?datasets['data/derived/'+name]:deps.loadDerived(name);
@@ -529,29 +529,29 @@ export function createPage(deps){
       const shared=await load('../generated/champions-shared-scenarios.json');
       const prediction=shared.fixtures.find(f=>f.fixtureId===requestedMatchId);
       if(prediction){
-        const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261120-expectation-section-v7');
+        const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261124-md5');
         const playerMatchHistory=loadGenerated?await loadGenerated('champions-player-match-history.json'):null;
         let probableFixture,probableMarkup;
-        if(requestedCalendarFixture.matchday===4){
-          const individuals=await load('champions-md04-probable-individuals-2026-27.json');
+        if([4,5].includes(requestedCalendarFixture.matchday)){
+          const individuals=await load(`champions-md${String(requestedCalendarFixture.matchday).padStart(2,'0')}-probable-individuals-2026-27.json`);
           probableFixture=individuals.fixtures.find(f=>f.fixtureId===requestedMatchId);
           if(probableFixture){
-            const {md3ProbableMarkup}=await import('./champions-md3-probable.mjs?v=20261104-reading-clean-v1');
+            const {md3ProbableMarkup}=await import('./champions-md3-probable.mjs?v=20261124-md5');
             probableMarkup=md3ProbableMarkup(probableFixture);
           }
         }
-        await mountChampionsReading({fixture:requestedCalendarFixture,prediction,probableFixture,probableMarkup,playerMatchHistory,branding,analysis:{match:requestedCalendarFixture,matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:refereeReadingPanel(requestedCalendarFixture.refereeAssignment),extend:probableFixture?async context=>appendSharedSchedina(4,requestedMatchId,context.shell):undefined});
+        await mountChampionsReading({fixture:requestedCalendarFixture,prediction,probableFixture,probableMarkup,playerMatchHistory,branding,analysis:{match:requestedCalendarFixture,matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:refereeReadingPanel(requestedCalendarFixture.refereeAssignment),extend:probableFixture?async context=>appendSharedSchedina(requestedCalendarFixture.matchday,requestedMatchId,context.shell):undefined});
         return;
       }
     }
     if(requestedCalendarFixture?.matchday===3&&requestedCalendarFixture.refereeAssignment?.status==='assigned'){
-      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,officialProbables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261022-assets-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261022-assets-v1'),load('../derived/champions-md03/probable-individuals-v2-2026-10-20.json'),loadDerived('champions-md03/official-individuals-two-v1-2026-10-20.json'),import('./champions-md3-probable.mjs?v=20261104-reading-clean-v1')]);
+      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,officialProbables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261022-assets-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261022-assets-v1'),load('../derived/champions-md03/probable-individuals-v2-2026-10-20.json'),loadDerived('champions-md03/official-individuals-two-v1-2026-10-20.json'),import('./champions-md3-probable.mjs?v=20261124-md5')]);
       const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
       const fixture=catalog.fixtures.find(f=>f.fixtureId===requestedMatchId);
       const sevenOfficial=await loadDerived('champions-md03/official-individuals-seven-v2-2026-10-20.json');
       const todayOfficial=await loadDerived('champions-md03/official-individuals-2026-10-21.json');
       const probableFixture=todayOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||sevenOfficial.fixtures.find(f=>f.fixtureId===requestedMatchId)||officialProbables.fixtures.find(f=>f.fixtureId===requestedMatchId)||probables.fixtures.find(f=>f.fixtureId===requestedMatchId);
-      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261120-expectation-section-v7');
+      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261124-md5');
       const playerMatchHistory=loadGenerated?await loadGenerated('champions-player-match-history.json'):null;
       await mountChampionsReading({fixture:requestedCalendarFixture,prediction:fixture.forecast,profile,probableFixture,playerMatchHistory,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:md3RefereeMarkup(requestedCalendarFixture,profile,branding),probableMarkup:md3ProbableMarkup(probableFixture),extend:({shell})=>appendSharedSchedina(3,requestedMatchId,shell)});
       return;

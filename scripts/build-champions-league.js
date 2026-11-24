@@ -11,7 +11,8 @@ const refereeAssignmentsPaths = [
   "data/sources/champions-referee-assignments-2026-27.json",
   "data/sources/champions-referee-assignments-md02-2026-27.json",
   "data/sources/champions-referee-assignments-md03-2026-27.json",
-  "data/sources/champions-referee-assignments-md04-2026-27.json"
+  "data/sources/champions-referee-assignments-md04-2026-27.json",
+  "data/sources/champions-referee-assignments-md05-2026-27.json"
 ].map(relativePath => path.join(root, relativePath));
 const probableFormationsPaths = [1, 2].map(matchday => path.join(root, `data/sources/champions-probable-formations-md${String(matchday).padStart(2, "0")}-2026-27.json`));
 const officialFormationsPaths = [1, 2].map(matchday => path.join(root, `data/sources/champions-official-formations-md${String(matchday).padStart(2, "0")}-2026-27.json`));

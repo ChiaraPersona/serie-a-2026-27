@@ -4,7 +4,7 @@ const [{settleLeg:settleStrictLeg,settleArchivedLeg},{createPersonalBetslipStore
  import('./betting-settlement.mjs?v=20261109-md11-results'),
  import('./personal-betslip-store.mjs?v=20261102-champions-no-draw'),
  import('./shared-forecast-contract.mjs?v=20261102-champions-no-draw'),
- import('./champions-workspace-catalog.mjs?v=20261115-fixture-data'),
+ import('./champions-workspace-catalog.mjs?v=20261124-md5'),
  import('./champions-audit-display.mjs?v=20261022-assets-v1'),
  import('./champions-md3-results.mjs?v=20261022-assets-v1'),
  import('./archive-contract-stats.mjs?v=20261102-champions-no-draw')
@@ -436,7 +436,9 @@ export function createPage(deps){
     });
     const md4Workspace=await loadChampionsWorkspaceMd3Derived(load,4);
     const championsMd04={...md4Workspace.source,slips:[{legs:md4Workspace.all.filter(leg=>leg.suggestionAnalysis?.suggested)}]};
-    for(const [index,data] of [champions,championsMd02,championsMd03,championsMd04].entries()){
+    const md5Workspace=await loadChampionsWorkspaceMd3Derived(load,5);
+    const championsMd05={...md5Workspace.source,slips:[{legs:md5Workspace.all.filter(leg=>leg.suggestionAnalysis?.suggested)}]};
+    for(const [index,data] of [champions,championsMd02,championsMd03,championsMd04,championsMd05].entries()){
       const number=index+1;
       cards.push({date:firstDate(championsCalendar.fixtures.filter(f=>f.matchday===number)),html:championsArchiveCard(data,number)});
     }
@@ -452,10 +454,10 @@ export function createPage(deps){
     const matchday=params.get("giornata"),competition=params.get("competizione");
     if(competition==="champions"){
       const number=Number(matchday||1);
-      if(![1,2,3,4].includes(number))throw new Error("Giornata Champions non disponibile");
+      if(![1,2,3,4,5].includes(number))throw new Error("Giornata Champions non disponibile");
       const [workspace,outcomes]=await Promise.all([number===3?load("schedina-champions-md03-ui.json").then(async data=>(await import('./champions-md3-browser-workspace.mjs?v=20261022-assets-v1')).restoreMd3Workspace(data)):loadChampionsWorkspaceMd3Derived(load,number),load("card-settlement-records.json")]);
       recordedOutcomes=outcomes.records;
-      document.querySelector("#app").innerHTML=hero(`UEFA Champions League · ${number}ª giornata`,"Schedine",number>=3?"Pronostici preliminari per le partite con entrambi gli undici probabili. Formazioni e panchine restano da confermare.":"Pronostici e risultati originali archiviati, in sola consultazione.")+`<nav class="betting-round-back"><a href="schedina.html">← Tutte le giornate</a><a href="champions-league.html">Letture Champions →</a></nav>`+championsWorkspaceMarkup(workspace);
+      document.querySelector("#app").innerHTML=hero(`UEFA Champions League · ${number}ª giornata`,"Schedine",number>=3?"Pronostici preliminari con le formazioni disponibili. Gli undici ufficiali sono distinti dai riferimenti provvisori; le altre formazioni e le panchine restano da confermare.":"Pronostici e risultati originali archiviati, in sola consultazione.")+`<nav class="betting-round-back"><a href="schedina.html">← Tutte le giornate</a><a href="champions-league.html">Letture Champions →</a></nav>`+championsWorkspaceMarkup(workspace);
       mountChampionsWorkspace(workspace);
       return;
     }
