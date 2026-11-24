@@ -14,4 +14,14 @@ assert.equal(JSON.stringify(input),before,'Inputs and historical XIs remain inta
 const future=structuredClone(input);future.references.records=future.references.records.map(r=>({...r,date:'2026-11-23'}));
 assert(generate(future).fixtures.every(f=>f.likelyBooked.length===0),'Unobserved future XIs cannot enter preliminary rankings');
 const ended=structuredClone(input);ended.calendar.fixtures.forEach(f=>f.status='finished');assert.equal(generate(ended).fixtures.length,0,'No retrospective candidates');
+const official=read('data/sources/champions-official-formations-md05-2026-27.json');
+const fixtureId='ucl-2026-27-md05-02';
+const officialAsOf=official.teams.filter(t=>t.fixtureId===fixtureId).map(t=>t.lineupEvidence?.consultedAt||official.source.consultedAt).sort().at(-1);
+const refreshed=generate({...input,asOf:officialAsOf,officialLineups:official,fixtureIds:[fixtureId]}).fixtures.find(f=>f.fixtureId===fixtureId);
+const starters=new Set(official.teams.filter(t=>t.fixtureId===fixtureId).flatMap(t=>t.starters.map(p=>p.playerId)));
+assert.equal(refreshed.status,'OFFICIAL_LINEUP_HYPOTHESIS');
+assert.equal(refreshed.likelyBooked.length,5);
+assert(refreshed.likelyBooked.every(p=>starters.has(p.playerId)&&p.lineupStatus==='official'));
+assert(refreshed.likelyBooked.every(p=>p.calibratedProbability===null&&p.operationalSelection===false));
+assert.equal(generate({...input,officialLineups:official,fixtureIds:[fixtureId]}).fixtures[0].status,'REFERENCE_LINEUP_HYPOTHESIS','Future official evidence cannot leak into earlier rankings');
 console.log('PASS 18 fixture-scoped hypotheses, exact starter IDs, both teams, no probabilities/operational selections, strict cutoff and immutable history');

@@ -9,9 +9,9 @@ import {matchExpectationMarkup} from './champions-expectation.mjs?v=20261120-exp
 
 // Adapt existing MD3 artifacts for the shared presentation; never recalculate them.
 export async function mountChampionsReading({fixture,prediction,probableFixture,branding,analysis,refereeMarkup,probableMarkup,playerMatchHistory,extend}){
- const hypotheses=fixture.status==='scheduled'&&!probableFixture?await readArtifact('data/generated/champions-booking-hypotheses.json').catch(()=>null):null;
+ const hypotheses=fixture.status==='scheduled'?await readArtifact('data/generated/champions-booking-hypotheses.json').catch(()=>null):null;
  const bookingHypothesis=hypotheses?.fixtures?.find(f=>f.fixtureId===fixture.id&&f.date===fixture.date);
- if(!prediction.likelyBooked?.length&&bookingHypothesis?.likelyBooked?.length)prediction={...prediction,likelyBooked:bookingHypothesis.likelyBooked,bookingHypothesis};
+ if(bookingHypothesis?.likelyBooked?.length&&(bookingHypothesis.status==='OFFICIAL_LINEUP_HYPOTHESIS'||(!probableFixture&&!prediction.likelyBooked?.length)))prediction={...prediction,likelyBooked:bookingHypothesis.likelyBooked,bookingHypothesis};
  const side=name=>{const team=branding.get(name);return {name,...team,id:team?.id??team?.slug??null};};
  const model=createReadingView({competition:'champions',fixture,home:side(fixture.homeTeam),away:side(fixture.awayTeam),prediction:{...prediction,scoreForecast:{...prediction.scoreForecast,display:prediction.scoreForecast?.display||[prediction.scoreForecast?.primary,...(prediction.scoreForecast?.alternatives||[])].filter(Boolean)}},quality:prediction.dataQuality,analysis});
  const prepared=await prepareReadingShell(model);

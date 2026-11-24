@@ -78,7 +78,8 @@ if (renderedPages.some(([,id]) => id === 'readings')) {
   require('./build-reading-browser-data.cjs').build({matchday});
 }
 if (renderedPages.some(([,id]) => id === 'champions')) {
-  require('./build-champions-booking-hypotheses.cjs').build();
+  const bookingScopeIndex=process.argv.indexOf('--booking-fixtures');
+  require('./build-champions-booking-hypotheses.cjs').build({fixtureIds:bookingScopeIndex<0?null:process.argv[bookingScopeIndex+1].split(',')});
   require('./build-champions-team-history.cjs').build();
   require('./build-champions-md02-browser-data.cjs').build();
   require('./build-champions-player-match-history.cjs').build();
