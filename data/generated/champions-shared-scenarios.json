@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "pipeline": "SHARED_SERIE_A_SCENARIO",
   "engineVersion": "4.16.0",
-  "generatedAt": "2026-11-25T17:03:16.689Z",
+  "generatedAt": "2026-11-25T19:12:52.964Z",
   "fixtures": [
     {
       "fixtureId": "ucl-2026-27-md04-01",
@@ -20944,16 +20944,16 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.91,
+        "home": 1.92,
         "away": 1.15,
-        "total": 3.05,
+        "total": 3.07,
         "method": "Distribuzione dei punteggi condizionata al rating europeo; forma dei punteggi da attacco/difesa, matchup e xGOT. Stima sperimentale non validata.",
         "components": {
           "home": {
             "attackStrength": 1.165,
             "defenceWeakness": 0.819,
             "lineup": {
-              "attack": 1.025,
+              "attack": 1.033,
               "defenceWeakness": 0.978,
               "resolved": 11,
               "status": "usable"
@@ -20963,8 +20963,8 @@
             "attackStrength": 1.331,
             "defenceWeakness": 0.765,
             "lineup": {
-              "attack": 1.042,
-              "defenceWeakness": 0.99,
+              "attack": 1.039,
+              "defenceWeakness": 1.005,
               "resolved": 11,
               "status": "usable"
             }
@@ -21064,8 +21064,8 @@
             "variant": "execution",
             "applied": true,
             "unadjusted": {
-              "home": 1.6,
-              "away": 1.41
+              "home": 1.64,
+              "away": 1.4
             }
           },
           "xg": {
@@ -21081,49 +21081,49 @@
             "method": "minimum-relative-entropy-outcome-conditioning-v1",
             "statisticallyValidated": false,
             "baseline": {
-              "home": 1.59,
-              "away": 1.41,
-              "total": 2.99
+              "home": 1.62,
+              "away": 1.4,
+              "total": 3.03
             },
             "baselineProbabilities": [
-              0.4184664187797376,
-              0.24202662699608432,
-              0.33950695422417815
+              0.4277747417684361,
+              0.24060530128567284,
+              0.33161995694589125
             ],
             "targetProbabilities": [
-              0.6124995167207637,
-              0.18532407968024908,
-              0.20217640359898714
+              0.6102482776804738,
+              0.18611515233524592,
+              0.2036365699842802
             ]
           }
         }
       },
       "probabilities": {
-        "home": 61.24995167207637,
-        "draw": 18.53240796802491,
-        "away": 20.217640359898713
+        "home": 61.02482776804738,
+        "draw": 18.611515233524592,
+        "away": 20.36365699842802
       },
       "scoreForecast": {
         "primary": {
           "score": "2-1",
           "outcome": "1",
           "label": "Risultato centrale · esito prevalente",
-          "probabilityPct": 13,
-          "conditionalProbabilityPct": 21.2
+          "probabilityPct": 12.8,
+          "conditionalProbabilityPct": 21
         },
         "alternatives": [
           {
             "score": "1-0",
             "outcome": "1",
             "label": "Alternativa",
-            "probabilityPct": 11.6,
-            "conditionalProbabilityPct": 18.9
+            "probabilityPct": 11.3,
+            "conditionalProbabilityPct": 18.5
           },
           {
             "score": "2-0",
             "outcome": "1",
             "label": "Alternativa",
-            "probabilityPct": 9.2,
+            "probabilityPct": 9.1,
             "conditionalProbabilityPct": 15
           }
         ],
@@ -21132,21 +21132,21 @@
             "score": "2-1",
             "outcome": "1",
             "label": "Risultato centrale · esito prevalente",
-            "probabilityPct": 13,
-            "conditionalProbabilityPct": 21.2
+            "probabilityPct": 12.8,
+            "conditionalProbabilityPct": 21
           },
           {
             "score": "1-0",
             "outcome": "1",
             "label": "Alternativa",
-            "probabilityPct": 11.6,
-            "conditionalProbabilityPct": 18.9
+            "probabilityPct": 11.3,
+            "conditionalProbabilityPct": 18.5
           },
           {
             "score": "2-0",
             "outcome": "1",
             "label": "Alternativa",
-            "probabilityPct": 9.2,
+            "probabilityPct": 9.1,
             "conditionalProbabilityPct": 15
           }
         ],
@@ -21161,7 +21161,7 @@
         "value": 62,
         "level": "medio",
         "upsetOutcome": "2",
-        "upsetProbabilityPct": 20.2,
+        "upsetProbabilityPct": 20.4,
         "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
@@ -21205,10 +21205,10 @@
           },
           "shotsOnTarget": {
             "min": 3,
-            "central": 5,
+            "central": 5.1,
             "max": 8,
             "interval": "p20-p80",
-            "sd": 2.51,
+            "sd": 2.56,
             "sampleSize": 58,
             "dataStatus": "venue-history",
             "inputs": [
@@ -21296,7 +21296,7 @@
             "central": 2,
             "max": 2.9
           },
-          "expectedGoals": 1.91,
+          "expectedGoals": 1.92,
           "basis": "Volumi prodotti e concessi per sede, normalizzati per campionato, e ultime otto gare. Intervallo p20–p80.",
           "europeanDiscipline": {
             "cards": {
@@ -21307,7 +21307,7 @@
                 7,
                 13
               ],
-              "factor": 0.9640176852511403,
+              "factor": 0.9665635845993302,
               "statisticallyValidated": false,
               "conditionalRates": [
                 1.961111111111111,
@@ -21324,7 +21324,7 @@
                 7,
                 13
               ],
-              "factor": 0.9883535799249092,
+              "factor": 0.9890406729319683,
               "statisticallyValidated": false,
               "conditionalRates": [
                 10.997777777777777,
@@ -21375,10 +21375,10 @@
           },
           "shotsOnTarget": {
             "min": 2,
-            "central": 4.7,
+            "central": 4.9,
             "max": 7,
             "interval": "p20-p80",
-            "sd": 2.77,
+            "sd": 2.9,
             "sampleSize": 58,
             "dataStatus": "venue-history",
             "inputs": [
@@ -21477,7 +21477,7 @@
                 3,
                 7
               ],
-              "factor": 1.015540630099723,
+              "factor": 1.014645459819269,
               "statisticallyValidated": false,
               "conditionalRates": [
                 1.9048811013767208,
@@ -21494,7 +21494,7 @@
                 3,
                 7
               ],
-              "factor": 0.9978992592214145,
+              "factor": 0.9980892494339476,
               "statisticallyValidated": false,
               "conditionalRates": [
                 12.782227784730914,
@@ -21510,9 +21510,9 @@
         "status": "experimental",
         "statisticallyValidated": false,
         "method": "projected-sot-times-opponent-adjusted-quality-v1",
-        "home": 1.6097677900808136,
-        "away": 1.5624610608104554,
-        "total": 3.172228850891269,
+        "home": 1.6419631458824298,
+        "away": 1.628948765525794,
+        "total": 3.2709119114082235,
         "sample": [
           20,
           20
@@ -21569,9 +21569,9 @@
         "type": "OPTA_CLUB_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 61.24995167207637,
-          "draw": 18.53240796802491,
-          "away": 20.217640359898713
+          "home": 61.02482776804738,
+          "draw": 18.611515233524592,
+          "away": 20.36365699842802
         },
         "samples": [
           null,
@@ -21608,8 +21608,8 @@
           "initialDomesticPriorApplied": false
         },
         "estimatedInitialRating": false,
-        "cutoff": "2026-11-24T16:41:54.567Z",
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25T00:00:00.000Z",
+        "asOf": "2026-11-25T19:12:52.964Z",
         "ratingsAvailableAt": "2026-11-19T18:32:38.023Z",
         "providerPublishedAt": null,
         "statisticallyValidated": false,
@@ -21653,322 +21653,322 @@
         {
           "home": 0,
           "away": 0,
-          "probability": 0.038136633095722974
+          "probability": 0.037763850210159114
         },
         {
           "home": 0,
           "away": 1,
-          "probability": 0.04181908726983933
+          "probability": 0.04197037760433728
         },
         {
           "home": 0,
           "away": 2,
-          "probability": 0.029482456525236726
+          "probability": 0.029379264323036093
         },
         {
           "home": 0,
           "away": 3,
-          "probability": 0.013856754566861258
+          "probability": 0.013710323350750177
         },
         {
           "home": 0,
           "away": 4,
-          "probability": 0.004884505984818593
+          "probability": 0.004798613172762561
         },
         {
           "home": 0,
           "away": 5,
-          "probability": 0.0013774306877188437
+          "probability": 0.001343611688373517
         },
         {
           "home": 0,
           "away": 6,
-          "probability": 0.0003236962116139282
+          "probability": 0.0003135093939538206
         },
         {
           "home": 0,
           "away": 7,
-          "probability": 0.0000652016654822341
+          "probability": 0.0000627018787907641
         },
         {
           "home": 1,
           "away": 0,
-          "probability": 0.11590866589538269
+          "probability": 0.11282521383675363
         },
         {
           "home": 1,
           "away": 1,
-          "probability": 0.08549851773730135
+          "probability": 0.08564841227664088
         },
         {
           "home": 1,
           "away": 2,
-          "probability": 0.0468771058751264
+          "probability": 0.04759440820331848
         },
         {
           "home": 1,
           "away": 3,
-          "probability": 0.022032239761309406
+          "probability": 0.022210723828215286
         },
         {
           "home": 1,
           "away": 4,
-          "probability": 0.007766364515861565
+          "probability": 0.00777375333987535
         },
         {
           "home": 1,
           "away": 5,
-          "probability": 0.0021901147934729613
+          "probability": 0.002176650935165098
         },
         {
           "home": 1,
           "away": 6,
-          "probability": 0.0005146769764661459
+          "probability": 0.0005078852182051894
         },
         {
           "home": 1,
           "away": 7,
-          "probability": 0.00010367064811675224
+          "probability": 0.00010157704364103788
         },
         {
           "home": 2,
           "away": 0,
-          "probability": 0.09214738938682925
+          "probability": 0.09138842320777045
         },
         {
           "home": 2,
           "away": 1,
-          "probability": 0.12992781903542924
+          "probability": 0.12794379249087864
         },
         {
           "home": 2,
           "away": 2,
-          "probability": 0.047919781728813955
+          "probability": 0.04856264976085537
         },
         {
           "home": 2,
           "away": 3,
-          "probability": 0.017515630610240977
+          "probability": 0.017990686300854382
         },
         {
           "home": 2,
           "away": 4,
-          "probability": 0.006174259790109942
+          "probability": 0.006296740205299033
         },
         {
           "home": 2,
           "away": 5,
-          "probability": 0.001741141260811004
+          "probability": 0.0017630872574837294
         },
         {
           "home": 2,
           "away": 6,
-          "probability": 0.000409168196290586
+          "probability": 0.0004113870267462035
         },
         {
           "home": 2,
           "away": 7,
-          "probability": 0.00008241816525281802
+          "probability": 0.00008227740534924066
         },
         {
           "home": 3,
           "away": 0,
-          "probability": 0.04883811637501951
+          "probability": 0.04934974853219605
         },
         {
           "home": 3,
           "away": 1,
-          "probability": 0.0688617440887775
+          "probability": 0.06908964794507447
         },
         {
           "home": 3,
           "away": 2,
-          "probability": 0.04854752958258813
+          "probability": 0.04836275356155212
         },
         {
           "home": 3,
           "away": 3,
-          "probability": 0.01193681762864756
+          "probability": 0.012237787739735558
         },
         {
           "home": 3,
           "away": 4,
-          "probability": 0.0032723576887582705
+          "probability": 0.003400239710861478
         },
         {
           "home": 3,
           "away": 5,
-          "probability": 0.0009228048682298324
+          "probability": 0.0009520671190412139
         },
         {
           "home": 3,
           "away": 6,
-          "probability": 0.00021685914403401057
+          "probability": 0.00022214899444294986
         },
         {
           "home": 3,
           "away": 7,
-          "probability": 0.00004368162758399356
+          "probability": 0.00004442979888858996
         },
         {
           "home": 4,
           "away": 0,
-          "probability": 0.019413151259070255
+          "probability": 0.0199866481555394
         },
         {
           "home": 4,
           "away": 1,
-          "probability": 0.027372543275289058
+          "probability": 0.02798130741775516
         },
         {
           "home": 4,
           "away": 2,
-          "probability": 0.019297643009078783
+          "probability": 0.019586915192428608
         },
         {
           "home": 4,
           "away": 3,
-          "probability": 0.009069892214267027
+          "probability": 0.00914056042313335
         },
         {
           "home": 4,
           "away": 4,
-          "probability": 0.0016725719651040601
+          "probability": 0.0017347064121075147
         },
         {
           "home": 4,
           "away": 5,
-          "probability": 0.0003668149351213583
+          "probability": 0.00038558718321169165
         },
         {
           "home": 4,
           "away": 6,
-          "probability": 0.00008620150975351922
+          "probability": 0.0000899703427493947
         },
         {
           "home": 4,
           "away": 7,
-          "probability": 0.000017363446964637437
+          "probability": 0.000017994068549878936
         },
         {
           "home": 5,
           "away": 0,
-          "probability": 0.006173382100384342
+          "probability": 0.006475674002394765
         },
         {
           "home": 5,
           "away": 1,
-          "probability": 0.008704468761541921
+          "probability": 0.009065943603352672
         },
         {
           "home": 5,
           "away": 2,
-          "probability": 0.0061366504768870555
+          "probability": 0.006346160522346869
         },
         {
           "home": 5,
           "away": 3,
-          "probability": 0.0028842257241369147
+          "probability": 0.0029615415770952057
         },
         {
           "home": 5,
           "away": 4,
-          "probability": 0.0010166895677582626
+          "probability": 0.0010365395519833218
         },
         {
           "home": 5,
           "away": 5,
-          "probability": 0.0001499895635426717
+          "probability": 0.00015737256570639373
         },
         {
           "home": 5,
           "away": 6,
-          "probability": 0.000027412080101619112
+          "probability": 0.000029150391050803877
         },
         {
           "home": 5,
           "away": 7,
-          "probability": 0.000005521576134754706
+          "probability": 0.000005830078210160775
         },
         {
           "home": 6,
           "away": 0,
-          "probability": 0.0016359462566018505
+          "probability": 0.0017484319806465869
         },
         {
           "home": 6,
           "away": 1,
-          "probability": 0.002306684221808609
+          "probability": 0.0024478047729052216
         },
         {
           "home": 6,
           "away": 2,
-          "probability": 0.0016262123763750695
+          "probability": 0.001713463341033655
         },
         {
           "home": 6,
           "away": 3,
-          "probability": 0.0007643198168962827
+          "probability": 0.0007996162258157056
         },
         {
           "home": 6,
           "away": 4,
-          "probability": 0.0002694227354559396
+          "probability": 0.00027986567903549685
         },
         {
           "home": 6,
           "away": 5,
-          "probability": 0.00007597721139857496
+          "probability": 0.00007836239012993913
         },
         {
           "home": 6,
           "away": 6,
-          "probability": 0.000009340600069619881
+          "probability": 0.000009914471639502805
         },
         {
           "home": 6,
           "away": 7,
-          "probability": 0.0000014632176757099973
+          "probability": 0.0000015741211167434093
         },
         {
           "home": 7,
           "away": 0,
-          "probability": 0.0003715935068567061
+          "probability": 0.0004046371155210673
         },
         {
           "home": 7,
           "away": 1,
-          "probability": 0.0005239468446679557
+          "probability": 0.0005664919617294941
         },
         {
           "home": 7,
           "away": 2,
-          "probability": 0.00036938252549090857
+          "probability": 0.00039654437321064585
         },
         {
           "home": 7,
           "away": 3,
-          "probability": 0.00017360978698072706
+          "probability": 0.00018505404083163474
         },
         {
           "home": 7,
           "away": 4,
-          "probability": 0.00006119744991070628
+          "probability": 0.00006476891429107215
         },
         {
           "home": 7,
           "away": 5,
-          "probability": 0.000017257680874819173
+          "probability": 0.000018135296001500202
         },
         {
           "home": 7,
           "away": 6,
-          "probability": 0.000004055555005582505
+          "probability": 0.000004231569067016713
         },
         {
           "home": 7,
           "away": 7,
-          "probability": 4.2736104685879206e-7
+          "probability": 4.58898401599844e-7
         }
       ],
       "matchProjection": {
@@ -21983,10 +21983,10 @@
         },
         "shotsOnTarget": {
           "min": 6,
-          "central": 9.7,
-          "max": 13,
+          "central": 10,
+          "max": 14,
           "interval": "p20-p80-independent",
-          "sd": 3.74,
+          "sd": 3.87,
           "sampleSize": 58,
           "dataStatus": "venue-history"
         },
@@ -22025,7 +22025,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25",
         "teamIds": [
           "atletico-de-madrid",
           "viking"
@@ -22038,9 +22038,9 @@
         "marketUsedForGoals": false
       },
       "inputSnapshot": {
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "asOf": "2026-11-25T19:12:52.964Z",
         "sha256": {
-          "data/sources/champions-probable-formations-md05-2026-27.json": "3f299ee3442e4a748869d72c8c9d590706dc9a2b2724aadedc3c560473f1a422",
+          "data/sources/champions-official-formations-md05-2026-27.json": "7a5de962a93cb97e44f0f1dd457f12c1b622345ada90a9aa15e7ff3c428c8a74",
           "data/normalized/odds/sisal/champions-league.json": "019fa89bc0994162d7d8ab816e687bcbd1fdd8f48a09fe702f982ca92ac0aa22",
           "data/sources/champions-pilot-match-stats-2025-27.json": "97c042722a6ff780a4b78db808aedc1dbd4c2f07b001b857d63a4ca254596fb2",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
@@ -22048,7 +22048,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 61.24995167207637,
+        "probabilityPct": 61.02482776804738,
         "label": "Atlético de Madrid",
         "status": "PRELIMINARY"
       }
@@ -22064,16 +22064,16 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.02,
+        "home": 2.03,
         "away": 1.46,
-        "total": 3.48,
+        "total": 3.49,
         "method": "Distribuzione dei punteggi condizionata al rating europeo; forma dei punteggi da attacco/difesa, matchup e xGOT. Stima sperimentale non validata.",
         "components": {
           "home": {
             "attackStrength": 1.51,
             "defenceWeakness": 0.869,
             "lineup": {
-              "attack": 1.016,
+              "attack": 1.026,
               "defenceWeakness": 0.983,
               "resolved": 11,
               "status": "usable"
@@ -22083,8 +22083,8 @@
             "attackStrength": 1.151,
             "defenceWeakness": 0.96,
             "lineup": {
-              "attack": 1.021,
-              "defenceWeakness": 0.992,
+              "attack": 1.02,
+              "defenceWeakness": 0.983,
               "resolved": 11,
               "status": "usable"
             }
@@ -22201,27 +22201,27 @@
             "method": "minimum-relative-entropy-outcome-conditioning-v1",
             "statisticallyValidated": false,
             "baseline": {
-              "home": 2.26,
+              "home": 2.27,
               "away": 1.28,
               "total": 3.54
             },
             "baselineProbabilities": [
-              0.5939337071495481,
-              0.1975925442922326,
-              0.2084737485582192
+              0.5958804472444649,
+              0.19687220951582474,
+              0.20724734323970984
             ],
             "targetProbabilities": [
-              0.48258999458750734,
-              0.20413722365056353,
-              0.3132727817619292
+              0.4846590204568463,
+              0.20359771086381379,
+              0.3117432686793399
             ]
           }
         }
       },
       "probabilities": {
-        "home": 48.258999458750736,
-        "draw": 20.41372236505635,
-        "away": 31.32727817619292
+        "home": 48.46590204568463,
+        "draw": 20.35977108638138,
+        "away": 31.17432686793399
       },
       "scoreForecast": {
         "primary": {
@@ -22229,7 +22229,7 @@
           "outcome": "1",
           "label": "Risultato centrale · esito prevalente",
           "probabilityPct": 7.7,
-          "conditionalProbabilityPct": 16
+          "conditionalProbabilityPct": 15.9
         },
         "alternatives": [
           {
@@ -22237,7 +22237,7 @@
             "outcome": "X",
             "label": "Alternativa",
             "probabilityPct": 8.7,
-            "conditionalProbabilityPct": 42.6
+            "conditionalProbabilityPct": 42.5
           },
           {
             "score": "1-2",
@@ -22253,14 +22253,14 @@
             "outcome": "1",
             "label": "Risultato centrale · esito prevalente",
             "probabilityPct": 7.7,
-            "conditionalProbabilityPct": 16
+            "conditionalProbabilityPct": 15.9
           },
           {
             "score": "1-1",
             "outcome": "X",
             "label": "Alternativa",
             "probabilityPct": 8.7,
-            "conditionalProbabilityPct": 42.6
+            "conditionalProbabilityPct": 42.5
           },
           {
             "score": "1-2",
@@ -22274,14 +22274,14 @@
         "method": "Punteggio più probabile entro l’esito prevalente del rating dei club; probabilità assolute dalla distribuzione condivisa. Stima non validata."
       },
       "confidence": {
-        "value": 49,
+        "value": 50,
         "level": "prudente"
       },
       "surprise": {
         "value": 86,
         "level": "alto",
         "upsetOutcome": "1",
-        "upsetProbabilityPct": 48.3,
+        "upsetProbabilityPct": 48.5,
         "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
@@ -22328,7 +22328,7 @@
             "central": 6.4,
             "max": 9,
             "interval": "p20-p80",
-            "sd": 2.83,
+            "sd": 2.82,
             "sampleSize": 58,
             "dataStatus": "venue-history",
             "inputs": [
@@ -22416,7 +22416,7 @@
             "central": 1.5,
             "max": 3.1
           },
-          "expectedGoals": 2.02,
+          "expectedGoals": 2.03,
           "basis": "Volumi prodotti e concessi per sede, normalizzati per campionato, e ultime otto gare. Intervallo p20–p80.",
           "europeanDiscipline": {
             "cards": {
@@ -22427,7 +22427,7 @@
                 5,
                 9
               ],
-              "factor": 1.0416227013612827,
+              "factor": 1.041580234773666,
               "statisticallyValidated": false,
               "conditionalRates": [
                 1.2238095238095237,
@@ -22444,7 +22444,7 @@
                 5,
                 9
               ],
-              "factor": 1.0047450730568908,
+              "factor": 1.004748758420019,
               "statisticallyValidated": false,
               "conditionalRates": [
                 9.285714285714286,
@@ -22597,7 +22597,7 @@
                 12,
                 14
               ],
-              "factor": 0.9672818056933719,
+              "factor": 0.9673469125539581,
               "statisticallyValidated": false,
               "conditionalRates": [
                 1.5089285714285714,
@@ -22614,7 +22614,7 @@
                 12,
                 14
               ],
-              "factor": 0.9956887027885671,
+              "factor": 0.9956912975640054,
               "statisticallyValidated": false,
               "conditionalRates": [
                 10.933035714285714,
@@ -22689,9 +22689,9 @@
         "type": "OPTA_CLUB_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 48.258999458750736,
-          "draw": 20.41372236505635,
-          "away": 31.32727817619292
+          "home": 48.46590204568463,
+          "draw": 20.35977108638138,
+          "away": 31.17432686793399
         },
         "samples": [
           null,
@@ -22728,8 +22728,8 @@
           "initialDomesticPriorApplied": false
         },
         "estimatedInitialRating": false,
-        "cutoff": "2026-11-24T16:41:54.567Z",
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25T00:00:00.000Z",
+        "asOf": "2026-11-25T19:07:53.513Z",
         "ratingsAvailableAt": "2026-11-19T18:32:38.023Z",
         "providerPublishedAt": null,
         "statisticallyValidated": false,
@@ -22773,322 +22773,322 @@
         {
           "home": 0,
           "away": 0,
-          "probability": 0.030046011985826328
+          "probability": 0.029778865187925403
         },
         {
           "home": 0,
           "away": 1,
-          "probability": 0.0559392247580391
+          "probability": 0.05544185476503568
         },
         {
           "home": 0,
           "away": 2,
-          "probability": 0.035801103845145024
+          "probability": 0.03548278704962285
         },
         {
           "home": 0,
           "away": 3,
-          "probability": 0.015275137640595215
+          "probability": 0.015139322474505749
         },
         {
           "home": 0,
           "away": 4,
-          "probability": 0.004888044044990468
+          "probability": 0.00484458319184184
         },
         {
           "home": 0,
           "away": 5,
-          "probability": 0.00125133927551756
+          "probability": 0.0012402132971115107
         },
         {
           "home": 0,
           "away": 6,
-          "probability": 0.00026695237877707946
+          "probability": 0.00026457883671712236
         },
         {
           "home": 0,
           "away": 7,
-          "probability": 0.000048814149262094516
+          "probability": 0.000048380130142559524
         },
         {
           "home": 1,
           "away": 0,
-          "probability": 0.05340525156928517
+          "probability": 0.05316461714360948
         },
         {
           "home": 1,
           "away": 1,
-          "probability": 0.08691710347259839
+          "probability": 0.08652547069003604
         },
         {
           "home": 1,
           "away": 2,
-          "probability": 0.08091049469002776
+          "probability": 0.08054592660264386
         },
         {
           "home": 1,
           "away": 3,
-          "probability": 0.034521811067745184
+          "probability": 0.03436626201712806
         },
         {
           "home": 1,
           "away": 4,
-          "probability": 0.011046979541678457
+          "probability": 0.010997203845480974
         },
         {
           "home": 1,
           "away": 5,
-          "probability": 0.0028280267626696848
+          "probability": 0.00281528418444313
         },
         {
           "home": 1,
           "away": 6,
-          "probability": 0.0006033123760361995
+          "probability": 0.0006005939593478677
         },
         {
           "home": 1,
           "away": 7,
-          "probability": 0.00011031997733233362
+          "probability": 0.0001098228954236101
         },
         {
           "home": 2,
           "away": 0,
-          "probability": 0.060347934273292235
+          "probability": 0.06034184045799677
         },
         {
           "home": 2,
           "away": 1,
-          "probability": 0.07724535586981406
+          "probability": 0.07723755578623587
         },
         {
           "home": 2,
           "away": 2,
-          "probability": 0.06285844923138315
+          "probability": 0.06285210190924219
         },
         {
           "home": 2,
           "away": 3,
-          "probability": 0.03900964650655205
+          "probability": 0.03900570738944034
         },
         {
           "home": 2,
           "away": 4,
-          "probability": 0.012483086882096654
+          "probability": 0.012481826364620906
         },
         {
           "home": 2,
           "away": 5,
-          "probability": 0.003195670241816743
+          "probability": 0.003195347549342953
         },
         {
           "home": 2,
           "away": 6,
-          "probability": 0.0006817429849209053
+          "probability": 0.0006816741438598299
         },
         {
           "home": 2,
           "away": 7,
-          "probability": 0.00012466157438553697
+          "probability": 0.00012464898630579744
         },
         {
           "home": 3,
           "away": 0,
-          "probability": 0.045462110485880156
+          "probability": 0.045658659279884224
         },
         {
           "home": 3,
           "away": 1,
-          "probability": 0.05819150142192659
+          "probability": 0.058443083878251804
         },
         {
           "home": 3,
           "away": 2,
-          "probability": 0.03724256091003302
+          "probability": 0.03740357368208116
         },
         {
           "home": 3,
           "away": 3,
-          "probability": 0.020204102437393914
+          "probability": 0.020291451923054905
         },
         {
           "home": 3,
           "away": 4,
-          "probability": 0.00940392545117948
+          "probability": 0.009444581949229819
         },
         {
           "home": 3,
           "away": 5,
-          "probability": 0.002407404915501947
+          "probability": 0.0024178129790028333
         },
         {
           "home": 3,
           "away": 6,
-          "probability": 0.000513579715307082
+          "probability": 0.0005158001021872712
         },
         {
           "home": 3,
           "away": 7,
-          "probability": 0.00009391171937043784
+          "probability": 0.00009431773297138674
         },
         {
           "home": 4,
           "away": 0,
-          "probability": 0.025686092424522276
+          "probability": 0.0259112891413343
         },
         {
           "home": 4,
           "away": 1,
-          "probability": 0.03287819830338852
+          "probability": 0.03316645010090791
         },
         {
           "home": 4,
           "away": 2,
-          "probability": 0.021042046914168652
+          "probability": 0.021226528064581064
         },
         {
           "home": 4,
           "away": 3,
-          "probability": 0.008977940016711962
+          "probability": 0.009056651974221256
         },
         {
           "home": 4,
           "away": 4,
-          "probability": 0.003652901720680818
+          "probability": 0.00368492766922677
         },
         {
           "home": 4,
           "away": 5,
-          "probability": 0.0013601837772585998
+          "probability": 0.0013721088655841087
         },
         {
           "home": 4,
           "away": 6,
-          "probability": 0.0002901725391485013
+          "probability": 0.0002927165579912765
         },
         {
           "home": 4,
           "away": 7,
-          "probability": 0.000053060121444297385
+          "probability": 0.00005352531346126199
         },
         {
           "home": 5,
           "away": 0,
-          "probability": 0.011610113775884069
+          "probability": 0.011763725270165773
         },
         {
           "home": 5,
           "away": 1,
-          "probability": 0.014860945633131608
+          "probability": 0.015057568345812188
         },
         {
           "home": 5,
           "away": 2,
-          "probability": 0.00951100520520423
+          "probability": 0.009636843741319802
         },
         {
           "home": 5,
           "away": 3,
-          "probability": 0.004058028887553806
+          "probability": 0.004111719996296449
         },
         {
           "home": 5,
           "away": 4,
-          "probability": 0.0012985692440172175
+          "probability": 0.0013157503988148634
         },
         {
           "home": 5,
           "away": 5,
-          "probability": 0.0004226845639034187
+          "probability": 0.00042827703342821215
         },
         {
           "home": 5,
           "away": 6,
-          "probability": 0.0001311579876951226
+          "probability": 0.00013289331732803953
         },
         {
           "home": 5,
           "away": 7,
-          "probability": 0.000023983174892822406
+          "probability": 0.000024300492311412934
         },
         {
           "home": 6,
           "away": 0,
-          "probability": 0.004373142855583
+          "probability": 0.0044506093938793834
         },
         {
           "home": 6,
           "away": 1,
-          "probability": 0.00559762285514624
+          "probability": 0.005696780024165611
         },
         {
           "home": 6,
           "away": 2,
-          "probability": 0.0035824786272935934
+          "probability": 0.00364593921546599
         },
         {
           "home": 6,
           "away": 3,
-          "probability": 0.0015285242143119335
+          "probability": 0.0015556007319321565
         },
         {
           "home": 6,
           "away": 4,
-          "probability": 0.0004891277485798187
+          "probability": 0.00049779223421829
         },
         {
           "home": 6,
           "away": 5,
-          "probability": 0.00012521670363643359
+          "probability": 0.00012743481195988222
         },
         {
           "home": 6,
           "away": 6,
-          "probability": 0.000033965052957216944
+          "probability": 0.000034566715231361476
         },
         {
           "home": 6,
           "away": 7,
-          "probability": 0.000009033662542963109
+          "probability": 0.000009193686257817894
         },
         {
           "home": 7,
           "away": 0,
-          "probability": 0.001411900407659654
+          "probability": 0.0014432690463008857
         },
         {
           "home": 7,
           "away": 1,
-          "probability": 0.0018072325218043573
+          "probability": 0.0018473843792651335
         },
         {
           "home": 7,
           "away": 2,
-          "probability": 0.0011566288139547886
+          "probability": 0.0011823260027296857
         },
         {
           "home": 7,
           "away": 3,
-          "probability": 0.00049349496062071
+          "probability": 0.0005044590944979993
         },
         {
           "home": 7,
           "away": 4,
-          "probability": 0.00015791838739862712
+          "probability": 0.00016142691023935974
         },
         {
           "home": 7,
           "away": 5,
-          "probability": 0.00004042710717404855
+          "probability": 0.0000413252890212761
         },
         {
           "home": 7,
           "away": 6,
-          "probability": 0.000008624449530463691
+          "probability": 0.000008816061657872233
         },
         {
           "home": 7,
           "away": 7,
-          "probability": 0.0000020051858202987177
+          "probability": 0.0000020497356689029365
         }
       ],
       "matchProjection": {
@@ -23106,7 +23106,7 @@
           "central": 11,
           "max": 15,
           "interval": "p20-p80-independent",
-          "sd": 3.81,
+          "sd": 3.8,
           "sampleSize": 58,
           "dataStatus": "venue-history"
         },
@@ -23145,7 +23145,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25",
         "teamIds": [
           "club-brugge",
           "liverpool"
@@ -23158,9 +23158,9 @@
         "marketUsedForGoals": false
       },
       "inputSnapshot": {
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "asOf": "2026-11-25T19:07:53.513Z",
         "sha256": {
-          "data/sources/champions-probable-formations-md05-2026-27.json": "3f299ee3442e4a748869d72c8c9d590706dc9a2b2724aadedc3c560473f1a422",
+          "data/sources/champions-official-formations-md05-2026-27.json": "aecc6f54738cdcb0041d706772d55860a7fc0e1b90e0467bbd970731bfec8286",
           "data/normalized/odds/sisal/champions-league.json": "019fa89bc0994162d7d8ab816e687bcbd1fdd8f48a09fe702f982ca92ac0aa22",
           "data/sources/champions-pilot-match-stats-2025-27.json": "97c042722a6ff780a4b78db808aedc1dbd4c2f07b001b857d63a4ca254596fb2",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
@@ -23168,7 +23168,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 48.258999458750736,
+        "probabilityPct": 48.46590204568463,
         "label": "Club Brugge",
         "status": "PRELIMINARY"
       }
@@ -23184,16 +23184,16 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.78,
-        "away": 1.59,
-        "total": 4.37,
+        "home": 2.72,
+        "away": 1.58,
+        "total": 4.3,
         "method": "Distribuzione dei punteggi condizionata al rating europeo; forma dei punteggi da attacco/difesa, matchup e xGOT. Stima sperimentale non validata.",
         "components": {
           "home": {
             "attackStrength": 1.641,
             "defenceWeakness": 0.867,
             "lineup": {
-              "attack": 1.069,
+              "attack": 1.033,
               "defenceWeakness": 0.987,
               "resolved": 11,
               "status": "usable"
@@ -23203,8 +23203,8 @@
             "attackStrength": 1.248,
             "defenceWeakness": 0.979,
             "lineup": {
-              "attack": 1.069,
-              "defenceWeakness": 0.992,
+              "attack": 1.08,
+              "defenceWeakness": 0.987,
               "resolved": 11,
               "status": "usable"
             }
@@ -23304,8 +23304,8 @@
             "variant": "execution",
             "applied": true,
             "unadjusted": {
-              "home": 2.88,
-              "away": 1.6
+              "home": 2.77,
+              "away": 1.62
             }
           },
           "xg": {
@@ -23321,50 +23321,50 @@
             "method": "minimum-relative-entropy-outcome-conditioning-v1",
             "statisticallyValidated": false,
             "baseline": {
-              "home": 2.86,
-              "away": 1.58,
-              "total": 4.45
+              "home": 2.75,
+              "away": 1.6,
+              "total": 4.35
             },
             "baselineProbabilities": [
-              0.6380650496599439,
-              0.167416570758541,
-              0.19451837958151505
+              0.6160185216195813,
+              0.17410391418409765,
+              0.20987756419632117
             ],
             "targetProbabilities": [
-              0.6205629178152564,
-              0.18399604412332646,
-              0.19544103806141702
+              0.6204242602406277,
+              0.18405038799671264,
+              0.19552535176265967
             ]
           }
         }
       },
       "probabilities": {
-        "home": 62.056291781525644,
-        "draw": 18.399604412332646,
-        "away": 19.544103806141703
+        "home": 62.04242602406277,
+        "draw": 18.405038799671264,
+        "away": 19.552535176265966
       },
       "scoreForecast": {
         "primary": {
           "score": "2-1",
           "outcome": "1",
           "label": "Risultato centrale · esito prevalente",
-          "probabilityPct": 7.5,
-          "conditionalProbabilityPct": 12.1
+          "probabilityPct": 7.9,
+          "conditionalProbabilityPct": 12.8
         },
         "alternatives": [
           {
             "score": "3-1",
             "outcome": "1",
             "label": "Alternativa",
-            "probabilityPct": 7.1,
-            "conditionalProbabilityPct": 11.5
+            "probabilityPct": 7.3,
+            "conditionalProbabilityPct": 11.7
           },
           {
             "score": "2-2",
             "outcome": "X",
             "label": "Alternativa",
             "probabilityPct": 6.7,
-            "conditionalProbabilityPct": 36.3
+            "conditionalProbabilityPct": 36.2
           }
         ],
         "display": [
@@ -23372,22 +23372,22 @@
             "score": "2-1",
             "outcome": "1",
             "label": "Risultato centrale · esito prevalente",
-            "probabilityPct": 7.5,
-            "conditionalProbabilityPct": 12.1
+            "probabilityPct": 7.9,
+            "conditionalProbabilityPct": 12.8
           },
           {
             "score": "3-1",
             "outcome": "1",
             "label": "Alternativa",
-            "probabilityPct": 7.1,
-            "conditionalProbabilityPct": 11.5
+            "probabilityPct": 7.3,
+            "conditionalProbabilityPct": 11.7
           },
           {
             "score": "2-2",
             "outcome": "X",
             "label": "Alternativa",
             "probabilityPct": 6.7,
-            "conditionalProbabilityPct": 36.3
+            "conditionalProbabilityPct": 36.2
           }
         ],
         "coherentWithVerdict": true,
@@ -23401,7 +23401,7 @@
         "value": 45,
         "level": "medio",
         "upsetOutcome": "2",
-        "upsetProbabilityPct": 19.5,
+        "upsetProbabilityPct": 19.6,
         "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
@@ -23445,10 +23445,10 @@
           },
           "shotsOnTarget": {
             "min": 3,
-            "central": 6.1,
+            "central": 6.2,
             "max": 9,
             "interval": "p20-p80",
-            "sd": 2.75,
+            "sd": 2.77,
             "sampleSize": 55,
             "dataStatus": "venue-history",
             "inputs": [
@@ -23536,7 +23536,7 @@
             "central": 1.6,
             "max": 3
           },
-          "expectedGoals": 2.78,
+          "expectedGoals": 2.72,
           "basis": "Volumi prodotti e concessi per sede, normalizzati per campionato, e ultime otto gare. Intervallo p20–p80.",
           "europeanDiscipline": {
             "cards": {
@@ -23547,7 +23547,7 @@
                 7,
                 6
               ],
-              "factor": 1.0002377923539045,
+              "factor": 1.0016485793783945,
               "statisticallyValidated": false,
               "conditionalRates": [
                 1.6350826044703597,
@@ -23564,7 +23564,7 @@
                 7,
                 6
               ],
-              "factor": 0.9980008910289301,
+              "factor": 0.9997121335342355,
               "statisticallyValidated": false,
               "conditionalRates": [
                 12.763848396501457,
@@ -23615,10 +23615,10 @@
           },
           "shotsOnTarget": {
             "min": 3,
-            "central": 5.1,
-            "max": 7,
+            "central": 5.5,
+            "max": 8,
             "interval": "p20-p80",
-            "sd": 2.28,
+            "sd": 2.5,
             "sampleSize": 55,
             "dataStatus": "venue-history",
             "inputs": [
@@ -23706,7 +23706,7 @@
             "central": 1.7,
             "max": 3
           },
-          "expectedGoals": 1.59,
+          "expectedGoals": 1.58,
           "basis": "Volumi prodotti e concessi per sede, normalizzati per campionato, e ultime otto gare. Intervallo p20–p80.",
           "europeanDiscipline": {
             "cards": {
@@ -23717,7 +23717,7 @@
                 8,
                 13
               ],
-              "factor": 0.9986687964932336,
+              "factor": 0.9998988368411237,
               "statisticallyValidated": false,
               "conditionalRates": [
                 1.7308970099667775,
@@ -23734,7 +23734,7 @@
                 8,
                 13
               ],
-              "factor": 0.9992648649812632,
+              "factor": 0.9999133843532982,
               "statisticallyValidated": false,
               "conditionalRates": [
                 9.598837209302326,
@@ -23750,9 +23750,9 @@
         "status": "experimental",
         "statisticallyValidated": false,
         "method": "projected-sot-times-opponent-adjusted-quality-v1",
-        "home": 2.045500741037851,
-        "away": 1.5820464115500132,
-        "total": 3.6275471525878644,
+        "home": 2.0790335400712587,
+        "away": 1.7061284830441321,
+        "total": 3.785162023115391,
         "sample": [
           20,
           20
@@ -23809,9 +23809,9 @@
         "type": "OPTA_CLUB_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 62.056291781525644,
-          "draw": 18.399604412332646,
-          "away": 19.544103806141703
+          "home": 62.04242602406277,
+          "draw": 18.405038799671264,
+          "away": 19.552535176265966
         },
         "samples": [
           null,
@@ -23848,8 +23848,8 @@
           "initialDomesticPriorApplied": false
         },
         "estimatedInitialRating": false,
-        "cutoff": "2026-11-24T16:41:54.567Z",
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25T00:00:00.000Z",
+        "asOf": "2026-11-25T19:11:35.131Z",
         "ratingsAvailableAt": "2026-11-19T18:32:38.023Z",
         "providerPublishedAt": null,
         "statisticallyValidated": false,
@@ -23893,322 +23893,322 @@
         {
           "home": 0,
           "away": 0,
-          "probability": 0.013086988545747155
+          "probability": 0.013748736451356968
         },
         {
           "home": 0,
           "away": 1,
-          "probability": 0.018903485256410474
+          "probability": 0.019386152647933436
         },
         {
           "home": 0,
           "away": 2,
-          "probability": 0.014933753352564277
+          "probability": 0.015508922118346754
         },
         {
           "home": 0,
           "away": 3,
-          "probability": 0.007865110099017185
+          "probability": 0.008271425129784935
         },
         {
           "home": 0,
           "away": 4,
-          "probability": 0.0031067184891117885
+          "probability": 0.003308570051913973
         },
         {
           "home": 0,
           "away": 5,
-          "probability": 0.000981723042559325
+          "probability": 0.0010587424166124718
         },
         {
           "home": 0,
           "away": 6,
-          "probability": 0.00025852040120728906
+          "probability": 0.00028233131109665915
         },
         {
           "home": 0,
           "away": 7,
-          "probability": 0.0000583517477010738
+          "probability": 0.00006453287110780779
         },
         {
           "home": 1,
           "away": 0,
-          "probability": 0.03312200171646649
+          "probability": 0.036021540336078225
         },
         {
           "home": 1,
           "away": 1,
-          "probability": 0.059137483840522254
+          "probability": 0.06049444038597066
         },
         {
           "home": 1,
           "away": 2,
-          "probability": 0.042710534588333834
+          "probability": 0.04264953582545357
         },
         {
           "home": 1,
           "away": 3,
-          "probability": 0.02249421488318915
+          "probability": 0.02274641910690857
         },
         {
           "home": 1,
           "away": 4,
-          "probability": 0.008885214878859715
+          "probability": 0.009098567642763426
         },
         {
           "home": 1,
           "away": 5,
-          "probability": 0.0028077279017196697
+          "probability": 0.002911541645684297
         },
         {
           "home": 1,
           "away": 6,
-          "probability": 0.0007393683474528466
+          "probability": 0.0007764111055158125
         },
         {
           "home": 1,
           "away": 7,
-          "probability": 0.00016688599842507108
+          "probability": 0.0001774653955464714
         },
         {
           "home": 2,
           "away": 0,
-          "probability": 0.04736446245454706
+          "probability": 0.049529617962107565
         },
         {
           "home": 2,
           "away": 1,
-          "probability": 0.07483585067818438
+          "probability": 0.07924738873937211
         },
         {
           "home": 2,
           "away": 2,
-          "probability": 0.06680761549463798
+          "probability": 0.06654388442456774
         },
         {
           "home": 2,
           "away": 3,
-          "probability": 0.03216672728296048
+          "probability": 0.031276326271999284
         },
         {
           "home": 2,
           "away": 4,
-          "probability": 0.012705857276769388
+          "probability": 0.012510530508799711
         },
         {
           "home": 2,
           "away": 5,
-          "probability": 0.004015050899459127
+          "probability": 0.004003369762815908
         },
         {
           "home": 2,
           "away": 6,
-          "probability": 0.0010572967368575703
+          "probability": 0.0010675652700842422
         },
         {
           "home": 2,
           "away": 7,
-          "probability": 0.00023864697774785161
+          "probability": 0.0002440149188763982
         },
         {
           "home": 3,
           "away": 0,
-          "probability": 0.04515412087333487
+          "probability": 0.04540214979859861
         },
         {
           "home": 3,
           "away": 1,
-          "probability": 0.07134351097986909
+          "probability": 0.07264343967775776
         },
         {
           "home": 3,
           "away": 2,
-          "probability": 0.0563613736740966
+          "probability": 0.058114751742206226
         },
         {
           "home": 3,
           "away": 3,
-          "probability": 0.0335433614330189
+          "probability": 0.03253256571867757
         },
         {
           "home": 3,
           "away": 4,
-          "probability": 0.01211291727052015
+          "probability": 0.01146798629973307
         },
         {
           "home": 3,
           "away": 5,
-          "probability": 0.003827681857484368
+          "probability": 0.0036697556159145826
         },
         {
           "home": 3,
           "away": 6,
-          "probability": 0.0010079562224708837
+          "probability": 0.0009786014975772222
         },
         {
           "home": 3,
           "away": 7,
-          "probability": 0.00022751011878628522
+          "probability": 0.00022368034230336504
         },
         {
           "home": 4,
           "away": 0,
-          "probability": 0.03228519642443443
+          "probability": 0.031213977986536537
         },
         {
           "home": 4,
           "away": 1,
-          "probability": 0.0510106103506064
+          "probability": 0.04994236477845846
         },
         {
           "home": 4,
           "away": 2,
-          "probability": 0.04029838217697907
+          "probability": 0.039953891822766784
         },
         {
           "home": 4,
           "away": 3,
-          "probability": 0.021223814613208967
+          "probability": 0.02130874230547562
         },
         {
           "home": 4,
           "away": 4,
-          "probability": 0.009473483852720363
+          "probability": 0.008946455572636328
         },
         {
           "home": 4,
           "away": 5,
-          "probability": 0.0027367925281013227
+          "probability": 0.0025229569859412755
         },
         {
           "home": 4,
           "away": 6,
-          "probability": 0.0007206886990666817
+          "probability": 0.0006727885295843401
         },
         {
           "home": 4,
           "away": 7,
-          "probability": 0.00016266973493219388
+          "probability": 0.00015378023533356344
         },
         {
           "home": 5,
           "away": 0,
-          "probability": 0.018467132354776494
+          "probability": 0.0171676878925951
         },
         {
           "home": 5,
           "away": 1,
-          "probability": 0.02917806912054686
+          "probability": 0.027468300628152153
         },
         {
           "home": 5,
           "away": 2,
-          "probability": 0.023050674605232024
+          "probability": 0.02197464050252173
         },
         {
           "home": 5,
           "away": 3,
-          "probability": 0.01214002195875553
+          "probability": 0.011719808268011589
         },
         {
           "home": 5,
           "away": 4,
-          "probability": 0.004795308673708434
+          "probability": 0.004687923307204634
         },
         {
           "home": 5,
           "away": 5,
-          "probability": 0.0017123511533469107
+          "probability": 0.0015745761807839942
         },
         {
           "home": 5,
           "away": 6,
-          "probability": 0.00041223393586614193
+          "probability": 0.00037003369127138706
         },
         {
           "home": 5,
           "away": 7,
-          "probability": 0.00009304708838121491
+          "probability": 0.00008457912943345991
         },
         {
           "home": 6,
           "away": 0,
-          "probability": 0.00880266642244346
+          "probability": 0.00786852361743942
         },
         {
           "home": 6,
           "away": 1,
-          "probability": 0.013908212947460665
+          "probability": 0.012589637787903072
         },
         {
           "home": 6,
           "away": 2,
-          "probability": 0.010987488228493929
+          "probability": 0.01007171023032246
         },
         {
           "home": 6,
           "away": 3,
-          "probability": 0.005786743800340135
+          "probability": 0.005371578789505312
         },
         {
           "home": 6,
           "away": 4,
-          "probability": 0.0022857638011343534
+          "probability": 0.0021486315158021243
         },
         {
           "home": 6,
           "away": 5,
-          "probability": 0.0007223013611584556
+          "probability": 0.00068756208505668
         },
         {
           "home": 6,
           "away": 6,
-          "probability": 0.00021493812199288944
+          "probability": 0.00019244819987359926
         },
         {
           "home": 6,
           "away": 7,
-          "probability": 0.00004435244546171244
+          "probability": 0.000038765434323669124
         },
         {
           "home": 7,
           "away": 0,
-          "probability": 0.0035965179954554716
+          "probability": 0.0030912057068511996
         },
         {
           "home": 7,
           "away": 1,
-          "probability": 0.005682498432819645
+          "probability": 0.00494592913096192
         },
         {
           "home": 7,
           "away": 2,
-          "probability": 0.00448917376192752
+          "probability": 0.003956743304769536
         },
         {
           "home": 7,
           "away": 3,
-          "probability": 0.002364298181281827
+          "probability": 0.002110263095877087
         },
         {
           "home": 7,
           "away": 4,
-          "probability": 0.0009338977816063216
+          "probability": 0.0008441052383508345
         },
         {
           "home": 7,
           "away": 5,
-          "probability": 0.0002951116989875977
+          "probability": 0.000270113676272267
         },
         {
           "home": 7,
           "away": 6,
-          "probability": 0.00007771274740006739
+          "probability": 0.00007203031367260456
         },
         {
           "home": 7,
           "away": 7,
-          "probability": 0.000019821681340029984
+          "probability": 0.000017281062845792585
         }
       ],
       "matchProjection": {
@@ -24223,10 +24223,10 @@
         },
         "shotsOnTarget": {
           "min": 8,
-          "central": 11.2,
+          "central": 11.7,
           "max": 15,
           "interval": "p20-p80-independent",
-          "sd": 3.57,
+          "sd": 3.73,
           "sampleSize": 55,
           "dataStatus": "venue-history"
         },
@@ -24265,7 +24265,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25",
         "teamIds": [
           "inter",
           "stuttgart"
@@ -24278,9 +24278,9 @@
         "marketUsedForGoals": false
       },
       "inputSnapshot": {
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "asOf": "2026-11-25T19:11:35.131Z",
         "sha256": {
-          "data/sources/champions-probable-formations-md05-2026-27.json": "3f299ee3442e4a748869d72c8c9d590706dc9a2b2724aadedc3c560473f1a422",
+          "data/sources/champions-official-formations-md05-2026-27.json": "bc76ecf98def9c8a155109314dbe006c2b48b42f053ff2eccd1844e6f1cc2a60",
           "data/normalized/odds/sisal/champions-league.json": "019fa89bc0994162d7d8ab816e687bcbd1fdd8f48a09fe702f982ca92ac0aa22",
           "data/sources/champions-pilot-match-stats-2025-27.json": "97c042722a6ff780a4b78db808aedc1dbd4c2f07b001b857d63a4ca254596fb2",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
@@ -24288,7 +24288,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 62.056291781525644,
+        "probabilityPct": 62.04242602406277,
         "label": "Inter",
         "status": "PRELIMINARY"
       }
@@ -24304,16 +24304,16 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.3,
-        "away": 1.1,
-        "total": 2.4,
+        "home": 1.31,
+        "away": 1.08,
+        "total": 2.39,
         "method": "Distribuzione dei punteggi condizionata al rating europeo; forma dei punteggi da attacco/difesa, matchup e xGOT. Stima sperimentale non validata.",
         "components": {
           "home": {
             "attackStrength": 1.283,
             "defenceWeakness": 0.625,
             "lineup": {
-              "attack": 1.012,
+              "attack": 1.009,
               "defenceWeakness": 1.015,
               "resolved": 11,
               "status": "usable"
@@ -24323,7 +24323,7 @@
             "attackStrength": 1.198,
             "defenceWeakness": 0.588,
             "lineup": {
-              "attack": 1.027,
+              "attack": 1.022,
               "defenceWeakness": 0.993,
               "resolved": 11,
               "status": "usable"
@@ -24420,7 +24420,7 @@
             "variant": "execution",
             "applied": true,
             "unadjusted": {
-              "home": 1.25,
+              "home": 1.24,
               "away": 1.07
             }
           },
@@ -24438,42 +24438,42 @@
             "statisticallyValidated": false,
             "baseline": {
               "home": 1.25,
-              "away": 1.09,
-              "total": 2.34
+              "away": 1.08,
+              "total": 2.33
             },
             "baselineProbabilities": [
-              0.3993359754061837,
-              0.2796757812970591,
-              0.320988243296757
+              0.4015743505528426,
+              0.2802361625846581,
+              0.3181894868624994
             ],
             "targetProbabilities": [
-              0.4498843429575898,
-              0.2053881771948877,
-              0.34472747984752244
+              0.45540627445543563,
+              0.2050828783676469,
+              0.33951084717691743
             ]
           }
         }
       },
       "probabilities": {
-        "home": 44.98843429575898,
-        "draw": 20.53881771948877,
-        "away": 34.472747984752246
+        "home": 45.540627445543564,
+        "draw": 20.50828783676469,
+        "away": 33.95108471769174
       },
       "scoreForecast": {
         "primary": {
           "score": "1-0",
           "outcome": "1",
           "label": "Risultato centrale · esito prevalente",
-          "probabilityPct": 13.6,
-          "conditionalProbabilityPct": 30.2
+          "probabilityPct": 13.8,
+          "conditionalProbabilityPct": 30.3
         },
         "alternatives": [
           {
             "score": "0-1",
             "outcome": "2",
             "label": "Alternativa",
-            "probabilityPct": 11.3,
-            "conditionalProbabilityPct": 32.7
+            "probabilityPct": 11.2,
+            "conditionalProbabilityPct": 33
           },
           {
             "score": "1-1",
@@ -24488,15 +24488,15 @@
             "score": "1-0",
             "outcome": "1",
             "label": "Risultato centrale · esito prevalente",
-            "probabilityPct": 13.6,
-            "conditionalProbabilityPct": 30.2
+            "probabilityPct": 13.8,
+            "conditionalProbabilityPct": 30.3
           },
           {
             "score": "0-1",
             "outcome": "2",
             "label": "Alternativa",
-            "probabilityPct": 11.3,
-            "conditionalProbabilityPct": 32.7
+            "probabilityPct": 11.2,
+            "conditionalProbabilityPct": 33
           },
           {
             "score": "1-1",
@@ -24510,14 +24510,14 @@
         "method": "Punteggio più probabile entro l’esito prevalente del rating dei club; probabilità assolute dalla distribuzione condivisa. Stima non validata."
       },
       "confidence": {
-        "value": 45,
+        "value": 46,
         "level": "prudente"
       },
       "surprise": {
         "value": 71,
         "level": "alto",
         "upsetOutcome": "1",
-        "upsetProbabilityPct": 45,
+        "upsetProbabilityPct": 45.5,
         "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
@@ -24535,7 +24535,7 @@
             "central": 15.8,
             "max": 22,
             "interval": "p20-p80",
-            "sd": 6.53,
+            "sd": 6.52,
             "sampleSize": 22,
             "dataStatus": "venue-history",
             "inputs": [
@@ -24644,7 +24644,7 @@
           },
           "fouls": null,
           "cards": null,
-          "expectedGoals": 1.3,
+          "expectedGoals": 1.31,
           "basis": "Volumi prodotti e concessi per sede, normalizzati per campionato, e ultime otto gare. Intervallo p20–p80.",
           "europeanDiscipline": {
             "cards": {
@@ -24685,7 +24685,7 @@
             "central": 9.7,
             "max": 12,
             "interval": "p20-p80",
-            "sd": 5.23,
+            "sd": 5.24,
             "sampleSize": 22,
             "dataStatus": "venue-history",
             "inputs": [
@@ -24711,7 +24711,7 @@
           },
           "shotsOnTarget": {
             "min": 2,
-            "central": 4,
+            "central": 4.1,
             "max": 6,
             "interval": "p20-p80",
             "sd": 2.15,
@@ -24740,7 +24740,7 @@
           },
           "corners": {
             "min": 3,
-            "central": 4.3,
+            "central": 4.4,
             "max": 5,
             "interval": "p20-p80",
             "sd": 2.56,
@@ -24802,7 +24802,7 @@
             "central": 1.5,
             "max": 3
           },
-          "expectedGoals": 1.1,
+          "expectedGoals": 1.08,
           "basis": "Volumi prodotti e concessi per sede, normalizzati per campionato, e ultime otto gare. Intervallo p20–p80.",
           "europeanDiscipline": {
             "cards": {
@@ -24813,7 +24813,7 @@
                 1,
                 3
               ],
-              "factor": 0.9961097126161864,
+              "factor": 0.9974403654627629,
               "statisticallyValidated": false,
               "conditionalRates": [
                 1.0833333333333333,
@@ -24830,7 +24830,7 @@
                 1,
                 3
               ],
-              "factor": 1.0042345555061833,
+              "factor": 1.0042236683832142,
               "statisticallyValidated": false,
               "conditionalRates": [
                 12.200000000000001,
@@ -24847,8 +24847,8 @@
         "statisticallyValidated": false,
         "method": "projected-sot-times-opponent-adjusted-quality-v1",
         "home": 1.439545134636927,
-        "away": 1.4428879439171096,
-        "total": 2.882433078554037,
+        "away": 1.4789601425150372,
+        "total": 2.918505277151964,
         "sample": [
           16,
           20
@@ -24901,9 +24901,9 @@
         "type": "OPTA_CLUB_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 44.98843429575898,
-          "draw": 20.53881771948877,
-          "away": 34.472747984752246
+          "home": 45.540627445543564,
+          "draw": 20.50828783676469,
+          "away": 33.95108471769174
         },
         "samples": [
           null,
@@ -24940,8 +24940,8 @@
           "initialDomesticPriorApplied": false
         },
         "estimatedInitialRating": false,
-        "cutoff": "2026-11-24T16:41:54.567Z",
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25T00:00:00.000Z",
+        "asOf": "2026-11-25T19:11:35.131Z",
         "ratingsAvailableAt": "2026-11-19T18:32:38.023Z",
         "providerPublishedAt": null,
         "statisticallyValidated": false,
@@ -24985,322 +24985,322 @@
         {
           "home": 0,
           "away": 0,
-          "probability": 0.07074585466931227
+          "probability": 0.07120788279589321
         },
         {
           "home": 0,
           "away": 1,
-          "probability": 0.11277002933486781
+          "probability": 0.11212809141540189
         },
         {
           "home": 0,
           "away": 2,
-          "probability": 0.06145966598750294
+          "probability": 0.06054916936431702
         },
         {
           "home": 0,
           "away": 3,
-          "probability": 0.022330345308792743
+          "probability": 0.021797700971154133
         },
         {
           "home": 0,
           "away": 4,
-          "probability": 0.006085019096646023
+          "probability": 0.005885379262211615
         },
         {
           "home": 0,
           "away": 5,
-          "probability": 0.001326534163068833
+          "probability": 0.0012712419206377093
         },
         {
           "home": 0,
           "away": 6,
-          "probability": 0.0002409870396241713
+          "probability": 0.0002288235457147876
         },
         {
           "home": 0,
           "away": 7,
-          "probability": 0.00003752512474147811
+          "probability": 0.00003530420419599581
         },
         {
           "home": 1,
           "away": 0,
-          "probability": 0.1356603309607418
+          "probability": 0.1379322763470637
         },
         {
           "home": 1,
           "away": 1,
-          "probability": 0.09639122698693799
+          "probability": 0.09613064177445586
         },
         {
           "home": 1,
           "away": 2,
-          "probability": 0.07682458248437869
+          "probability": 0.07568646170539628
         },
         {
           "home": 1,
           "away": 3,
-          "probability": 0.027912931635990932
+          "probability": 0.02724712621394267
         },
         {
           "home": 1,
           "away": 4,
-          "probability": 0.00760627387080753
+          "probability": 0.00735672407776452
         },
         {
           "home": 1,
           "away": 5,
-          "probability": 0.0016581677038360414
+          "probability": 0.0015890524007971365
         },
         {
           "home": 1,
           "away": 6,
-          "probability": 0.0003012337995302141
+          "probability": 0.0002860294321434845
         },
         {
           "home": 1,
           "away": 7,
-          "probability": 0.000046906405926847645
+          "probability": 0.00004413025524499476
         },
         {
           "home": 2,
           "away": 0,
-          "probability": 0.0847877068504636
+          "probability": 0.0862076727169148
         },
         {
           "home": 2,
           "away": 1,
-          "probability": 0.09241860046700534
+          "probability": 0.09310428653426801
         },
         {
           "home": 2,
           "away": 2,
-          "probability": 0.03283326169242574
+          "probability": 0.032444091598878844
         },
         {
           "home": 2,
           "away": 3,
-          "probability": 0.017445582272494334
+          "probability": 0.017029453883714168
         },
         {
           "home": 2,
           "away": 4,
-          "probability": 0.004753921169254705
+          "probability": 0.004597952548602824
         },
         {
           "home": 2,
           "away": 5,
-          "probability": 0.001036354814897526
+          "probability": 0.0009931577504982102
         },
         {
           "home": 2,
           "away": 6,
-          "probability": 0.00018827112470638384
+          "probability": 0.00017876839508967782
         },
         {
           "home": 2,
           "away": 7,
-          "probability": 0.000029316503704279775
+          "probability": 0.000027581409528121723
         },
         {
           "home": 3,
           "away": 0,
-          "probability": 0.03532821118769317
+          "probability": 0.03591986363204785
         },
         {
           "home": 3,
           "away": 1,
-          "probability": 0.03850775019458556
+          "probability": 0.038793452722611664
         },
         {
           "home": 3,
           "away": 2,
-          "probability": 0.02098672385604913
+          "probability": 0.0209484644702103
         },
         {
           "home": 3,
           "away": 3,
-          "probability": 0.004970591006214454
+          "probability": 0.004866613739831828
         },
         {
           "home": 3,
           "away": 4,
-          "probability": 0.0019808004871894607
+          "probability": 0.0019158135619178434
         },
         {
           "home": 3,
           "away": 5,
-          "probability": 0.0004318145062073025
+          "probability": 0.00041381572937425424
         },
         {
           "home": 3,
           "away": 6,
-          "probability": 0.00007844630196099328
+          "probability": 0.00007448683128736576
         },
         {
           "home": 3,
           "away": 7,
-          "probability": 0.00001221520987678324
+          "probability": 0.000011492253970050718
         },
         {
           "home": 4,
           "away": 0,
-          "probability": 0.011040065996154116
+          "probability": 0.01122495738501495
         },
         {
           "home": 4,
           "away": 1,
-          "probability": 0.012033671935807988
+          "probability": 0.012122953975816149
         },
         {
           "home": 4,
           "away": 2,
-          "probability": 0.006558351205015352
+          "probability": 0.006546395146940719
         },
         {
           "home": 4,
           "away": 3,
-          "probability": 0.0023828676044889124
+          "probability": 0.00235670225289866
         },
         {
           "home": 4,
           "away": 4,
-          "probability": 0.0004232768903729496
+          "probability": 0.00041062053429831045
         },
         {
           "home": 4,
           "away": 5,
-          "probability": 0.00013494203318978204
+          "probability": 0.00012931741542945448
         },
         {
           "home": 4,
           "away": 6,
-          "probability": 0.000024514469362810394
+          "probability": 0.000023277134777301798
         },
         {
           "home": 4,
           "away": 7,
-          "probability": 0.000003817253086494762
+          "probability": 0.0000035913293656408494
         },
         {
           "home": 5,
           "away": 0,
-          "probability": 0.00276001649903853
+          "probability": 0.0028062393462537374
         },
         {
           "home": 5,
           "away": 1,
-          "probability": 0.003008417983951997
+          "probability": 0.0030307384939540377
         },
         {
           "home": 5,
           "away": 2,
-          "probability": 0.0016395878012538383
+          "probability": 0.0016365987867351802
         },
         {
           "home": 5,
           "away": 3,
-          "probability": 0.0005957169011222282
+          "probability": 0.000589175563224665
         },
         {
           "home": 5,
           "away": 4,
-          "probability": 0.0001623328555558072
+          "probability": 0.0001590774020706595
         },
         {
           "home": 5,
           "away": 5,
-          "probability": 0.000023068590525325762
+          "probability": 0.00002217350885210877
         },
         {
           "home": 5,
           "away": 6,
-          "probability": 0.0000061286173407025985
+          "probability": 0.000005819283694325451
         },
         {
           "home": 5,
           "away": 7,
-          "probability": 9.543132716236906e-7
+          "probability": 8.978323414102126e-7
         },
         {
           "home": 6,
           "away": 0,
-          "probability": 0.0005750034372996937
+          "probability": 0.0005846331971361954
         },
         {
           "home": 6,
           "away": 1,
-          "probability": 0.000626753746656666
+          "probability": 0.0006314038529070911
         },
         {
           "home": 6,
           "away": 2,
-          "probability": 0.00034158079192788304
+          "probability": 0.00034095808056982917
         },
         {
           "home": 6,
           "away": 3,
-          "probability": 0.00012410768773379752
+          "probability": 0.0001227449090051385
         },
         {
           "home": 6,
           "away": 4,
-          "probability": 0.00003381934490745983
+          "probability": 0.0000331411254313874
         },
         {
           "home": 6,
           "away": 5,
-          "probability": 0.000007372617189826243
+          "probability": 0.000007158483093179679
         },
         {
           "home": 6,
           "away": 6,
-          "probability": 8.730820719654541e-7
+          "probability": 8.315065819540789e-7
         },
         {
           "home": 6,
           "away": 7,
-          "probability": 1.988152649216022e-7
+          "probability": 1.8704840446046093e-7
         },
         {
           "home": 7,
           "away": 0,
-          "probability": 0.00010267918523208814
+          "probability": 0.00010439878520289203
         },
         {
           "home": 7,
           "away": 1,
-          "probability": 0.00011192031190297607
+          "probability": 0.0001127506880191234
         },
         {
           "home": 7,
           "away": 2,
-          "probability": 0.00006099656998712196
+          "probability": 0.00006088537153032663
         },
         {
           "home": 7,
           "away": 3,
-          "probability": 0.00002216208709532099
+          "probability": 0.000021918733750917592
         },
         {
           "home": 7,
           "away": 4,
-          "probability": 0.000006039168733474968
+          "probability": 0.000005918058112747749
         },
         {
           "home": 7,
           "away": 5,
-          "probability": 0.0000013165387838975436
+          "probability": 0.000001278300552353514
         },
         {
           "home": 7,
           "away": 6,
-          "probability": 2.3917121240805367e-7
+          "probability": 2.3009409942363253e-7
         },
         {
           "home": 7,
           "away": 7,
-          "probability": 2.427702700108023e-8
+          "probability": 2.2908854808938908e-8
         }
       ],
       "matchProjection": {
@@ -25309,13 +25309,13 @@
           "central": 25.5,
           "max": 33,
           "interval": "p20-p80-independent",
-          "sd": 8.37,
+          "sd": 8.36,
           "sampleSize": 22,
           "dataStatus": "venue-history"
         },
         "shotsOnTarget": {
           "min": 5,
-          "central": 8.8,
+          "central": 8.9,
           "max": 12,
           "interval": "p20-p80-independent",
           "sd": 3.68,
@@ -25324,7 +25324,7 @@
         },
         "corners": {
           "min": 6,
-          "central": 9.9,
+          "central": 10,
           "max": 14,
           "interval": "p20-p80-independent",
           "sd": 4.56,
@@ -25358,7 +25358,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25",
         "teamIds": [
           "shakhtar-donetsk",
           "fenerbahce"
@@ -25371,9 +25371,9 @@
         "marketUsedForGoals": false
       },
       "inputSnapshot": {
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "asOf": "2026-11-25T19:11:35.131Z",
         "sha256": {
-          "data/sources/champions-probable-formations-md05-2026-27.json": "3f299ee3442e4a748869d72c8c9d590706dc9a2b2724aadedc3c560473f1a422",
+          "data/sources/champions-official-formations-md05-2026-27.json": "bc76ecf98def9c8a155109314dbe006c2b48b42f053ff2eccd1844e6f1cc2a60",
           "data/normalized/odds/sisal/champions-league.json": "019fa89bc0994162d7d8ab816e687bcbd1fdd8f48a09fe702f982ca92ac0aa22",
           "data/sources/champions-pilot-match-stats-2025-27.json": "97c042722a6ff780a4b78db808aedc1dbd4c2f07b001b857d63a4ca254596fb2",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
@@ -25381,7 +25381,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 44.98843429575898,
+        "probabilityPct": 45.540627445543564,
         "label": "Shakhtar Donetsk",
         "status": "PRELIMINARY"
       }
@@ -25397,17 +25397,17 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 1.31,
-        "away": 1.81,
-        "total": 3.13,
+        "home": 1.33,
+        "away": 1.82,
+        "total": 3.15,
         "method": "Distribuzione dei punteggi condizionata al rating europeo; forma dei punteggi da attacco/difesa, matchup e xGOT. Stima sperimentale non validata.",
         "components": {
           "home": {
             "attackStrength": 0.961,
             "defenceWeakness": 0.791,
             "lineup": {
-              "attack": 1.006,
-              "defenceWeakness": 0.993,
+              "attack": 1.024,
+              "defenceWeakness": 1.001,
               "resolved": 11,
               "status": "usable"
             }
@@ -25416,8 +25416,8 @@
             "attackStrength": 1.646,
             "defenceWeakness": 0.73,
             "lineup": {
-              "attack": 1.08,
-              "defenceWeakness": 0.978,
+              "attack": 1.066,
+              "defenceWeakness": 0.986,
               "resolved": 11,
               "status": "usable"
             }
@@ -25517,8 +25517,8 @@
             "variant": "execution",
             "applied": true,
             "unadjusted": {
-              "home": 1.19,
-              "away": 1.96
+              "home": 1.22,
+              "away": 1.95
             }
           },
           "xg": {
@@ -25534,35 +25534,35 @@
             "method": "minimum-relative-entropy-outcome-conditioning-v1",
             "statisticallyValidated": false,
             "baseline": {
-              "home": 1.2,
-              "away": 1.94,
-              "total": 3.14
+              "home": 1.23,
+              "away": 1.93,
+              "total": 3.16
             },
             "baselineProbabilities": [
-              0.2338629964360366,
-              0.2204923539743779,
-              0.545644649589585
+              0.24190709114218187,
+              0.22145784952154302,
+              0.5366350593362749
             ],
             "targetProbabilities": [
-              0.30822779398529243,
-              0.2042262963396553,
-              0.4875459096750522
+              0.3081917460538769,
+              0.20421598927632106,
+              0.4875922646698021
             ]
           }
         }
       },
       "probabilities": {
-        "home": 30.822779398529246,
-        "draw": 20.42262963396553,
-        "away": 48.754590967505216
+        "home": 30.81917460538769,
+        "draw": 20.421598927632107,
+        "away": 48.75922646698021
       },
       "scoreForecast": {
         "primary": {
           "score": "1-2",
           "outcome": "2",
           "label": "Risultato centrale · esito prevalente",
-          "probabilityPct": 8.7,
-          "conditionalProbabilityPct": 17.9
+          "probabilityPct": 8.8,
+          "conditionalProbabilityPct": 18.1
         },
         "alternatives": [
           {
@@ -25570,14 +25570,14 @@
             "outcome": "X",
             "label": "Alternativa",
             "probabilityPct": 9.3,
-            "conditionalProbabilityPct": 45.7
+            "conditionalProbabilityPct": 45.5
           },
           {
             "score": "2-1",
             "outcome": "1",
             "label": "Alternativa",
-            "probabilityPct": 8,
-            "conditionalProbabilityPct": 25.9
+            "probabilityPct": 7.9,
+            "conditionalProbabilityPct": 25.6
           }
         ],
         "display": [
@@ -25585,22 +25585,22 @@
             "score": "1-2",
             "outcome": "2",
             "label": "Risultato centrale · esito prevalente",
-            "probabilityPct": 8.7,
-            "conditionalProbabilityPct": 17.9
+            "probabilityPct": 8.8,
+            "conditionalProbabilityPct": 18.1
           },
           {
             "score": "1-1",
             "outcome": "X",
             "label": "Alternativa",
             "probabilityPct": 9.3,
-            "conditionalProbabilityPct": 45.7
+            "conditionalProbabilityPct": 45.5
           },
           {
             "score": "2-1",
             "outcome": "1",
             "label": "Alternativa",
-            "probabilityPct": 8,
-            "conditionalProbabilityPct": 25.9
+            "probabilityPct": 7.9,
+            "conditionalProbabilityPct": 25.6
           }
         ],
         "coherentWithVerdict": true,
@@ -25658,10 +25658,10 @@
           },
           "shotsOnTarget": {
             "min": 1,
-            "central": 3.9,
-            "max": 6,
+            "central": 4.4,
+            "max": 7,
             "interval": "p20-p80",
-            "sd": 2.55,
+            "sd": 2.87,
             "sampleSize": 52,
             "dataStatus": "venue-history",
             "inputs": [
@@ -25749,7 +25749,7 @@
             "central": 2.1,
             "max": 3
           },
-          "expectedGoals": 1.31,
+          "expectedGoals": 1.33,
           "basis": "Volumi prodotti e concessi per sede, normalizzati per campionato, e ultime otto gare. Intervallo p20–p80.",
           "europeanDiscipline": {
             "cards": {
@@ -25760,7 +25760,7 @@
                 10,
                 10
               ],
-              "factor": 0.9942436806690322,
+              "factor": 0.9954101773875885,
               "statisticallyValidated": false,
               "conditionalRates": [
                 2.0893939393939394,
@@ -25777,7 +25777,7 @@
                 10,
                 10
               ],
-              "factor": 1.0009883328067022,
+              "factor": 1.0009429403068861,
               "statisticallyValidated": false,
               "conditionalRates": [
                 11.18030303030303,
@@ -25827,11 +25827,11 @@
             ]
           },
           "shotsOnTarget": {
-            "min": 4,
-            "central": 6.6,
-            "max": 9,
+            "min": 3,
+            "central": 5.7,
+            "max": 8,
             "interval": "p20-p80",
-            "sd": 3.76,
+            "sd": 3.22,
             "sampleSize": 52,
             "dataStatus": "venue-history",
             "inputs": [
@@ -25919,7 +25919,7 @@
             "central": 1.5,
             "max": 3
           },
-          "expectedGoals": 1.81,
+          "expectedGoals": 1.82,
           "basis": "Volumi prodotti e concessi per sede, normalizzati per campionato, e ultime otto gare. Intervallo p20–p80.",
           "europeanDiscipline": {
             "cards": {
@@ -25930,7 +25930,7 @@
                 8,
                 1
               ],
-              "factor": 0.9972486828831119,
+              "factor": 0.9963688358968635,
               "statisticallyValidated": false,
               "conditionalRates": [
                 1.3517441860465116,
@@ -25947,7 +25947,7 @@
                 8,
                 1
               ],
-              "factor": 1.001359610801442,
+              "factor": 1.001029377151713,
               "statisticallyValidated": false,
               "conditionalRates": [
                 8.942441860465117,
@@ -25963,9 +25963,9 @@
         "status": "experimental",
         "statisticallyValidated": false,
         "method": "projected-sot-times-opponent-adjusted-quality-v1",
-        "home": 1.3593454492010708,
-        "away": 2.0371066957891593,
-        "total": 3.39645214499023,
+        "home": 1.5336205067909519,
+        "away": 1.7593194190906378,
+        "total": 3.2929399258815897,
         "sample": [
           20,
           20
@@ -26022,9 +26022,9 @@
         "type": "OPTA_CLUB_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 30.822779398529246,
-          "draw": 20.42262963396553,
-          "away": 48.754590967505216
+          "home": 30.81917460538769,
+          "draw": 20.421598927632107,
+          "away": 48.75922646698021
         },
         "samples": [
           null,
@@ -26061,8 +26061,8 @@
           "initialDomesticPriorApplied": false
         },
         "estimatedInitialRating": false,
-        "cutoff": "2026-11-24T16:41:54.567Z",
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25T00:00:00.000Z",
+        "asOf": "2026-11-25T19:11:35.131Z",
         "ratingsAvailableAt": "2026-11-19T18:32:38.023Z",
         "providerPublishedAt": null,
         "statisticallyValidated": false,
@@ -26106,322 +26106,322 @@
         {
           "home": 0,
           "away": 0,
-          "probability": 0.040127574317772884
+          "probability": 0.039158667322401905
         },
         {
           "home": 0,
           "away": 1,
-          "probability": 0.07509864937818897
+          "probability": 0.07446707794351884
         },
         {
           "home": 0,
           "away": 2,
-          "probability": 0.0728456898968433
+          "probability": 0.07186073021549566
         },
         {
           "home": 0,
           "away": 3,
-          "probability": 0.04710687946662533
+          "probability": 0.04623040310530222
         },
         {
           "home": 0,
           "away": 4,
-          "probability": 0.022846836541313285
+          "probability": 0.02230616949830832
         },
         {
           "home": 0,
           "away": 5,
-          "probability": 0.008864572578029556
+          "probability": 0.008610181426347011
         },
         {
           "home": 0,
           "away": 6,
-          "probability": 0.0028662118002295562
+          "probability": 0.002769608358808288
         },
         {
           "home": 0,
           "away": 7,
-          "probability": 0.0007943501274921909
+          "probability": 0.0007636205903571422
         },
         {
           "home": 1,
           "away": 0,
-          "probability": 0.06851983594250807
+          "probability": 0.06654367079257995
         },
         {
           "home": 1,
           "away": 1,
-          "probability": 0.09341699301177525
+          "probability": 0.09295876035664989
         },
         {
           "home": 1,
           "away": 2,
-          "probability": 0.08741482787621195
+          "probability": 0.08838869816505969
         },
         {
           "home": 1,
           "away": 3,
-          "probability": 0.0565282553599504
+          "probability": 0.05686339581952173
         },
         {
           "home": 1,
           "away": 4,
-          "probability": 0.027416203849575944
+          "probability": 0.027436588482919234
         },
         {
           "home": 1,
           "away": 5,
-          "probability": 0.010637487093635465
+          "probability": 0.010590523154406823
         },
         {
           "home": 1,
           "away": 6,
-          "probability": 0.003439454160275467
+          "probability": 0.003406618281334195
         },
         {
           "home": 1,
           "away": 7,
-          "probability": 0.0009532201529906292
+          "probability": 0.000939253326139285
         },
         {
           "home": 2,
           "away": 0,
-          "probability": 0.04111190156550483
+          "probability": 0.040924357537436666
         },
         {
           "home": 2,
           "away": 1,
-          "probability": 0.07975708903707937
+          "probability": 0.07898401004725275
         },
         {
           "home": 2,
           "away": 2,
-          "probability": 0.0543686899328532
+          "probability": 0.055168700302662785
         },
         {
           "home": 2,
           "away": 3,
-          "probability": 0.03391695321597024
+          "probability": 0.03497098842900587
         },
         {
           "home": 2,
           "away": 4,
-          "probability": 0.016449722309745562
+          "probability": 0.01687350191699533
         },
         {
           "home": 2,
           "away": 5,
-          "probability": 0.006382492256181279
+          "probability": 0.006513171739960196
         },
         {
           "home": 2,
           "away": 6,
-          "probability": 0.00206367249616528
+          "probability": 0.0020950702430205296
         },
         {
           "home": 2,
           "away": 7,
-          "probability": 0.0005719320917943774
+          "probability": 0.0005776407955756601
         },
         {
           "home": 3,
           "away": 0,
-          "probability": 0.016444760626201933
+          "probability": 0.01677898659034903
         },
         {
           "home": 3,
           "away": 1,
-          "probability": 0.031902835614831745
+          "probability": 0.032383444119373626
         },
         {
           "home": 3,
           "away": 2,
-          "probability": 0.030945750546386798
+          "probability": 0.031250023575195546
         },
         {
           "home": 3,
           "away": 3,
-          "probability": 0.014063367795964692
+          "probability": 0.014551664183165686
         },
         {
           "home": 3,
           "away": 4,
-          "probability": 0.006579888923898225
+          "probability": 0.006918135785968085
         },
         {
           "home": 3,
           "away": 5,
-          "probability": 0.0025529969024725113
+          "probability": 0.00267040041338368
         },
         {
           "home": 3,
           "away": 6,
-          "probability": 0.0008254689984661121
+          "probability": 0.0008589787996384172
         },
         {
           "home": 3,
           "away": 7,
-          "probability": 0.000228772836717751
+          "probability": 0.00023683272618602066
         },
         {
           "home": 4,
           "away": 0,
-          "probability": 0.00493342818786058
+          "probability": 0.005159538376532327
         },
         {
           "home": 4,
           "away": 1,
-          "probability": 0.009570850684449524
+          "probability": 0.009957909066707392
         },
         {
           "home": 4,
           "away": 2,
-          "probability": 0.00928372516391604
+          "probability": 0.00960938224937263
         },
         {
           "home": 4,
           "away": 3,
-          "probability": 0.006003475605999039
+          "probability": 0.006182035913763059
         },
         {
           "home": 4,
           "away": 4,
-          "probability": 0.0020462200143128626
+          "probability": 0.002159012225276064
         },
         {
           "home": 4,
           "away": 5,
-          "probability": 0.0007658990707417534
+          "probability": 0.0008211481271154816
         },
         {
           "home": 4,
           "away": 6,
-          "probability": 0.00024764069953983365
+          "probability": 0.00026413598088881324
         },
         {
           "home": 4,
           "away": 7,
-          "probability": 0.0000686318510153253
+          "probability": 0.00007282606330220137
         },
         {
           "home": 5,
           "away": 0,
-          "probability": 0.0011840227650865393
+          "probability": 0.0012692464406269522
         },
         {
           "home": 5,
           "away": 1,
-          "probability": 0.002297004164267886
+          "probability": 0.002449645630410018
         },
         {
           "home": 5,
           "away": 2,
-          "probability": 0.0022280940393398494
+          "probability": 0.0023639080333456674
         },
         {
           "home": 5,
           "away": 3,
-          "probability": 0.0014408341454397694
+          "probability": 0.0015207808347857128
         },
         {
           "home": 5,
           "away": 4,
-          "probability": 0.0006988045605382881
+          "probability": 0.0007337767527841063
         },
         {
           "home": 5,
           "away": 5,
-          "probability": 0.00019054400773281378
+          "probability": 0.00020501116486331392
         },
         {
           "home": 5,
           "away": 6,
-          "probability": 0.00005943376788956007
+          "probability": 0.00006497745129864807
         },
         {
           "home": 5,
           "away": 7,
-          "probability": 0.00001647164424367807
+          "probability": 0.000017915211572341532
         },
         {
           "home": 6,
           "away": 0,
-          "probability": 0.00023680455301730777
+          "probability": 0.00026019552032852523
         },
         {
           "home": 6,
           "away": 1,
-          "probability": 0.0004594008328535771
+          "probability": 0.0005021773542340538
         },
         {
           "home": 6,
           "away": 2,
-          "probability": 0.00044561880786796984
+          "probability": 0.00048460114683586175
         },
         {
           "home": 6,
           "away": 3,
-          "probability": 0.0002881668290879538
+          "probability": 0.0003117600711310711
         },
         {
           "home": 6,
           "away": 4,
-          "probability": 0.0001397609121076576
+          "probability": 0.00015042423432074184
         },
         {
           "home": 6,
           "away": 5,
-          "probability": 0.00005422723389777114
+          "probability": 0.000058063754447806335
         },
         {
           "home": 6,
           "away": 6,
-          "probability": 0.000012321845833388623
+          "probability": 0.000013518777896361694
         },
         {
           "home": 6,
           "away": 7,
-          "probability": 0.0000032943288487356142
+          "probability": 0.000003672618372330015
         },
         {
           "home": 7,
           "away": 0,
-          "probability": 0.00004059506623153848
+          "probability": 0.00004572007000058372
         },
         {
           "home": 7,
           "away": 1,
-          "probability": 0.00007875442848918466
+          "probability": 0.00008823973510112658
         },
         {
           "home": 7,
           "away": 2,
-          "probability": 0.00007639179563450913
+          "probability": 0.00008515134437258714
         },
         {
           "home": 7,
           "away": 3,
-          "probability": 0.00004940002784364922
+          "probability": 0.00005478069821303105
         },
         {
           "home": 7,
           "away": 4,
-          "probability": 0.00002395901350416987
+          "probability": 0.00002643168688778749
         },
         {
           "home": 7,
           "away": 5,
-          "probability": 0.000009296097239617912
+          "probability": 0.000010202631138685971
         },
         {
           "home": 7,
           "away": 6,
-          "probability": 0.0000030057381074764574
+          "probability": 0.0000032818463496106535
         },
         {
           "home": 7,
           "away": 7,
-          "probability": 5.854134102067083e-7
+          "probability": 6.549434050647554e-7
         }
       ],
       "matchProjection": {
@@ -26436,10 +26436,10 @@
         },
         "shotsOnTarget": {
           "min": 6,
-          "central": 10.5,
-          "max": 15,
+          "central": 10.1,
+          "max": 14,
           "interval": "p20-p80-independent",
-          "sd": 4.54,
+          "sd": 4.31,
           "sampleSize": 52,
           "dataStatus": "venue-history"
         },
@@ -26478,7 +26478,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25",
         "teamIds": [
           "lille",
           "bayern-munchen"
@@ -26491,9 +26491,9 @@
         "marketUsedForGoals": false
       },
       "inputSnapshot": {
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "asOf": "2026-11-25T19:11:35.131Z",
         "sha256": {
-          "data/sources/champions-probable-formations-md05-2026-27.json": "3f299ee3442e4a748869d72c8c9d590706dc9a2b2724aadedc3c560473f1a422",
+          "data/sources/champions-official-formations-md05-2026-27.json": "bc76ecf98def9c8a155109314dbe006c2b48b42f053ff2eccd1844e6f1cc2a60",
           "data/normalized/odds/sisal/champions-league.json": "019fa89bc0994162d7d8ab816e687bcbd1fdd8f48a09fe702f982ca92ac0aa22",
           "data/sources/champions-pilot-match-stats-2025-27.json": "97c042722a6ff780a4b78db808aedc1dbd4c2f07b001b857d63a4ca254596fb2",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
@@ -26501,7 +26501,7 @@
       },
       "verdict": {
         "outcome": "2",
-        "probabilityPct": 48.754590967505216,
+        "probabilityPct": 48.75922646698021,
         "label": "Bayern München",
         "status": "PRELIMINARY"
       }
@@ -26526,7 +26526,7 @@
             "attackStrength": 1.333,
             "defenceWeakness": 0.713,
             "lineup": {
-              "attack": 1.052,
+              "attack": 1.073,
               "defenceWeakness": 0.978,
               "resolved": 11,
               "status": "usable"
@@ -26536,8 +26536,8 @@
             "attackStrength": 1.362,
             "defenceWeakness": 0.87,
             "lineup": {
-              "attack": 1.013,
-              "defenceWeakness": 0.992,
+              "attack": 1.007,
+              "defenceWeakness": 0.981,
               "resolved": 11,
               "status": "usable"
             }
@@ -26637,8 +26637,8 @@
             "variant": "execution",
             "applied": true,
             "unadjusted": {
-              "home": 1.86,
-              "away": 1.2
+              "home": 1.87,
+              "away": 1.19
             }
           },
           "xg": {
@@ -26654,50 +26654,50 @@
             "method": "minimum-relative-entropy-outcome-conditioning-v1",
             "statisticallyValidated": false,
             "baseline": {
-              "home": 1.87,
-              "away": 1.2,
-              "total": 3.07
+              "home": 1.88,
+              "away": 1.19,
+              "total": 3.08
             },
             "baselineProbabilities": [
-              0.5301042303304395,
-              0.22600916729200302,
-              0.24388660237755735
+              0.5346351125020213,
+              0.22518465740022617,
+              0.24018023009775244
             ],
             "targetProbabilities": [
-              0.6500442676300544,
-              0.1761220635537782,
-              0.1738336688161673
+              0.6500406715680507,
+              0.176122072858935,
+              0.17383725557301444
             ]
           }
         }
       },
       "probabilities": {
-        "home": 65.00442676300544,
-        "draw": 17.612206355377822,
-        "away": 17.38336688161673
+        "home": 65.00406715680506,
+        "draw": 17.6122072858935,
+        "away": 17.383725557301442
       },
       "scoreForecast": {
         "primary": {
           "score": "2-1",
           "outcome": "1",
           "label": "Risultato centrale · esito prevalente",
-          "probabilityPct": 12,
-          "conditionalProbabilityPct": 18.4
+          "probabilityPct": 11.9,
+          "conditionalProbabilityPct": 18.3
         },
         "alternatives": [
           {
             "score": "1-0",
             "outcome": "1",
             "label": "Alternativa",
-            "probabilityPct": 10.7,
-            "conditionalProbabilityPct": 16.4
+            "probabilityPct": 10.6,
+            "conditionalProbabilityPct": 16.3
           },
           {
             "score": "2-0",
             "outcome": "1",
             "label": "Alternativa",
             "probabilityPct": 10,
-            "conditionalProbabilityPct": 15.3
+            "conditionalProbabilityPct": 15.4
           }
         ],
         "display": [
@@ -26705,22 +26705,22 @@
             "score": "2-1",
             "outcome": "1",
             "label": "Risultato centrale · esito prevalente",
-            "probabilityPct": 12,
-            "conditionalProbabilityPct": 18.4
+            "probabilityPct": 11.9,
+            "conditionalProbabilityPct": 18.3
           },
           {
             "score": "1-0",
             "outcome": "1",
             "label": "Alternativa",
-            "probabilityPct": 10.7,
-            "conditionalProbabilityPct": 16.4
+            "probabilityPct": 10.6,
+            "conditionalProbabilityPct": 16.3
           },
           {
             "score": "2-0",
             "outcome": "1",
             "label": "Alternativa",
             "probabilityPct": 10,
-            "conditionalProbabilityPct": 15.3
+            "conditionalProbabilityPct": 15.4
           }
         ],
         "coherentWithVerdict": true,
@@ -26777,11 +26777,11 @@
             ]
           },
           "shotsOnTarget": {
-            "min": 4,
-            "central": 6.1,
-            "max": 8,
+            "min": 5,
+            "central": 6.8,
+            "max": 9,
             "interval": "p20-p80",
-            "sd": 2.25,
+            "sd": 2.52,
             "sampleSize": 53,
             "dataStatus": "venue-history",
             "inputs": [
@@ -26880,7 +26880,7 @@
                 6,
                 7
               ],
-              "factor": 0.9563972570943514,
+              "factor": 0.9579569553724164,
               "statisticallyValidated": false,
               "conditionalRates": [
                 0.8685503685503686,
@@ -26897,7 +26897,7 @@
                 6,
                 7
               ],
-              "factor": 0.9848044516084514,
+              "factor": 0.9853778614135084,
               "statisticallyValidated": false,
               "conditionalRates": [
                 8.14987714987715,
@@ -27050,7 +27050,7 @@
                 7,
                 11
               ],
-              "factor": 1.0489066643937723,
+              "factor": 1.0467461697590845,
               "statisticallyValidated": false,
               "conditionalRates": [
                 1.386100386100386,
@@ -27067,7 +27067,7 @@
                 7,
                 11
               ],
-              "factor": 1.0145758504805427,
+              "factor": 1.0141365745103827,
               "statisticallyValidated": false,
               "conditionalRates": [
                 13.154991726420297,
@@ -27083,9 +27083,9 @@
         "status": "experimental",
         "statisticallyValidated": false,
         "method": "projected-sot-times-opponent-adjusted-quality-v1",
-        "home": 2.036522209737156,
+        "home": 2.2702214797069935,
         "away": 1.4858316757714674,
-        "total": 3.522353885508623,
+        "total": 3.756053155478461,
         "sample": [
           20,
           20
@@ -27142,9 +27142,9 @@
         "type": "OPTA_CLUB_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 65.00442676300544,
-          "draw": 17.612206355377822,
-          "away": 17.38336688161673
+          "home": 65.00406715680506,
+          "draw": 17.6122072858935,
+          "away": 17.383725557301442
         },
         "samples": [
           null,
@@ -27181,8 +27181,8 @@
           "initialDomesticPriorApplied": false
         },
         "estimatedInitialRating": false,
-        "cutoff": "2026-11-24T16:41:54.567Z",
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25T00:00:00.000Z",
+        "asOf": "2026-11-25T19:11:35.131Z",
         "ratingsAvailableAt": "2026-11-19T18:32:38.023Z",
         "providerPublishedAt": null,
         "statisticallyValidated": false,
@@ -27226,322 +27226,322 @@
         {
           "home": 0,
           "away": 0,
-          "probability": 0.036201887942211436
+          "probability": 0.03633526794181771
         },
         {
           "home": 0,
           "away": 1,
-          "probability": 0.03973477044617377
+          "probability": 0.04001344443937728
         },
         {
           "home": 0,
           "away": 2,
-          "probability": 0.02384086226770426
+          "probability": 0.02380799944142948
         },
         {
           "home": 0,
           "away": 3,
-          "probability": 0.009536344907081705
+          "probability": 0.009443839778433693
         },
         {
           "home": 0,
           "away": 4,
-          "probability": 0.0028609034721245115
+          "probability": 0.0028095423340840234
         },
         {
           "home": 0,
           "away": 5,
-          "probability": 0.0006866168333098827
+          "probability": 0.0006686710755119974
         },
         {
           "home": 0,
           "away": 6,
-          "probability": 0.0001373233666619765
+          "probability": 0.0001326197633098795
         },
         {
           "home": 0,
           "away": 7,
-          "probability": 0.000023541148570624547
+          "probability": 0.000022545359762679508
         },
         {
           "home": 1,
           "away": 0,
-          "probability": 0.10652873723720319
+          "probability": 0.10619260577748366
         },
         {
           "home": 1,
           "away": 1,
-          "probability": 0.08123703654232246
+          "probability": 0.08128926143943459
         },
         {
           "home": 1,
           "away": 2,
-          "probability": 0.04458241244060697
+          "probability": 0.04475903894988741
         },
         {
           "home": 1,
           "away": 3,
-          "probability": 0.017832964976242788
+          "probability": 0.017754418783455343
         },
         {
           "home": 1,
           "away": 4,
-          "probability": 0.005349889492872836
+          "probability": 0.005281939588077963
         },
         {
           "home": 1,
           "away": 5,
-          "probability": 0.0012839734782894806
+          "probability": 0.0012571016219625549
         },
         {
           "home": 1,
           "away": 6,
-          "probability": 0.0002567946956578961
+          "probability": 0.00024932515502257345
         },
         {
           "home": 1,
           "away": 7,
-          "probability": 0.0000440219478270679
+          "probability": 0.00004238527635383748
         },
         {
           "home": 2,
           "away": 0,
-          "probability": 0.09960436931678499
+          "probability": 0.09982104943083464
         },
         {
           "home": 2,
           "away": 1,
-          "probability": 0.11952524318014197
+          "probability": 0.11878704882269323
         },
         {
           "home": 2,
           "away": 2,
-          "probability": 0.045573977500242904
+          "probability": 0.04546508392307576
         },
         {
           "home": 2,
           "away": 3,
-          "probability": 0.01667382225278701
+          "probability": 0.01668915365644802
         },
         {
           "home": 2,
           "away": 4,
-          "probability": 0.005002146675836101
+          "probability": 0.004965023212793285
         },
         {
           "home": 2,
           "away": 5,
-          "probability": 0.0012005152022006645
+          "probability": 0.0011816755246448014
         },
         {
           "home": 2,
           "away": 6,
-          "probability": 0.0002401030404401329
+          "probability": 0.000234365645721219
         },
         {
           "home": 2,
           "away": 7,
-          "probability": 0.000041160521218308496
+          "probability": 0.00003984215977260723
         },
         {
           "home": 3,
           "away": 0,
-          "probability": 0.06208672354079598
+          "probability": 0.0625545243099897
         },
         {
           "home": 3,
           "away": 1,
-          "probability": 0.07450406824895517
+          "probability": 0.07443988392888774
         },
         {
           "home": 3,
           "away": 2,
-          "probability": 0.044702440949373104
+          "probability": 0.044291730937688206
         },
         {
           "home": 3,
           "away": 3,
-          "probability": 0.011363111723393897
+          "probability": 0.01130160952807834
         },
         {
           "home": 3,
           "away": 4,
-          "probability": 0.00311800476127117
+          "probability": 0.0031114145466837923
         },
         {
           "home": 3,
           "away": 5,
-          "probability": 0.000748321142705081
+          "probability": 0.0007405166621107421
         },
         {
           "home": 3,
           "away": 6,
-          "probability": 0.00014966422854101617
+          "probability": 0.00014686913798529723
         },
         {
           "home": 3,
           "away": 7,
-          "probability": 0.00002565672489274563
+          "probability": 0.00002496775345750053
         },
         {
           "home": 4,
           "away": 0,
-          "probability": 0.029025543255322125
+          "probability": 0.029400626425695155
         },
         {
           "home": 4,
           "away": 1,
-          "probability": 0.034830651906386546
+          "probability": 0.03498674544657723
         },
         {
           "home": 4,
           "away": 2,
-          "probability": 0.02089839114383193
+          "probability": 0.02081711354071345
         },
         {
           "home": 4,
           "away": 3,
-          "probability": 0.00835935645753277
+          "probability": 0.008257455037816337
         },
         {
           "home": 4,
           "away": 4,
-          "probability": 0.0015936764192059942
+          "probability": 0.001580247552263554
         },
         {
           "home": 4,
           "away": 5,
-          "probability": 0.0003498401342146254
+          "probability": 0.00034804283119204885
         },
         {
           "home": 4,
           "away": 6,
-          "probability": 0.00006996802684292509
+          "probability": 0.00006902849485308969
         },
         {
           "home": 4,
           "away": 7,
-          "probability": 0.000011994518887358586
+          "probability": 0.000011734844125025248
         },
         {
           "home": 5,
           "away": 0,
-          "probability": 0.010855553177490474
+          "probability": 0.011054635536061378
         },
         {
           "home": 5,
           "away": 1,
-          "probability": 0.013026663812988568
+          "probability": 0.013155016287913037
         },
         {
           "home": 5,
           "away": 2,
-          "probability": 0.007815998287793141
+          "probability": 0.00782723469130826
         },
         {
           "home": 5,
           "away": 3,
-          "probability": 0.003126399315117256
+          "probability": 0.003104803094218943
         },
         {
           "home": 5,
           "away": 4,
-          "probability": 0.0009379197945351766
+          "probability": 0.0009236789205301354
         },
         {
           "home": 5,
           "away": 5,
-          "probability": 0.00014304839538793
+          "probability": 0.00014141319295696086
         },
         {
           "home": 5,
           "away": 6,
-          "probability": 0.000026168042039253972
+          "probability": 0.00002595471406476172
         },
         {
           "home": 5,
           "away": 7,
-          "probability": 0.000004485950063872111
+          "probability": 0.0000044123013910094924
         },
         {
           "home": 6,
           "away": 0,
-          "probability": 0.003383314073651198
+          "probability": 0.0034637858012992314
         },
         {
           "home": 6,
           "away": 1,
-          "probability": 0.004059976888381438
+          "probability": 0.004121905103546085
         },
         {
           "home": 6,
           "away": 2,
-          "probability": 0.0024359861330288625
+          "probability": 0.0024525335366099204
         },
         {
           "home": 6,
           "away": 3,
-          "probability": 0.0009743944532115449
+          "probability": 0.0009728383028552688
         },
         {
           "home": 6,
           "away": 4,
-          "probability": 0.00029231833596346345
+          "probability": 0.00028941939509944244
         },
         {
           "home": 6,
           "away": 5,
-          "probability": 0.00007015640063123123
+          "probability": 0.00006888181603366727
         },
         {
           "home": 6,
           "away": 6,
-          "probability": 0.000008916683312514306
+          "probability": 0.000008788044313425357
         },
         {
           "home": 6,
           "away": 7,
-          "probability": 0.0000013981211032401408
+          "probability": 0.0000013825211025163079
         },
         {
           "home": 7,
           "away": 0,
-          "probability": 0.00090382818824682
+          "probability": 0.0009302739009203651
         },
         {
           "home": 7,
           "away": 1,
-          "probability": 0.001084593825896184
+          "probability": 0.0011070259420952345
         },
         {
           "home": 7,
           "away": 2,
-          "probability": 0.0006507562955377104
+          "probability": 0.0006586804355466644
         },
         {
           "home": 7,
           "away": 3,
-          "probability": 0.00026030251821508414
+          "probability": 0.00026127657276684357
         },
         {
           "home": 7,
           "away": 4,
-          "probability": 0.00007809075546452524
+          "probability": 0.00007772978039813595
         },
         {
           "home": 7,
           "away": 5,
-          "probability": 0.000018741781311486062
+          "probability": 0.00001849968773475635
         },
         {
           "home": 7,
           "away": 6,
-          "probability": 0.000003748356262297211
+          "probability": 0.00000366910473406001
         },
         {
           "home": 7,
           "away": 7,
-          "probability": 4.083477010873899e-7
+          "probability": 4.0123699465296337e-7
         }
       ],
       "matchProjection": {
@@ -27555,11 +27555,11 @@
           "dataStatus": "venue-history"
         },
         "shotsOnTarget": {
-          "min": 7,
-          "central": 10.4,
-          "max": 14,
+          "min": 8,
+          "central": 11.1,
+          "max": 15,
           "interval": "p20-p80-independent",
-          "sd": 3.33,
+          "sd": 3.52,
           "sampleSize": 53,
           "dataStatus": "venue-history"
         },
@@ -27598,7 +27598,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25",
         "teamIds": [
           "paris-saint-germain",
           "roma"
@@ -27611,9 +27611,9 @@
         "marketUsedForGoals": false
       },
       "inputSnapshot": {
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "asOf": "2026-11-25T19:11:35.131Z",
         "sha256": {
-          "data/sources/champions-probable-formations-md05-2026-27.json": "3f299ee3442e4a748869d72c8c9d590706dc9a2b2724aadedc3c560473f1a422",
+          "data/sources/champions-official-formations-md05-2026-27.json": "bc76ecf98def9c8a155109314dbe006c2b48b42f053ff2eccd1844e6f1cc2a60",
           "data/normalized/odds/sisal/champions-league.json": "019fa89bc0994162d7d8ab816e687bcbd1fdd8f48a09fe702f982ca92ac0aa22",
           "data/sources/champions-pilot-match-stats-2025-27.json": "97c042722a6ff780a4b78db808aedc1dbd4c2f07b001b857d63a4ca254596fb2",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
@@ -27621,7 +27621,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 65.00442676300544,
+        "probabilityPct": 65.00406715680506,
         "label": "Paris Saint-Germain",
         "status": "PRELIMINARY"
       }
@@ -27637,16 +27637,16 @@
       "pipeline": "SHARED_SERIE_A_SCENARIO",
       "status": "preliminary",
       "expectedGoals": {
-        "home": 2.07,
-        "away": 1.2,
-        "total": 3.26,
+        "home": 2.08,
+        "away": 1.21,
+        "total": 3.29,
         "method": "Distribuzione dei punteggi condizionata al rating europeo; forma dei punteggi da attacco/difesa, matchup e xGOT. Stima sperimentale non validata.",
         "components": {
           "home": {
             "attackStrength": 1.498,
             "defenceWeakness": 0.747,
             "lineup": {
-              "attack": 1.03,
+              "attack": 1.026,
               "defenceWeakness": 0.979,
               "resolved": 11,
               "status": "usable"
@@ -27656,8 +27656,8 @@
             "attackStrength": 1.096,
             "defenceWeakness": 1.03,
             "lineup": {
-              "attack": 0.996,
-              "defenceWeakness": 0.98,
+              "attack": 1.001,
+              "defenceWeakness": 0.991,
               "resolved": 11,
               "status": "usable"
             }
@@ -27757,7 +27757,7 @@
             "variant": "execution",
             "applied": true,
             "unadjusted": {
-              "home": 2.39,
+              "home": 2.41,
               "away": 1
             }
           },
@@ -27774,35 +27774,35 @@
             "method": "minimum-relative-entropy-outcome-conditioning-v1",
             "statisticallyValidated": false,
             "baseline": {
-              "home": 2.39,
-              "away": 0.99,
-              "total": 3.38
+              "home": 2.41,
+              "away": 1,
+              "total": 3.41
             },
             "baselineProbabilities": [
-              0.6826599245959939,
-              0.17740775088989433,
-              0.13993232451411147
+              0.6839021894710191,
+              0.1762338254811866,
+              0.13986398504779415
             ],
             "targetProbabilities": [
-              0.5386862791958561,
-              0.19817419822548377,
-              0.26313952257866013
+              0.5357927507642765,
+              0.1982847296441923,
+              0.26592251959153124
             ]
           }
         }
       },
       "probabilities": {
-        "home": 53.86862791958561,
-        "draw": 19.817419822548377,
-        "away": 26.313952257866013
+        "home": 53.57927507642765,
+        "draw": 19.82847296441923,
+        "away": 26.592251959153124
       },
       "scoreForecast": {
         "primary": {
           "score": "2-0",
           "outcome": "1",
           "label": "Risultato centrale · esito prevalente",
-          "probabilityPct": 7.7,
-          "conditionalProbabilityPct": 14.3
+          "probabilityPct": 7.5,
+          "conditionalProbabilityPct": 14.1
         },
         "alternatives": [
           {
@@ -27810,14 +27810,14 @@
             "outcome": "X",
             "label": "Alternativa",
             "probabilityPct": 9,
-            "conditionalProbabilityPct": 45.6
+            "conditionalProbabilityPct": 45.3
           },
           {
-            "score": "2-1",
-            "outcome": "1",
+            "score": "1-2",
+            "outcome": "2",
             "label": "Alternativa",
             "probabilityPct": 7.6,
-            "conditionalProbabilityPct": 14.1
+            "conditionalProbabilityPct": 28.6
           }
         ],
         "display": [
@@ -27825,22 +27825,22 @@
             "score": "2-0",
             "outcome": "1",
             "label": "Risultato centrale · esito prevalente",
-            "probabilityPct": 7.7,
-            "conditionalProbabilityPct": 14.3
+            "probabilityPct": 7.5,
+            "conditionalProbabilityPct": 14.1
           },
           {
             "score": "1-1",
             "outcome": "X",
             "label": "Alternativa",
             "probabilityPct": 9,
-            "conditionalProbabilityPct": 45.6
+            "conditionalProbabilityPct": 45.3
           },
           {
-            "score": "2-1",
-            "outcome": "1",
+            "score": "1-2",
+            "outcome": "2",
             "label": "Alternativa",
             "probabilityPct": 7.6,
-            "conditionalProbabilityPct": 14.1
+            "conditionalProbabilityPct": 28.6
           }
         ],
         "coherentWithVerdict": true,
@@ -27854,7 +27854,7 @@
         "value": 65,
         "level": "medio",
         "upsetOutcome": "2",
-        "upsetProbabilityPct": 26.3,
+        "upsetProbabilityPct": 26.6,
         "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "teamProjections": [
@@ -27989,7 +27989,7 @@
             "central": 2.2,
             "max": 3.1
           },
-          "expectedGoals": 2.07,
+          "expectedGoals": 2.08,
           "basis": "Volumi prodotti e concessi per sede, normalizzati per campionato, e ultime otto gare. Intervallo p20–p80.",
           "europeanDiscipline": {
             "cards": {
@@ -28000,7 +28000,7 @@
                 10,
                 3
               ],
-              "factor": 1.0398154284469436,
+              "factor": 1.0412427142143765,
               "statisticallyValidated": false,
               "conditionalRates": [
                 1.724561403508772,
@@ -28017,7 +28017,7 @@
                 10,
                 3
               ],
-              "factor": 1.0037690187015804,
+              "factor": 1.0039380623565586,
               "statisticallyValidated": false,
               "conditionalRates": [
                 11.843859649122807,
@@ -28042,7 +28042,7 @@
             "central": 13.2,
             "max": 17,
             "interval": "p20-p80",
-            "sd": 6.68,
+            "sd": 6.67,
             "sampleSize": 55,
             "dataStatus": "venue-history",
             "inputs": [
@@ -28151,7 +28151,7 @@
           },
           "fouls": {
             "min": 7.8,
-            "central": 10.4,
+            "central": 10.3,
             "max": 13.7
           },
           "cards": {
@@ -28159,7 +28159,7 @@
             "central": 1.7,
             "max": 2.9
           },
-          "expectedGoals": 1.2,
+          "expectedGoals": 1.21,
           "basis": "Volumi prodotti e concessi per sede, normalizzati per campionato, e ultime otto gare. Intervallo p20–p80.",
           "europeanDiscipline": {
             "cards": {
@@ -28170,7 +28170,7 @@
                 16,
                 11
               ],
-              "factor": 0.9792294897937044,
+              "factor": 0.9785810228364625,
               "statisticallyValidated": false,
               "conditionalRates": [
                 1.7175925925925926,
@@ -28187,7 +28187,7 @@
                 16,
                 11
               ],
-              "factor": 0.9765317599723713,
+              "factor": 0.9758493943862099,
               "statisticallyValidated": false,
               "conditionalRates": [
                 10.208333333333334,
@@ -28262,9 +28262,9 @@
         "type": "OPTA_CLUB_RATING_RESULT",
         "status": "PRELIMINARY",
         "probabilities": {
-          "home": 53.86862791958561,
-          "draw": 19.817419822548377,
-          "away": 26.313952257866013
+          "home": 53.57927507642765,
+          "draw": 19.82847296441923,
+          "away": 26.592251959153124
         },
         "samples": [
           null,
@@ -28301,8 +28301,8 @@
           "initialDomesticPriorApplied": false
         },
         "estimatedInitialRating": false,
-        "cutoff": "2026-11-24T16:41:54.567Z",
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25T00:00:00.000Z",
+        "asOf": "2026-11-25T19:11:35.131Z",
         "ratingsAvailableAt": "2026-11-19T18:32:38.023Z",
         "providerPublishedAt": null,
         "statisticallyValidated": false,
@@ -28346,322 +28346,322 @@
         {
           "home": 0,
           "away": 0,
-          "probability": 0.038157512463172984
+          "probability": 0.03730344649539463
         },
         {
           "home": 0,
           "away": 1,
-          "probability": 0.06359291949022297
+          "probability": 0.0630373831842513
         },
         {
           "home": 0,
           "away": 2,
-          "probability": 0.03147849514766038
+          "probability": 0.03151869159212565
         },
         {
           "home": 0,
           "away": 3,
-          "probability": 0.010387903398727926
+          "probability": 0.010506230530708548
         },
         {
           "home": 0,
           "away": 4,
-          "probability": 0.0025710060911851617
+          "probability": 0.002626557632677137
         },
         {
           "home": 0,
           "away": 5,
-          "probability": 0.0005090592060546618
+          "probability": 0.0005253115265354274
         },
         {
           "home": 0,
           "away": 6,
-          "probability": 0.0000839947689990192
+          "probability": 0.0000875519210892379
         },
         {
           "home": 0,
           "away": 7,
-          "probability": 0.000011879260187004145
+          "probability": 0.000012507417298462559
         },
         {
           "home": 1,
           "away": 0,
-          "probability": 0.06442210945806852
+          "probability": 0.06259920810130548
         },
         {
           "home": 1,
           "away": 1,
-          "probability": 0.09028449023911361
+          "probability": 0.08990130605390108
         },
         {
           "home": 1,
           "away": 2,
-          "probability": 0.07523360340290831
+          "probability": 0.07596004673702282
         },
         {
           "home": 1,
           "away": 3,
-          "probability": 0.024827089122959743
+          "probability": 0.02532001557900761
         },
         {
           "home": 1,
           "away": 4,
-          "probability": 0.006144704557932535
+          "probability": 0.006330003894751903
         },
         {
           "home": 1,
           "away": 5,
-          "probability": 0.001216651502470642
+          "probability": 0.0012660007789503805
         },
         {
           "home": 1,
           "away": 6,
-          "probability": 0.00020074749790765592
+          "probability": 0.00021100012982506338
         },
         {
           "home": 1,
           "away": 7,
-          "probability": 0.00002839143184693991
+          "probability": 0.00003014287568929477
         },
         {
           "home": 2,
           "away": 0,
-          "probability": 0.07698442080239189
+          "probability": 0.0754320457620731
         },
         {
           "home": 2,
           "away": 1,
-          "probability": 0.07621457659436798
+          "probability": 0.0754320457620731
         },
         {
           "home": 2,
           "away": 2,
-          "probability": 0.05340553308869168
+          "probability": 0.0541655368974754
         },
         {
           "home": 2,
           "away": 3,
-          "probability": 0.02966837150193689
+          "probability": 0.030510618772704168
         },
         {
           "home": 2,
           "away": 4,
-          "probability": 0.007342921946729381
+          "probability": 0.007627654693176042
         },
         {
           "home": 2,
           "away": 5,
-          "probability": 0.0014538985454524173
+          "probability": 0.0015255309386352086
         },
         {
           "home": 2,
           "away": 6,
-          "probability": 0.00023989325999964882
+          "probability": 0.0002542551564392014
         },
         {
           "home": 2,
           "away": 7,
-          "probability": 0.00003392776105709319
+          "probability": 0.0000363221652056002
         },
         {
           "home": 3,
           "away": 0,
-          "probability": 0.06133092190590556
+          "probability": 0.06059707676219873
         },
         {
           "home": 3,
           "away": 1,
-          "probability": 0.06071761268684651
+          "probability": 0.06059707676219873
         },
         {
           "home": 3,
           "away": 2,
-          "probability": 0.030055218279989023
+          "probability": 0.030298538381099364
         },
         {
           "home": 3,
           "away": 3,
-          "probability": 0.014040314649017047
+          "probability": 0.014504327102546191
         },
         {
           "home": 3,
           "away": 4,
-          "probability": 0.0058498611508944085
+          "probability": 0.006127549270184754
         },
         {
           "home": 3,
           "away": 5,
-          "probability": 0.0011582725078770925
+          "probability": 0.0012255098540369508
         },
         {
           "home": 3,
           "away": 6,
-          "probability": 0.00019111496379972025
+          "probability": 0.00020425164233949178
         },
         {
           "home": 3,
           "away": 7,
-          "probability": 0.000027029116308817583
+          "probability": 0.000029178806048498832
         },
         {
           "home": 4,
           "away": 0,
-          "probability": 0.03664522583877857
+          "probability": 0.03650973874922473
         },
         {
           "home": 4,
           "away": 1,
-          "probability": 0.036278773580390784
+          "probability": 0.03650973874922473
         },
         {
           "home": 4,
           "away": 2,
-          "probability": 0.017957992922293442
+          "probability": 0.018254869374612365
         },
         {
           "home": 4,
           "away": 3,
-          "probability": 0.005926137664356835
+          "probability": 0.006084956458204122
         },
         {
           "home": 4,
           "away": 4,
-          "probability": 0.002076299280689952
+          "probability": 0.00218471426982102
         },
         {
           "home": 4,
           "away": 5,
-          "probability": 0.0006920678234565629
+          "probability": 0.000738369687057263
         },
         {
           "home": 4,
           "away": 6,
-          "probability": 0.00011419119087033286
+          "probability": 0.0001230616145095438
         },
         {
           "home": 4,
           "away": 7,
-          "probability": 0.00001614989699451851
+          "probability": 0.000017580230644220544
         },
         {
           "home": 5,
           "away": 0,
-          "probability": 0.017516417950936152
+          "probability": 0.017597694077126323
         },
         {
           "home": 5,
           "away": 1,
-          "probability": 0.01734125377142679
+          "probability": 0.017597694077126323
         },
         {
           "home": 5,
           "away": 2,
-          "probability": 0.008583920616856264
+          "probability": 0.008798847038563162
         },
         {
           "home": 5,
           "away": 3,
-          "probability": 0.002832693803562567
+          "probability": 0.002932949012854387
         },
         {
           "home": 5,
           "away": 4,
-          "probability": 0.0007010917163817352
+          "probability": 0.0007332372532135968
         },
         {
           "home": 5,
           "away": 5,
-          "probability": 0.00019650926912161978
+          "probability": 0.00021060645561074638
         },
         {
           "home": 5,
           "away": 6,
-          "probability": 0.000054583389236019097
+          "probability": 0.00005931569819360012
         },
         {
           "home": 5,
           "away": 7,
-          "probability": 0.000007719650763379844
+          "probability": 0.000008473671170514304
         },
         {
           "home": 6,
           "away": 0,
-          "probability": 0.006977373150456236
+          "probability": 0.007068407120979074
         },
         {
           "home": 6,
           "away": 1,
-          "probability": 0.006907599418951672
+          "probability": 0.007068407120979074
         },
         {
           "home": 6,
           "away": 2,
-          "probability": 0.0034192617123810784
+          "probability": 0.003534203560489537
         },
         {
           "home": 6,
           "away": 3,
-          "probability": 0.0011283563650857557
+          "probability": 0.0011780678534965123
         },
         {
           "home": 6,
           "away": 4,
-          "probability": 0.0002792682003587246
+          "probability": 0.00029451696337412807
         },
         {
           "home": 6,
           "away": 5,
-          "probability": 0.000055295103671027456
+          "probability": 0.0000589033926748256
         },
         {
           "home": 6,
           "away": 6,
-          "probability": 0.000012915571713018462
+          "probability": 0.000014098932167274964
         },
         {
           "home": 6,
           "away": 7,
-          "probability": 0.0000030749942207463055
+          "probability": 0.000003403591253489912
         },
         {
           "home": 7,
           "away": 0,
-          "probability": 0.0023822745470843433
+          "probability": 0.0024335515945085096
         },
         {
           "home": 7,
           "away": 1,
-          "probability": 0.0023584518016135
+          "probability": 0.0024335515945085096
         },
         {
           "home": 7,
           "away": 2,
-          "probability": 0.0011674336417986826
+          "probability": 0.0012167757972542548
         },
         {
           "home": 7,
           "away": 3,
-          "probability": 0.00038525310179356523
+          "probability": 0.000405591932418085
         },
         {
           "home": 7,
           "away": 4,
-          "probability": 0.0000953501426939074
+          "probability": 0.00010139798310452124
         },
         {
           "home": 7,
           "away": 5,
-          "probability": 0.00001887932825339366
+          "probability": 0.000020279596620904248
         },
         {
           "home": 7,
           "away": 6,
-          "probability": 0.000003115089161809954
+          "probability": 0.0000033799327701507076
         },
         {
           "home": 7,
           "away": 7,
-          "probability": 6.236639638810812e-7
+          "probability": 6.934372759822994e-7
         }
       ],
       "matchProjection": {
@@ -28670,7 +28670,7 @@
           "central": 29.4,
           "max": 37,
           "interval": "p20-p80-independent",
-          "sd": 8.83,
+          "sd": 8.82,
           "sampleSize": 55,
           "dataStatus": "venue-history"
         },
@@ -28718,7 +28718,7 @@
         ]
       },
       "provenance": {
-        "cutoff": "2026-11-24T16:41:54.567Z",
+        "cutoff": "2026-11-25",
         "teamIds": [
           "sporting-cp",
           "manchester-united"
@@ -28731,9 +28731,9 @@
         "marketUsedForGoals": false
       },
       "inputSnapshot": {
-        "asOf": "2026-11-24T16:41:54.567Z",
+        "asOf": "2026-11-25T19:11:35.131Z",
         "sha256": {
-          "data/sources/champions-probable-formations-md05-2026-27.json": "3f299ee3442e4a748869d72c8c9d590706dc9a2b2724aadedc3c560473f1a422",
+          "data/sources/champions-official-formations-md05-2026-27.json": "bc76ecf98def9c8a155109314dbe006c2b48b42f053ff2eccd1844e6f1cc2a60",
           "data/normalized/odds/sisal/champions-league.json": "019fa89bc0994162d7d8ab816e687bcbd1fdd8f48a09fe702f982ca92ac0aa22",
           "data/sources/champions-pilot-match-stats-2025-27.json": "97c042722a6ff780a4b78db808aedc1dbd4c2f07b001b857d63a4ca254596fb2",
           "data/normalized/team-style-profiles.json": "2238e368d4117cd2dbb16f944d4b3a1b40a802ca17698701fb53eff79595e5d8"
@@ -28741,7 +28741,7 @@
       },
       "verdict": {
         "outcome": "1",
-        "probabilityPct": 53.86862791958561,
+        "probabilityPct": 53.57927507642765,
         "label": "Sporting CP",
         "status": "PRELIMINARY"
       }

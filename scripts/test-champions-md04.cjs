@@ -85,7 +85,8 @@ async function test(){
    assert(match.selections.filter(l=>l.marketScope==='player').every(l=>policy.eligible(l)));
    const sample=structuredClone(match.selections.find(l=>l.marketScope==='player')||out.marketCatalog.matches.flatMap(m=>m.selections).find(l=>l.marketScope==='player'));
    sample.matchId=f.fixtureId;sample.betSelection.identity.matchId=f.fixtureId;
-   const bench=f.teams.flatMap(t=>t.players).find(p=>p.projectedRole==='bench');
+   const bench=f.teams.flatMap(t=>t.players).find(p=>p.projectedRole==='bench'&&p.playerId);
+   assert(bench,'A resolved bench identity is required for the saved-selection regression');
    sample.playerId=bench.playerId;sample.playerName=bench.canonicalName;
    sample.player={canonicalPlayerId:bench.playerId,canonicalName:bench.canonicalName};
    sample.betSelection.identity.canonicalPlayerIds=[bench.playerId];sample.betSelection.market.subject={type:'player',id:bench.playerId,name:bench.canonicalName};
