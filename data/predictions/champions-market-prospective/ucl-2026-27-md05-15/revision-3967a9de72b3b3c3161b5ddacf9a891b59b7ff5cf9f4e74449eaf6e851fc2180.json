@@ -1,0 +1,2950 @@
+{
+  "schemaVersion": 1,
+  "protocol": "CHAMPIONS_MARKET_PROSPECTIVE_V1",
+  "competition": "champions",
+  "fixtureId": "ucl-2026-27-md05-15",
+  "kickoffAt": "2026-11-25T20:00:00.000Z",
+  "createdAt": "2026-11-24T17:19:41.645Z",
+  "evaluationWindow": "test",
+  "chronologyStatus": "VALID_PREMATCH_SNAPSHOT",
+  "availabilityProof": "LOCAL_CAPTURE_BEFORE_KICKOFF_NOT_EXTERNAL_TIMESTAMP_AUTHORITY",
+  "universe": "ALL_PUBLISHED_CATALOG_EVENTS_WITH_ORIGINAL_PROBABILITY_SELECTED_FLAG_RETAINED",
+  "receipts": {
+    "data/normalized/champions-league-2026-27.json": "7ecf3c5a45518c6ed46cc648dcb643a48095dcb3b35347bb5af9494dbbc0b868",
+    "data/normalized/schedina-champions-md05.json": "223f121332041cb148f23804464565bb8df4bbdc2820bc899ac360815fcf8a1a",
+    "data/generated/champions-shared-scenarios.json": "05f377ca0a09265891d523f2251d1ff27c648e0d4b924c5897e3e8eba9d13d9d",
+    "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+    "data/sources/champions-pilot-match-stats-2025-27.json": "97c042722a6ff780a4b78db808aedc1dbd4c2f07b001b857d63a4ca254596fb2",
+    "scripts/predictions/engine.js": "f5b1367456edbceb25b9ca67282301084de74d57d332424c3a1e52962efa1321",
+    "scripts/md06-statistical-models.js": "f10e3c67a3ffe230bb640bab8ca6a70b35934eed9dd2d8added1060c296377d9",
+    "scripts/champions/shared-scenario.cjs": "8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+    "scripts/champions/market-prospective.cjs": "2cd90e24220993f761a851a62272de171a37786326d572e90aacc6f72e665c1d",
+    "scripts/champions/md04-team-volume-markets.cjs": "29dee6de1b6f465dd0a94f4f64781644cb7e14ea2636590c9302b4f49d6d687b",
+    "scripts/champions/event-validation.cjs": "8c980c1780025d52a21b074c37e6ebc2d5119a248fec2a00cacff155d054f917",
+    "scripts/champions/european-result-policy.cjs": "507a51cadb0fd1337d47e22b203bddf8ab470e06b5d480c7d42aa382ed6b87c5",
+    "scripts/research/european-rating-model.cjs": "f9ced2ddfd1b79311f706e414679faa104d5875df9fbbd18df0de27fa7bafbdd",
+    "data/sources/champions-european-result-policy.json": "e28ff65d0700f67b7f84fc10020a469de097d0c5d47d0a76e2c6275808156a0d",
+    "data/sources/champions-team-history-map-2026-27.json": "6ffe8b6e9fff14511415ba6e31457c3ebbd30b84ab2f0d4b569a94fe61ae482e",
+    "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8"
+  },
+  "events": [
+    {
+      "eventId": "[\"[\\\"champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1\"]:",
+      "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "1",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.4498843429575898,
+      "baselineProbability": 0.4970178926441352,
+      "baseline": {
+        "probability": 0.4970178926441352,
+        "n": 503,
+        "positives": 250,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834039778:5442255724"
+      ],
+      "quote": {
+        "decimal": 2.75,
+        "oddsRaw": 275,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "1X2 ESITO FINALE",
+        "code": "3",
+        "variant": "ESITO FINALE 1X2",
+        "threshold": null,
+        "selection": "1",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "1",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY_EUROPEAN_RESULT",
+        "modelProbabilityPct": 44.98843429575898,
+        "prudentProbabilityPct": null,
+        "fairOdds": 2.2227935149418374,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "EUROPEAN_RESULT_VALIDATION_PENDING",
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969"
+        },
+        "provenance": {
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+          "modelTarget": "1x2:1",
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15"
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X\"]:",
+      "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.2053881771948877,
+      "baselineProbability": 0.1749502982107356,
+      "baseline": {
+        "probability": 0.1749502982107356,
+        "n": 503,
+        "positives": 88,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834039778:5442255725"
+      ],
+      "quote": {
+        "decimal": 3.4,
+        "oddsRaw": 340,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "1X2 ESITO FINALE",
+        "code": "3",
+        "variant": "ESITO FINALE 1X2",
+        "threshold": null,
+        "selection": "X",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "X",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY_EUROPEAN_RESULT",
+        "modelProbabilityPct": 20.53881771948877,
+        "prudentProbabilityPct": null,
+        "fairOdds": 4.868829421720439,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "EUROPEAN_RESULT_VALIDATION_PENDING",
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969"
+        },
+        "provenance": {
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+          "modelTarget": "1x2:X",
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15"
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"2\"]:",
+      "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.34472747984752244,
+      "baselineProbability": 0.32803180914512925,
+      "baseline": {
+        "probability": 0.32803180914512925,
+        "n": 503,
+        "positives": 165,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834039778:5442255726"
+      ],
+      "quote": {
+        "decimal": 2.5,
+        "oddsRaw": 250,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "1X2 ESITO FINALE",
+        "code": "3",
+        "variant": "ESITO FINALE 1X2",
+        "threshold": null,
+        "selection": "2",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "2",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY_EUROPEAN_RESULT",
+        "modelProbabilityPct": 34.472747984752246,
+        "prudentProbabilityPct": null,
+        "fairOdds": 2.9008421389623864,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "EUROPEAN_RESULT_VALIDATION_PENDING",
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969"
+        },
+        "provenance": {
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+          "modelTarget": "1x2:2",
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15"
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1X\"]:",
+      "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "1X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.6552725201524774,
+      "baselineProbability": 0.6719681908548708,
+      "baseline": {
+        "probability": 0.6719681908548708,
+        "n": 503,
+        "positives": 338,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": true,
+      "selectionIds": [
+        "sisal:4947788:834040275:5442264246"
+      ],
+      "quote": {
+        "decimal": 1.5,
+        "oddsRaw": 150,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "DOPPIA CHANCE",
+        "code": "28319",
+        "variant": "DOPPIA CHANCE MULTIESITI",
+        "threshold": null,
+        "selection": "1X",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "1X",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY_EUROPEAN_RESULT",
+        "modelProbabilityPct": 65.52725201524774,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.5260826133336203,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "EUROPEAN_RESULT_VALIDATION_PENDING",
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969"
+        },
+        "provenance": {
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+          "modelTarget": "double-chance:1X",
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15"
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"12\"]:",
+      "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "12",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.7946118228051122,
+      "baselineProbability": 0.8250497017892644,
+      "baseline": {
+        "probability": 0.8250497017892644,
+        "n": 503,
+        "positives": 415,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040275:5442264247"
+      ],
+      "quote": {
+        "decimal": 1.28,
+        "oddsRaw": 128,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "DOPPIA CHANCE",
+        "code": "28319",
+        "variant": "DOPPIA CHANCE MULTIESITI",
+        "threshold": null,
+        "selection": "12",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "12",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY_EUROPEAN_RESULT",
+        "modelProbabilityPct": 79.46118228051122,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.258476115381512,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "EUROPEAN_RESULT_VALIDATION_PENDING",
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969"
+        },
+        "provenance": {
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+          "modelTarget": "double-chance:12",
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15"
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X2\"]:",
+      "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "X2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.5501156570424102,
+      "baselineProbability": 0.5029821073558648,
+      "baseline": {
+        "probability": 0.5029821073558648,
+        "n": 503,
+        "positives": 253,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040275:5442264248"
+      ],
+      "quote": {
+        "decimal": 1.45,
+        "oddsRaw": 145,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "DOPPIA CHANCE",
+        "code": "28319",
+        "variant": "DOPPIA CHANCE MULTIESITI",
+        "threshold": null,
+        "selection": "X2",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "X2",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY_EUROPEAN_RESULT",
+        "modelProbabilityPct": 55.011565704241015,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.817799561234642,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "EUROPEAN_RESULT_VALIDATION_PENDING",
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969"
+        },
+        "provenance": {
+          "modelId": "champions-opta-result:9a0e8e54c9cae8570eaaf296d7987121c14fed3e168fe361afb705ec2f037969",
+          "modelTarget": "double-chance:X2",
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15"
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",0.5,\"UNDER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 0.5,
+        "direction": "UNDER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.07074585466931227,
+      "baselineProbability": 0.04771371769383698,
+      "baseline": {
+        "probability": 0.04771371769383698,
+        "n": 503,
+        "positives": 24,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040268:5442264218"
+      ],
+      "quote": {
+        "decimal": 10,
+        "oddsRaw": 1000,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 0.5",
+        "threshold": "0.5",
+        "selection": "UNDER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "UNDER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 7.074585466931227,
+        "fairOdds": 14.135103811725866,
+        "expectedValuePct": -29.25414533068773,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:under:0.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              9.0726,
+              9.2557,
+              8.8933,
+              11.533,
+              7.1373
+            ],
+            "minimumPct": 7.0746,
+            "centralModelDifferencePct": 1.998,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",0.5,\"UNDER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",0.5,\"OVER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.9292541453306878,
+      "baselineProbability": 0.952286282306163,
+      "baseline": {
+        "probability": 0.952286282306163,
+        "n": 503,
+        "positives": 479,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040268:5442264219"
+      ],
+      "quote": {
+        "decimal": 1.02,
+        "oddsRaw": 102,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 0.5",
+        "threshold": "0.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "OVER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 92.92541453306879,
+        "fairOdds": 1.07613186879477,
+        "expectedValuePct": -5.21607717626984,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:over:0.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              90.9274,
+              90.7443,
+              91.1067,
+              88.467,
+              92.8627
+            ],
+            "minimumPct": 88.467,
+            "centralModelDifferencePct": -1.998,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",0.5,\"OVER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",1.5,\"UNDER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 1.5,
+        "direction": "UNDER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.3191762149649219,
+      "baselineProbability": 0.19483101391650098,
+      "baseline": {
+        "probability": 0.19483101391650098,
+        "n": 503,
+        "positives": 98,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040266:5442264210"
+      ],
+      "quote": {
+        "decimal": 4,
+        "oddsRaw": 400,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 1.5",
+        "threshold": "1.5",
+        "selection": "UNDER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "UNDER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 31.91762149649219,
+        "fairOdds": 3.133065539078161,
+        "expectedValuePct": 27.670485985968753,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:under:1.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              30.8467,
+              31.2843,
+              30.4152,
+              36.4442,
+              25.9797
+            ],
+            "minimumPct": 25.9797,
+            "centralModelDifferencePct": -1.0709,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",1.5,\"UNDER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",1.5,\"OVER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.6808237850350785,
+      "baselineProbability": 0.805168986083499,
+      "baseline": {
+        "probability": 0.805168986083499,
+        "n": 503,
+        "positives": 405,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040266:5442264211"
+      ],
+      "quote": {
+        "decimal": 1.2,
+        "oddsRaw": 120,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 1.5",
+        "threshold": "1.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "OVER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 68.08237850350784,
+        "fairOdds": 1.4688088488983628,
+        "expectedValuePct": -18.301145795790585,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:over:1.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              69.1533,
+              68.7157,
+              69.5848,
+              63.5558,
+              74.0203
+            ],
+            "minimumPct": 63.5558,
+            "centralModelDifferencePct": 1.0709,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",1.5,\"OVER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",2.5,\"UNDER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 2.5,
+        "direction": "UNDER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.5618148147898263,
+      "baselineProbability": 0.3697813121272366,
+      "baseline": {
+        "probability": 0.3697813121272366,
+        "n": 503,
+        "positives": 186,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040270:5442264226"
+      ],
+      "quote": {
+        "decimal": 2.1,
+        "oddsRaw": 210,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 2.5",
+        "threshold": "2.5",
+        "selection": "UNDER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "UNDER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 56.18148147898263,
+        "fairOdds": 1.7799459424616593,
+        "expectedValuePct": 17.981111105863533,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:under:2.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              56.9757,
+              57.4983,
+              56.4567,
+              63.3484,
+              50.8517
+            ],
+            "minimumPct": 50.8517,
+            "centralModelDifferencePct": 0.7942,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",2.5,\"UNDER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",2.5,\"OVER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.4381851852101736,
+      "baselineProbability": 0.6302186878727635,
+      "baseline": {
+        "probability": 0.6302186878727635,
+        "n": 503,
+        "positives": 317,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040270:5442264227"
+      ],
+      "quote": {
+        "decimal": 1.65,
+        "oddsRaw": 165,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 2.5",
+        "threshold": "2.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "OVER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 43.81851852101736,
+        "fairOdds": 2.282140140179213,
+        "expectedValuePct": -27.699444440321365,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:over:2.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              43.0243,
+              42.5017,
+              43.5433,
+              36.6516,
+              49.1483
+            ],
+            "minimumPct": 36.6516,
+            "centralModelDifferencePct": -0.7942,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",2.5,\"OVER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",3.5,\"UNDER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 3.5,
+        "direction": "UNDER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.7887165542376964,
+      "baselineProbability": 0.584493041749503,
+      "baseline": {
+        "probability": 0.584493041749503,
+        "n": 503,
+        "positives": 294,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040271:5442264230"
+      ],
+      "quote": {
+        "decimal": 1.42,
+        "oddsRaw": 142,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 3.5",
+        "threshold": "3.5",
+        "selection": "UNDER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "UNDER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 78.87165542376964,
+        "fairOdds": 1.2678826057689527,
+        "expectedValuePct": 11.997750701752885,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:under:3.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              77.8789,
+              78.2948,
+              77.4635,
+              82.7193,
+              72.7391
+            ],
+            "minimumPct": 72.7391,
+            "centralModelDifferencePct": -0.9928,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",3.5,\"UNDER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",3.5,\"OVER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 3.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.21128344576230373,
+      "baselineProbability": 0.415506958250497,
+      "baseline": {
+        "probability": 0.415506958250497,
+        "n": 503,
+        "positives": 209,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040271:5442264231"
+      ],
+      "quote": {
+        "decimal": 2.6,
+        "oddsRaw": 260,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 3.5",
+        "threshold": "3.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "OVER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 21.128344576230372,
+        "fairOdds": 4.732978470660742,
+        "expectedValuePct": -45.06630410180102,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:over:3.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              22.1211,
+              21.7052,
+              22.5365,
+              17.2807,
+              27.2609
+            ],
+            "minimumPct": 17.2807,
+            "centralModelDifferencePct": 0.9928,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",3.5,\"OVER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",4.5,\"UNDER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 4.5,
+        "direction": "UNDER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.9050955828534988,
+      "baselineProbability": 0.7495029821073559,
+      "baseline": {
+        "probability": 0.7495029821073559,
+        "n": 503,
+        "positives": 377,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040272:5442264234"
+      ],
+      "quote": {
+        "decimal": 1.14,
+        "oddsRaw": 114,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 4.5",
+        "threshold": "4.5",
+        "selection": "UNDER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "UNDER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 90.50955828534988,
+        "fairOdds": 1.1048556847966218,
+        "expectedValuePct": 3.180896445298842,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:under:4.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              90.4208,
+              90.6686,
+              90.1726,
+              93.1797,
+              87.1848
+            ],
+            "minimumPct": 87.1848,
+            "centralModelDifferencePct": -0.0888,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",4.5,\"UNDER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",4.5,\"OVER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 4.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.09490441714650127,
+      "baselineProbability": 0.2504970178926441,
+      "baseline": {
+        "probability": 0.2504970178926441,
+        "n": 503,
+        "positives": 126,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040272:5442264235"
+      ],
+      "quote": {
+        "decimal": 4.75,
+        "oddsRaw": 475,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 4.5",
+        "threshold": "4.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "OVER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 9.490441714650128,
+        "fairOdds": 10.53691735397656,
+        "expectedValuePct": -54.920401855411896,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:over:4.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              9.5792,
+              9.3314,
+              9.8274,
+              6.8203,
+              12.8152
+            ],
+            "minimumPct": 6.8203,
+            "centralModelDifferencePct": 0.0888,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",4.5,\"OVER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",5.5,\"UNDER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 5.5,
+        "direction": "UNDER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.9672543854507651,
+      "baselineProbability": 0.878727634194831,
+      "baseline": {
+        "probability": 0.878727634194831,
+        "n": 503,
+        "positives": 442,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040267:5442264214"
+      ],
+      "quote": {
+        "decimal": 1.03,
+        "oddsRaw": 103,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 5.5",
+        "threshold": "5.5",
+        "selection": "UNDER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "UNDER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 96.72543854507651,
+        "fairOdds": 1.033854190833133,
+        "expectedValuePct": -0.3727982985711864,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:under:5.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              96.4409,
+              96.5586,
+              96.3238,
+              97.6985,
+              94.8121
+            ],
+            "minimumPct": 94.8121,
+            "centralModelDifferencePct": -0.2846,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",5.5,\"UNDER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",5.5,\"OVER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 5.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.03274561454923498,
+      "baselineProbability": 0.12127236580516898,
+      "baseline": {
+        "probability": 0.12127236580516898,
+        "n": 503,
+        "positives": 61,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040267:5442264215"
+      ],
+      "quote": {
+        "decimal": 9,
+        "oddsRaw": 900,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 5.5",
+        "threshold": "5.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "OVER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 3.2745614549234983,
+        "fairOdds": 30.538440452734225,
+        "expectedValuePct": -70.52894690568851,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:over:5.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              3.5591,
+              3.4414,
+              3.6762,
+              2.3015,
+              5.1879
+            ],
+            "minimumPct": 2.3015,
+            "centralModelDifferencePct": 0.2846,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",5.5,\"OVER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1\\\",\\\"match\\\",\\\"goals\\\",\\\"REGULATION\\\",false,false,false,false]\",6.5,\"OVER\"]:",
+      "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1:adapter:MD04_GOALS_SCORE_OBJECT_V1",
+      "target": {
+        "scope": "match",
+        "metric": "goals",
+        "threshold": 6.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.010980175004038552,
+      "baselineProbability": 0.0536779324055666,
+      "baseline": {
+        "probability": 0.0536779324055666,
+        "n": 503,
+        "positives": 27,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_PRIOR_UCL_90_MINUTE_GOALS"
+      },
+      "mean": 2.4000000000000004,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": false,
+      "selectionIds": [
+        "sisal:4947788:834040273:5442264239"
+      ],
+      "quote": {
+        "decimal": 16,
+        "oddsRaw": 1600,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "UNDER/OVER",
+        "code": "7989",
+        "variant": "U/O 6.5",
+        "threshold": "6.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match",
+          "replacementIncluded": false,
+          "woodworkIncluded": false
+        },
+        "bookmakerSemantics": {
+          "selectionName": "OVER",
+          "modifiers": {
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false
+          }
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "modelProbabilityPct": 1.0980175004038553,
+        "fairOdds": 91.07322967367969,
+        "expectedValuePct": -82.43171999353831,
+        "provenance": {
+          "source": "data/generated/champions-shared-scenarios.json#ucl-2026-27-md05-15",
+          "modelTarget": "goals:over:6.5",
+          "modelVersion": "4.16.0",
+          "adapterVersion": "MD04_GOALS_SCORE_OBJECT_V1"
+        },
+        "prudentProbabilityPct": null,
+        "conservativeExpectedValuePct": null,
+        "uncertaintyDeductionPp": null,
+        "uncertainty": {
+          "status": "SENSITIVITY_ONLY_NOT_CALIBRATED",
+          "sensitivity": {
+            "method": "V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT",
+            "probabilitiesPct": [
+              1.1511,
+              1.105,
+              1.1952,
+              0.6747,
+              1.8319
+            ],
+            "minimumPct": 0.6747,
+            "centralModelDifferencePct": 0.053,
+            "validated": false
+          },
+          "blocker": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion."
+        },
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "competition": "champions",
+          "modelId": "champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1",
+          "eventKey": "[\"[\\\"champions-shared:8864ecba22ca17ff7874d7d11cc165e8f9d7e10e8c241b72bae183c899f20ef1\\\",\\\"match\\\",null,\\\"REGULATION\\\",false,false,false,false]\",6.5,\"OVER\"]",
+          "status": "NOT_EVALUATED",
+          "approvable": false,
+          "required": "Chronological out-of-sample event predictions from this frozen MD3 model, outcomes, calibration and sensitivity coverage; the UEFA Elo backtest does not validate its Poisson conversion.",
+          "reasons": [
+            "MODEL_VERSION_MISMATCH"
+          ],
+          "family": "goals",
+          "evidence": null,
+          "evidenceScope": "UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS",
+          "modelCalibrationStatus": "PRELIMINARY_NOT_STATISTICALLY_VALIDATED",
+          "evidencePaths": [
+            "data/generated/uefa-1x2-backtest.json"
+          ],
+          "calibrationGate": null
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3\\\",\\\"match\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",8.5,\"OVER\"]:",
+      "modelId": "champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3",
+      "target": {
+        "scope": "match",
+        "metric": "corners",
+        "threshold": 8.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.5952994626251337,
+      "baselineProbability": 0.5797665369649806,
+      "baseline": {
+        "probability": 0.5797665369649806,
+        "n": 257,
+        "positives": 149,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": 9.9,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": true,
+      "selectionIds": [
+        "sisal:4947788:841480140:5480518323"
+      ],
+      "quote": {
+        "decimal": 1.57,
+        "oddsRaw": 157,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "U/O CORNER",
+        "code": "975",
+        "variant": "U/O 8.5 CORNER",
+        "threshold": "8.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match"
+        },
+        "bookmakerSemantics": {
+          "duo": false,
+          "substituteIncluded": false,
+          "postsAndCrossbarIncluded": false,
+          "extraTimeIncluded": false,
+          "period": "REGULATION",
+          "variantName": "U/O 8.5 CORNER"
+        },
+        "scope": "match",
+        "subject": {
+          "type": "match",
+          "id": "ucl-2026-27-md05-15"
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "kind": "SHARED_DISCRETE_COUNT_PRELIMINARY",
+        "modelProbabilityPct": 59.52994626251337,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.6798268145417603,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "CHAMPIONS_PROSPECTIVE_VALIDATION_PENDING"
+        },
+        "provenance": {
+          "source": "data/sources/champions-pilot-match-stats-2025-27.json",
+          "model": "scripts/md06-statistical-models.js",
+          "modelTarget": "statistical:corners-match-over:8.5",
+          "projectionSource": "forecastCoverage.teamProjections",
+          "asOf": "2026-11-24T16:41:54.567Z",
+          "historyMatches": 261,
+          "mean": {
+            "home": 5.6,
+            "away": 4.3
+          },
+          "dispersionSize": 6.443336244305682
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3\\\",\\\"team\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",4.5,\"OVER\"]:Shakhtar Donetsk",
+      "modelId": "champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3",
+      "target": {
+        "scope": "team",
+        "metric": "corners",
+        "threshold": 4.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "Shakhtar Donetsk"
+      },
+      "probability": 0.5838543880149222,
+      "baselineProbability": 0.4688715953307393,
+      "baseline": {
+        "probability": 0.4688715953307393,
+        "n": 514,
+        "positives": 241,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": true,
+      "selectionIds": [
+        "sisal:4947788:841480142:5480518327"
+      ],
+      "quote": {
+        "decimal": 1.7,
+        "oddsRaw": 170,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "U/O CORNER SQUADRA X",
+        "code": "23060",
+        "variant": "U/O 4.5 CORNER SQUADRA 1",
+        "threshold": "4.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match"
+        },
+        "bookmakerSemantics": {
+          "duo": false,
+          "substituteIncluded": false,
+          "postsAndCrossbarIncluded": false,
+          "extraTimeIncluded": false,
+          "period": "REGULATION",
+          "variantName": "U/O 4.5 CORNER SQUADRA 1"
+        },
+        "scope": "team",
+        "subject": {
+          "type": "team",
+          "id": "Shakhtar Donetsk",
+          "name": "Shakhtar Donetsk",
+          "teamId": "Shakhtar Donetsk"
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "kind": "SHARED_DISCRETE_COUNT_PRELIMINARY",
+        "modelProbabilityPct": 58.38543880149222,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.71275581810724,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "CHAMPIONS_PROSPECTIVE_VALIDATION_PENDING"
+        },
+        "provenance": {
+          "source": "data/sources/champions-pilot-match-stats-2025-27.json",
+          "model": "scripts/md06-statistical-models.js",
+          "modelTarget": "statistical:corners-team-over:Shakhtar Donetsk:4.5",
+          "projectionSource": "forecastCoverage.teamProjections",
+          "asOf": "2026-11-24T16:41:54.567Z",
+          "historyMatches": 261,
+          "mean": {
+            "home": 5.6,
+            "away": 4.3
+          },
+          "dispersionSize": 6.443336244305682
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3\\\",\\\"team\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",3.5,\"OVER\"]:Fenerbahçe",
+      "modelId": "champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3",
+      "target": {
+        "scope": "team",
+        "metric": "corners",
+        "threshold": 3.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "Fenerbahçe"
+      },
+      "probability": 0.5641298826653972,
+      "baselineProbability": 0.6381322957198443,
+      "baseline": {
+        "probability": 0.6381322957198443,
+        "n": 514,
+        "positives": 328,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": true,
+      "selectionIds": [
+        "sisal:4947788:841480163:5480518579"
+      ],
+      "quote": {
+        "decimal": 1.52,
+        "oddsRaw": 152,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "U/O CORNER SQUADRA X",
+        "code": "23060",
+        "variant": "U/O 3.5 CORNER SQUADRA 2",
+        "threshold": "3.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match"
+        },
+        "bookmakerSemantics": {
+          "duo": false,
+          "substituteIncluded": false,
+          "postsAndCrossbarIncluded": false,
+          "extraTimeIncluded": false,
+          "period": "REGULATION",
+          "variantName": "U/O 3.5 CORNER SQUADRA 2"
+        },
+        "scope": "team",
+        "subject": {
+          "type": "team",
+          "id": "Fenerbahçe",
+          "name": "Fenerbahçe",
+          "teamId": "Fenerbahçe"
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "kind": "SHARED_DISCRETE_COUNT_PRELIMINARY",
+        "modelProbabilityPct": 56.41298826653972,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.7726414266076573,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "CHAMPIONS_PROSPECTIVE_VALIDATION_PENDING"
+        },
+        "provenance": {
+          "source": "data/sources/champions-pilot-match-stats-2025-27.json",
+          "model": "scripts/md06-statistical-models.js",
+          "modelTarget": "statistical:corners-team-over:Fenerbahçe:3.5",
+          "projectionSource": "forecastCoverage.teamProjections",
+          "asOf": "2026-11-24T16:41:54.567Z",
+          "historyMatches": 261,
+          "mean": {
+            "home": 5.6,
+            "away": 4.3
+          },
+          "dispersionSize": 6.443336244305682
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3\\\",\\\"match\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",7.5,\"OVER\"]:",
+      "modelId": "champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3",
+      "target": {
+        "scope": "match",
+        "metric": "sot",
+        "threshold": 7.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.6012530570197577,
+      "baselineProbability": 0.7945736434108527,
+      "baseline": {
+        "probability": 0.7945736434108527,
+        "n": 258,
+        "positives": 205,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": 8.8,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": true,
+      "selectionIds": [
+        "sisal:4947788:834039931:5442256543"
+      ],
+      "quote": {
+        "decimal": 1.47,
+        "oddsRaw": 147,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "U/O TIRI IN PORTA",
+        "code": "15481",
+        "variant": "U/O 7.5 TIRI IN PORTA",
+        "threshold": "7.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match"
+        },
+        "bookmakerSemantics": {
+          "duo": false,
+          "substituteIncluded": false,
+          "postsAndCrossbarIncluded": false,
+          "extraTimeIncluded": false,
+          "period": "REGULATION",
+          "variantName": "U/O 7.5 TIRI IN PORTA"
+        },
+        "scope": "match",
+        "subject": {
+          "type": "match",
+          "id": "ucl-2026-27-md05-15"
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "kind": "SHARED_DISCRETE_COUNT_PRELIMINARY",
+        "modelProbabilityPct": 60.125305701975776,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.6631932067950201,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "CHAMPIONS_PROSPECTIVE_VALIDATION_PENDING"
+        },
+        "provenance": {
+          "source": "data/sources/champions-pilot-match-stats-2025-27.json",
+          "model": "scripts/md06-statistical-models.js",
+          "modelTarget": "statistical:sot-match-over:7.5",
+          "projectionSource": "forecastCoverage.teamProjections",
+          "asOf": "2026-11-24T16:41:54.567Z",
+          "historyMatches": 261,
+          "mean": {
+            "home": 4.8,
+            "away": 4
+          },
+          "dispersionSize": 7.245213849287203
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",3.5,\"OVER\"]:Shakhtar Donetsk",
+      "modelId": "champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": 3.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "Shakhtar Donetsk"
+      },
+      "probability": 0.6364569112159459,
+      "baselineProbability": 0.7093023255813954,
+      "baseline": {
+        "probability": 0.7093023255813954,
+        "n": 516,
+        "positives": 366,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": true,
+      "selectionIds": [
+        "sisal:4947788:841746754:5481946419"
+      ],
+      "quote": {
+        "decimal": 1.5,
+        "oddsRaw": 150,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "U/O TIRI IN PORTA SQUADRA X",
+        "code": "23311",
+        "variant": "SQUADRA 1: U/O 3.5 TIRI IN PORTA",
+        "threshold": "3.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match"
+        },
+        "bookmakerSemantics": {
+          "duo": false,
+          "substituteIncluded": false,
+          "postsAndCrossbarIncluded": false,
+          "extraTimeIncluded": false,
+          "period": "REGULATION",
+          "variantName": "SQUADRA 1: U/O 3.5 TIRI IN PORTA"
+        },
+        "scope": "team",
+        "subject": {
+          "type": "team",
+          "id": "Shakhtar Donetsk",
+          "name": "Shakhtar Donetsk",
+          "teamId": "Shakhtar Donetsk"
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "kind": "SHARED_DISCRETE_COUNT_PRELIMINARY",
+        "modelProbabilityPct": 63.645691121594595,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.5711982734062984,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "CHAMPIONS_PROSPECTIVE_VALIDATION_PENDING"
+        },
+        "provenance": {
+          "source": "data/sources/champions-pilot-match-stats-2025-27.json",
+          "model": "scripts/md06-statistical-models.js",
+          "modelTarget": "statistical:sot-team-over:Shakhtar Donetsk:3.5",
+          "projectionSource": "forecastCoverage.teamProjections",
+          "asOf": "2026-11-24T16:41:54.567Z",
+          "historyMatches": 261,
+          "mean": {
+            "home": 4.8,
+            "away": 4
+          },
+          "dispersionSize": 7.245213849287203
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",3.5,\"OVER\"]:Fenerbahçe",
+      "modelId": "champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": 3.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "Fenerbahçe"
+      },
+      "probability": 0.5241842437607731,
+      "baselineProbability": 0.7093023255813954,
+      "baseline": {
+        "probability": 0.7093023255813954,
+        "n": 516,
+        "positives": 366,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": true,
+      "selectionIds": [
+        "sisal:4947788:841741245:5481959997"
+      ],
+      "quote": {
+        "decimal": 1.5,
+        "oddsRaw": 150,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "U/O TIRI IN PORTA SQUADRA X",
+        "code": "23311",
+        "variant": "SQUADRA 2: U/O 3.5 TIRI IN PORTA",
+        "threshold": "3.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match"
+        },
+        "bookmakerSemantics": {
+          "duo": false,
+          "substituteIncluded": false,
+          "postsAndCrossbarIncluded": false,
+          "extraTimeIncluded": false,
+          "period": "REGULATION",
+          "variantName": "SQUADRA 2: U/O 3.5 TIRI IN PORTA"
+        },
+        "scope": "team",
+        "subject": {
+          "type": "team",
+          "id": "Fenerbahçe",
+          "name": "Fenerbahçe",
+          "teamId": "Fenerbahçe"
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "kind": "SHARED_DISCRETE_COUNT_PRELIMINARY",
+        "modelProbabilityPct": 52.41842437607731,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.9077261705263682,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "CHAMPIONS_PROSPECTIVE_VALIDATION_PENDING"
+        },
+        "provenance": {
+          "source": "data/sources/champions-pilot-match-stats-2025-27.json",
+          "model": "scripts/md06-statistical-models.js",
+          "modelTarget": "statistical:sot-team-over:Fenerbahçe:3.5",
+          "projectionSource": "forecastCoverage.teamProjections",
+          "asOf": "2026-11-24T16:41:54.567Z",
+          "historyMatches": 261,
+          "mean": {
+            "home": 4.8,
+            "away": 4
+          },
+          "dispersionSize": 7.245213849287203
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3\\\",\\\"match\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",24.5,\"OVER\"]:",
+      "modelId": "champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3",
+      "target": {
+        "scope": "match",
+        "metric": "shots",
+        "threshold": 24.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.5136884918738036,
+      "baselineProbability": 0.6821705426356589,
+      "baseline": {
+        "probability": 0.6821705426356589,
+        "n": 258,
+        "positives": 176,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": 25.5,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": true,
+      "selectionIds": [
+        "sisal:4947788:834039939:5442256575"
+      ],
+      "quote": {
+        "decimal": 1.48,
+        "oddsRaw": 148,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "U/O TIRI TOTALI",
+        "code": "15859",
+        "variant": "U/O 24.5 TIRI TOTALI",
+        "threshold": "24.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match"
+        },
+        "bookmakerSemantics": {
+          "duo": false,
+          "substituteIncluded": false,
+          "postsAndCrossbarIncluded": false,
+          "extraTimeIncluded": false,
+          "period": "REGULATION",
+          "variantName": "U/O 24.5 TIRI TOTALI"
+        },
+        "scope": "match",
+        "subject": {
+          "type": "match",
+          "id": "ucl-2026-27-md05-15"
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "kind": "SHARED_DISCRETE_COUNT_PRELIMINARY",
+        "modelProbabilityPct": 51.36884918738036,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.9467050864858915,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "CHAMPIONS_PROSPECTIVE_VALIDATION_PENDING"
+        },
+        "provenance": {
+          "source": "data/sources/champions-pilot-match-stats-2025-27.json",
+          "model": "scripts/md06-statistical-models.js",
+          "modelTarget": "statistical:shots-match-over:24.5",
+          "projectionSource": "forecastCoverage.teamProjections",
+          "asOf": "2026-11-24T16:41:54.567Z",
+          "historyMatches": 261,
+          "mean": {
+            "home": 15.8,
+            "away": 9.7
+          },
+          "dispersionSize": 8.244483493892512
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",14.5,\"OVER\"]:Shakhtar Donetsk",
+      "modelId": "champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": 14.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "Shakhtar Donetsk"
+      },
+      "probability": 0.5302683949730798,
+      "baselineProbability": 0.42441860465116277,
+      "baseline": {
+        "probability": 0.42441860465116277,
+        "n": 516,
+        "positives": 219,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": true,
+      "selectionIds": [
+        "sisal:4947788:841746981:5481989884"
+      ],
+      "quote": {
+        "decimal": 2.25,
+        "oddsRaw": 225,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "U/O TIRI TOTALI SQUADRA X",
+        "code": "23334",
+        "variant": "SQUADRA 1: U/O 14.5 TIRI TOTALI",
+        "threshold": "14.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match"
+        },
+        "bookmakerSemantics": {
+          "duo": false,
+          "substituteIncluded": false,
+          "postsAndCrossbarIncluded": false,
+          "extraTimeIncluded": false,
+          "period": "REGULATION",
+          "variantName": "SQUADRA 1: U/O 14.5 TIRI TOTALI"
+        },
+        "scope": "team",
+        "subject": {
+          "type": "team",
+          "id": "Shakhtar Donetsk",
+          "name": "Shakhtar Donetsk",
+          "teamId": "Shakhtar Donetsk"
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "kind": "SHARED_DISCRETE_COUNT_PRELIMINARY",
+        "modelProbabilityPct": 53.026839497307975,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.8858374541646352,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "CHAMPIONS_PROSPECTIVE_VALIDATION_PENDING"
+        },
+        "provenance": {
+          "source": "data/sources/champions-pilot-match-stats-2025-27.json",
+          "model": "scripts/md06-statistical-models.js",
+          "modelTarget": "statistical:shots-team-over:Shakhtar Donetsk:14.5",
+          "projectionSource": "forecastCoverage.teamProjections",
+          "asOf": "2026-11-24T16:41:54.567Z",
+          "historyMatches": 261,
+          "mean": {
+            "home": 15.8,
+            "away": 9.7
+          },
+          "dispersionSize": 8.244483493892512
+        }
+      }
+    },
+    {
+      "eventId": "[\"[\\\"champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",8.5,\"OVER\"]:Fenerbahçe",
+      "modelId": "champions-md04-counts:619812e126ccc952968b074dbf847dd72cda53a20d381e38d70c0a30aa9f96b3",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": 8.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "Fenerbahçe"
+      },
+      "probability": 0.5580138026199796,
+      "baselineProbability": 0.812015503875969,
+      "baseline": {
+        "probability": 0.812015503875969,
+        "n": 516,
+        "positives": 419,
+        "periodVerified": true,
+        "availableAt": "2026-11-24T17:19:41.645Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "mean": null,
+      "latestInputAt": "2026-11-24T17:19:41.645Z",
+      "trainingThroughAt": "2026-11-24T17:19:41.645Z",
+      "baselineAvailableAt": "2026-11-24T17:19:41.645Z",
+      "sourceGeneratedAt": "2026-11-24T17:19:04.128Z",
+      "selected": true,
+      "selectionIds": [
+        "sisal:4947788:841746741:5481946347"
+      ],
+      "quote": {
+        "decimal": 1.1,
+        "oddsRaw": 110,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-11-24T16:35:20.257Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "exactContract": {
+        "name": "U/O TIRI TOTALI SQUADRA X",
+        "code": "23334",
+        "variant": "SQUADRA 2: U/O 8.5 TIRI TOTALI",
+        "threshold": "8.5",
+        "selection": "OVER",
+        "modifiers": {
+          "periodScope": "full-match"
+        },
+        "bookmakerSemantics": {
+          "duo": false,
+          "substituteIncluded": false,
+          "postsAndCrossbarIncluded": false,
+          "extraTimeIncluded": false,
+          "period": "REGULATION",
+          "variantName": "SQUADRA 2: U/O 8.5 TIRI TOTALI"
+        },
+        "scope": "team",
+        "subject": {
+          "type": "team",
+          "id": "Fenerbahçe",
+          "name": "Fenerbahçe",
+          "teamId": "Fenerbahçe"
+        }
+      },
+      "originalEvaluation": {
+        "status": "PRELIMINARY",
+        "kind": "SHARED_DISCRETE_COUNT_PRELIMINARY",
+        "modelProbabilityPct": 55.801380261997956,
+        "prudentProbabilityPct": null,
+        "fairOdds": 1.7920703669063602,
+        "expectedValuePct": null,
+        "conservativeExpectedValuePct": null,
+        "probabilitySemantics": "ABSOLUTE_EVENT",
+        "validation": {
+          "approvable": false,
+          "status": "CHAMPIONS_PROSPECTIVE_VALIDATION_PENDING"
+        },
+        "provenance": {
+          "source": "data/sources/champions-pilot-match-stats-2025-27.json",
+          "model": "scripts/md06-statistical-models.js",
+          "modelTarget": "statistical:shots-team-over:Fenerbahçe:8.5",
+          "projectionSource": "forecastCoverage.teamProjections",
+          "asOf": "2026-11-24T16:41:54.567Z",
+          "historyMatches": 261,
+          "mean": {
+            "home": 15.8,
+            "away": 9.7
+          },
+          "dispersionSize": 8.244483493892512
+        }
+      }
+    }
+  ],
+  "exclusions": [
+    {
+      "selectionId": "forecast:v2:ucl-2026-27-md05-15:mason-greenwood:shots:2",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": false,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "mason-greenwood",
+        "teamId": "fenerbahce"
+      },
+      "reason": "EXTENDED_CONTRACT_NOT_VALIDATED"
+    },
+    {
+      "selectionId": "forecast:v2:ucl-2026-27-md05-15:romelu-lukaku:shots:2",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": false,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "romelu-lukaku",
+        "teamId": "fenerbahce"
+      },
+      "reason": "EXTENDED_CONTRACT_NOT_VALIDATED"
+    },
+    {
+      "selectionId": "forecast:v2:ucl-2026-27-md05-15:mason-greenwood:sot:1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": true,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "mason-greenwood",
+        "teamId": "fenerbahce"
+      },
+      "reason": "EXTENDED_CONTRACT_NOT_VALIDATED"
+    }
+  ],
+  "contentHash": "55180a004a35171ef8894ee1a4cd119664e41d383d0426693c016b5678a8afba"
+}

@@ -520,8 +520,9 @@ export function createPage(deps){
     const branding=new Map(data.teamBranding.map(team=>[team.team,team]));
     const motivationByFixture=new Map(motivation.fixtures.map(fixture=>[fixture.matchId,fixture]));
     const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;
-    if(requestedCalendarFixture?.matchday===4){
-      const [profiles,{descriptiveRefereeAssignment}]=await Promise.all([load('champions-referee-profiles-md04-2026-27.json'),import('./reading-detail/champions-md4-referees.mjs?v=20261103-referee-stats')]);
+    if([4,5].includes(requestedCalendarFixture?.matchday)){
+      const md=String(requestedCalendarFixture.matchday).padStart(2,'0');
+      const [profiles,{descriptiveRefereeAssignment}]=await Promise.all([load(`champions-referee-profiles-md${md}-2026-27.json`),import('./reading-detail/champions-md4-referees.mjs?v=20261103-referee-stats')]);
       const profile=profiles.fixtures.find(p=>p.fixtureId===requestedMatchId);
       requestedCalendarFixture.refereeAssignment=descriptiveRefereeAssignment(requestedCalendarFixture.refereeAssignment,profile);
     }

@@ -28,7 +28,9 @@ const results = JSON.parse(fs.readFileSync(path.join(root, "data/sources/champio
   const md03Results=fs.existsSync(md03Path)?JSON.parse(fs.readFileSync(md03Path,'utf8')):null;
   const md04Path=path.join(root,'data/sources/champions-results-md04-2026-27.json');
   const md04Results=fs.existsSync(md04Path)?JSON.parse(fs.readFileSync(md04Path,'utf8')):null;
-  const batches=[results,md02Results,md03Results,md04Results].filter(Boolean);
+  const md05Path=path.join(root,'data/sources/champions-results-md05-2026-27.json');
+  const md05Results=fs.existsSync(md05Path)?JSON.parse(fs.readFileSync(md05Path,'utf8')):null;
+  const batches=[results,md02Results,md03Results,md04Results,md05Results].filter(Boolean);
   const resultById = new Map(batches.flatMap(batch=>batch.fixtures).map(item => [item.fixtureId, item]));
   if (resultById.size !== batches.reduce((n,batch)=>n+batch.fixtures.length,0)) throw new Error("Risultati Champions duplicati");
 for (const batch of batches) for (const result of batch.fixtures) {
@@ -36,7 +38,7 @@ for (const batch of batches) for (const result of batch.fixtures) {
 }
 if (process.argv.includes('--results-only')) {
   const previous=JSON.parse(fs.readFileSync(outputPath,'utf8'));
-  const latest=md04Results||md03Results||md02Results||results;
+  const latest=md05Results||md04Results||md03Results||md02Results||results;
   const output={...previous,generatedAt:latest.verifiedAt,resultsSource:latest.source,resultsCoverageNote:latest.coverageNote,summary:{...previous.summary,finished:resultById.size},fixtures:previous.fixtures.map(f=>resultById.has(f.id)?{...f,status:'finished',score:resultById.get(f.id).score,matchReport:resultById.get(f.id)}:f)};
   fs.writeFileSync(outputPath,JSON.stringify(output,null,2));
   console.log('OK Champions risultati: '+resultById.size+' gare concluse');

@@ -38,6 +38,7 @@ for(const file of ['champions-player-match-history.json','champions-shared-scena
 paths.delete('data/normalized/champions-md03-player-database-2026-27.json');
 paths.delete('data/normalized/champions-player-history-context-2025-26.json');
 for(const md of ['04','05'])paths.add(`data/normalized/champions-md${md}-probable-individuals-2026-27.json`);
+for(const md of ['04','05'])paths.add(`data/normalized/champions-referee-profiles-md${md}-2026-27.json`);
 const workspaces=new Map();
 const output=path.join(root,'data/generated/champions-readings');fs.mkdirSync(output,{recursive:true});
 let bytes=0,count=0;

@@ -3,11 +3,13 @@
 const fs=require('node:fs'),zlib=require('node:zlib'),crypto=require('node:crypto'),assert=require('node:assert/strict');
 const {recentRows,seasons,arrayField,profilePayload}=require('./champions/referee-profile-data.cjs');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
-async function build(){
- const profiles=read('data/normalized/champions-referee-profiles-md04-2026-27.json');
+async function build({matchday=4}={}){
+ assert([4,5].includes(matchday),'Unsupported matchday');
+ const md=String(matchday).padStart(2,'0');
+ const profiles=read(`data/normalized/champions-referee-profiles-md${md}-2026-27.json`);
  const calendar=read('data/normalized/champions-league-2026-27.json').fixtures;
  const generated=read('data/generated/reading-referee-history.json');
- const directory='data/raw/champions-referees/md04-2026-11-04';fs.mkdirSync(directory,{recursive:true});
+ const directory=matchday===4?'data/raw/champions-referees/md04-2026-11-04':'data/raw/champions-referees/md05-2026-11-24';fs.mkdirSync(directory,{recursive:true});
  const entries=[],records=[];
  for(const profile of profiles.fixtures){
   const fixture=calendar.find(f=>f.id===profile.fixtureId);
@@ -58,8 +60,8 @@ async function build(){
  const replacements=new Map(entries.map(e=>[e.fixtureId,e]));
  generated.fixtures=generated.fixtures.map(e=>replacements.get(e.fixtureId)||e);
  for(const entry of entries)if(!generated.fixtures.some(e=>e.fixtureId===entry.fixtureId))generated.fixtures.push(entry);
- fs.writeFileSync('data/normalized/champions-referee-match-history-md04-2026-27.json',JSON.stringify({schemaVersion:1,informationalOnly:true,fixtures:records,presentation:entries},null,2)+'\n');
+ fs.writeFileSync(`data/normalized/champions-referee-match-history-md${md}-2026-27.json`,JSON.stringify({schemaVersion:1,informationalOnly:true,fixtures:records,presentation:entries},null,2)+'\n');
  fs.writeFileSync('data/generated/reading-referee-history.json',JSON.stringify(generated,null,2)+'\n');
  console.log(JSON.stringify({fixtures:entries.length,withFive:entries.filter(e=>e.rows.length===5).length,datedMatches:records.reduce((n,r)=>n+r.rows.length,0),currentChampionsSamples:entries.filter(e=>e.analysis.seasonal.yellowCards.n>0).length}));
 }
-module.exports={build};if(require.main===module)build().catch(e=>{console.error(e);process.exitCode=1;});
+module.exports={build};if(require.main===module){const i=process.argv.indexOf('--matchday');build({matchday:i<0?4:Number(process.argv[i+1])}).catch(e=>{console.error(e);process.exitCode=1;});}
