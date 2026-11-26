@@ -2225,10 +2225,9 @@ function predictMatch(input, inspectCardCandidates) {
       lineupResolved: { resolved: lineupResolved, expected: lineupExpected, complete: lineupExpected > 0 && lineupResolved === lineupExpected },
       outfieldPlayersModeled: { modeled: outfieldModeled, expected: outfieldExpected, complete: outfieldExpected > 0 && outfieldModeled === outfieldExpected },
       missing: [
-        "forma ufficiale 2026/27",
+        ...((input.homeRecent?.currentSeasonMatches > 0 && input.awayRecent?.currentSeasonMatches > 0) ? [] : ["forma ufficiale 2026/27"]),
         ...(input.reading?.sections?.availability?.content ? [] : ["indisponibili verificati"]),
         ...(input.reading?.sections?.referee?.content ? [] : ["designazione arbitrale"]),
-        "meteo attendibile alla data della gara",
         ...(market ? [] : ["quote 1X2 verificate"]),
         ...(evaluatedMarkets.playerMarkets.status === "available" ? [] : ["quote giocatore verificate"])
       ]

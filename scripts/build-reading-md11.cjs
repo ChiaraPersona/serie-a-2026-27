@@ -54,7 +54,7 @@ for(const fixture of round){
  const section=(content,signals=[])=>({content,signals,sources:[]});
  const availability=sides.flatMap(t=>['unavailable','suspended','doubtful','ballots'].map(key=>`${t.team} · ${key==='unavailable'?'Indisponibili':key==='suspended'?'Squalificati':key==='doubtful'?'In dubbio':'Ballottaggi'}: ${(t[key]||[]).flat().map(q=>`${q.currentName||q.sourceName}${q.description?` (${q.description})`:''}`).join('; ')||'nessuna segnalazione nello snapshot'}`));
  const source={id:`lettura-${fixture.id}`,matchId:fixture.id,status:'published',prototype:true,updatedAt:String(lineups.importedAt).slice(0,10),title:`${teamNames.get(fixture.homeTeam)} - ${teamNames.get(fixture.awayTeam)}`,summary:`${p.verdict.label}. Formazioni probabili, da riconfermare; dati statistici limitati alle gare concluse prima della MD11.`,sections:{
-  context:section(`Serie A 2026/27, 11ª giornata. ${fixture.date} alle ${fixture.kickoff}. Analisi prepartita; meteo attendibile N/D.`),
+  context:section(`Serie A 2026/27, 11ª giornata. ${fixture.date} alle ${fixture.kickoff}. Analisi prepartita.`),
   form:section('Statistiche 2025/26 e gare concluse 2026/27 fino alla decima giornata; nessun risultato MD11 utilizzato.',[p.futureDataDiagnostics.home,p.futureDataDiagnostics.away].map(t=>`${teamNames.get(t.teamId)}: ${t.currentMatchesUsed} gare correnti disponibili.`)),
   availability:section('Probabili formazioni e disponibilità editoriali: gli undici non sono ufficiali. I dubbi restano distinti dalle assenze.',availability),
   tactics:section(p.scenarios[0].description,sides.map(t=>`${t.team}: ${t.formation}, formazione probabile.`)),

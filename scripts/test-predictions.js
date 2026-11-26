@@ -119,7 +119,7 @@ assert.strictEqual(dataset.engine.validation.multiSeason.decision.calibrationRec
 assert.strictEqual(dataset.engine.validation.multiSeason.decision.xgRecommendation, "adopt-xg-blend-25", "Il peso xG deve seguire il backtest pluristagionale");
 assert.strictEqual(dataset.engine.promotedTeamModel.attackFactor, 0.51, "Fattore offensivo neopromosse non validato");
 assert.strictEqual(dataset.engine.promotedTeamModel.defenceWeaknessFactor, 1.29, "Fattore difensivo neopromosse non validato");
-assert(dataset.predictions.every(prediction => prediction.dataQuality.missing.some(item => item.includes("meteo"))), "Il meteo non verificabile deve essere dichiarato N/D");
+assert(dataset.predictions.every(prediction => !prediction.dataQuality.missing.some(item => /meteo|weather/i.test(item))), "Il meteo e escluso dai requisiti del modello");
 assert(dataset.predictions.filter(prediction => /-md-0[1-5]$/.test(prediction.matchId)).every(prediction => !prediction.dataQuality.missing.some(item => item.includes("indisponibili"))), "Il monitor indisponibili aggiornato deve raggiungere tutte le letture archiviate fino alla quinta giornata");
 for (const prediction of dataset.predictions) {
   if (currentMatches.some(match=>match.id===prediction.matchId)) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);

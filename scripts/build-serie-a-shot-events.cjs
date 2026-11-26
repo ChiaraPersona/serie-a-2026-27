@@ -20,7 +20,16 @@ function build(){
   if(prior&&fs.existsSync(path.join(root,prior.rawSnapshot))){html=zlib.gunzipSync(fs.readFileSync(path.join(root,prior.rawSnapshot))).toString('utf8');origin=prior.originalFile;
    if(crypto.createHash('sha256').update(html).digest('hex')!==prior.sha256)throw Error('Raw snapshot integrity failed: '+fixture.id);}
   else if(evidence&&fs.existsSync(path.join(root,evidence.file))){html=fs.readFileSync(path.join(root,evidence.file),'utf8');origin=evidence.file;}
-  else{missing.push(fixture.id);continue;}
+  else if(result?.rawSnapshot&&fs.existsSync(path.join(root,result.rawSnapshot))){
+   origin=result.rawSnapshot;const bytes=fs.readFileSync(path.join(root,origin));
+   html=origin.endsWith('.gz')?zlib.gunzipSync(bytes).toString('utf8'):bytes.toString('utf8');
+  }
+  else{
+   const providerId=/-(\d+)\/?$/.exec(result?.sourceUrl||'')?.[1];
+   const candidates=providerId?['tmp/md11-sunday-results','tmp/md11-results'].map(dir=>`${dir}/${providerId}.html`).filter(file=>fs.existsSync(path.join(root,file))):[];
+   if(!candidates.length){missing.push(fixture.id);continue;}
+   origin=candidates[0];html=fs.readFileSync(path.join(root,origin),'utf8');
+  }
   const raw=parseStatmuseHtml(html);
   const expectedId=/-(\d+)\/?$/.exec(result.sourceUrl||'')?.[1];
   if(String(raw.gameData.gameId)!==expectedId)throw Error('Conflicting provider fixture ID: '+fixture.id);
