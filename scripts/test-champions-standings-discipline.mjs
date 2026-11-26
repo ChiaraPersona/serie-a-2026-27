@@ -24,7 +24,7 @@ conflict.observedTeamStatistics.home.yellowCards = 0;
 assert.equal(fixtureDiscipline(conflict, 'home').cards, null);
 
 const calendar = JSON.parse(fs.readFileSync(new URL('../data/normalized/champions-league-2026-27.json', import.meta.url)));
-const actual = championsStandingsDiscipline(calendar.fixtures);
+const actual = championsStandingsDiscipline(calendar.fixtures.filter(f=>f.matchday<=4));
 assert.equal(actual.size, 36);
 for (const key of ['penaltiesFor', 'penaltiesAgainst']) assert.equal([...actual.values()].filter(row => row[key] !== null).length, 36);
 for (const key of ['cardsFor', 'cardsAgainst']) assert.equal([...actual.values()].filter(row => row[key] !== null).length, 36);
@@ -37,3 +37,8 @@ assert.equal(actual.get('Roma').cardsFor, 13);
 const penaltiesFor = [...actual.values()].reduce((sum, row) => sum + row.penaltiesFor, 0);
 assert.equal(penaltiesFor, [...actual.values()].reduce((sum, row) => sum + row.penaltiesAgainst, 0));
 console.log('OK: rigori e cartellini 36/36 squadre; sei celle riconciliate.');
+
+// Current coverage must remain complete after each results update.
+const current = championsStandingsDiscipline(calendar.fixtures);
+assert.equal(current.size,36);
+for(const row of current.values())for(const value of Object.values(row))assert.notEqual(value,null);

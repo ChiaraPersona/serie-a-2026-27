@@ -1,15 +1,17 @@
 'use strict';
 const fs=require('node:fs'),zlib=require('node:zlib'),assert=require('node:assert/strict');
-const base='data/raw/champions-results/2026-11-25';
+const matchDate=process.argv.includes('--date')?process.argv[process.argv.indexOf('--date')+1]:'2026-11-24';
+assert.match(matchDate,/^2026-11-(24|25)$/);
+const base='data/raw/champions-results/'+(matchDate==='2026-11-24'?'2026-11-25':'2026-11-26');
 async function run(){
  fs.mkdirSync(base,{recursive:true});
- const url='https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/scoreboard?dates=20261124';
+ const url='https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/scoreboard?dates='+matchDate.replaceAll('-','');
  const response=await fetch(url);assert(response.ok);const board=await response.json();
  fs.writeFileSync(base+'/scoreboard.json',JSON.stringify({url,retrievedAt:new Date().toISOString(),payload:board}));
  const calendar=require('../data/normalized/champions-league-2026-27.json');
  const teams=require('../data/sources/champions-pilot-match-stats-2025-27.json').teams;
  const jobs=[];
- for(const f of calendar.fixtures.filter(f=>f.matchday===5&&f.date==='2026-11-24')){
+ for(const f of calendar.fixtures.filter(f=>f.matchday===5&&f.date===matchDate)){
   const home=teams.find(t=>t.name===f.homeTeam),away=teams.find(t=>t.name===f.awayTeam);assert(home&&away);
   const event=board.events.find(e=>e.competitions[0].competitors.some(c=>c.homeAway==='home'&&c.id===home.espnTeamId)&&e.competitions[0].competitors.some(c=>c.homeAway==='away'&&c.id===away.espnTeamId));assert(event);assert(event.status.type.completed);
   const sourceUrl='https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/summary?event='+event.id;

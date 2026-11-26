@@ -3,6 +3,8 @@ import zlib from 'node:zlib';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import {settleMd3Leg} from '../js/pages/champions-md3-results.mjs';
+const matchDate=process.argv.includes('--date')?process.argv[process.argv.indexOf('--date')+1]:'2026-11-24';
+assert.match(matchDate,/^2026-11-(24|25)$/);
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const file='data/sources/champions-results-md05-2026-27.json',results=read(file);
 const before=structuredClone(results.fixtures),calendar=read('data/normalized/champions-league-2026-27.json');
@@ -11,10 +13,10 @@ const database=read('data/normalized/champions-md05-player-database-2026-27.json
 const identities=new Map(database.teams.flatMap(t=>t.players.filter(p=>p.providerPlayerId&&p.playerId).map(p=>[t.teamId+'|'+p.providerPlayerId,p.playerId])));
 const number=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v))?Number(v):null;
 const stats=rows=>Object.fromEntries((rows||[]).map(s=>[s.name,number(s.value??s.displayValue)]));
-const jobs=read('data/raw/champions-results/2026-11-25/manifest.json').jobs;
+const jobs=read('data/raw/champions-results/'+(matchDate==='2026-11-24'?'2026-11-25':'2026-11-26')+'/manifest.json').jobs;
 for(const job of jobs){
  const raw=readRaw(job.rawPath),d=raw.payload,competition=d.header.competitions[0];
- const fixture=calendar.fixtures.find(f=>f.id===job.fixtureId);assert(fixture);assert(competition.status.type.completed);assert.equal(competition.date.slice(0,10),'2026-11-24');
+ const fixture=calendar.fixtures.find(f=>f.id===job.fixtureId);assert(fixture);assert(competition.status.type.completed);assert.equal(competition.date.slice(0,10),matchDate);
  const sides=Object.fromEntries(['home','away'].map(s=>[s,competition.competitors.find(c=>c.homeAway===s)]));
  const teamId=s=>job[s+'TeamId'];
  const ref=(side,p)=>({player:p?.displayName||p?.fullName||null,providerPlayerId:p?.id?String(p.id):null,playerId:identities.get(teamId(side)+'|'+p?.id)||null});
@@ -52,6 +54,13 @@ for(const job of jobs){
   if(e.scoringPlay)report.goalEvents.push({...event,ownGoal:e.ownGoal===true||e.type.type==='own-goal',assistPlayerId:participants[1]?.playerId||null});
   if(/^(yellow-card|red-card|yellow-red-card|second-yellow-card)$/.test(e.type.type))report.bookingEvents.push({...event,eventType:e.type.type});
  }
+ // Confirm second-yellow dismissals using the exact archived commentary event ID.
+ for(const event of report.bookingEvents.filter(e=>e.eventType==='red-card')){
+  const commentary=d.commentary?.find(c=>String(c.play?.id)===String(event.eventId));
+  if(!/^Second yellow card to /.test(commentary?.text||''))continue;
+  const first=report.bookingEvents.find(e=>e.eventType==='yellow-card'&&e.team===event.team&&e.providerPlayerId===event.providerPlayerId);
+  if(first)(report.verifiedSecondYellowDismissals||=[]).push({firstYellowId:first.eventId,dismissalId:event.eventId,sourceUrl:job.sourceUrl});
+ }
  assert.equal(report.goalEvents.length,report.score.home+report.score.away);
  report.scorers=Object.fromEntries(['home','away'].map(side=>[side,report.goalEvents.filter(e=>e.team===side).map(e=>e.player)]));
  report.observedStatistics=report.statistics;
@@ -67,14 +76,14 @@ for(const job of jobs){
  const old=results.fixtures.findIndex(f=>f.fixtureId===fixture.id);if(old>=0)results.fixtures[old]=report;else results.fixtures.push(report);
 }
 assert.deepEqual(results.fixtures.filter(f=>!jobs.some(j=>j.fixtureId===f.fixtureId)),before.filter(f=>!jobs.some(j=>j.fixtureId===f.fixtureId)));
-assert.equal(results.fixtures.length,9);results.verifiedAt=new Date().toISOString();
-results.coverageNote='9/18 gare concluse. Esiti verificati statisticamente per i contratti con evidenza sufficiente; gli altri restano da verificare. Nessuna liquidazione certificata.';
+assert.equal(results.fixtures.length,matchDate==='2026-11-25'?18:9);results.verifiedAt=new Date().toISOString();
+results.coverageNote=results.fixtures.length+'/18 gare concluse. Esiti verificati statisticamente per i contratti con evidenza sufficiente; gli altri restano da verificare. Nessuna liquidazione certificata.';
 fs.writeFileSync(file,JSON.stringify(results,null,2)+'\n');
 // Reuse the canonical aggregation helpers, replacing only the Champions bucket
 // for the eighteen teams updated here. Domestic entries and forecast inputs stay intact.
 const require=createRequire(import.meta.url),builder=require('./build-champions-player-stats.js');
 const currentFile='data/normalized/champions-player-stats-2026-27.json',current=read(currentFile);
-const espn=builder.collectEspnRows({season:'2026-27',asOf:'2026-11-24'});
+const espn=builder.collectEspnRows({season:'2026-27',asOf:matchDate});
 for(let day=1;day<=4;day++){
  const source=read('data/sources/champions-results-md0'+day+'-2026-27.json');
  for(const report of source.fixtures)for(const p of report.playerEvidence||[]){
@@ -98,17 +107,17 @@ for(const team of current.teams.filter(t=>selectedTeams.has(t.id))){
    const p=results.fixtures.find(f=>f.fixtureId===job.fixtureId).playerEvidence.find(p=>p.teamId===team.id&&p.providerPlayerId===String(player.providerPlayerId));
    if(!row||p?.statistics.appearances!==1)continue;
    const previous=rows.findIndex(r=>r.matchId===job.eventId);if(previous>=0)rows.splice(previous,1);
-   rows.push({league:'uefa.champions',teamId:String(team.espnTeamId),team:roster.team.displayName,row,stats:p.statistics,minutes:p.minutes,retrievedAt:raw.retrievedAt,matchId:job.eventId,date:'2026-11-24',sourceUrl:job.sourceUrl});
+   rows.push({league:'uefa.champions',teamId:String(team.espnTeamId),team:roster.team.displayName,row,stats:p.statistics,minutes:p.minutes,retrievedAt:raw.retrievedAt,matchId:job.eventId,date:matchDate,sourceUrl:job.sourceUrl});
   }
   if(!rows.some(r=>jobs.some(j=>j.eventId===r.matchId)))continue;
-  const entries=builder.aggregateEntries(String(player.providerPlayerId),player.position,rows,{detailed:true}).map(e=>({...e,playerId:player.id,season:'2026/27',asOf:'2026-11-24',minutesReliability:{status:'includes-estimates',method:'regulation-time-from-lineup-substitution-and-dismissal-events'}}));
+  const entries=builder.aggregateEntries(String(player.providerPlayerId),player.position,rows,{detailed:true}).map(e=>({...e,playerId:player.id,season:'2026/27',asOf:matchDate,minutesReliability:{status:'includes-estimates',method:'regulation-time-from-lineup-substitution-and-dismissal-events'}}));
   const old=player.currentSeason,domestic=(old?.entries||[]).filter(e=>!(e.competition==='UEFA Champions League'&&String(e.teamId)===String(team.espnTeamId))),merged=[...domestic,...entries];
   const scope=old?.totalsScope||{teamId:team.espnTeamId,competitionType:'uefa-competition',competition:'UEFA Champions League'};
   const primary=merged.filter(e=>String(e.teamId)===String(scope.teamId)&&e.competitionType===scope.competitionType&&(!scope.competition||e.competition===scope.competition));
-  player.currentSeason={...old,season:'2026/27',asOf:'2026-11-24',entries:merged,totals:primary.some(e=>entries.includes(e))?builder.currentAggregate(primary):old?.totals,totalsScope:scope,allEvidenceTotals:builder.currentAggregate(merged),totalsByCompetition:merged};
-  player.championsObserved={asOf:'2026-11-24',matchdays:[1,2,3,4,5],totals:builder.currentAggregate(entries),matches:entries.flatMap(e=>e.matches),minutesStatus:'includes-estimates'};
+  player.currentSeason={...old,season:'2026/27',asOf:matchDate,entries:merged,totals:primary.some(e=>entries.includes(e))?builder.currentAggregate(primary):old?.totals,totalsScope:scope,allEvidenceTotals:builder.currentAggregate(merged),totalsByCompetition:merged};
+  player.championsObserved={asOf:matchDate,matchdays:[1,2,3,4,5],totals:builder.currentAggregate(entries),matches:entries.flatMap(e=>e.matches),minutesStatus:'includes-estimates'};
  }
- team.championsObservedAsOf='2026-11-24';
+ team.championsObservedAsOf=matchDate;
 }
 fs.writeFileSync(currentFile,JSON.stringify(current,null,2)+'\n');
 console.log(JSON.stringify(jobs.map(j=>{const f=results.fixtures.find(f=>f.fixtureId===j.fixtureId);return {fixtureId:f.fixtureId,score:f.score,selections:f.verifiedSelections.reduce((a,r)=>(a[r.settlement.status]=(a[r.settlement.status]||0)+1,a),{})}})));
