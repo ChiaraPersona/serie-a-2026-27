@@ -31,14 +31,15 @@ function main(){
  assert(Number.isInteger(day)&&day>=1&&day<=38,'--matchday richiesto');
  const raw=get('--input');assert(raw,'--input richiesto');
  const parsed=parse(fs.readFileSync(path.resolve(root,raw),'utf8'));assert.equal(parsed.length,10);
- const original=read(`data/sources/probable-lineups-md${day}-2026-27.json`),identities=loadPlayerIdentities(root),fixtures=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'&&m.matchday===day),teams=read('data/normalized/teams.json');
+ const priorFile=fs.readdirSync(path.join(root,'data/sources')).filter(f=>/^probable-lineups-md\d+-2026-27\.json$/.test(f)&&Number(f.match(/md(\d+)/)[1])<=day).sort((a,b)=>Number(a.match(/md(\d+)/)[1])-Number(b.match(/md(\d+)/)[1])).at(-1);
+ const original=priorFile?read(`data/sources/${priorFile}`):{teams:[]},identities=loadPlayerIdentities(root),fixtures=read('data/normalized/matches.json').filter(m=>m.competition==='serie-a'&&m.matchday===day),teams=read('data/normalized/teams.json');
  const quotations=read('data/sources/fantacalcio-quotations-2026-27.json').players;
  const unresolved=[],omittedNonRoster=[],output=[];
  for(const fixture of parsed){
   const metas=fixture.sides.map(t=>teams.find(m=>m.name===t.team));assert(metas.every(Boolean),'Squadra non canonica');
   const match=fixtures.find(m=>m.homeTeam===metas[0].id&&m.awayTeam===metas[1].id);assert(match,'Fixture non canonica');assert.equal(fixture.date.slice(0,10),match.date);
   fixture.sides.forEach((side,i)=>{
-   const teamId=metas[i].id,prior=original.teams.find(t=>t.teamId===teamId);
+   const teamId=metas[i].id,prior=original.teams.find(t=>t.teamId===teamId)||{players:[]};
    const resolve=p=>{
     const candidates=[...prior.players,...['ballots','unavailable','suspended','doubtful'].flatMap(key=>(prior[key]||[]).flat())];
     const previous=candidates.find(q=>q.playerId&&normalizePlayerName(q.sourceName)===normalizePlayerName(p.sourceName))||quotations.filter(q=>q.teamId===teamId&&q.playerId).map(q=>({...q,sourceName:q.name})).find(q=>normalizePlayerName(q.sourceName)===normalizePlayerName(p.sourceName));
