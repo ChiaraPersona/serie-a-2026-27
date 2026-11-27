@@ -151,6 +151,25 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     if(options.extend){root.replaceChildren(shell);document.body.dataset.readingDetailTheme=model.theme;await options.extend({shell,groups,evidence});}
     // An unavailable informational archive must not prevent the existing reading from mounting.
     try{undo.push(mountRefereeHistory(model,groups.get('disciplina').lastElementChild,refereeHistory,[...(evidence.directory?.teams||[]),...refereeTeams]));}catch(error){console.warn('Storico arbitrale non disponibile',error);}
+    // Keep the existing booking markets in the referee column without recreating them.
+    const discipline=groups.get('disciplina').lastElementChild;
+    const refereeColumn=discipline.querySelector('.rf-column-main');
+    if(refereeColumn){
+      for(const bookings of discipline.querySelectorAll('.prediction-booked-panel')){
+        const heading=bookings.querySelector('h2,h3,h4');
+        if(heading){
+          const previousTitle=heading.textContent;heading.textContent='Probabili ammoniti';
+          undo.push(()=>{heading.textContent=previousTitle;});
+        }else{
+          const title=document.createElement('h4');title.textContent='Probabili ammoniti';
+          bookings.prepend(title);undo.push(()=>title.remove());
+        }
+        const placeholder=document.createComment('booking-panel-position');
+        bookings.before(placeholder);
+        refereeColumn.append(bookings);
+        undo.push(()=>{placeholder.replaceWith(bookings);});
+      }
+    }
     if(model.fixture.status==='finished'){
       // Existing player/discipline references now lead to the result archive, never a missing section.
       shell.querySelectorAll('[data-market-link]').forEach(button=>{

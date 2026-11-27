@@ -6,8 +6,7 @@ export function bookingAverageCopy(player){
  const valid=sample&&sample.playerId===player.playerId&&sample.minutes>0&&sample.appearances>0&&sample.minutesCoverage>=sample.appearances;
  const fouls=valid&&sample.foulsCommittedCoverage>=sample.appearances?sample.foulsCommittedPer90:null;
  const yellows=valid&&sample.disciplinaryCoverage?.status==='COMPLETE'?sample.yellowPer90:null;
- const context=valid?` · Campione corrente: ${sample.minutes} minuti, ${sample.appearances} ${sample.appearances===1?'presenza':'presenze'}`:' · Campione corrente N/D';
- return `Falli / 90′: ${format(fouls)} · Gialli / 90′: ${format(yellows)}${context}`;
+ return `Falli / 90′: ${format(fouls)} · Gialli / 90′: ${format(yellows)}`;
 }
 
 // Exact player IDs identify the starter; mirrored formation slots suggest opponents.
@@ -32,7 +31,7 @@ export function bookingTacticalCopy(player,lineups=[]){
  const channel=evidence.find(v=>typeof v==='string'&&/^duelli sul canale (destro|sinistro|centrale)$/.test(v));
  const zone=channel?.endsWith('destro')?'sul lato destro':channel?.endsWith('sinistro')?'sul lato sinistro':channel?'nelle zone interne':'';
  const projected=probableBookingOpponents(player,lineups);
- if(projected.length)return `Potrebbe affrontare ${projected.join(' e ')} nella sua zona: attenzione agli interventi in ritardo se la pressione viene superata.`;
+ if(projected.length)return `Potrebbe affrontare ${projected.join(' e ')} nella sua zona.`;
  const opponents=(player.readingDuels||[]).map(p=>p.name).filter(Boolean);
  if(!opponents.length&&player.directOpponent&&player.role!=='Difensore')opponents.push(player.directOpponent);
  if(opponents.length)return `Potrebbe essere chiamato a contenere ${opponents.join(' e ')}${zone?' '+zone:''}: il rischio da osservare è un intervento in ritardo quando il duello si apre in velocità.`;

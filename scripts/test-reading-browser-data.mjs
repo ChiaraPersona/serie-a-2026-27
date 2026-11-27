@@ -9,8 +9,10 @@ const read=f=>JSON.parse(fs.readFileSync(f,'utf8')),cache=new Map();
 globalThis.fetch=async url=>{const f=url instanceof URL?decodeURIComponent(url.pathname).replace(/^\/(\w:)/,'$1'):String(url).split('?')[0];if(!cache.has(f))cache.set(f,read(f));return {ok:true,json:async()=>structuredClone(cache.get(f))}};
 const service=createDataService('projection-test',{deduplicate:true});
 const [matches,predictions,directory]=[read('data/normalized/matches.json'),read('data/normalized/predictions.json'),read('data/teams/index.json')];
-const index=read('data/generated/readings/index.json');assert.deepEqual(index.fixtureIds,matches.map(m=>m.id));
-for(const match of matches){
+const {isArchived}=await import('./retire-finished-readings.cjs');
+const activeMatches=matches.filter(m=>!isArchived(m,matches));
+const index=read('data/generated/readings/index.json');assert.deepEqual(index.fixtureIds,activeMatches.map(m=>m.id));
+for(const match of activeMatches){
  const projected=await service.loadReading(match.id),raw=projected.matches.find(m=>m.id===match.id);
  assert.deepEqual(raw,match,'full result/report lost '+match.id);
  const canonicalProjection=structuredClone(projected.predictionDataset);
@@ -34,4 +36,4 @@ for(const match of matches){
  }
 }
 setReadingArtifacts(null);
-console.log(`OK ${matches.length} fixtures: complete results, predictions, published contracts, saved catalogs; MD1/6/7/8 lineups and players identical.`);
+console.log(`OK ${activeMatches.length} active fixtures: complete results, predictions, published contracts and saved catalogs; archived fixtures excluded.`);

@@ -1,5 +1,5 @@
 // Informational aggregates only. Never imported by prediction builders.
-const metrics=['yellowCards','dismissals','totalCards','fouls','directRedCards','secondYellowCards'];
+const metrics=['yellowCards','dismissals','totalCards','fouls','directRedCards','secondYellowCards','penaltiesAwarded'];
 function aggregate(rows){
  return Object.fromEntries(metrics.map(key=>{
   const values=rows.filter(r=>!r.disputedMetrics?.includes(key)).map(r=>key==='totalCards'?(r.disputedMetrics?.some(k=>['yellowCards','dismissals'].includes(k))||!Number.isInteger(r.yellowCards)||!Number.isInteger(r.dismissals)?null:r.yellowCards+r.dismissals):r[key]).filter(v=>Number.isInteger(v)&&v>=0);

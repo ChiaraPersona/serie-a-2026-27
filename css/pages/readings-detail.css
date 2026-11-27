@@ -6705,3 +6705,63 @@ body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll .team
 body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll .team-history-win{color:#72e4a1}
 body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll .team-history-draw{color:#f4d77c}
 body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll .team-history-loss{color:#ff9090}
+.rd-shell .rf-dashboard .rf-designation{grid-template-columns:minmax(0,1fr)}
+.rd-shell .rf-columns{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:12px;align-items:start}
+.rd-shell .rf-column{display:grid;gap:12px;min-width:0}
+.rd-shell .rf-column .rf-card{margin-bottom:0}
+.rd-shell .rf-column-stats .rf-indicators{display:block;padding:18px}
+.rd-shell .rf-column-stats .rf-season{margin:10px 0 14px}
+.rd-shell .rf-indicator-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 0}
+.rd-shell .rf-indicator-grid .rf-indicator{padding:0 14px}
+.rd-shell .rf-indicator-grid .rf-indicator:nth-child(odd){border-left:0}
+.rd-shell .rf-column-main .rf-identity{grid-template-columns:85px minmax(0,1fr);gap:16px}
+.rd-shell .rf-column-main .rf-identity>svg{width:85px;height:85px}
+.rd-shell .rf-column-main .rf-identity h3{font-size:27px}
+@media(max-width:900px){.rd-shell .rf-columns{grid-template-columns:minmax(0,1fr)}}
+.rd-shell .rf-dashboard .rf-column-main{padding:18px 14px;gap:16px}
+.rd-shell .rf-column-main .rf-designation{padding:0 4px 16px;border-bottom:1px solid var(--rd-line);margin:0}
+.rd-shell .rf-column-main .rf-history{padding:0}
+.rd-shell .rf-column-main .rf-table-scroll{overflow:visible}
+.rd-shell .rf-column-main table{width:100%;min-width:0;table-layout:fixed;font-size:10px}
+.rd-shell .rf-column-main :is(th,td){padding:10px 3px;white-space:normal;overflow-wrap:anywhere}
+.rd-shell .rf-column-main th:nth-child(1){width:16%}
+.rd-shell .rf-column-main th:nth-child(2){width:15%}
+.rd-shell .rf-column-main th:nth-child(3){width:51%}
+.rd-shell .rf-column-main th:nth-child(n+4){width:6%}
+.rd-shell .rf-column-main .rf-match{min-width:0;grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr);gap:3px}
+.rd-shell .rf-column-main .rf-match>span{gap:3px;overflow-wrap:anywhere}
+.rd-shell .rf-column-main .rf-match img{width:18px;height:21px}
+.rd-shell .rf-column-main .rf-match b{font-size:11px}
+@media(max-width:600px){.rd-shell .rf-dashboard .rf-column-main{padding:15px 10px}
+.rd-shell .rf-column-main :is(th,td){padding:9px 2px;font-size:9px}
+.rd-shell .rf-column-main th{font-size:8px}
+.rd-shell .rf-column-main .rf-match{grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr);gap:2px}
+.rd-shell .rf-column-main .rf-match>span{flex-direction:column;align-items:flex-start}
+.rd-shell .rf-column-main .rf-match b{font-size:10px}}
+.rd-shell .rf-dashboard .rf-column-stats{padding:18px;gap:0}
+.rd-shell .rf-column-stats .rf-indicators{padding:0 0 18px;margin:0}
+.rd-shell .rf-column-stats .rf-average-card{padding:18px 0 0;border-top:1px solid var(--rd-line);background:none}
+.rd-shell .rf-column-stats :is(h4,.rf-averages h4){font-size:11px;line-height:1.5;letter-spacing:.05em;margin-bottom:12px}
+.rd-shell .rf-column-stats .rf-season{border:0;padding:0;margin:0 0 16px;font-size:11px}
+.rd-shell .rf-column-stats :is(.rf-indicator strong,.rf-averages dd){font-size:25px;line-height:1.2;font-weight:800;letter-spacing:-.02em}
+.rd-shell .rf-column-stats .rf-historical .reading-referee-stats strong{font-size:25px!important;line-height:1.2;letter-spacing:-.02em}
+.rd-shell .rf-column-stats :is(.rf-indicator>span,.rf-averages dt){font-size:10px;line-height:1.4;letter-spacing:.04em;font-weight:650}
+.rd-shell .rf-column-stats .rf-historical .reading-referee-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px 20px!important}
+.rd-shell .rf-column-stats .rf-historical .reading-referee-stats span{font-size:10px!important;line-height:1.4;letter-spacing:.04em;text-transform:uppercase;font-weight:650}
+.rd-shell .rf-column-stats .rf-averages dl{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px}
+.rd-shell .rf-column-stats .rf-indicator-grid{gap:16px 20px}
+.rd-shell .rf-column-stats .rf-indicator-grid .rf-indicator{padding:0;border-left:0}
+.rd-shell .rf-column-stats .rf-historical{margin-top:18px;padding-top:18px}
+.rd-shell .rf-column-stats .rf-note{font-size:10px}
+.rd-shell .rf-column-main .prediction-booked-panel{min-width:0;margin:0;padding:16px 0 0;border:0;border-radius:0;background:none;box-shadow:none}
+.rd-shell .rf-column-main .prediction-booked-panel ol{grid-template-columns:minmax(0,1fr)}
+.rd-shell .rf-column-main .prediction-booked-panel li{min-width:0}
+.rd-shell .rf-column-main .prediction-booked-panel li>div{min-width:0;overflow-wrap:anywhere}
+.rd-shell .prediction-booked-panel .booking-identity{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 4px;min-width:0}
+.rd-shell .prediction-booked-panel .booking-identity strong{font-size:12px}
+.rd-shell .prediction-booked-panel .booking-identity small{display:inline;font-size:11px}
+.rd-shell .rf-column-main .prediction-booked-panel,
+.rd-shell .rf-column-main .prediction-booked-panel li,
+.rd-shell .rf-column-main .prediction-booked-panel li.possible-first-booked{background:transparent!important;box-shadow:none!important}
+.rd-shell .rf-column-main .prediction-booked-panel li{border:0;border-bottom:1px solid var(--rd-line);border-radius:0;padding:10px 0}
+.rd-shell .rf-column-main .prediction-booked-panel li:last-child{border-bottom:0}
