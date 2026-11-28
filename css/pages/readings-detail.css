@@ -6310,8 +6310,8 @@ body[data-reading-detail-theme] #app:has(.rd-slip-trigger){padding-bottom:110px!
 
 .rd-shell .rd-player-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
 
-.rd-shell .rd-player-probabilities{display:flex;justify-content:space-between;gap:12px;font-size:11px;line-height:1.5;border-top:1px solid var(--rd-line);padding-top:12px;color:var(--rd-muted)}
-.rd-shell .rd-player-probabilities b{color:var(--rd-ink);margin-left:6px}
+
+
 .rd-shell [data-metric-mode=sot] .rd-player-kpis>.rd-metric:nth-child(2){color:var(--rd-accent)}
 .rd-shell [data-metric-mode=shots] .rd-player-kpis>.rd-metric:first-child{color:var(--rd-accent)}
 .rd-shell .rd-mini-log{list-style:none;padding:0;margin:12px 0}
@@ -6402,7 +6402,7 @@ body[data-reading-detail-theme=champions] .rd-shell [data-outcome=lost]{color:#f
 .rd-shell .rd-player-expanded .rd-player-role{color:var(--rd-muted);font-size:11px;margin:5px 0}
 .rd-shell .rd-player-expanded .rd-player-kpis{gap:8px;margin:12px 0}
 .rd-shell .rd-player-expanded .rd-metric dd{font-size:17px}
-.rd-shell .rd-player-expanded .rd-player-probabilities{flex-wrap:wrap;gap:4px 12px;padding-top:8px}
+
 .rd-shell .rd-player-expanded .rd-record>div{grid-template-columns:1fr;gap:2px}
 .rd-shell .rd-player-expanded .rd-record{font-size:11px}
 @media(max-width:767px){.rd-shell .rd-player-columns{grid-template-columns:minmax(0,1fr);gap:24px}
@@ -6551,7 +6551,7 @@ body[data-reading-detail-theme="champions"] .rf-dashboard{--rf-blue:#9ac5ee;--rf
 .rd-forecasts .rd-compact-forecast-table button[aria-pressed="true"]{background:var(--ds-color-accent-strong);color:var(--ds-color-on-accent);border-color:var(--ds-color-accent-strong)}
 .rd-forecasts .rd-compact-forecast-table button:focus-visible{outline:2px solid var(--ds-color-focus);outline-offset:2px}
 .rd-forecasts .rd-compact-forecast-table button:disabled{opacity:.5;cursor:default}
-.rd-forecasts .rd-forecast-destination{display:inline-block;margin-top:var(--ds-space-3);font:500 12px/1.5 var(--ds-font-body);color:var(--ds-color-accent)}
+
 @media(max-width:600px){.rd-forecasts .rd-compact-forecast-table :is(th,td){padding:8px 3px;font-size:11px}
 .rd-forecasts .rd-compact-forecast-table :is(th,td):nth-child(2){width:72px}
 .rd-forecasts .rd-compact-forecast-table :is(th,td):nth-child(3){width:43px}
@@ -6767,7 +6767,7 @@ body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll .team
 .rd-shell .rf-column-main .prediction-booked-panel li:last-child{border-bottom:0}
 .rd-shell [data-proposed-forecasts]{width:100%;margin-top:16px}
 .rd-shell [data-proposed-forecasts][hidden]{display:none}
-.rd-forecasts button.rd-forecast-destination{padding:12px 18px;border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-control);background:var(--ds-color-surface);cursor:pointer;min-height:44px;font-size:14px}
+
 .rd-shell .rd-player-row>summary{height:44px;min-height:44px;padding:3px 0;box-sizing:border-box}
 .rd-shell .rd-row-identity h3{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
 @media(max-width:767px){.rd-shell .rd-player-row>summary{height:48px;min-height:48px;padding:2px 0}
@@ -6775,3 +6775,10 @@ body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll .team
 body[data-page] main .rd-shell .rd-player-mode{gap:8px}
 body[data-page] main .rd-shell .rd-player-mode button{padding:10px 16px;border:1px solid var(--rd-line);border-radius:6px;background:transparent;color:var(--rd-ink);font:inherit;font-size:13px;min-height:44px;box-shadow:none}
 body[data-page] main .rd-shell .rd-player-mode button[aria-pressed="true"]{border-color:var(--rd-accent);background:color-mix(in srgb,var(--rd-accent) 12%,transparent);color:var(--rd-ink)}
+.rd-shell .rd-spatial-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:18px 0}
+.rd-shell .rd-spatial-toolbar>.rd-spatial-directions{margin:0}
+.rd-shell .rd-spatial-toolbar>.rd-spatial-map-controls{margin-left:auto}
+@media(max-width:480px){.rd-shell .rd-spatial-toolbar{flex-wrap:nowrap;gap:6px}
+.rd-shell .rd-spatial-toolbar>.rd-spatial-directions{flex-wrap:nowrap;gap:4px}
+.rd-shell .rd-spatial-toolbar button{padding:8px 6px;font-size:11px;white-space:nowrap}
+.rd-shell .rd-spatial-toolbar>.rd-spatial-map-controls{flex-shrink:0}}
