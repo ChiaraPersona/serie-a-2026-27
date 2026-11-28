@@ -2,6 +2,7 @@ import {imageSource} from '../core/image-source.mjs?v=20261022-assets-v1';
 export function createMatchComponents({dateOnly,esc,labels}){
 function scheduleLabel(m){
   if(!m.date)return "Data da definire";
+  if(m.status==="finished")return dateOnly(m.date);
   return `${dateOnly(m.date)} · ${m.kickoff||"orario da definire"}${m.dateStatus==="provisional"?" · programmazione provvisoria UEFA":""}`;
 }
 function teamLogo(team,{showName=true}={}){return `<span class="team-with-logo"><span class="team-logo"><img src="${imageSource(`${team.logo}`)}" alt="Stemma ${esc(team.name)}" onerror="this.hidden=true;this.parentElement.classList.add('fallback')"><b>${esc(team.shortName.slice(0,2).toUpperCase())}</b></span>${showName?`<span class="team-name">${esc(team.name)}</span>`:""}</span>`}
@@ -15,6 +16,7 @@ function matchCard(m,teams){
   return `<a class="card match fixture-card fixture-card-link" href="lettura.html?match=${esc(m.id)}" aria-label="Apri la lettura di ${esc(home.name)} - ${esc(away.name)}" style="${teamColorStyle}"><header class="match-head"><div class="match-badges"><span class="matchday-chip">Giornata ${m.matchday}</span>${status}${m.dateStatus==="provisional"?'<span class="status provisional">Provvisoria UEFA</span>':''}</div><div class="match-date">${scheduleLabel(m)}</div></header><div class="fixture-teams"><div class="fixture-team fixture-team-home">${teamLogo(home)}</div><div class="fixture-score"><strong class="score ${m.score?'score-result reading-final-score':'score-versus'}">${scoreContent}</strong></div><div class="fixture-team fixture-team-away">${teamLogo(away)}</div></div>${referee}</a>`
 }
 function homeMatchListItem(m,teams,{grouped=false,showKickoff=true}={}){
+  showKickoff=showKickoff&&m.status!=="finished";
   const home=teams.find(team=>team.id===m.homeTeam),away=teams.find(team=>team.id===m.awayTeam);
   const finished=m.status==="finished"&&m.score,result=finished?`${m.score.home} – ${m.score.away}`:"–";
   const readingLink=m.competition==="serie-a"&&m.id?`<a class="home-match-reading" href="lettura.html?match=${esc(m.id)}" aria-label="Apri la lettura di ${esc(home.name)} - ${esc(away.name)}"></a>`:"";

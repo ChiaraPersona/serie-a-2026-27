@@ -118,54 +118,7 @@ body .rd-shell .rf-dashboard .rf-indicator strong{
   font-variant-numeric:tabular-nums;
 }
 
-/* E — Shared control chrome. Intrinsic sizes and compact hit areas are retained. */
-body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
-  .rd-player-mode button,.rd-filters button,.rd-row-actions button,.betting-personal-pick,
-  .betting-matchday-actions button,.betting-mycombo-actions button,.compare-pick){
-  border-radius:var(--ds-radius-control);
-  border-color:var(--ds-color-border);
-  background:var(--ds-color-surface);
-  color:var(--ds-color-text);
-  font-family:var(--ds-font-body);
-}
-body[data-page] main .global-stat-button{border-radius:var(--ds-radius-pill)}
-body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
-  .rd-player-mode button,.rd-filters button,.rd-row-actions button,.betting-personal-pick,
-  .betting-matchday-actions button,.betting-mycombo-actions button,.compare-pick):not(:disabled):hover{
-  border-color:var(--ds-color-accent);
-  background:var(--ds-color-surface-soft);
-}
-body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
-  .rd-player-mode button,.rd-filters button,.rd-row-actions button,.betting-personal-pick):is(.active,[aria-pressed="true"]){
-  background:var(--ds-color-accent-strong);
-  border-color:var(--ds-color-accent-strong);
-  color:var(--ds-color-on-accent);
-}
-body .rd-shell .rd-slip-trigger,
-body .personal-betslip-trigger{
-  border-radius:var(--ds-radius-pill);
-  background:var(--ds-color-accent-strong);
-  color:var(--ds-color-on-accent);
-  box-shadow:var(--ds-shadow-floating);
-  font-family:var(--ds-font-body);
-}
-body :is(.rd-slip button,.personal-betslip-clear,.personal-betslip-close){
-  border-radius:var(--ds-radius-control);
-  font-family:var(--ds-font-body);
-}
-body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
-  .rd-player-mode button,.rd-filters button,.rd-row-actions button,.betting-personal-pick,
-  .betting-matchday-actions button,.betting-mycombo-actions button,.compare-pick):focus-visible,
-body :is(.rd-slip-trigger,.personal-betslip-trigger,.rd-slip button,
-  .personal-betslip-panel button):focus-visible{
-  outline:2px solid var(--ds-color-focus);
-  outline-offset:3px;
-}
-body[data-page] main :is(.rd-row-actions button,.betting-personal-pick,.compare-pick):disabled{
-  opacity:.5;
-  box-shadow:none;
-  cursor:not-allowed;
-}
+/* Button appearance is centralized in buttons.css. */
 
 /* F — Only the long profile text responsible for the 320px overflow.
    Comparator tracks, columns, photographs and document overflow are untouched. */

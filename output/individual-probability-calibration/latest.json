@@ -1,0 +1,2422 @@
+{
+  "generatedAt": "2026-11-28T17:50:14.704Z",
+  "productionChanged": false,
+  "statisticallyApproved": false,
+  "findings": {
+    "engine-4.12.0:player-2": "INSUFFICIENT_COMPLETE_MATCHDAYS_FOR_TEMPORAL_VERIFICATION",
+    "engine-4.13.0:player-2": "NO_CONSISTENT_IMPROVEMENT_SHOWN_DO_NOT_PROMOTE",
+    "engine-4.16.0:player-2": "INSUFFICIENT_COMPLETE_MATCHDAYS_FOR_TEMPORAL_VERIFICATION"
+  },
+  "method": {
+    "method": "SHARED_SHOTS_LOGIT_INTERCEPT_V1",
+    "ridge": 5,
+    "minimumTrainingMatchdays": 2,
+    "minimumTrainingFixtures": 15,
+    "minimumTrainingPlayers": 200,
+    "prospectiveMinimumFixtures": 5,
+    "prospectiveMinimumPlayers": 100,
+    "targets": [
+      "shots1Plus",
+      "shots2Plus",
+      "shots3Plus"
+    ],
+    "endpointPolicy": "PRESERVE_EXACT_ZERO_AND_ONE",
+    "selection": "FIXED_SINGLE_CANDIDATE_NO_HYPERPARAMETER_SEARCH",
+    "production": false
+  },
+  "protocolHash": "86f942ac7ee2d7e6990126ddf62f6ea78ec5536fb2b1cd1e27a8ff750a3074f5",
+  "completeMDs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "folds": [
+    {
+      "version": "engine-4.13.0:player-2",
+      "testMatchday": 9,
+      "trainingMDs": [
+        7,
+        8
+      ],
+      "trainingFixtures": 20,
+      "trainingPlayers": 302,
+      "intercept": -0.1374517224115756,
+      "testPlayers": 156,
+      "targets": {
+        "shots1Plus": {
+          "original": {
+            "n": 156,
+            "matches": 10,
+            "predicted": 0.6385,
+            "observed": 0.62179,
+            "gap": 0.01671,
+            "brier": 0.21655,
+            "gapFixtureBootstrap95": [
+              -0.06801,
+              0.10992
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 1,
+                "predicted": 0.1975,
+                "observed": 0
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 21,
+                "predicted": 0.32887,
+                "observed": 0.42857
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 51,
+                "predicted": 0.50475,
+                "observed": 0.4902
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 41,
+                "predicted": 0.7119,
+                "observed": 0.70732
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 42,
+                "predicted": 0.89458,
+                "observed": 0.80952
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 156,
+            "matches": 10,
+            "predicted": 0.6123,
+            "observed": 0.62179,
+            "gap": -0.00949,
+            "brier": 0.21716,
+            "gapFixtureBootstrap95": [
+              -0.09394,
+              0.08355
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 4,
+                "predicted": 0.18394,
+                "observed": 0.25
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 25,
+                "predicted": 0.33706,
+                "observed": 0.48
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 53,
+                "predicted": 0.50206,
+                "observed": 0.49057
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 37,
+                "predicted": 0.72055,
+                "observed": 0.75676
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 37,
+                "predicted": 0.89426,
+                "observed": 0.81081
+              }
+            ]
+          },
+          "brierDelta": 0.000609,
+          "pairedFixtureBootstrap95": [
+            -0.005236,
+            0.006205
+          ],
+          "logLoss": {
+            "original": 0.642586,
+            "calibrated": 0.642084
+          }
+        },
+        "shots2Plus": {
+          "original": {
+            "n": 156,
+            "matches": 10,
+            "predicted": 0.33616,
+            "observed": 0.30128,
+            "gap": 0.03488,
+            "brier": 0.15503,
+            "gapFixtureBootstrap95": [
+              -0.03803,
+              0.11368
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 65,
+                "predicted": 0.11975,
+                "observed": 0.06154
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 35,
+                "predicted": 0.2943,
+                "observed": 0.31429
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 27,
+                "predicted": 0.48618,
+                "observed": 0.48148
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 23,
+                "predicted": 0.69338,
+                "observed": 0.65217
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 6,
+                "predicted": 0.8804,
+                "observed": 0.66667
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 156,
+            "matches": 10,
+            "predicted": 0.31369,
+            "observed": 0.30128,
+            "gap": 0.01241,
+            "brier": 0.15463,
+            "gapFixtureBootstrap95": [
+              -0.06032,
+              0.09149
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 72,
+                "predicted": 0.11456,
+                "observed": 0.06944
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 34,
+                "predicted": 0.30385,
+                "observed": 0.38235
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 25,
+                "predicted": 0.48832,
+                "observed": 0.44
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 21,
+                "predicted": 0.69177,
+                "observed": 0.71429
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 4,
+                "predicted": 0.9054,
+                "observed": 0.75
+              }
+            ]
+          },
+          "brierDelta": -0.0004,
+          "pairedFixtureBootstrap95": [
+            -0.004208,
+            0.003212
+          ],
+          "logLoss": {
+            "original": 0.471604,
+            "calibrated": 0.468362
+          }
+        },
+        "shots3Plus": {
+          "original": {
+            "n": 156,
+            "matches": 10,
+            "predicted": 0.1637,
+            "observed": 0.14103,
+            "gap": 0.02267,
+            "brier": 0.10683,
+            "gapFixtureBootstrap95": [
+              -0.02616,
+              0.07349
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 110,
+                "predicted": 0.06235,
+                "observed": 0.06364
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 25,
+                "predicted": 0.28803,
+                "observed": 0.24
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 17,
+                "predicted": 0.49185,
+                "observed": 0.41176
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 3,
+                "predicted": 0.76627,
+                "observed": 0.66667
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 1,
+                "predicted": 0.8172,
+                "observed": 0
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 156,
+            "matches": 10,
+            "predicted": 0.14999,
+            "observed": 0.14103,
+            "gap": 0.00897,
+            "brier": 0.10573,
+            "gapFixtureBootstrap95": [
+              -0.0398,
+              0.05998
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 116,
+                "predicted": 0.06213,
+                "observed": 0.07759
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 22,
+                "predicted": 0.29734,
+                "observed": 0.27273
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 14,
+                "predicted": 0.47375,
+                "observed": 0.35714
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 4,
+                "predicted": 0.75457,
+                "observed": 0.5
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "brierDelta": -0.001099,
+          "pairedFixtureBootstrap95": [
+            -0.003858,
+            0.001647
+          ],
+          "logLoss": {
+            "original": 0.339644,
+            "calibrated": 0.337478
+          }
+        }
+      }
+    },
+    {
+      "version": "engine-4.13.0:player-2",
+      "testMatchday": 10,
+      "trainingMDs": [
+        7,
+        8,
+        9
+      ],
+      "trainingFixtures": 30,
+      "trainingPlayers": 458,
+      "intercept": -0.14573518424011728,
+      "testPlayers": 157,
+      "targets": {
+        "shots1Plus": {
+          "original": {
+            "n": 157,
+            "matches": 10,
+            "predicted": 0.64326,
+            "observed": 0.56688,
+            "gap": 0.07638,
+            "brier": 0.22871,
+            "gapFixtureBootstrap95": [
+              0.0139,
+              0.13443
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 1,
+                "predicted": 0.1894,
+                "observed": 0
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 22,
+                "predicted": 0.32339,
+                "observed": 0.40909
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 50,
+                "predicted": 0.50357,
+                "observed": 0.42
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 38,
+                "predicted": 0.71695,
+                "observed": 0.60526
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 46,
+                "predicted": 0.89705,
+                "observed": 0.78261
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 157,
+            "matches": 10,
+            "predicted": 0.61605,
+            "observed": 0.56688,
+            "gap": 0.04917,
+            "brier": 0.22605,
+            "gapFixtureBootstrap95": [
+              -0.0132,
+              0.10723
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 3,
+                "predicted": 0.18503,
+                "observed": 0.33333
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 27,
+                "predicted": 0.3247,
+                "observed": 0.40741
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 48,
+                "predicted": 0.49214,
+                "observed": 0.39583
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 39,
+                "predicted": 0.71466,
+                "observed": 0.71795
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 40,
+                "predicted": 0.89758,
+                "observed": 0.75
+              }
+            ]
+          },
+          "brierDelta": -0.002663,
+          "pairedFixtureBootstrap95": [
+            -0.006631,
+            0.001588
+          ],
+          "logLoss": {
+            "original": 0.667052,
+            "calibrated": 0.657897
+          }
+        },
+        "shots2Plus": {
+          "original": {
+            "n": 157,
+            "matches": 10,
+            "predicted": 0.34601,
+            "observed": 0.23567,
+            "gap": 0.11034,
+            "brier": 0.17589,
+            "gapFixtureBootstrap95": [
+              0.03417,
+              0.20189
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 64,
+                "predicted": 0.11501,
+                "observed": 0.07813
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 36,
+                "predicted": 0.30263,
+                "observed": 0.25
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 26,
+                "predicted": 0.50239,
+                "observed": 0.38462
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 22,
+                "predicted": 0.68968,
+                "observed": 0.36364
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 9,
+                "predicted": 0.8703,
+                "observed": 0.55556
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 157,
+            "matches": 10,
+            "predicted": 0.32235,
+            "observed": 0.23567,
+            "gap": 0.08668,
+            "brier": 0.17047,
+            "gapFixtureBootstrap95": [
+              0.01091,
+              0.17772
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 72,
+                "predicted": 0.11119,
+                "observed": 0.08333
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 32,
+                "predicted": 0.30806,
+                "observed": 0.25
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 26,
+                "predicted": 0.49774,
+                "observed": 0.38462
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 19,
+                "predicted": 0.67963,
+                "observed": 0.42105
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 8,
+                "predicted": 0.8614,
+                "observed": 0.625
+              }
+            ]
+          },
+          "brierDelta": -0.005414,
+          "pairedFixtureBootstrap95": [
+            -0.010602,
+            -0.000771
+          ],
+          "logLoss": {
+            "original": 0.520254,
+            "calibrated": 0.505906
+          }
+        },
+        "shots3Plus": {
+          "original": {
+            "n": 157,
+            "matches": 10,
+            "predicted": 0.17349,
+            "observed": 0.12102,
+            "gap": 0.05247,
+            "brier": 0.09931,
+            "gapFixtureBootstrap95": [
+              0.00313,
+              0.10012
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 106,
+                "predicted": 0.05926,
+                "observed": 0.03774
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 28,
+                "predicted": 0.29144,
+                "observed": 0.25
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 15,
+                "predicted": 0.47414,
+                "observed": 0.26667
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 6,
+                "predicted": 0.65687,
+                "observed": 0.5
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 2,
+                "predicted": 0.8718,
+                "observed": 0.5
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 157,
+            "matches": 10,
+            "predicted": 0.15856,
+            "observed": 0.12102,
+            "gap": 0.03754,
+            "brier": 0.09663,
+            "gapFixtureBootstrap95": [
+              -0.01101,
+              0.0845
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 112,
+                "predicted": 0.05932,
+                "observed": 0.0625
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 25,
+                "predicted": 0.29473,
+                "observed": 0.2
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 14,
+                "predicted": 0.47109,
+                "observed": 0.28571
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 4,
+                "predicted": 0.64423,
+                "observed": 0.5
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 2,
+                "predicted": 0.85464,
+                "observed": 0.5
+              }
+            ]
+          },
+          "brierDelta": -0.002679,
+          "pairedFixtureBootstrap95": [
+            -0.005658,
+            0.000081
+          ],
+          "logLoss": {
+            "original": 0.322315,
+            "calibrated": 0.315766
+          }
+        }
+      }
+    },
+    {
+      "version": "engine-4.13.0:player-2",
+      "testMatchday": 11,
+      "trainingMDs": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "trainingFixtures": 40,
+      "trainingPlayers": 615,
+      "intercept": -0.23882061075505873,
+      "testPlayers": 165,
+      "targets": {
+        "shots1Plus": {
+          "original": {
+            "n": 165,
+            "matches": 10,
+            "predicted": 0.64032,
+            "observed": 0.67273,
+            "gap": -0.03241,
+            "brier": 0.20018,
+            "gapFixtureBootstrap95": [
+              -0.13303,
+              0.08373
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 3,
+                "predicted": 0.16743,
+                "observed": 1
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 18,
+                "predicted": 0.33268,
+                "observed": 0.38889
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 54,
+                "predicted": 0.4989,
+                "observed": 0.51852
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 44,
+                "predicted": 0.70465,
+                "observed": 0.70455
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 46,
+                "predicted": 0.89603,
+                "observed": 0.91304
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 165,
+            "matches": 10,
+            "predicted": 0.59489,
+            "observed": 0.67273,
+            "gap": -0.07783,
+            "brier": 0.20555,
+            "gapFixtureBootstrap95": [
+              -0.17962,
+              0.03844
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 4,
+                "predicted": 0.14993,
+                "observed": 0.75
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 32,
+                "predicted": 0.33071,
+                "observed": 0.46875
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 51,
+                "predicted": 0.48764,
+                "observed": 0.56863
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 38,
+                "predicted": 0.70139,
+                "observed": 0.73684
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 40,
+                "predicted": 0.88631,
+                "observed": 0.9
+              }
+            ]
+          },
+          "brierDelta": 0.005366,
+          "pairedFixtureBootstrap95": [
+            -0.006884,
+            0.01635
+          ],
+          "logLoss": {
+            "original": 0.581927,
+            "calibrated": 0.595063
+          }
+        },
+        "shots2Plus": {
+          "original": {
+            "n": 165,
+            "matches": 10,
+            "predicted": 0.34016,
+            "observed": 0.35152,
+            "gap": -0.01136,
+            "brier": 0.169,
+            "gapFixtureBootstrap95": [
+              -0.0735,
+              0.05693
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 65,
+                "predicted": 0.11539,
+                "observed": 0.15385
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 40,
+                "predicted": 0.28229,
+                "observed": 0.225
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 30,
+                "predicted": 0.49744,
+                "observed": 0.53333
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 19,
+                "predicted": 0.68437,
+                "observed": 0.68421
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 11,
+                "predicted": 0.85524,
+                "observed": 0.90909
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 165,
+            "matches": 10,
+            "predicted": 0.30177,
+            "observed": 0.35152,
+            "gap": -0.04975,
+            "brier": 0.17136,
+            "gapFixtureBootstrap95": [
+              -0.11161,
+              0.01893
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 78,
+                "predicted": 0.10763,
+                "observed": 0.15385
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 36,
+                "predicted": 0.29407,
+                "observed": 0.30556
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 29,
+                "predicted": 0.49376,
+                "observed": 0.65517
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 13,
+                "predicted": 0.68921,
+                "observed": 0.61538
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 9,
+                "predicted": 0.83678,
+                "observed": 0.88889
+              }
+            ]
+          },
+          "brierDelta": 0.002362,
+          "pairedFixtureBootstrap95": [
+            -0.005042,
+            0.009214
+          ],
+          "logLoss": {
+            "original": 0.523758,
+            "calibrated": 0.531097
+          }
+        },
+        "shots3Plus": {
+          "original": {
+            "n": 165,
+            "matches": 10,
+            "predicted": 0.16796,
+            "observed": 0.18788,
+            "gap": -0.01992,
+            "brier": 0.11296,
+            "gapFixtureBootstrap95": [
+              -0.07131,
+              0.03793
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 113,
+                "predicted": 0.05893,
+                "observed": 0.06195
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 30,
+                "predicted": 0.28356,
+                "observed": 0.43333
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 13,
+                "predicted": 0.49068,
+                "observed": 0.38462
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 9,
+                "predicted": 0.68536,
+                "observed": 0.66667
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 165,
+            "matches": 10,
+            "predicted": 0.14439,
+            "observed": 0.18788,
+            "gap": -0.04349,
+            "brier": 0.11557,
+            "gapFixtureBootstrap95": [
+              -0.09544,
+              0.01525
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 122,
+                "predicted": 0.05703,
+                "observed": 0.08197
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 26,
+                "predicted": 0.28455,
+                "observed": 0.42308
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 10,
+                "predicted": 0.49388,
+                "observed": 0.6
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 7,
+                "predicted": 0.64707,
+                "observed": 0.57143
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "brierDelta": 0.002615,
+          "pairedFixtureBootstrap95": [
+            -0.002322,
+            0.00694
+          ],
+          "logLoss": {
+            "original": 0.359577,
+            "calibrated": 0.367194
+          }
+        }
+      }
+    }
+  ],
+  "skipped": [
+    {
+      "version": "engine-4.12.0:player-2",
+      "testMatchday": 6,
+      "reason": "INSUFFICIENT_PRIOR_SAME_VERSION_COMPLETE_MATCHDAYS",
+      "trainingFixtures": 0,
+      "trainingPlayers": 0
+    },
+    {
+      "version": "engine-4.13.0:player-2",
+      "testMatchday": 7,
+      "reason": "INSUFFICIENT_PRIOR_SAME_VERSION_COMPLETE_MATCHDAYS",
+      "trainingFixtures": 0,
+      "trainingPlayers": 0
+    },
+    {
+      "version": "engine-4.13.0:player-2",
+      "testMatchday": 8,
+      "reason": "INSUFFICIENT_PRIOR_SAME_VERSION_COMPLETE_MATCHDAYS",
+      "trainingFixtures": 10,
+      "trainingPlayers": 139
+    },
+    {
+      "version": "engine-4.16.0:player-2",
+      "testMatchday": 12,
+      "reason": "INSUFFICIENT_PRIOR_SAME_VERSION_COMPLETE_MATCHDAYS",
+      "trainingFixtures": 0,
+      "trainingPlayers": 0
+    }
+  ],
+  "evaluations": {
+    "engine-4.12.0:player-2": {
+      "evaluatedMatchdays": [],
+      "targets": {
+        "shots1Plus": {
+          "original": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "brierDelta": null,
+          "pairedFixtureBootstrap95": null,
+          "logLoss": {
+            "original": null,
+            "calibrated": null
+          }
+        },
+        "shots2Plus": {
+          "original": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "brierDelta": null,
+          "pairedFixtureBootstrap95": null,
+          "logLoss": {
+            "original": null,
+            "calibrated": null
+          }
+        },
+        "shots3Plus": {
+          "original": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "brierDelta": null,
+          "pairedFixtureBootstrap95": null,
+          "logLoss": {
+            "original": null,
+            "calibrated": null
+          }
+        }
+      }
+    },
+    "engine-4.13.0:player-2": {
+      "evaluatedMatchdays": [
+        9,
+        10,
+        11
+      ],
+      "targets": {
+        "shots1Plus": {
+          "original": {
+            "n": 478,
+            "matches": 30,
+            "predicted": 0.64069,
+            "observed": 0.62134,
+            "gap": 0.01935,
+            "brier": 0.2149,
+            "gapFixtureBootstrap95": [
+              -0.03933,
+              0.07593
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 5,
+                "predicted": 0.17784,
+                "observed": 0.6
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 61,
+                "predicted": 0.32802,
+                "observed": 0.40984
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 155,
+                "predicted": 0.50233,
+                "observed": 0.47742
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 123,
+                "predicted": 0.71086,
+                "observed": 0.6748
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 134,
+                "predicted": 0.89593,
+                "observed": 0.83582
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 478,
+            "matches": 30,
+            "predicted": 0.60752,
+            "observed": 0.62134,
+            "gap": -0.01381,
+            "brier": 0.21607,
+            "gapFixtureBootstrap95": [
+              -0.07285,
+              0.04277
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 11,
+                "predicted": 0.17187,
+                "observed": 0.45455
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 84,
+                "predicted": 0.33067,
+                "observed": 0.45238
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 152,
+                "predicted": 0.49409,
+                "observed": 0.48684
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 114,
+                "predicted": 0.71215,
+                "observed": 0.73684
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 117,
+                "predicted": 0.89268,
+                "observed": 0.82051
+              }
+            ]
+          },
+          "brierDelta": 0.001176,
+          "pairedFixtureBootstrap95": [
+            -0.003543,
+            0.006063
+          ],
+          "logLoss": {
+            "original": 0.629683,
+            "calibrated": 0.631047
+          }
+        },
+        "shots2Plus": {
+          "original": {
+            "n": 478,
+            "matches": 30,
+            "predicted": 0.34077,
+            "observed": 0.29707,
+            "gap": 0.0437,
+            "brier": 0.1667,
+            "gapFixtureBootstrap95": [
+              -0.0023,
+              0.09105
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 194,
+                "predicted": 0.11673,
+                "observed": 0.09794
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 111,
+                "predicted": 0.29267,
+                "observed": 0.26126
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 83,
+                "predicted": 0.49533,
+                "observed": 0.46988
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 64,
+                "predicted": 0.68943,
+                "observed": 0.5625
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 26,
+                "predicted": 0.86626,
+                "observed": 0.73077
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 478,
+            "matches": 30,
+            "predicted": 0.31242,
+            "observed": 0.29707,
+            "gap": 0.01535,
+            "brier": 0.16561,
+            "gapFixtureBootstrap95": [
+              -0.03119,
+              0.06392
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 222,
+                "predicted": 0.11103,
+                "observed": 0.1036
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 102,
+                "predicted": 0.30172,
+                "observed": 0.31373
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 80,
+                "predicted": 0.49335,
+                "observed": 0.5
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 53,
+                "predicted": 0.68679,
+                "observed": 0.58491
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 21,
+                "predicted": 0.85923,
+                "observed": 0.7619
+              }
+            ]
+          },
+          "brierDelta": -0.001094,
+          "pairedFixtureBootstrap95": [
+            -0.004711,
+            0.002322
+          ],
+          "logLoss": {
+            "original": 0.505586,
+            "calibrated": 0.502349
+          }
+        },
+        "shots3Plus": {
+          "original": {
+            "n": 478,
+            "matches": 30,
+            "predicted": 0.16839,
+            "observed": 0.15063,
+            "gap": 0.01776,
+            "brier": 0.10648,
+            "gapFixtureBootstrap95": [
+              -0.01619,
+              0.05012
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 329,
+                "predicted": 0.06018,
+                "observed": 0.05471
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 83,
+                "predicted": 0.28757,
+                "observed": 0.31325
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 45,
+                "predicted": 0.48561,
+                "observed": 0.35556
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 18,
+                "predicted": 0.68934,
+                "observed": 0.61111
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 3,
+                "predicted": 0.8536,
+                "observed": 0.33333
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 478,
+            "matches": 30,
+            "predicted": 0.15087,
+            "observed": 0.15063,
+            "gap": 0.00025,
+            "brier": 0.10614,
+            "gapFixtureBootstrap95": [
+              -0.03463,
+              0.03364
+            ],
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 350,
+                "predicted": 0.05945,
+                "observed": 0.07429
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 73,
+                "predicted": 0.29189,
+                "observed": 0.30137
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 38,
+                "predicted": 0.47807,
+                "observed": 0.39474
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 15,
+                "predicted": 0.67498,
+                "observed": 0.53333
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 2,
+                "predicted": 0.85464,
+                "observed": 0.5
+              }
+            ]
+          },
+          "brierDelta": -0.000336,
+          "pairedFixtureBootstrap95": [
+            -0.002688,
+            0.001976
+          ],
+          "logLoss": {
+            "original": 0.340833,
+            "calibrated": 0.340605
+          }
+        }
+      }
+    },
+    "engine-4.16.0:player-2": {
+      "evaluatedMatchdays": [],
+      "targets": {
+        "shots1Plus": {
+          "original": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "brierDelta": null,
+          "pairedFixtureBootstrap95": null,
+          "logLoss": {
+            "original": null,
+            "calibrated": null
+          }
+        },
+        "shots2Plus": {
+          "original": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "brierDelta": null,
+          "pairedFixtureBootstrap95": null,
+          "logLoss": {
+            "original": null,
+            "calibrated": null
+          }
+        },
+        "shots3Plus": {
+          "original": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "calibrated": {
+            "n": 0,
+            "matches": 0,
+            "predicted": null,
+            "observed": null,
+            "gap": null,
+            "brier": null,
+            "gapFixtureBootstrap95": null,
+            "bins": [
+              {
+                "from": 0,
+                "to": 0.2,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.2,
+                "to": 0.4,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.4,
+                "to": 0.6,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.6,
+                "to": 0.8,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              },
+              {
+                "from": 0.8,
+                "to": 1,
+                "n": 0,
+                "predicted": null,
+                "observed": null
+              }
+            ]
+          },
+          "brierDelta": null,
+          "pairedFixtureBootstrap95": null,
+          "logLoss": {
+            "original": null,
+            "calibrated": null
+          }
+        }
+      }
+    }
+  },
+  "sotDiagnostics": {
+    "engine-4.12.0:player-2": {
+      "sot1Plus": {
+        "n": 142,
+        "matches": 10,
+        "predicted": 0.29677,
+        "observed": 0.26056,
+        "gap": 0.03621,
+        "brier": 0.15642,
+        "gapFixtureBootstrap95": [
+          -0.02859,
+          0.09207
+        ],
+        "bins": [
+          {
+            "from": 0,
+            "to": 0.2,
+            "n": 52,
+            "predicted": 0.13006,
+            "observed": 0.07692
+          },
+          {
+            "from": 0.2,
+            "to": 0.4,
+            "n": 54,
+            "predicted": 0.28884,
+            "observed": 0.25926
+          },
+          {
+            "from": 0.4,
+            "to": 0.6,
+            "n": 26,
+            "predicted": 0.50843,
+            "observed": 0.46154
+          },
+          {
+            "from": 0.6,
+            "to": 0.8,
+            "n": 10,
+            "predicted": 0.65622,
+            "observed": 0.7
+          },
+          {
+            "from": 0.8,
+            "to": 1,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      },
+      "sot2Plus": {
+        "n": 142,
+        "matches": 10,
+        "predicted": 0.07239,
+        "observed": 0.04225,
+        "gap": 0.03014,
+        "brier": 0.03634,
+        "gapFixtureBootstrap95": [
+          0.00627,
+          0.05382
+        ],
+        "bins": [
+          {
+            "from": 0,
+            "to": 0.2,
+            "n": 125,
+            "predicted": 0.04708,
+            "observed": 0.024
+          },
+          {
+            "from": 0.2,
+            "to": 0.4,
+            "n": 16,
+            "predicted": 0.24936,
+            "observed": 0.125
+          },
+          {
+            "from": 0.4,
+            "to": 0.6,
+            "n": 1,
+            "predicted": 0.4047,
+            "observed": 1
+          },
+          {
+            "from": 0.6,
+            "to": 0.8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.8,
+            "to": 1,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      }
+    },
+    "engine-4.13.0:player-2": {
+      "sot1Plus": {
+        "n": 777,
+        "matches": 50,
+        "predicted": 0.32012,
+        "observed": 0.32046,
+        "gap": -0.00035,
+        "brier": 0.19018,
+        "gapFixtureBootstrap95": [
+          -0.03582,
+          0.0379
+        ],
+        "bins": [
+          {
+            "from": 0,
+            "to": 0.2,
+            "n": 279,
+            "predicted": 0.12877,
+            "observed": 0.16129
+          },
+          {
+            "from": 0.2,
+            "to": 0.4,
+            "n": 248,
+            "predicted": 0.29521,
+            "observed": 0.28226
+          },
+          {
+            "from": 0.4,
+            "to": 0.6,
+            "n": 165,
+            "predicted": 0.49402,
+            "observed": 0.46061
+          },
+          {
+            "from": 0.6,
+            "to": 0.8,
+            "n": 80,
+            "predicted": 0.67437,
+            "observed": 0.7
+          },
+          {
+            "from": 0.8,
+            "to": 1,
+            "n": 5,
+            "predicted": 0.8257,
+            "observed": 0.4
+          }
+        ]
+      },
+      "sot2Plus": {
+        "n": 777,
+        "matches": 50,
+        "predicted": 0.08806,
+        "observed": 0.08237,
+        "gap": 0.00569,
+        "brier": 0.06785,
+        "gapFixtureBootstrap95": [
+          -0.01387,
+          0.02474
+        ],
+        "bins": [
+          {
+            "from": 0,
+            "to": 0.2,
+            "n": 660,
+            "predicted": 0.05122,
+            "observed": 0.05152
+          },
+          {
+            "from": 0.2,
+            "to": 0.4,
+            "n": 98,
+            "predicted": 0.26466,
+            "observed": 0.21429
+          },
+          {
+            "from": 0.4,
+            "to": 0.6,
+            "n": 19,
+            "predicted": 0.45682,
+            "observed": 0.47368
+          },
+          {
+            "from": 0.6,
+            "to": 0.8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.8,
+            "to": 1,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      }
+    },
+    "engine-4.16.0:player-2": {
+      "sot1Plus": {
+        "n": 152,
+        "matches": 10,
+        "predicted": 0.34203,
+        "observed": 0.33553,
+        "gap": 0.0065,
+        "brier": 0.18846,
+        "gapFixtureBootstrap95": [
+          -0.04861,
+          0.06091
+        ],
+        "bins": [
+          {
+            "from": 0,
+            "to": 0.2,
+            "n": 47,
+            "predicted": 0.12214,
+            "observed": 0.14894
+          },
+          {
+            "from": 0.2,
+            "to": 0.4,
+            "n": 52,
+            "predicted": 0.29221,
+            "observed": 0.32692
+          },
+          {
+            "from": 0.4,
+            "to": 0.6,
+            "n": 30,
+            "predicted": 0.49105,
+            "observed": 0.36667
+          },
+          {
+            "from": 0.6,
+            "to": 0.8,
+            "n": 19,
+            "predicted": 0.68618,
+            "observed": 0.63158
+          },
+          {
+            "from": 0.8,
+            "to": 1,
+            "n": 4,
+            "predicted": 0.82095,
+            "observed": 1
+          }
+        ]
+      },
+      "sot2Plus": {
+        "n": 152,
+        "matches": 10,
+        "predicted": 0.10395,
+        "observed": 0.10526,
+        "gap": -0.00131,
+        "brier": 0.07245,
+        "gapFixtureBootstrap95": [
+          -0.03755,
+          0.03024
+        ],
+        "bins": [
+          {
+            "from": 0,
+            "to": 0.2,
+            "n": 125,
+            "predicted": 0.05352,
+            "observed": 0.04
+          },
+          {
+            "from": 0.2,
+            "to": 0.4,
+            "n": 21,
+            "predicted": 0.29556,
+            "observed": 0.33333
+          },
+          {
+            "from": 0.4,
+            "to": 0.6,
+            "n": 6,
+            "predicted": 0.48402,
+            "observed": 0.66667
+          },
+          {
+            "from": 0.6,
+            "to": 0.8,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          },
+          {
+            "from": 0.8,
+            "to": 1,
+            "n": 0,
+            "predicted": null,
+            "observed": null
+          }
+        ]
+      }
+    }
+  },
+  "prospectiveParameters": {
+    "engine-4.16.0:player-2": {
+      "intercept": -0.396382224902716,
+      "trainingPlayers": 152,
+      "trainingFixtures": 10,
+      "matchdays": [
+        12
+      ],
+      "status": "SMALL_SAMPLE_EXPERIMENTAL_NOT_HISTORICALLY_VALIDATED"
+    }
+  },
+  "captured": [
+    {
+      "matchId": "cagliari-milan-2026-27-md-13",
+      "status": "EXISTING_FIRST_PRESERVED",
+      "players": 20
+    },
+    {
+      "matchId": "como-juventus-2026-27-md-13",
+      "status": "EXISTING_FIRST_PRESERVED",
+      "players": 20
+    },
+    {
+      "matchId": "inter-genoa-2026-27-md-13",
+      "status": "EXISTING_FIRST_PRESERVED",
+      "players": 20
+    },
+    {
+      "matchId": "lecce-atalanta-2026-27-md-13",
+      "status": "EXISTING_FIRST_PRESERVED",
+      "players": 20
+    },
+    {
+      "matchId": "roma-monza-2026-27-md-13",
+      "status": "EXISTING_FIRST_PRESERVED",
+      "players": 20
+    },
+    {
+      "matchId": "sassuolo-napoli-2026-27-md-13",
+      "status": "EXISTING_FIRST_PRESERVED",
+      "players": 20
+    },
+    {
+      "matchId": "udinese-fiorentina-2026-27-md-13",
+      "status": "EXISTING_FIRST_PRESERVED",
+      "players": 20
+    }
+  ],
+  "notCaptured": [
+    {
+      "matchId": "frosinone-parma-2026-27-md-13",
+      "reason": "NOT_VERIFIABLY_FUTURE_AT_CAPTURE"
+    },
+    {
+      "matchId": "torino-lazio-2026-27-md-13",
+      "reason": "NOT_VERIFIABLY_FUTURE_AT_CAPTURE"
+    }
+  ],
+  "inputHashes": {
+    "output/individual-probability-audit/expanded.json": "c18d5b40392a3cbb91c458ceab93e1f738467364c3a51b99dab4d1cbb7b42448",
+    "data/normalized/matches.json": "12d26b4991725c39d224d7d3cc6b888fa344f02d40fc2bc679127b01f12143ef",
+    "data/normalized/predictions.json": "42f3abd581c80c5322fe639bd62e7af2687c2b9c1af8bba3dca6a48e066a9158",
+    "output/individual-probability-calibration/protocol.json": "06d2ae539891313d42796ccceae9506c6e25a511f9bf33c9f71f5d22d341c164"
+  },
+  "limitations": [
+    "Retrospective temporal replay after inspecting aggregate historical results; not an untouched confirmatory holdout.",
+    "One shared logit shift across shots thresholds preserves ordering; player-match weight is one across targets.",
+    "Versions never pooled. Historical fold thresholds are fixed; no hyperparameter search.",
+    "Current 4.16 has too few complete matchdays for historical calibration verification.",
+    "SOT is diagnostic only. DUO, odds, EV and operational engines are unchanged.",
+    "New prospective forecasts are frozen once; no standing automation or automatic builder integration is installed."
+  ]
+}

@@ -76,6 +76,9 @@ const cardResearch = process.argv.includes("--inspect-card-ranking");
 if (cardResearch && !previewMode) throw new Error("La ricerca ammoniti richiede una giornata in anteprima");
 const cardRankings = [];
 const requestedMatchId = process.env.SERIE_A_PREDICTION_MATCH_ID || null;
+const requestedMatchIds = new Set((process.env.SERIE_A_PREDICTION_MATCH_IDS || '').split(',').filter(Boolean));
+const budgetPolicyPath = path.join(root, 'data/sources/serie-a-starter-substitute-budget-policy.json');
+const starterSubstituteBudgetPolicy = fs.existsSync(budgetPolicyPath) ? read('data/sources/serie-a-starter-substitute-budget-policy.json') : null;
 if (requestedMatchId && !matches.some(match => match.id === requestedMatchId)) throw new Error(`Fixture sconosciuta: ${requestedMatchId}`);
 
 const byId = items => new Map(items.map(item => [item.teamId || item.team || item.matchId || item.canonicalMatchId, item]));
@@ -289,7 +292,7 @@ const nextScheduledMatchday = matches
 const leagueTargetMatches = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (previewMode ? match.matchday === previewMatchday : oddsByMatch.has(match.id) || match.matchday === nextScheduledMatchday))
   .sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
-const targetMatches = requestedMatchId ? leagueTargetMatches.filter(match => match.id === requestedMatchId) : leagueTargetMatches;
+const targetMatches = requestedMatchId ? leagueTargetMatches.filter(match => match.id === requestedMatchId) : requestedMatchIds.size ? leagueTargetMatches.filter(match => requestedMatchIds.has(match.id)) : leagueTargetMatches;
 const predictionMatches = matches;
 
 const officialReferenceByTeam = new Map(officialLineups.fixtures
@@ -460,6 +463,8 @@ const generatedPredictions = targetMatches.map(match => {
       usedInLegacyRiskScore:false
     };
   }
+  require('./predictions/starter-substitute-budget.cjs').apply({ prediction, match, matches, squads: squadsByTeam,
+    officialLineups, probableLineups: probableLineupSource, teamMatchupProfiles: teamMatchupByTeam, policy: starterSubstituteBudgetPolicy });
   prediction.futureDataDiagnostics = {
     dataCutoff: { matchdayExclusive: match.matchday, targetMatchIdExcluded: match.id, completedOnly: true },
     home: {

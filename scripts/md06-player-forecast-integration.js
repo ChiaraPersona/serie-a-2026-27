@@ -68,7 +68,8 @@ function lineupEligibility(player, matchId, probableLineups, officialLineups) {
 }
 
 function evaluateCandidate(player, metric, sources, lineup) {
-  const expectedMinutes = finite(player?.expectedMinutes) ? Number(player.expectedMinutes) : null;
+  const metricMinutes = player?.expectedMinutesByMetric?.[metric] ?? player?.expectedMinutes;
+  const expectedMinutes = finite(metricMinutes) ? Number(metricMinutes) : null;
   const isPrimary = sources.includes(metric === "shots" ? "primary-shots" : "primary-sot");
   const isOutsider = sources.includes(metric === "shots" ? "qualified-shots-outsider" : "qualified-sot-outsider");
   const threshold = metric === "shots" ? chooseShotsThreshold(player) : chooseSotThreshold(player);
@@ -287,6 +288,8 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
         individualReference: {
           modelProbabilityPct: probabilityPct,
           probabilitySemantics: "INDIVIDUAL_PLAYER_V2",
+          ...(metric === 'shots' && player.shotsBudgetStatus ? { modelVersion: prediction.shooters?.starterSubstituteBudget?.version,
+            status: player.shotsBudgetStatus, statisticallyValidated: false } : {}),
           modelTarget: `player:${player.playerId}:${metric}:${threshold.count}+`,
           appliedToDuo: false,
         },
@@ -312,7 +315,7 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
       sources,
       role: player.role || null,
       detailedRole: player.detailedRole || null,
-      expectedMinutes: finite(player.expectedMinutes) ? Number(player.expectedMinutes) : null,
+      expectedMinutes: finite(player.expectedMinutesByMetric?.[metric] ?? player.expectedMinutes) ? Number(player.expectedMinutesByMetric?.[metric] ?? player.expectedMinutes) : null,
       projectedShots: finite(player.projectedShots) ? Number(player.projectedShots) : null,
       projectedShotsOnTarget: finite(player.projectedShotsOnTarget) ? Number(player.projectedShotsOnTarget) : null,
       stability: reliabilitySource?.level || null,

@@ -1,0 +1,10 @@
+'use strict';
+const fs=require('./output-snapshot-fs.cjs'),zlib=require('node:zlib'),assert=require('node:assert/strict'),crypto=require('node:crypto');const dir='output/md13-results-two-2026-11-28',read=f=>JSON.parse(fs.readFileSync(f,'utf8')),before=read(dir+'/matches-before.json'),baseline=read(dir+'/baseline.json'),matches=read('data/normalized/matches.json');
+for(const [slug,h,a]of [['frosinone-parma',3,0],['torino-lazio',1,2]]){const m=matches.find(m=>m.id===slug+'-2026-27-md-13');assert.equal(m.status,'finished');assert.deepEqual(m.score,{home:h,away:a});const goals={home:0,away:0};for(const g of m.scorers){let side=g.team===m.homeTeam?'home':'away';if(g.ownGoal)side=side==='home'?'away':'home';goals[side]++;}assert.deepEqual(goals,m.score);for(const side of ['home','away']){assert.equal(m.playerStats[side].filter(p=>p.starter).length,11);for(const [pf,tf]of [['shots','shots'],['shotsOnTarget','shotsOnTarget'],['foulsCommitted','fouls'],['hitWoodwork','hitWoodwork']])assert.equal(m.playerStats[side].reduce((n,p)=>n+p[pf],0),m.teamStats[side][tf]);}}
+assert.deepEqual(matches.filter(m=>!baseline.matchIds.includes(m.id)),before.filter(m=>!baseline.matchIds.includes(m.id)));
+for(const [f,h]of Object.entries(baseline.protectedHashes))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex'),h,'Changed pre-match archive: '+f);
+const {calculateStandings}=require('./standings'),teams=read('data/normalized/teams.json'),prev=calculateStandings(teams,before),next=calculateStandings(teams,matches);assert.equal(next.reduce((n,t)=>n+t.played,0)-prev.reduce((n,t)=>n+t.played,0),4);assert.equal(next.reduce((n,t)=>n+t.points,0)-prev.reduce((n,t)=>n+t.points,0),6);assert.equal(matches.filter(m=>m.matchday===13&&m.status==='finished').length,3);console.log('PASS Frosinone-Parma and Torino-Lazio MD13, own goals, player/team totals, identities, standings, frozen forecasts/quotes and unrelated fixtures');
+
+
+
+

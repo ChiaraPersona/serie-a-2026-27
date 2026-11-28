@@ -3745,100 +3745,57 @@ body:not([data-page="home"]) .hero h1{font-size:clamp(38px,11vw,54px)}
 }
 /* buttons.css: original cascade position */
 :root{
-  --button-blue:#1e5f9d;
-  --button-blue-strong:#164c82;
-  --button-gold:#9b6c17;
-  --button-surface:rgba(255,255,255,.68);
-  --button-border:rgba(36,90,120,.2);
-  --button-shadow:0 7px 18px rgba(40,58,59,.09),inset 0 1px 0 rgba(255,255,255,.88);
-  --button-shadow-hover:0 11px 24px rgba(31,78,116,.15),inset 0 1px 0 rgba(255,255,255,.94);
+ --button-surface:#e6ebed;
+ --button-border:#d2dde2;
+ --button-text:#283e4b;
+ --button-blue-strong:#285470;
+ --button-active:#c5dfef;
+ --button-active-border:#9bc4de;
+ --button-active-text:#285470;
+ --button-hover:#dce7ed;
+ --button-hover-border:#b9cedb;
+ --button-focus:#689fc0;
+ --button-shadow:inset 0 2px 5px rgb(20 43 59 / 14%);
 }
-.button,
-.menu-button{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:.42em;
-  min-height:38px;
-  padding:8px 14px;
-  border:1px solid var(--button-border);
-  border-radius:999px;
-  background:linear-gradient(145deg,rgba(255,255,255,.82),var(--button-surface));
-  box-shadow:var(--button-shadow);
-  color:var(--button-blue);
-  font-family:var(--font-body);
-  font-size:.75rem;
-  font-weight:800;
-  line-height:1;
-  letter-spacing:.005em;
-  text-align:center;
-  text-decoration:none;
-  cursor:pointer;
-  user-select:none;
-  -webkit-tap-highlight-color:transparent;
-  transition:color .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease,transform .2s cubic-bezier(.22,.8,.22,1);
+body[data-page="champions"],body[data-competition-theme="champions"],body[data-reading-detail-theme="champions"]{
+ --button-surface:#102d62;
+ --button-border:#35598b;
+ --button-text:#e8f2ff;
+ --button-active:#2457a0;
+ --button-active-border:#71b8ff;
+ --button-active-text:#ffffff;
+ --button-hover:#1b4079;
+ --button-hover-border:var(--button-border);
+ --button-focus:#8bceff;
+ --button-shadow:inset 0 2px 5px rgb(0 8 32 / 32%);
 }
-.button:hover,
-.menu-button:hover{
-  border-color:rgba(16,68,112,.62);
-  background:linear-gradient(135deg,#276da8,var(--button-blue-strong));
-  box-shadow:0 11px 24px rgba(22,76,130,.22),inset 0 1px 0 rgba(255,255,255,.22);
-  color:#fff;
-  text-decoration:none;
-  transform:translateY(-1px);
+body :is(button:not(.ranking-sort):not(.roster-sort),input[type="button"],input[type="submit"],input[type="reset"],[role="button"],a.button,a.referee-card-action,.referee-season-nav a){
+ border:1px solid var(--button-border)!important;
+ border-radius:10px!important;
+ background:var(--button-surface)!important;
+ color:var(--button-text)!important;
+ box-shadow:var(--button-shadow)!important;
+ font-family:var(--ds-font-body,var(--font-body,system-ui))!important;
+ font-weight:700!important;
+ text-decoration:none!important;
+ cursor:pointer;
+ transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease;
 }
-.button:active,
-.menu-button:active{
-  box-shadow:0 3px 9px rgba(40,58,59,.09),inset 0 1px 2px rgba(40,58,59,.08);
-  transform:translateY(0) scale(.98);
+body :is(button:not(.ranking-sort):not(.roster-sort),input[type="button"],input[type="submit"],input[type="reset"],[role="button"],a.button,a.referee-card-action,.referee-season-nav a):where(:not(:disabled):not([aria-disabled="true"])):hover{
+ background:var(--button-hover)!important;
+ border-color:var(--button-hover-border)!important;
 }
-.button:focus-visible,
-.menu-button:focus-visible{
-  outline:3px solid rgba(167,116,22,.28);
-  outline-offset:3px;
+body :is(button:not(.ranking-sort):not(.roster-sort),input[type="button"],input[type="submit"],input[type="reset"],[role="button"],a.button,a.referee-card-action,.referee-season-nav a):is(.active,.is-active,.is-selected,.is-main,[aria-pressed="true"],[aria-selected="true"],[aria-expanded="true"]){
+ background:var(--button-active)!important;
+ border-color:var(--button-active-border)!important;
+ color:var(--button-active-text)!important;
 }
-
-
-.match.fixture-card .button{
-  border-color:var(--button-border);
-  background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(232,243,247,.76));
-  box-shadow:var(--button-shadow);
-  color:var(--button-blue);
-}
-.match.fixture-card .button:hover,
-.match.fixture-card .button:focus-visible{
-  border-color:rgba(122,86,21,.46);
-  background:linear-gradient(135deg,#f5dfa3,#d5aa50);
-  box-shadow:0 10px 22px rgba(122,86,21,.19),inset 0 1px 0 rgba(255,255,255,.5);
-  color:#493309;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.button[aria-disabled="true"],
-button:disabled{
-  box-shadow:none;
-  cursor:not-allowed;
-  opacity:.48;
-  transform:none;
-}
+body :is(button:not(.ranking-sort):not(.roster-sort),input[type="button"],input[type="submit"],input[type="reset"],[role="button"],a.button,a.referee-card-action,.referee-season-nav a):focus-visible{outline:2px solid var(--button-focus);outline-offset:3px}
+body :is(button:not(.ranking-sort):not(.roster-sort),input[type="button"],input[type="submit"],input[type="reset"],[role="button"],a.button,a.referee-card-action,.referee-season-nav a):is(:disabled,[aria-disabled="true"]){opacity:.48;cursor:not-allowed;box-shadow:none!important}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:.42em;padding:8px 14px;min-height:38px}
 .menu-button{display:none}
 @media(max-width:760px){.menu-button{display:inline-flex}}
-@media(max-width:580px){.button,.menu-button{min-height:42px}
-
-}
-@media(prefers-reduced-motion:reduce){.button,.menu-button{transition:none}}
+@media(prefers-reduced-motion:reduce){body :is(button:not(.ranking-sort):not(.roster-sort),input[type="button"],input[type="submit"],input[type="reset"],[role="button"],a.button,a.referee-card-action,.referee-season-nav a){transition:none}}
 /* champions.css: original cascade position */
 body[data-page="champions"]{
   --champions-blue:#041a57;
@@ -5952,53 +5909,6 @@ body .rd-shell .rf-dashboard .rf-indicator strong{
   font-family:var(--ds-font-data);
   font-variant-numeric:tabular-nums;
 }
-body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
-  .rd-player-mode button,.rd-filters button,.rd-row-actions button,.betting-personal-pick,
-  .betting-matchday-actions button,.betting-mycombo-actions button,.compare-pick){
-  border-radius:var(--ds-radius-control);
-  border-color:var(--ds-color-border);
-  background:var(--ds-color-surface);
-  color:var(--ds-color-text);
-  font-family:var(--ds-font-body);
-}
-
-body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
-  .rd-player-mode button,.rd-filters button,.rd-row-actions button,.betting-personal-pick,
-  .betting-matchday-actions button,.betting-mycombo-actions button,.compare-pick):not(:disabled):hover{
-  border-color:var(--ds-color-accent);
-  background:var(--ds-color-surface-soft);
-}
-body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
-  .rd-player-mode button,.rd-filters button,.rd-row-actions button,.betting-personal-pick):is(.active,[aria-pressed="true"]){
-  background:var(--ds-color-accent-strong);
-  border-color:var(--ds-color-accent-strong);
-  color:var(--ds-color-on-accent);
-}
-body .rd-shell .rd-slip-trigger,
-body .personal-betslip-trigger{
-  border-radius:var(--ds-radius-pill);
-  background:var(--ds-color-accent-strong);
-  color:var(--ds-color-on-accent);
-  box-shadow:var(--ds-shadow-floating);
-  font-family:var(--ds-font-body);
-}
-body :is(.rd-slip button,.personal-betslip-clear,.personal-betslip-close){
-  border-radius:var(--ds-radius-control);
-  font-family:var(--ds-font-body);
-}
-body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
-  .rd-player-mode button,.rd-filters button,.rd-row-actions button,.betting-personal-pick,
-  .betting-matchday-actions button,.betting-mycombo-actions button,.compare-pick):focus-visible,
-body :is(.rd-slip-trigger,.personal-betslip-trigger,.rd-slip button,
-  .personal-betslip-panel button):focus-visible{
-  outline:2px solid var(--ds-color-focus);
-  outline-offset:3px;
-}
-body[data-page] main :is(.rd-row-actions button,.betting-personal-pick,.compare-pick):disabled{
-  opacity:.5;
-  box-shadow:none;
-  cursor:not-allowed;
-}
 
 /* comparator.css: original cascade position */
 body :is(#app,#team-squad-app) .comparator-editorial{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;color:#243a3b;font-family:var(--ds-font-body)}
@@ -6976,9 +6886,8 @@ body[data-reading-detail-theme="champions"] .rd-shell .team-history-scroll .team
 @media(max-width:767px){.rd-shell .rd-player-row>summary{height:48px;min-height:48px;padding:2px 0}
 .rd-shell .rd-row-identity h3{line-height:16px}}
 body[data-page] main .rd-shell .rd-player-mode{gap:8px}
-body[data-page] main .rd-shell .rd-player-mode button{padding:10px 16px;border:1px solid var(--rd-line);border-radius:6px;background:transparent;color:var(--rd-ink);font:inherit;font-size:13px;min-height:44px;box-shadow:none}
-body[data-page] main .rd-shell .rd-player-mode button[aria-pressed="true"]{border-color:var(--rd-accent);background:color-mix(in srgb,var(--rd-accent) 12%,transparent);color:var(--rd-ink)}
-.rd-shell .rd-spatial-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:18px 0}
+body[data-page] main .rd-shell .rd-player-mode button{padding:10px 16px;font-size:13px;min-height:44px}
+.rd-shell .rd-spatial-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;width:96.153846%;max-width:730.769px;margin:18px auto}
 .rd-shell .rd-spatial-toolbar>.rd-spatial-directions{margin:0}
 .rd-shell .rd-spatial-toolbar>.rd-spatial-map-controls{margin-left:auto}
 @media(max-width:480px){.rd-shell .rd-spatial-toolbar{flex-wrap:nowrap;gap:6px}

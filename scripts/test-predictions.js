@@ -246,7 +246,10 @@ for (const prediction of dataset.predictions) {
       assert(candidate.expectedMinutes >= 0 && candidate.expectedMinutes <= 90, `${prediction.matchId}/${candidate.name}: minuti attesi non validi`);
       if (candidate.expectedMinutes < 55) assert(candidate.expectedMinutesEvidence.recentTeamMatches > 0, `${prediction.matchId}/${candidate.name}: calo minuti senza evidenza recente`);
       assert(["low", "medium", "high"].includes(candidate.substitutionRisk), `${prediction.matchId}/${candidate.name}: rischio sostituzione non valido`);
-      assert(candidate.projectedShotsOnTarget <= candidate.projectedShots + 0.001, `${prediction.matchId}/${candidate.name}: SOT sopra i tiri`);
+      if (candidate.shotsBudgetStatus === 'UNAVAILABLE') {
+        assert.strictEqual(candidate.projectedShots, null, `${prediction.matchId}/${candidate.name}: astensione senza N/D`);
+        assert(Object.values(candidate.shotProbabilities).every(p => p === null), `${prediction.matchId}/${candidate.name}: probabilita inventata in astensione`);
+      } else if (candidate.projectedShotsOnTarget !== null) assert(candidate.projectedShotsOnTarget <= candidate.projectedShots + 0.001, `${prediction.matchId}/${candidate.name}: SOT sopra i tiri`);
       const shots = candidate.shotProbabilities;
       const sot = candidate.shotOnTargetProbabilities;
       assert(Object.values({ ...shots, ...sot }).every(value => value >= 0 && value <= 1), `${prediction.matchId}/${candidate.name}: probabilita fuori scala`);
@@ -260,7 +263,12 @@ for (const prediction of dataset.predictions) {
     }
     for (const total of prediction.shooters.teamTotals) {
       const team = prediction.teamProjections.find(item => item.teamId === total.teamId);
-      assert(Math.abs(total.projectedShots - team.shotsTotal.central) <= 0.11, `${prediction.matchId}/${total.teamId}: tiri giocatore non riconciliati`);
+      const budget = prediction.shooters.starterSubstituteBudget?.teams.find(t => t.teamId === total.teamId);
+      if (budget?.status === 'COMPLETE') {
+        assert(Math.abs(total.projectedShots + total.projectedSubstituteShots - team.shotsTotal.central) <= 0.001, `${prediction.matchId}/${total.teamId}: budget congiunto non riconciliato`);
+        assert(Math.abs(budget.minutes.starterMinutes + budget.minutes.substituteMinutes - 900) <= 0.001, `${prediction.matchId}/${total.teamId}: budget minuti non conservato`);
+      } else if (budget) assert.strictEqual(total.projectedShots, null, `${prediction.matchId}/${total.teamId}: astensione squadra senza N/D`);
+      else assert(Math.abs(total.projectedShots - team.shotsTotal.central) <= 0.11, `${prediction.matchId}/${total.teamId}: tiri giocatore non riconciliati`);
       assert(Math.abs(total.projectedShotsOnTarget - team.shotsOnTarget.central) <= 0.11, `${prediction.matchId}/${total.teamId}: SOT giocatore non riconciliati`);
     }
     assert(prediction.likelyBooked.every(candidate => candidate.refereeFactor >= 0.9 && candidate.refereeFactor <= 1.1), `${prediction.matchId}: fattore arbitro fuori bound`);
