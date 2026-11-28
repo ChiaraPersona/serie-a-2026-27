@@ -14,8 +14,8 @@ try{for(const width of [1440,390]){
  await page.locator('[data-xgot-statistics]').screenshot({path:`${out}/team-${width}.png`});
  await page.goto(base+'champions-league.html?team=inter');await page.locator('[data-xgot-statistics]').waitFor();
  const future=JSON.parse(fs.readFileSync(path.join(root,'data/generated/champions-shared-scenarios.json'))).fixtures.find(f=>f.matchday===5&&f.expectedGoals?.components?.xgot?.applied);
- await page.goto(base+'champions-league.html?match='+future.fixtureId);await page.locator('[data-reading-ready="true"]').waitFor();assert.equal(await page.locator('[data-xgot-model]').count(),0);
- await page.goto(base+'lettura.html?match=inter-como-2026-27-md-11');await page.locator('[data-reading-ready="true"]').waitFor();assert.equal(await page.locator('[data-xgot-model]').count(),0);await page.locator('[data-xgot-observed]').waitFor({state:'attached'});await page.locator('[data-player-xgot]').first().waitFor({state:'attached'});
+ await page.goto(base+'champions-league.html?match='+future.fixtureId);await page.locator('[data-reading-ready="true"]').waitFor();assert.equal(await page.locator('[data-player-xgot]').count(),0);assert.equal(await page.locator('[data-xgot-model]').count(),0);
+ await page.goto(base+'lettura.html?match=inter-como-2026-27-md-11');await page.locator('[data-reading-ready="true"]').waitFor();assert.equal(await page.locator('[data-xgot-model]').count(),0);await page.locator('[data-xgot-observed]').waitFor({state:'attached'});assert.equal(await page.locator('[data-player-xgot]').count(),0);
  await page.locator('[data-statistic="xgot"][data-xgot-ready="true"]').waitFor({state:'attached'});
  assert.equal(await page.locator('.rd-diverging [data-statistic="xgot"]').count(),1);
  assert.equal(await page.locator('[data-statistic="xgot"] .rd-diverging-half').count(),2);
